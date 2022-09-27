@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/colorWhite"
+        card_view:cardElevation="0dp"
+        app:cardCornerRadius="@dimen/_10sdp"
+        >
+        <RelativeLayout
+            android:background="@color/colorWhite"
+            android:padding="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/alertTitleLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true">
+                <TextView
+                    android:id="@+id/alertTitle"
+                    android:text="Alert Titile  "
+                    android:textSize="@dimen/_13sdp"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:id="@+id/alertMessageLay"
+                android:layout_below="@+id/alertTitleLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="@dimen/_12sdp"
+                    android:textColor="@color/colorBlack"
+                    android:text="alertMessage"
+                    android:id="@+id/alertMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </TextView>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_below="@id/alertMessageLay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <Button
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/yesbtn"
+                    android:text="YES"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:background="@drawable/commandeer_new"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_30sdp">
+
+                </Button>
+                <Button
+                    android:layout_alignParentLeft="true"
+                    android:id="@+id/nobtn"
+                    android:text="No"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    android:background="@drawable/scanupc_new"
+                    android:textSize="@dimen/_12sdp"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_30sdp">
+
+                </Button>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</RelativeLayout>

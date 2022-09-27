@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CLightApp.iml" filepath="$PROJECT_DIR$/.idea/modules/CLightApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CircleImageViewMaster/CLightApp.CircleImageViewMaster.iml" filepath="$PROJECT_DIR$/.idea/modules/CircleImageViewMaster/CLightApp.CircleImageViewMaster.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CLightApp.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CLightApp.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CLightApp.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CLightApp.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CLightApp.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CLightApp.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/CLightApp.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/CLightApp.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/circleimageview/CLightApp.circleimageview.iml" filepath="$PROJECT_DIR$/.idea/modules/circleimageview/CLightApp.circleimageview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/sample/CLightApp.sample.iml" filepath="$PROJECT_DIR$/.idea/modules/sample/CLightApp.sample.iml" />
+    </modules>
+  </component>
+</project>

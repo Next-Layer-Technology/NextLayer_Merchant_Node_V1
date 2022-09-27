@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context=".fragments.merchant.MerchantFragment3">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+        <!--        <RelativeLayout-->
+        <!--            android:id="@+id/headercardviewlyout"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="@dimen/_35sdp"-->
+        <!--            android:layout_marginLeft="@dimen/_25sdp"-->
+        <!--            android:layout_marginRight="@dimen/_25sdp"-->
+        <!--            android:background="@drawable/edittextround">-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/btcpak"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_centerHorizontal="true"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:gravity="center">-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_lightning"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginLeft="@dimen/_5sdp"-->
+        <!--                    android:layout_toRightOf="@+id/lightning_status"-->
+        <!--                    android:text="Lightning"-->
+        <!--                    android:textColor="#FFFFFF"-->
+        <!--                    android:textSize="@dimen/_12sdp"-->
+        <!--                    android:textStyle="normal" />-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/lightning_status"-->
+        <!--                    android:layout_width="@dimen/_10sdp"-->
+        <!--                    android:layout_height="@dimen/_10sdp"-->
+        <!--                    android:layout_centerVertical="true"-->
+        <!--                    android:src="@drawable/redstatus" />-->
+
+        <!--            </RelativeLayout>-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tv_bitcoin"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginLeft="@dimen/_5sdp"-->
+        <!--                android:layout_toRightOf="@+id/bitcoin_status"-->
+        <!--                android:text="Bitcoin"-->
+        <!--                android:textColor="#FFFFFF"-->
+        <!--                android:textSize="@dimen/_12sdp"-->
+        <!--                android:textStyle="normal" />-->
+
+        <!--            <ImageView-->
+        <!--                android:id="@+id/bitcoin_status"-->
+        <!--                android:layout_width="@dimen/_10sdp"-->
+        <!--                android:layout_height="@dimen/_10sdp"-->
+        <!--                android:layout_alignParentLeft="true"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginLeft="@dimen/_15sdp"-->
+        <!--                android:src="@drawable/redstatus" />-->
+
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tv_thor"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_alignParentRight="true"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginRight="@dimen/_15sdp"-->
+        <!--                android:text="Sorvereign"-->
+        <!--                android:textColor="#FFFFFF"-->
+        <!--                android:textSize="@dimen/_12sdp"-->
+        <!--                android:textStyle="normal" />-->
+
+        <!--            <ImageView-->
+        <!--                android:id="@+id/thor_status"-->
+        <!--                android:layout_width="@dimen/_10sdp"-->
+        <!--                android:layout_height="@dimen/_10sdp"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginRight="@dimen/_5sdp"-->
+        <!--                android:layout_toLeftOf="@+id/tv_thor"-->
+        <!--                android:src="@drawable/greenstatus" />-->
+        <!--        </RelativeLayout>-->
+
+
+        <RelativeLayout
+            android:id="@+id/headercardviewlyout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginLeft="@dimen/_25sdp"
+            android:layout_marginRight="@dimen/_25sdp"
+            android:background="@drawable/edittextround"
+            android:gravity="center">
+
+
+            <TextView
+                android:id="@+id/tv_thor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_toRightOf="@+id/thor_status"
+                android:gravity="center"
+                android:text="Bitcoin Lightning Network"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="normal" />
+
+            <ImageView
+                android:id="@+id/thor_status"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:src="@drawable/redstatus" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/imageView3"
+            android:layout_below="@+id/headercardviewlyout"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp">
+
+            <RelativeLayout
+                android:id="@+id/cardview1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Bitcoin Node"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bitcoinCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    app:cardBackgroundColor="@color/semiTransparentColor"
+                    app:cardCornerRadius="@dimen/_15sdp"
+                    app:cardElevation="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/result_Bitcoin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center"
+                            android:text="Not Connected..."
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="normal" />
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/startBitcoinBtn"
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_22sdp"
+                    android:background="@drawable/scanqr_first"
+                    android:text="Start"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/stopBitcoinBtn"
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_22sdp"
+                    android:layout_marginRight="@dimen/_40sdp"
+                    android:background="@drawable/connect_first"
+                    android:text="Stop"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/cardview2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cardview1"
+                android:layout_marginTop="@dimen/_50sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Lightning Node"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/lightningnodeCardView"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    app:cardBackgroundColor="@color/semiTransparentColor"
+                    app:cardCornerRadius="@dimen/_15sdp"
+                    app:cardElevation="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/result_Lightninng"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:gravity="center"
+                            android:text="Not Connected..."
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="normal" />
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/startLightningBtn"
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_22sdp"
+                    android:background="@drawable/scanqr_first"
+                    android:text="Start"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/stopLightningBtn"
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_22sdp"
+                    android:layout_marginRight="@dimen/_40sdp"
+                    android:background="@drawable/connect_first"
+                    android:text="Stop"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/cardview3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cardview2"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_60sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="Update Server"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/rebootUpdateUpgradeBtn"
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_22sdp"
+                    android:background="@drawable/scanqr_first"
+                    android:text="UPDATE/REBOOT"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/rebootUpdateUpgradecardview"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    app:cardBackgroundColor="@color/semiTransparentColor"
+                    app:cardCornerRadius="@dimen/_15sdp"
+                    app:cardElevation="0dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/result_RebootUpdateUpgrade"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="Waiting..."
+                            android:textColor="#FFFFFF"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="normal" />
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_50sdp"
+                    android:text="Remove SSH Info"
+                    android:textColor="#000000"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/removeSshKeyBtn"
+                    android:layout_width="@dimen/_110sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/_22sdp"
+                    android:layout_marginRight="@dimen/_40sdp"
+                    android:background="@drawable/connect_first"
+                    android:text="REMOVE SSH"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_10sdp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/reboot_restartnodehost"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/_30sdp"
+                    android:background="@drawable/reboot_update_node_host"
+                    android:text="Update/Reboot Node Host"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_12sdp" />
+
+                <Button
+                    android:id="@+id/removecredentials"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/remove_credentials"
+                    android:text="Remove credentials"
+                    android:textAlignment="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_12sdp" />
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/imageView3"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_23sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/footerbg"
+            android:gravity="center"
+
+            android:text="@string/bottomLine"
+            android:textAllCaps="true"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/_8sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_logo" />
+
+    </RelativeLayout>
+</LinearLayout>

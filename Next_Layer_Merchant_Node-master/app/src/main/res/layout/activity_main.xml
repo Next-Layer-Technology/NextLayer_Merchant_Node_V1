@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".activity.MainActivity">
+
+
+    <include
+        android:id="@+id/layheadertop"
+        layout="@layout/layout_main_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/imageView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layheadertop">
+
+        <!--        <RelativeLayout-->
+        <!--            android:id="@+id/headercardviewlyout"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="@dimen/_35sdp"-->
+        <!--            android:layout_marginStart="@dimen/_25sdp"-->
+        <!--            android:layout_marginEnd="@dimen/_25sdp"-->
+        <!--            android:background="@drawable/edittextround"-->
+        <!--            app:layout_constraintEnd_toEndOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent">-->
+
+        <!--            <RelativeLayout-->
+        <!--                android:id="@+id/btcpak"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_centerHorizontal="true"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:gravity="center">-->
+
+        <!--                <TextView-->
+        <!--                    android:id="@+id/tv_lightning"-->
+        <!--                    android:layout_width="wrap_content"-->
+        <!--                    android:layout_height="wrap_content"-->
+        <!--                    android:layout_marginLeft="@dimen/_5sdp"-->
+        <!--                    android:layout_toRightOf="@+id/lightning_status"-->
+        <!--                    android:text="Lightning"-->
+        <!--                    android:textColor="#FFFFFF"-->
+        <!--                    android:textSize="@dimen/_12sdp"-->
+        <!--                    android:textStyle="normal" />-->
+
+        <!--                <ImageView-->
+        <!--                    android:id="@+id/lightning_status"-->
+        <!--                    android:layout_width="@dimen/_10sdp"-->
+        <!--                    android:layout_height="@dimen/_10sdp"-->
+        <!--                    android:layout_centerVertical="true"-->
+        <!--                    android:src="@drawable/redstatus" />-->
+
+        <!--            </RelativeLayout>-->
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tv_bitcoin"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginLeft="@dimen/_5sdp"-->
+        <!--                android:layout_toRightOf="@+id/bitcoin_status"-->
+        <!--                android:text="Bitcoin"-->
+        <!--                android:textColor="#FFFFFF"-->
+        <!--                android:textSize="@dimen/_12sdp"-->
+        <!--                android:textStyle="normal" />-->
+
+        <!--            <ImageView-->
+        <!--                android:id="@+id/bitcoin_status"-->
+        <!--                android:layout_width="@dimen/_10sdp"-->
+        <!--                android:layout_height="@dimen/_10sdp"-->
+        <!--                android:layout_alignParentLeft="true"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginLeft="@dimen/_15sdp"-->
+        <!--                android:src="@drawable/yellowstatus" />-->
+
+
+        <!--            <TextView-->
+        <!--                android:id="@+id/tv_thor"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_alignParentRight="true"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginRight="@dimen/_15sdp"-->
+        <!--                android:text="Sorvereign"-->
+        <!--                android:textColor="#FFFFFF"-->
+        <!--                android:textSize="@dimen/_12sdp"-->
+        <!--                android:textStyle="normal" />-->
+
+        <!--            <ImageView-->
+        <!--                android:id="@+id/thor_status"-->
+        <!--                android:layout_width="@dimen/_10sdp"-->
+        <!--                android:layout_height="@dimen/_10sdp"-->
+        <!--                android:layout_centerVertical="true"-->
+        <!--                android:layout_marginRight="@dimen/_5sdp"-->
+        <!--                android:layout_toLeftOf="@+id/tv_thor"-->
+        <!--                android:src="@drawable/greenstatus" />-->
+        <!--        </RelativeLayout>-->
+        <RelativeLayout
+            android:id="@+id/headercardviewlyout"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_marginStart="@dimen/_25sdp"
+            android:layout_marginEnd="@dimen/_25sdp"
+            android:background="@drawable/edittextround"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_thor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_15sdp"
+                android:layout_toRightOf="@+id/thor_status_main"
+                android:gravity="center"
+                android:text="Bitcoin Lightning Network"
+                android:textColor="#FFFFFF"
+                android:textSize="@dimen/_12sdp"
+                android:textStyle="normal" />
+
+            <ImageView
+                android:id="@+id/thor_status_main"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:src="@drawable/redstatus" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/nestedOverLa"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/headercardviewlyout">
+
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:padding="@dimen/_10sdp">
+
+                    <LinearLayout
+                        android:id="@+id/mainmodelay"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/optionCheckout"
+                            android:layout_width="@dimen/_170sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:background="@drawable/connect_first"
+                            android:gravity="center"
+                            android:text="@string/checkout"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/optionMerchant"
+                            android:layout_width="@dimen/_170sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:background="@drawable/scanqr_first"
+                            android:gravity="center"
+                            android:text="@string/merchant"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+
+                        <Button
+                            android:id="@+id/optionAdmin"
+                            android:layout_width="@dimen/_170sdp"
+                            android:layout_height="@dimen/_50sdp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="@dimen/_8sdp"
+                            android:layout_marginLeft="@dimen/_8sdp"
+                            android:layout_marginEnd="@dimen/_8sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
+                            android:layout_marginBottom="@dimen/_20sdp"
+                            android:background="@drawable/admin_scnd"
+                            android:gravity="center"
+                            android:text="@string/admin"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/_12sdp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+
+                </RelativeLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/imageView3"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_23sdp"
+        android:background="@drawable/footerbg"
+        android:gravity="center"
+        android:text="@string/bottomLine"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/_8sdp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

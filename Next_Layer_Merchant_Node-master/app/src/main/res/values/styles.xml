@@ -1,0 +1,22 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="myCustomToolbarStyle" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">@color/colorBlack</item>
+        <item name="android:textColorSecondary">@color/colorBlack</item>
+        <item name="actionMenuTextColor">@color/colorBlack</item>
+    </style>
+
+
+    <style name="AlertDialog" parent="Base.Theme.AppCompat.Dialog.Alert">
+        <item name="android:windowBackground">#00000000</item>
+    </style>
+
+
+</resources>

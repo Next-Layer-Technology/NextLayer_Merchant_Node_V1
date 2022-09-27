@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bitcoincardlayoutineer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/bitcoinstartbtn"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/new_btn"
+        android:text="Start"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toStartOf="@+id/bitcoinstopbtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <Button
+        android:id="@+id/bitcoinstopbtn"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/new_btn"
+        android:text="Stop"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="@+id/bitcoinstartbtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/bitcoinstartbtn"
+        app:layout_constraintTop_toTopOf="@+id/bitcoinstartbtn" />
+
+    <TextView
+        android:id="@+id/bitcoinservertext"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="16dp"
+        android:text="Bitcoin Server Statring....."
+        android:textColor="#271F1F"
+        app:layout_constraintEnd_toEndOf="@+id/bitcoinstopbtn"
+        app:layout_constraintStart_toStartOf="@+id/bitcoinstartbtn"
+        app:layout_constraintTop_toBottomOf="@+id/bitcoinstartbtn" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Bitcoin Node"
+        android:textColor="#271F1F"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/bitcoinstopbtn"
+        app:layout_constraintStart_toStartOf="@+id/bitcoinstartbtn"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

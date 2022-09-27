@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".activity.MainEntryActivity"
+    android:background="@drawable/background">
+    <include layout="@layout/layout_main_header"
+        android:id="@+id/iv_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_alignParentTop="true"/>
+            <RelativeLayout
+                    android:id="@+id/nestedMainLay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/bottomsheetlay"
+                    android:layout_below="@+id/iv_logo"
+                    android:layout_marginBottom="@dimen/_10sdp">
+                <RelativeLayout
+                    android:id="@+id/confirmMerchantLay"
+                    android:layout_above="@+id/soverignLAy"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true">
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_70sdp"
+                       android:layout_centerInParent="true">
+                        <RelativeLayout
+                            android:layout_width="@dimen/_160sdp"
+                            android:layout_height="@dimen/_70sdp"
+                            android:gravity="center_horizontal">
+
+                            <EditText
+                                android:id="@+id/merchantid_et"
+                                android:layout_width="@dimen/_150sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:background="@drawable/edittext"
+                                android:ems="10"
+                                android:gravity="center"
+                                android:hint="Enter Merchant Id"
+                                android:inputType="textPersonName"
+                                android:singleLine="true"
+                                android:textAlignment="center"
+                                android:textColor="@color/colorWhite"
+                                android:textColorHint="@color/colorWhite"
+                                android:textSize="@dimen/_7sdp"
+
+                                />
+
+                            <Button
+                                android:id="@+id/confirm"
+                                android:layout_width="@dimen/_80sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:layout_below="@+id/merchantid_et"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="@dimen/_10sdp"
+                                android:background="@drawable/connect_first"
+                                android:gravity="center"
+                                android:text="Confirm"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="@dimen/_7sdp" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+
+
+
+
+                    <RelativeLayout
+
+                        android:id="@+id/soverignLAy"
+                        android:layout_centerInParent="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_100sdp"
+                        >
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center_vertical">
+                            <RelativeLayout
+                                android:id="@+id/emailLAy"
+                                android:padding="@dimen/_5sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <EditText
+                                    android:id="@+id/et_email"
+                                    android:layout_width="@dimen/_250sdp"
+                                    android:layout_height="@dimen/_30sdp"
+                                    android:layout_alignParentTop="true"
+                                    android:layout_centerHorizontal="true"
+                                    android:background="@drawable/edittext"
+                                    android:gravity="center"
+                                    android:hint="@string/enter_secrete_key"
+                                    android:singleLine="true"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorWhite"
+                                    android:textColorHint="@color/colorWhite"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </RelativeLayout>
+                            <RelativeLayout
+                                android:layout_below="@+id/emailLAy"
+                                android:layout_width="@dimen/_250sdp"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5sdp"
+                                android:layout_centerHorizontal="true">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:weightSum="2">
+
+
+
+                                    <Button
+                                        android:layout_weight="1"
+                                        android:id="@+id/btn_scanQr"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_width="@dimen/_130sdp"
+                                        android:layout_height="@dimen/_40sdp"
+                                        android:background="@drawable/scanqr_first"
+                                        android:text="@string/scanqr"
+                                        android:textColor="@color/colorWhite"
+                                        android:textSize="@dimen/_10sdp"
+                                        />
+                                    <Button
+                                        android:layout_weight="1"
+                                        android:id="@+id/btn_connect"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_width="@dimen/_130sdp"
+                                        android:layout_height="@dimen/_40sdp"
+                                        android:background="@drawable/connect_first"
+                                        android:text="@string/connect"
+                                        android:textColor="@color/colorWhite"
+                                        android:textSize="@dimen/_10sdp"
+                                        />
+
+                                </LinearLayout>
+
+
+                            </RelativeLayout>
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/startstoplay"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/soverignLAy">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_100sdp"
+                            android:layout_centerInParent="true"
+                            >
+                            <RelativeLayout
+                                android:id="@+id/CardView3"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_100sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                >
+                                <TextView
+                                    android:id="@+id/lnid"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginBottom="@dimen/_8sdp"
+                                    android:gravity="center"
+                                    android:text="Sorvereign Connect"
+                                    android:textColor="@color/colorLightBlack"
+                                    android:textSize="@dimen/_12sdp"
+                                    android:textStyle="bold" />
+                                <androidx.cardview.widget.CardView
+                                    android:id="@+id/thornodeCardView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/_70sdp"
+                                    android:layout_below="@+id/lnid"
+                                    android:layout_marginLeft="@dimen/_30sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginRight="@dimen/_30sdp"
+                                    app:cardBackgroundColor="@color/semiTransparentColor"
+                                    app:cardCornerRadius="@dimen/_15sdp"
+                                    app:cardElevation="0dp">
+
+                                    <RelativeLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <TextView
+
+                                            android:id="@+id/result_Node"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_centerHorizontal="true"
+                                            android:layout_centerVertical="true"
+                                            android:text="Not Connected"
+                                            android:textAlignment="center"
+                                            android:textColor="#FFFFFF"
+                                            android:textSize="@dimen/_8sdp"
+                                            android:textStyle="normal" />
+
+                                    </RelativeLayout>
+                                </androidx.cardview.widget.CardView>
+
+                                <Button
+                                    android:id="@+id/startNodeBtn"
+                                    android:layout_width="@dimen/_100sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_marginLeft="@dimen/_50sdp"
+                                    android:layout_marginTop="@dimen/_20sdp"
+                                    android:background="@drawable/scanqr_first"
+                                    android:gravity="center"
+                                    android:text="@string/start"
+                                    android:textAlignment="center"
+                                    android:textColor="@color/colorWhite"
+                                    android:textSize="@dimen/_10sdp" />
+                                <Button
+                                    android:id="@+id/stopNodeBtn"
+                                    android:layout_width="@dimen/_100sdp"
+                                    android:layout_height="@dimen/_35sdp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginTop="@dimen/_20sdp"
+                                    android:layout_marginRight="@dimen/_50sdp"
+                                    android:background="@drawable/connect_first"
+                                    android:gravity="center"
+                                    android:text="@string/stop"
+                                    android:textAlignment="center"
+                                    android:textSize="@dimen/_10sdp"
+                                    android:textColor="@color/colorWhite" />
+                            </RelativeLayout>
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/bottomsheetlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/imageView3"
+                    android:layout_width="@dimen/_200sdp"
+                    android:layout_height="@dimen/_23sdp"
+                    android:background="@drawable/footerbg"
+                    android:gravity="center"
+                    android:text="@string/bottomLine"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_8sdp"
+                    />
+            </RelativeLayout>
+</RelativeLayout>

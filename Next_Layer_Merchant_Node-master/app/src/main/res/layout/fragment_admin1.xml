@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@drawable/background"
+tools:context=".fragments.admin.AdminFragment1">
+
+    <LinearLayout
+        android:id="@+id/filerlay"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:id="@+id/filerlaysale"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_from_date_sale"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/datef_bg"
+                android:gravity="center"
+                android:hint="Start"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_10sdp"
+
+                />
+
+            <EditText
+                android:id="@+id/et_to_date_sale"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:textSize="@dimen/_10sdp"
+                android:background="@drawable/datef_bg"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:hint="End"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filerlayrefund"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            >
+            <EditText
+                android:id="@+id/et_from_date_refund"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_5sdp"
+                android:layout_weight="1"
+                android:background="@drawable/datef_bg"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"
+                android:gravity="center"
+                android:textSize="@dimen/_10sdp"
+                android:layout_gravity="center"
+                android:hint="Start"
+                android:inputType="textPassword" />
+
+            <EditText
+                android:id="@+id/et_to_date_refund"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_weight="1"
+                android:background="@drawable/datef_bg"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_10sdp"
+                android:hint="End"
+                android:textColorHint="@color/colorWhite"
+                android:textColor="@color/colorWhite"
+                android:inputType="textPassword" />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+<Button
+    android:id="@+id/distributebutton"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/_40sdp"
+    android:background="@drawable/distribute_new"
+    android:textSize="@dimen/_12sdp"
+    android:gravity="center"
+    android:textColor="@color/colorWhite"
+    android:text="@string/distribute"
+    android:layout_marginStart="@dimen/_8sdp"
+    android:layout_marginLeft="@dimen/_8sdp"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_8sdp"
+    android:layout_marginRight="@dimen/_8sdp"
+    app:layout_constraintEnd_toStartOf="@+id/commandeerbutton"
+    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/filerlay"
+    />
+
+<Button
+    android:id="@+id/commandeerbutton"
+    android:layout_width="0dp"
+    android:layout_height="@dimen/_40sdp"
+    android:background="@drawable/commandeer_new"
+    android:text="@string/commandeer"
+    android:textColor="@color/colorWhite"
+    android:textSize="@dimen/_12sdp"
+    android:gravity="center"
+    android:layout_marginStart="@dimen/_8sdp"
+    android:layout_marginLeft="@dimen/_8sdp"
+    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_8sdp"
+    android:layout_marginRight="@dimen/_8sdp"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/distributebutton"
+    app:layout_constraintTop_toBottomOf="@+id/filerlay"
+    app:srcCompat="@drawable/btncommandeer" />
+
+
+<TextView
+    android:id="@+id/receivablestextview"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/_16sdp"
+    android:layout_marginStart="@dimen/_16sdp"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:layout_marginEnd="@dimen/_16sdp"
+    android:layout_marginRight="@dimen/_16sdp"
+    android:layout_marginBottom="@dimen/_8sdp"
+    android:textColor="@color/colorTextBlack"
+    android:text="RECEIVABLE"
+    android:background="@drawable/getpaidunerlinebg"
+    android:textStyle="bold"
+    android:textAlignment="center"
+    android:textSize="@dimen/_12sdp"
+    app:layout_constraintBottom_toTopOf="@+id/receivablesListview"
+    app:layout_constraintEnd_toStartOf="@+id/sednablestextview"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/distributebutton"
+      />
+
+<TextView
+    android:id="@+id/sednablestextview"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/_16sdp"
+    android:layout_marginLeft="@dimen/_16sdp"
+    android:layout_marginEnd="@dimen/_16sdp"
+    android:layout_marginRight="@dimen/_16sdp"
+    android:textColor="@color/colorTextBlack"
+    android:text="SENDABLE"
+    android:background="@drawable/refundunerlinebg"
+    android:textStyle="bold"
+    android:gravity="center"
+    android:textAlignment="center"
+    android:textSize="@dimen/_12sdp"
+    app:layout_constraintBottom_toBottomOf="@+id/receivablestextview"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toEndOf="@+id/receivablestextview"
+    app:layout_constraintTop_toTopOf="@+id/receivablestextview"
+     />
+
+
+<ListView
+    android:id="@+id/receivablesListview"
+    android:layout_width="150dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="@dimen/_8sdp"
+    android:layout_marginLeft="@dimen/_8sdp"
+    android:layout_marginTop="@dimen/_8sdp"
+    android:layout_marginBottom="@dimen/_8sdp"
+    app:layout_constraintBottom_toTopOf="@+id/poweredbyimage"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/receivablestextview" />
+
+<ListView
+    android:id="@+id/sednablesListview"
+    android:layout_width="150dp"
+    android:layout_height="0dp"
+    android:layout_marginEnd="24dp"
+    android:layout_marginRight="24dp"
+    app:layout_constraintBottom_toBottomOf="@+id/receivablesListview"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="@+id/receivablesListview" />
+
+
+    <TextView
+        android:id="@+id/poweredbyimage"
+        android:layout_width="@dimen/_200sdp"
+        android:layout_height="@dimen/_23sdp"
+        android:background="@drawable/footerbg"
+        android:gravity="center"
+
+        android:text="@string/bottomLine"
+        android:textAllCaps="true"
+        android:textSize="@dimen/_8sdp"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

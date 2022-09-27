@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout5">
+
+
+    <TextView
+        android:id="@+id/amountsattxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Amount"
+        app:layout_constraintBottom_toBottomOf="@+id/amountsatval"
+        app:layout_constraintEnd_toEndOf="@+id/paidattxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/amountsatval" />
+
+    <TextView
+        android:id="@+id/amountsatval"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="0.01BTC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/amountsattxt"
+        app:layout_constraintTop_toBottomOf="@+id/labelval" />
+
+    <TextView
+        android:id="@+id/labeltxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Label"
+        app:layout_constraintBottom_toBottomOf="@+id/labelval"
+        app:layout_constraintEnd_toEndOf="@+id/amountsattxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/labelval" />
+
+    <TextView
+        android:id="@+id/labelval"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="Sale123"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/labeltxt"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/paypreimagetxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Pay Hash"
+        app:layout_constraintBottom_toBottomOf="@+id/paypreimageval"
+        app:layout_constraintEnd_toEndOf="@+id/boltinvoiceidtxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/paypreimageval" />
+
+    <ImageView
+        android:id="@+id/paypreimageval"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/paypreimagetxt"
+        app:layout_constraintTop_toBottomOf="@+id/boltinvoiceidval"
+        app:srcCompat="@drawable/box" />
+
+    <TextView
+        android:id="@+id/paidattxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Paid At"
+        app:layout_constraintBottom_toBottomOf="@+id/paidatval"
+        app:layout_constraintEnd_toEndOf="@+id/descriptiontxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/paidatval" />
+
+    <TextView
+        android:id="@+id/paidatval"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="20-07-2020  12:00 AM"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/paidattxt"
+        app:layout_constraintTop_toBottomOf="@+id/amountsatval" />
+
+    <TextView
+        android:id="@+id/descriptiontxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Description"
+        app:layout_constraintBottom_toBottomOf="@+id/descriptionval"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/descriptionval" />
+
+    <TextView
+        android:id="@+id/descriptionval"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="abc..xyz"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/descriptiontxt"
+        app:layout_constraintTop_toBottomOf="@+id/paidatval" />
+
+    <TextView
+        android:id="@+id/boltinvoiceidtxt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Invoice Id"
+        app:layout_constraintBottom_toBottomOf="@+id/boltinvoiceidval"
+        app:layout_constraintEnd_toEndOf="@+id/descriptiontxt"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/boltinvoiceidval" />
+
+    <ImageView
+        android:id="@+id/boltinvoiceidval"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/boltinvoiceidtxt"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionval"
+        app:srcCompat="@drawable/box" />
+
+    <!--    <View-->
+<!--        android:id="@+id/view4"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="2dp"-->
+<!--        android:layout_marginTop="8dp"-->
+<!--        android:background="@color/newdesignbackground"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/paypreimageval" />-->
+
+</androidx.constraintlayout.widget.ConstraintLayout>

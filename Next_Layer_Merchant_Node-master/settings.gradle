@@ -1,0 +1,7 @@
+include ':sample'
+include ':CircleImageViewMaster'
+include ':circleimageview'
+rootProject.name='CLightApp'
+include ':app'
+
+

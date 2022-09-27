@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="bitcoinbackcolour">#fff5d7</color>
+    <color name="copmanaycolour">#771d1f</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorLightBlack">#292727</color>
+    <color name="colorBlue">#0a69a9</color>
+    <color name="colorYellow">#e09b12</color>
+    <color name="colorGrey">#EAEAEA</color>
+    <color name="colorGreyLite">#F9F9F9</color>
+    <color name="colorTextBlack">#161616</color>
+    <color name="colorDarkGrey">#68686a</color>
+    <color name="orange">#F68944</color>
+    <color name="colorExodus">#ce278f</color>
+    <color name="colorGreyShade">#5A8F9D</color>
+    <color name="colorGreyDark">#ACA8A8</color>
+    <color name="colorGreen">#1E8B0E</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorPink">#e32b8d</color>
+    <color name="newdesignborder">#636464</color>
+    <color name="newdesignbackground">#c6161b</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="semiTransparentColor">#60000000</color>
+    <color name="df_bg">#6B420D</color>
+    <color name="remote_text_colour">#FFFFFF</color>
+    <color name="active_text_colour">#7fbf7f</color>
+    <color name="inactive_text_colour">#8c0034</color>
+    <color name="temp">#8c0034</color>
+
+
+
+
+
+
+</resources>

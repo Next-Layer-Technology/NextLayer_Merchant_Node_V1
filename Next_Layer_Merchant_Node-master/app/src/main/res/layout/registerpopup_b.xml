@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_10sdp">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_170sdp"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/_20sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_5sdp">
+
+            <RelativeLayout
+                android:id="@+id/emailLAy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/_5sdp">
+
+                <EditText
+                    android:id="@+id/et_email2"
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/edittext"
+                    android:gravity="center"
+                    android:hint="Enter Member Token"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:id="@+id/ip_address"
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_below="@+id/et_email2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/edittext"
+                    android:gravity="center"
+                    android:hint="Enter Ip Address"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp" />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ip_address"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/btn_scanQR"
+                        android:layout_width="@dimen/_90sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@drawable/scanqr_first"
+                        android:text="Scan QR Code"
+                        android:gravity="center"
+                        android:textSize="@dimen/_7sdp"
+                        android:textColor="@color/colorWhite"/>
+
+                    <Button
+                        android:id="@+id/confirmlink"
+                        android:layout_width="@dimen/_90sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:background="@drawable/connect_first"
+                        android:text="Confirm"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_7sdp" />
+                </LinearLayout>
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
+

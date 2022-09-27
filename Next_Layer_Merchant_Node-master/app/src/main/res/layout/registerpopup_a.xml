@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_10sdp">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_150sdp"
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardCornerRadius="@dimen/_20sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true">
+
+                <EditText
+                    android:id="@+id/merchantid_et_register"
+                    android:layout_width="@dimen/_180sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/edittext"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Enter Merchant Id"
+                    android:inputType="textPersonName"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10sdp"
+
+                    />
+
+                <EditText
+                    android:id="@+id/merchantpass_et_register"
+                    android:layout_width="@dimen/_180sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_below="@+id/merchantid_et_register"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@drawable/edittext"
+                    android:ems="10"
+                    android:gravity="center"
+                    android:hint="Enter Merchant Password"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_10sdp"
+
+                    />
+
+
+                <Button
+                    android:id="@+id/confirm"
+                    android:layout_width="@dimen/_90sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:background="@drawable/connect_first"
+                    android:gravity="center"
+                    android:text="Confirm"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_7sdp" />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>
+

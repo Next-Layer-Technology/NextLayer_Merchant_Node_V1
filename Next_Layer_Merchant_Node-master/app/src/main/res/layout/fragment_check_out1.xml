@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/_120sdp"
+    android:background="@drawable/background"
+    tools:context=".fragments.checkout.CheckOutFragment1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_35sdp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:background="@drawable/edittextblack">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:text="Item"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/_15sdp"
+
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@color/colorLightBlack" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:text="Price"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/_15sdp"
+
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="@dimen/_1sdp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:background="@color/colorLightBlack" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:text="Count"
+                        android:textColor="@color/colorLightBlack"
+                        android:textSize="@dimen/_15sdp"
+
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/listlay2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/scancheckLay"
+            android:layout_below="@+id/tablayout"
+            android:padding="@dimen/_10sdp">
+
+            <ListView
+                android:id="@+id/checkoutitemlist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/scancheckLay"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_above="@+id/footer"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:gravity="center">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <RelativeLayout
+                    android:id="@+id/scanupccheckoutLay"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:padding="@dimen/_5sdp">
+
+                    <Button
+                        android:id="@+id/scanUPC"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="@dimen/_20sdp"
+                        android:background="@drawable/scanupc_new"
+                        android:gravity="center"
+                        android:text="SCAN UPC"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/checkoutbtn"
+                        android:layout_width="@dimen/_120sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="33dp"
+                        android:background="@drawable/checkoutfirst_new"
+                        android:gravity="center"
+                        android:text="Checkout"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/_10sdp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/clearoutlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_below="@+id/scanupccheckoutLay"
+                    android:gravity="center">
+
+                    <RelativeLayout
+                        android:id="@+id/btcRateTextviewLayy"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_20sdp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/btcRateTextview"
+                            android:layout_width="@dimen/_130sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:background="@drawable/edittextroundforcheckoutpage1"
+                            android:gravity="center"
+                            android:hint="$10918.89=1BTC/USD"
+                            android:textColor="@color/colorWhite"
+                            android:textColorHint="@color/colorWhite"
+                            android:textSize="@dimen/_10sdp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/cleaoutlayy"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_below="@+id/btcRateTextviewLayy"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/clearout"
+                            android:layout_width="@dimen/_80sdp"
+                            android:layout_height="@dimen/_20sdp"
+                            android:background="@drawable/clear_out_new"
+                            android:gravity="center"
+                            android:text="CLEAR OUT"
+                            android:textAllCaps="true"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="@dimen/_10sdp"
+                            android:textStyle="bold" />
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/footer"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_23sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+
+                android:id="@+id/footervtv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/footerbg"
+                android:gravity="center"
+                android:text="@string/bottomLine"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_8sdp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
