@@ -1,162 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/_200sdp"
-    android:background="@drawable/background"
-    android:fillViewport="true">
-
-
-    <RelativeLayout
-        android:id="@+id/headerlayut"
+<FrameLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_40sdp"
-        android:paddingLeft="@dimen/_10sdp">
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        android:layout_height="@dimen/_230sdp"></ImageView>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="@dimen/_230sdp"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/icn_arrow" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></View>
+
+        <RelativeLayout
+            android:id="@+id/headerlayut"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:paddingLeft="@dimen/_10sdp">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/_20sdp"
+                android:layout_height="@dimen/_20sdp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icn_arrow" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/iv_back"
+                android:gravity="center"
+                >
+
+                <TextView
+                    android:padding="@dimen/_5sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Clear Out Confirmation"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></View>
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headerlayut"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/_20sdp"
+            android:paddingRight="@dimen/_20sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_below="@id/headerlayut"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="Amount you may Receive in payments currently"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/receivedVal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text=": $2522"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="Total  Maximum Capacity"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/capicityVal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text=": $16253"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:gravity="center_vertical"
+                    android:text="You may clearout"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/clearoutVal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:gravity="center_vertical"
+                    android:text=": $16253"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"></View>
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/iv_back"
-            android:gravity="center"
-            >
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearLayout"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp">
 
             <TextView
-                android:padding="@dimen/_5sdp"
+                android:id="@+id/text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Clear Out Confirmation"
+                android:gravity="center"
+                android:text="Would you like to clearout room and increase receivable limit to maximum capacity?"
                 android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="@dimen/_14sdp"
                 android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/text"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/_30sdp"
+                android:paddingRight="@dimen/_30sdp"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/noBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/login_new"
+                    android:text="No"
+                    android:textSize="@dimen/_10sdp"/>
+
+                <Button
+                    android:id="@+id/yesBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_weight="1"
+                    android:background="@drawable/scan_qr_btn"
+                    android:text="Yes"
+                    android:textSize="@dimen/_10sdp"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
-
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/headerlayut"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:orientation="vertical"
-        android:paddingLeft="@dimen/_20sdp"
-        android:paddingRight="@dimen/_20sdp">
-
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_below="@id/headerlayut"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_weight="1"></View>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="center_vertical"
-                android:text="Amount you may Receive in payments currently"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/receivedVal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center_vertical"
-                android:text=": $2522"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:gravity="center_vertical"
-                android:text="Total  Maximum Capacity"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/capicityVal"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:gravity="center_vertical"
-                android:text=": $16253"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
     </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:padding="@dimen/_5sdp">
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Would you like to clearout room and increase receivable limit to maximum capacity?"
-            android:textColor="@color/colorBlack"
-            android:textSize="@dimen/_14sdp"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/text"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/_30sdp"
-            android:paddingRight="@dimen/_30sdp"
-            android:weightSum="2">
-
-            <Button
-                android:id="@+id/noBtn"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="@drawable/login_new"
-                android:text="No"
-                android:textSize="@dimen/_10sdp"/>
-
-            <Button
-                android:id="@+id/yesBtn"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_30sdp"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_weight="1"
-                android:background="@drawable/scan_qr_btn"
-                android:text="Yes"
-                android:textSize="@dimen/_10sdp"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>
-</RelativeLayout>
+</FrameLayout>

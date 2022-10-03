@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sw780dp-v13\\values-sw780dp-v13.xml",
+            "outputFile": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sw780dp-v13\\values-sw780dp-v13.xml",
             "map": [
                 {
                     "source": "C:\\Users\\quoc1\\.gradle\\caches\\transforms-2\\files-2.1\\544d301fc9e2fcb8df0d0b716cf6b605\\jetified-sdp-android-1.0.6\\res\\values-sw780dp-v13\\values-sw780dp-v13.xml",

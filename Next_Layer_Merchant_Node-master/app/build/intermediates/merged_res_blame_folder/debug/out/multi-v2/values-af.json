@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-af\\values-af.xml",
+            "outputFile": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-af\\values-af.xml",
             "map": [
                 {
                     "source": "C:\\Users\\quoc1\\.gradle\\caches\\transforms-2\\files-2.1\\28746288e708e9293478bad505943058\\jetified-play-services-basement-18.0.0\\res\\values-af\\values.xml",

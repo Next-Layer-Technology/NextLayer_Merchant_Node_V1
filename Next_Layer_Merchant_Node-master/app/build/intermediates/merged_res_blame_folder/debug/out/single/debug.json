@@ -1,946 +1,946 @@
 [
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_alert_dialog_layout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\alert_dialog_layout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_c.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_c.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_checkout3itemlistitemlayout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\checkout3itemlistitemlayout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_customlayoutofconfirmpaymentdialogformerchantadmin.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\customlayoutofconfirmpaymentdialogformerchantadmin.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_txtsendeables.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\txtsendeables.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_paywith.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\paywith.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_calender.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_calender.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_confirm_merchant.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\confirm_merchant.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_xheckoutpaylistviewitem.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\xheckoutpaylistviewitem.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_login_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\login_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_bolt_header_bg.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\bolt_header_bg.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutrefundcommandeerstep2.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutrefundcommandeerstep2.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_merchantbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\merchantbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_add_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\add_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_layout_main_header.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\layout_main_header.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_minus.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_minus.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_custom_minus.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_custom_minus.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_box.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\box.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_paywith.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\paywith.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_after.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\after.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_check_out1.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_check_out1.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_scanupc_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\scanupc_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bg_login_white_top_rounded.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\bg_login_white_top_rounded.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchant_inventroy_item_list2.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchant_inventroy_item_list2.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_itembg.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\itembg.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_question2.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\question2.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_img_logo.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\img_logo.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_checkbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\checkbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_custom_add.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_custom_add.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_device_name.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\device_name.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_img.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\img.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_customlayoutofconfirmpaymentdialog.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\customlayoutofconfirmpaymentdialog.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_img_login_bg.jpg.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\img_login_bg.jpg"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_adminheaderlogo.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\adminheaderlogo.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_background.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\background.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_bitcoincardlayout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\bitcoincardlayout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_merchnat_main11.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_merchnat_main11.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_b.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_b.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_merchantbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\merchantbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_buttonshape.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\buttonshape.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_cart.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\cart.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_add_primary_color.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_add_primary_color.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_admin_scnd.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\admin_scnd.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_img.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\img.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchant_sale_list_item_layout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchant_sale_list_item_layout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_drawer_layout_header.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\drawer_layout_header.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_b.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_b.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_cart.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\cart.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_menu.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_menu.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_refund_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\refund_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_adminnavbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\adminnavbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_getpaid_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\getpaid_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_qrcode.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\qrcode.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_paywithlighning_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\paywithlighning_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_item_filled_circle_with_border.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\item_filled_circle_with_border.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_email.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_email.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_resizedimage.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\resizedimage.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_update_reboot_node_host.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\update_reboot_node_host.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_reboot_update_node_host.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\reboot_update_node_host.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_add_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\add_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_register_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\register_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_edittext.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\edittext.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_lock.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_lock.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_circle.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_circle.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_distribute_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\distribute_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_newcirclebuttonshape.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\newcirclebuttonshape.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btngetpaid.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\btngetpaid.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_blubtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\blubtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialog_select_client.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialog_select_client.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_checkout_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\checkout_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_layout_header_checkout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\layout_header_checkout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_layout_header_checkout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\layout_header_checkout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_scanqr_first.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\scanqr_first.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_arrow_back_size.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_arrow_back_size.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_commandeer_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\commandeer_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_flashpay.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\flashpay.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_addok.jpg.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\addok.jpg"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutupdateitem2.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutupdateitem2.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_main.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_myqr.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\myqr.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_getpaidunerlinebg.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\getpaidunerlinebg.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_blackbox.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\blackbox.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_itembg.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\itembg.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_textunerlinebg.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\textunerlinebg.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_thorcardlayout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\thorcardlayout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_xheckoutpaylistviewitem.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\xheckoutpaylistviewitem.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_lock_size.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_lock_size.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_purplbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\purplbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btnrefund.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\btnrefund.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_qrcode.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\qrcode.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_admin_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\admin_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_badge_background.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\badge_background.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_connect.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\connect.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_sshkeyprpaslay.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\sshkeyprpaslay.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_blubtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\blubtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main_entry_new.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_main_entry_new.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher_round.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_arrow.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_arrow.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_edittextblack.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\edittextblack.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_check_outs2.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_check_outs2.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btncommandeer.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\btncommandeer.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_r_p_c_test.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_r_p_c_test.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_emptrycart.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\emptrycart.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_edittextround.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\edittextround.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_sppiner_bg.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\sppiner_bg.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_checkoutfirst_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\checkoutfirst_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main_entry2.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_main_entry2.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btncommandeer.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\btncommandeer.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_additembtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_additembtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_spinner_bg.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\spinner_bg.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchant_refund_list_item_layout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchant_refund_list_item_layout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialog_select_client.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialog_select_client.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_delete_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\delete_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_badge_background.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\badge_background.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_sign_up_size.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_sign_up_size.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-anydpi-v26_ic_launcher.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-anydpi-v26\\ic_launcher.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_newappicon.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\newappicon.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_greenstatus.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\greenstatus.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\font_ocraextended.ttf.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\font\\ocraextended.ttf"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_naqrcode.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\naqrcode.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_layout_header_admin.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\layout_header_admin.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_refundstxt.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_refundstxt.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_lockcheck.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_lockcheck.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_calender.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\calender.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutadditem.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutadditem.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_a.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_a.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_lightiningcardlayout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\lightiningcardlayout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_login2.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_login2.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bg_login_btn.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\bg_login_btn.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutdeleteitem.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutdeleteitem.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_delete_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\delete_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutpresslogin.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutpresslogin.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_checkoutfirst_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\checkoutfirst_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_logonew.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\logonew.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_login.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_login.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_check_outs3.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_check_outs3.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_naqrcode.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\naqrcode.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_select_client_list_view.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\select_client_list_view.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_refundbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\refundbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher_background.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_print_invoice.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\print_invoice.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_passwood.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_passwood.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_adminbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\adminbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_getpaid_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\getpaid_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_calender.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\calender.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_addbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\addbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btngetpaid.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\btngetpaid.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_item_filled_grey_circle.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\item_filled_grey_circle.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_getandconfirmsshkeydialog_layout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\getandconfirmsshkeydialog_layout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_flashpay.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\flashpay.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_orangebtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\orangebtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_checkoutl1istviewitem.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\checkoutl1istviewitem.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_getpaidbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\getpaidbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_startbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\startbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_item_image.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\item_image.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btndistribute.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\btndistribute.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_salestxt.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_salestxt.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_refundlistviewitem.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\refundlistviewitem.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_adminheaderbitcoin.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\adminheaderbitcoin.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_salestxt.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_salestxt.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_bitcoincart.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\bitcoincart.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutupdateitem2.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutupdateitem2.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_item_filled_circle.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\item_filled_circle.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_check_out_main11.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_check_out_main11.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_txtreceivable.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\txtreceivable.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_deleteitembtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_deleteitembtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_addok.jpg.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\addok.jpg"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_header_paywithlightning.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\header_paywithlightning.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bg_login_white_rounded.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\bg_login_white_rounded.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_myqr.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\myqr.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_add_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\add_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_merchant1.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_merchant1.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_confirm_merchant.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\confirm_merchant.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_newcirclebuttonshape.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\newcirclebuttonshape.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_new_paywith.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\new_paywith.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_calender.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_calender.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_thorcardlayout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\thorcardlayout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_select_client_list_view.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\select_client_list_view.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_blutoothdevicelistdialoglayout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\blutoothdevicelistdialoglayout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_alertdialogdeletel_ayout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\alertdialogdeletel_ayout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_custom_add.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_custom_add.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_layout_header_merchant.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\layout_header_merchant.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_circle.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\circle.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_new_paywith.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\new_paywith.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_connect_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\connect_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_ic_launcher_foreground.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\ic_launcher_foreground.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_numbrsbg.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\numbrsbg.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_saleslistviewitem.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\saleslistviewitem.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_admin2.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_admin2.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_login2.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_login2.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bg_login_btn.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\bg_login_btn.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_img_login_bg.jpg.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\img_login_bg.jpg"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_txtsendeables.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\txtsendeables.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_yellowstatus.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\yellowstatus.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_emptrycart.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\emptrycart.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_numbg.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\numbg.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_greenbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\greenbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_a.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_a.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_drawer_layout_header.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\drawer_layout_header.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_spinner_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\spinner_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_email.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_email.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_item_filled_grey_circle.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\item_filled_grey_circle.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\menu_drawer_item_merchant.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\menu\\drawer_item_merchant.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_layout_header_merchant.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\layout_header_merchant.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_createinvoice_merchant.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\createinvoice_merchant.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\menu_drawer_item_admin.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\menu\\drawer_item_admin.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_sppiner_bg.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\sppiner_bg.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_createinvoice_merchant.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\createinvoice_merchant.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_home.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_home.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_lock.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_lock.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_checkbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\checkbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_poweredby.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_poweredby.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_getinfo_popup.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\getinfo_popup.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_pay_with_lighting.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\pay_with_lighting.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_otp_code.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_otp_code.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_menu.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_menu.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_getpaidbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\getpaidbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutpresslogin.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutpresslogin.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\xml_salesitem.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\xml\\salesitem.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_spinner_bg.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\spinner_bg.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_remove_credentials.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\remove_credentials.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_adminheaderbg.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\adminheaderbg.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_bolt_header_bg.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\bolt_header_bg.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_connect_first.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\connect_first.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_device_name.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\device_name.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_lock_size.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_lock_size.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_check_out_main11.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_check_out_main11.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_passwordicon.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\passwordicon.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_check_out1.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_check_out1.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_logonew.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\logonew.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_question2.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\question2.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutrefundcommandeer.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutrefundcommandeer.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_datef_bg.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\datef_bg.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_circle.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\circle.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_checkoutl1istviewitem.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\checkoutl1istviewitem.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutrefundcommandeerlaststepconfirmedpay.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutrefundcommandeerlaststepconfirmedpay.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_numpad.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\numpad.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_poweredby.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_poweredby.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher2.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_launcher2.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_checkout.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_checkout.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutdeleteitem.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutdeleteitem.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_rectbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\rectbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_create_invoice.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\create_invoice.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_scan_qr_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\scan_qr_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_remove_credentials.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\remove_credentials.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\font_ocraextended.ttf.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\font\\ocraextended.ttf"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_merchant_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\merchant_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_delete_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\delete_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_loginbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\loginbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutadditem.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutadditem.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\xml_salesitem.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\xml\\salesitem.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_checkout_layout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\checkout_layout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_adminnavbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\adminnavbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_bitcoincart.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\bitcoincart.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_after.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\after.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchantinventoryitemlist.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchantinventoryitemlist.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_yes_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\yes_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_item_image.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\item_image.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_emailicon.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\emailicon.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_admin1.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_admin1.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_greenbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\greenbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_no_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\no_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_merchant3.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_merchant3.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_resizediqrmage.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\resizediqrmage.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_rectbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\rectbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_update_reboot_node_host.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\update_reboot_node_host.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_add.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_add.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_logo.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_logo.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_merchnat_main11.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_merchnat_main11.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_register_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\register_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_connect_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\connect_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_checkout_layout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\checkout_layout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_clearout_dialog_layout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\clearout_dialog_layout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_addbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\addbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_scanqr_first.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\scanqr_first.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_redstatus.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\redstatus.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_edittextblack.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\edittextblack.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_getinfo_popup.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\getinfo_popup.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_redstatus.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\redstatus.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_greenstatus.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\greenstatus.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\menu_drawer_item_admin.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\menu\\drawer_item_admin.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\menu_drawer_item_checkout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\menu\\drawer_item_checkout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_pay_with_lighting.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\pay_with_lighting.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_customlayoutofadditemdialog.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\customlayoutofadditemdialog.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_sign_up_size.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_sign_up_size.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutrefundcommandeerlaststepconfirmedpay.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutrefundcommandeerlaststepconfirmedpay.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_emailicon.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\emailicon.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchantinventoryitemlist.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchantinventoryitemlist.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_circle.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_circle.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_sss.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\sss.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_new_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\new_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_bitcoincardlayout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\bitcoincardlayout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_edittextround.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\edittextround.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_arrow_back_size.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_arrow_back_size.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_loginbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\loginbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_end.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\end.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_sign_in.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\sign_in.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_scanupc_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\scanupc_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_launcher2.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_launcher2.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_check_outs3.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_check_outs3.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_merchant2.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_merchant2.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_edittext.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\edittext.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_enventory_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\enventory_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_adminheaderbitcoin.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\adminheaderbitcoin.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_blutoothdevicelistdialoglayout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\blutoothdevicelistdialoglayout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_sss.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\sss.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_header_paywithlightning.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\header_paywithlightning.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_yes_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\yes_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_startbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\startbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\menu_drawer_item_checkout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\menu\\drawer_item_checkout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_clear_out_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\clear_out_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_add_primary_color.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_add_primary_color.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_checkout_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\checkout_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_sign_up.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_sign_up.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_txtreceivable.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\txtreceivable.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_newappicon.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\newappicon.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_alert_dialog_layout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\alert_dialog_layout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_spinner_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\spinner_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_inventory.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\inventory.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ds.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ds.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutupdateitem.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutupdateitem.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutinvoice.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutinvoice.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_merchant2.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_merchant2.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_item_filled_circle.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\item_filled_circle.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_checkout.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_checkout.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_numbrsbg.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\numbrsbg.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_background.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\background.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_login.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_login.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btnrefund.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\btnrefund.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_adminheaderbg.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\adminheaderbg.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_img_logo.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\img_logo.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_merchant_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\merchant_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_adminheaderlogo.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\adminheaderlogo.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_saleslistviewitem.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\saleslistviewitem.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_customlayoutofconfirmpaymentdialog.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\customlayoutofconfirmpaymentdialog.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_distribute_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\distribute_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_additembtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_additembtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_admin2.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_admin2.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_inventory.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\inventory.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutrefundcommandeerstep2.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutrefundcommandeerstep2.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_add_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\add_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_resizediqrmage.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\resizediqrmage.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_btn_circle.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\btn_circle.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_box.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\box.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchant_refund_list_item_layout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchant_refund_list_item_layout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_scan_qr_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\scan_qr_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_layout_header_admin.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\layout_header_admin.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_clearout_dialog_layout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\clearout_dialog_layout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_refundunerlinebg.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\refundunerlinebg.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_connect.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\connect.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_end.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\end.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_no_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\no_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_merchant3.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_merchant3.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchant_inventroy_item_list2.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchant_inventroy_item_list2.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_alertdialogdeletel_ayout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\alertdialogdeletel_ayout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_sign_up.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_sign_up.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_enventory_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\enventory_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_resizedimage.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\resizedimage.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_sshkeyprpaslay.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\sshkeyprpaslay.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_check_outs2.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_check_outs2.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_add.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_add.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutinvoice.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutinvoice.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_print_invoice.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\print_invoice.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_textunerlinebg.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\textunerlinebg.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_layout_main_header.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\layout_main_header.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchat_twofa_pass_lay.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchat_twofa_pass_lay.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_clear_out_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\clear_out_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_reboot_update_node_host.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\reboot_update_node_host.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bg_login_white_rounded.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\bg_login_white_rounded.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_btndistribute.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\btndistribute.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_paywithlighning_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\paywithlighning_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_admin_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\admin_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_delete_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\delete_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_footerbg.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\footerbg.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_create_invoice.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\create_invoice.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_sign_in.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\sign_in.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main_entry2.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_main_entry2.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\menu_drawer_item_merchant.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\menu\\drawer_item_merchant.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_datef_bg.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\datef_bg.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutupdateitem.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutupdateitem.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_checkoutinventoryitemlist.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\checkoutinventoryitemlist.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_before.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\before.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_edittextroundforcheckoutpage1.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\edittextroundforcheckoutpage1.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_bg_login_white_top_rounded.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\bg_login_white_top_rounded.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_stopbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\stopbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_edittextroundforcheckoutpage1.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\edittextroundforcheckoutpage1.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutgetpaiddistribute.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutgetpaiddistribute.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_buttonshape.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\buttonshape.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_redbtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\redbtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_footerbg.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\footerbg.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_passwood.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_passwood.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_r_p_c_test.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_r_p_c_test.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutgetpaiddistribute.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutgetpaiddistribute.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_admin_scnd.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\admin_scnd.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchat_twofa_pass_lay.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchat_twofa_pass_lay.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_confirm_pay_btn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\confirm_pay_btn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_redbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\redbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_otp_code.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_otp_code.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_checkoutinventoryitemlist.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\checkoutinventoryitemlist.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_minus.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_minus.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_lightiningcardlayout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\lightiningcardlayout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_custom_minus.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_custom_minus.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_numpad.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\numpad.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_admin_main11.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_admin_main11.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_passwordicon.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\passwordicon.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_dialoglayoutrefundcommandeer.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\dialoglayoutrefundcommandeer.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_confirm_pay_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\confirm_pay_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_refundstxt.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_refundstxt.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_connect_first.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\connect_first.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_commandeer_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\commandeer_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_getandconfirmsshkeydialog_layout.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\getandconfirmsshkeydialog_layout.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_admin1.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_admin1.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_yellowstatus.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\yellowstatus.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_logo.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_logo.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_customlayoutofadditemdialog.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\customlayoutofadditemdialog.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_home.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_home.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_admin_main11.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_admin_main11.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_refundunerlinebg.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\refundunerlinebg.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_purplbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\purplbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_fragment_merchant1.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\fragment_merchant1.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_new_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\new_btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_deleteitembtn.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ic_deleteitembtn.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_orangebtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\orangebtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ds.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\ds.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_activity_main_entry_new.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\activity_main_entry_new.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_before.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\before.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_refund_new.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\refund_new.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_icn_arrow.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\icn_arrow.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_stopbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\stopbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_login_new.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\login_new.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_blackbox.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\blackbox.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_refundlistviewitem.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\refundlistviewitem.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher_round.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher_round.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_getpaidunerlinebg.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\getpaidunerlinebg.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_refundbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\refundbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_customlayoutofconfirmpaymentdialogformerchantadmin.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\customlayoutofconfirmpaymentdialogformerchantadmin.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_numbg.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\numbg.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_btn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\btn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_item_filled_circle_with_border.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\item_filled_circle_with_border.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_c.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_c.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_merchant_sale_list_item_layout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\merchant_sale_list_item_layout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable_adminbtn.png.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable\\adminbtn.png"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_checkout3itemlistitemlayout.xml.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\checkout3itemlistitemlayout.xml"
     },
     {
-        "merged": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\layout_registerpopup_lockcheck.xml.flat",
-        "source": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\layout\\registerpopup_lockcheck.xml"
+        "merged": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\res\\merged\\debug\\drawable-v24_btn_circle.png.flat",
+        "source": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\src\\main\\res\\drawable-v24\\btn_circle.png"
     }
 ]

@@ -79,6 +79,7 @@ import com.sis.clightapp.model.GsonModel.Sendreceiveableresponse;
 import com.sis.clightapp.model.REST.ClientListModel;
 import com.sis.clightapp.model.REST.FundingNode;
 import com.sis.clightapp.model.REST.FundingNodeListResp;
+import com.sis.clightapp.model.REST.GetRouteResponse;
 import com.sis.clightapp.model.REST.StoreClients;
 import com.sis.clightapp.model.REST.TransactionInfo;
 import com.sis.clightapp.model.REST.TransactionResp;
@@ -311,17 +312,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         clearout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    KeyguardManager km = (KeyguardManager) getActivity().getSystemService(KEYGUARD_SERVICE);
-                    if (km.isKeyguardSecure()) {
-                        Intent authIntent = km.createConfirmDeviceCredentialIntent("Authorize Payment", "");
-                        startActivityForResult(authIntent, INTENT_AUTHENTICATE);
-                    } else {
-//                        getReceivable();
-                       // Listfunds();
-                        getListPeers();
-                    }
-                }
+                getListPeers();
             }
         });
         setAdapter();
@@ -1162,7 +1153,9 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                         // Toast.makeText(getApplicationContext(),"done",Toast.LENGTH_SHORT).show();
                         //getReceivable();
                        // Listfunds();
-                        getListPeers();
+//                        getListPeers();
+
+                        sendReceivable();
                     }
                 }
                 break;
@@ -1542,11 +1535,16 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                             double msat = 0;
                             double mcap = 0;
                             for (ListPeersChannels tempListFundChanel : listFunds.getChannels()) {
-                                if (listFunds.isConnected()) {
-                                    String tempmsat = tempListFundChanel.getSpendable_msat();
-                                    String tempmCap = tempListFundChanel.getMax_to_us_msat();
-                                    tempmsat = removeLastChars(tempmsat, 4);
-                                    tempmCap = removeLastChars(tempmCap, 4);
+                                if (listFunds.isConnected() && tempListFundChanel.state.equalsIgnoreCase("CHANNELD_NORMAL")) {
+                                    String tempmsat = tempListFundChanel.getReceivable_msatoshi()+"";
+                                    String tempmCap = tempListFundChanel.getSpendable_msatoshi()+"";
+//                                    if(tempmsat.length() > 4) {
+//                                        tempmsat = removeLastChars(tempmsat, 4);
+//                                    }
+//
+//                                    if(tempmCap.length() > 4) {
+//                                        tempmCap = removeLastChars(tempmCap, 4);
+//                                    }
                                     double tmsat = 0;
                                     double tmcap = 0;
                                     try {
@@ -1565,7 +1563,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                             Log.e("Receivable", excatFigure2(msat));
                             Log.e("Capcaity", excatFigure2(mcap));
 
-                            setReceivableAndCapacity(String.valueOf(msat), String.valueOf(mcap), true);
+                            setReceivableAndCapacity(String.valueOf(msat), String.valueOf(mcap + msat), true);
                         }
                     }
                 } else {
@@ -1592,8 +1590,8 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         btcCapacity = mSatoshiCapacity / AppConstants.satoshiToMSathosi;
         btcCapacity = btcCapacity / AppConstants.btcToSathosi;
         usdCapacity = getUsdFromBtc(btcCapacity);
-        btcRemainingCapacity = btcCapacity - btcReceivable;
-        usdRemainingCapacity = usdCapacity - usdReceivable;
+        btcRemainingCapacity = btcCapacity /*- btcReceivable*/;
+        usdRemainingCapacity = usdCapacity /*- usdReceivable*/;
         goToClearOutDialog(sta);
         //receivable_tv.setText("$"+String.format("%.2f",round(usdReceivable,2)));
         //capacity_tv.setText("$"+String.format("%.2f",round(remainingCapacity,2)));
@@ -1610,22 +1608,30 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         clearOutDialog.setCancelable(false);
         TextView receivedVal = (TextView) clearOutDialog.findViewById(R.id.receivedVal);
         TextView capicityVal = (TextView) clearOutDialog.findViewById(R.id.capicityVal);
+        TextView clearoutVal = (TextView) clearOutDialog.findViewById(R.id.clearoutVal);
+
         boolean isCanClearout = false;
         Log.e("BeforeDialogCap", String.valueOf(usdRemainingCapacity));
         Log.e("BeforeDialogRecv", String.valueOf(usdReceivable));
         if (isFetchData) {
             if (isReceivableGet) {
-                capicityVal.setText("$" + String.format("%.2f", round(usdRemainingCapacity, 2)));
-                receivedVal.setText("$" + String.format("%.2f", round(usdReceivable, 2)));
+                capicityVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity, 2)));
+                receivedVal.setText(":$" + String.format("%.2f", round(usdReceivable, 2)));
+                clearoutVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity - usdReceivable, 2)));
+
                 isCanClearout = true;
             } else {
                 capicityVal.setText("N/A");
                 receivedVal.setText("N/A");
+                clearoutVal.setText("N/A");
+
                 isCanClearout = false;
             }
         } else {
             capicityVal.setText("N/A");
             receivedVal.setText("N/A");
+            clearoutVal.setText("N/A");
+
             isCanClearout = false;
         }
         final ImageView ivBack = clearOutDialog.findViewById(R.id.iv_back);
@@ -1641,7 +1647,17 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             @Override
             public void onClick(View view) {
                 if (isFetchData) {
-                    sendReceivable();
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        KeyguardManager km = (KeyguardManager) getActivity().getSystemService(KEYGUARD_SERVICE);
+                        if (km.isKeyguardSecure()) {
+                            Intent authIntent = km.createConfirmDeviceCredentialIntent("Authorize Payment", "");
+                            startActivityForResult(authIntent, INTENT_AUTHENTICATE);
+                        } else {
+                            sendReceivable();
+                        }
+                    }else {
+                        sendReceivable();
+                    }
                 } else {
                     final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(fContext);
                     builder.setMessage("Please Try Again!!")
@@ -1688,7 +1704,10 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 String tempDestinationId = "02dc8590dd675b5bf89c6bdf9eeed767290b3d6056465e5b013756f65616d3d372";
                 String clearOutQuery = "rpc-cmd,cli-node," + mlattitude + "_" + mlongitude + "," + getUnixTimeStamp() + ",[ keysend  " + routingNodeId + " " + mSatoshiReceivable + " " + label + " null 10" + " ]";
                 //   String clearOutQuery="rpc-cmd,cli-node,"+mlattitude+"_"+mlongitude+","+getUnixTimeStamp()+",[ keysend  "+tempDestinationId+" "+5700000+" "+label+" null 10"+" ]";
-                sendreceiveables(routingNodeId, String.valueOf(mSatoshiReceivable), label);
+
+               long mSatoshiSpendableTotal = (long) (mSatoshiCapacity - mSatoshiReceivable);
+               getRoute(routingNodeId, mSatoshiSpendableTotal +"", label);
+//                sendreceiveables(routingNodeId, mSatoshiSpendableTotal +"", label);
 //                GetClearOutMsatoshi getClearOutMsatoshi = new GetClearOutMsatoshi(getActivity());
 //                if (Build.VERSION.SDK_INT >= 11/*HONEYCOMB*/) {
 //                    getClearOutMsatoshi.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new String[]{new String(clearOutQuery)});
@@ -2127,6 +2146,85 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                         showToast(String.valueOf(response));
                     }
                 });
+            }
+        };
+        clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);
+        clientCoinPrice.dispatcher().executorService().shutdown();
+    }
+
+    public void getRoute(final String routingnode_id, final String mstoshiReceivable, final String lable){
+        OkHttpClient clientCoinPrice = new OkHttpClient();
+        Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
+
+        WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
+            @Override
+            public void onOpen(WebSocket webSocket, okhttp3.Response response) {
+
+                String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
+                //String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli invoice" + " " + routingnode_id + " " + mstoshiReceivable + " " + lable + "null 10" + "\"] }";
+                //String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"keysend" + routingnode_id +" " + mSatoshiReceivable + " " + lable + " null 10" + "\" ] }";
+                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli getroute" +" "+routingnode_id +" " + mstoshiReceivable +" " +1+"\"] }";
+
+                try {
+
+                    JSONObject obj = new JSONObject(json);
+
+                    Log.d("My App", obj.toString());
+
+
+                    webSocket.send(String.valueOf(obj));
+
+
+                } catch (Throwable t) {
+                    Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+                }
+            }
+
+            @Override
+            public void onMessage(WebSocket webSocket, final String text) {
+                Log.e("TAG", "MESSAGE: " + text);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String response = text;
+                        Log.d("quoc1111",text);
+                        Gson gson = new Gson();
+                        GetRouteResponse getRouteResponse = gson.fromJson(response, GetRouteResponse.class);
+                        String mstoshiReceivableRemoveFee =  String.valueOf(Long.valueOf(mstoshiReceivable) - (getRouteResponse.routes.get(0).msatoshi - Long.valueOf(mstoshiReceivable)));
+                        sendreceiveables(routingnode_id, mstoshiReceivableRemoveFee,lable);
+
+                    }
+                });
+            }
+
+            @Override
+            public void onMessage(WebSocket webSocket, ByteString bytes) {
+                Log.e("TAG", "MESSAGE: " + bytes.hex());
+            }
+
+            @Override
+            public void onClosing(WebSocket webSocket, int code, String reason) {
+                webSocket.close(1000, null);
+                webSocket.cancel();
+                Log.e("TAG", "CLOSE: " + code + " " + reason);
+            }
+
+            @Override
+            public void onClosed(WebSocket webSocket, int code, String reason) {
+                //TODO: stuff
+            }
+
+            @Override
+            public void onFailure(WebSocket webSocket, Throwable t, final okhttp3.Response response) {
+                //TODO: stuff
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast(String.valueOf(response));
+                    }
+                });
+
             }
         };
         clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);

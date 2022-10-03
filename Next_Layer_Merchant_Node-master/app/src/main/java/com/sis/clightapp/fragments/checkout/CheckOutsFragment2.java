@@ -730,11 +730,16 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                             double msat = 0;
                             double mcap = 0;
                             for (ListPeersChannels tempListFundChanel : listFunds.getChannels()) {
-                                if (listFunds.isConnected()) {
-                                    String tempmsat = tempListFundChanel.getSpendable_msat();
-                                    String tempmCap = tempListFundChanel.getMax_to_us_msat();
-                                    tempmsat = removeLastChars(tempmsat, 4);
-                                    tempmCap = removeLastChars(tempmCap, 4);
+                                if (listFunds.isConnected() && tempListFundChanel.state.equalsIgnoreCase("CHANNELD_NORMAL")) {
+                                    String tempmsat = tempListFundChanel.getReceivable_msatoshi()+"";
+                                    String tempmCap = tempListFundChanel.getSpendable_msatoshi()+"";
+//                                    if(tempmsat.length() > 4) {
+//                                        tempmsat = removeLastChars(tempmsat, 4);
+//                                    }
+//
+//                                    if(tempmCap.length() > 4) {
+//                                        tempmCap = removeLastChars(tempmCap, 4);
+//                                    }
                                     double tmsat = 0;
                                     double tmcap = 0;
                                     try {
@@ -753,7 +758,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                             Log.e("Receivable", excatFigure2(msat));
                             Log.e("Capcaity", excatFigure2(mcap));
 
-                            setReceivableAndCapacity(String.valueOf(msat), String.valueOf(mcap), true);
+                            setReceivableAndCapacity(String.valueOf(msat), String.valueOf(mcap + msat), true);
                         }
                     }
                 } else {
@@ -779,9 +784,11 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         btcCapacity = mSatoshiCapacity / AppConstants.satoshiToMSathosi;
         btcCapacity = btcCapacity / AppConstants.btcToSathosi;
         usdCapacity = getUsdFromBtc(btcCapacity);
-        btcRemainingCapacity = btcCapacity - btcReceivable;
-        usdRemainingCapacity = usdCapacity - usdReceivable;
+        btcRemainingCapacity = btcCapacity /*- btcReceivable*/;
+        usdRemainingCapacity = usdCapacity /*- usdReceivable*/;
         goToClearOutDialog(sta);
+        //receivable_tv.setText("$"+String.format("%.2f",round(usdReceivable,2)));
+        //capacity_tv.setText("$"+String.format("%.2f",round(remainingCapacity,2)));
     }
 
     // TODO: Open The Clear Out Dialog
@@ -795,22 +802,30 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         clearOutDialog.setCancelable(false);
         TextView receivedVal = (TextView) clearOutDialog.findViewById(R.id.receivedVal);
         TextView capicityVal = (TextView) clearOutDialog.findViewById(R.id.capicityVal);
+        TextView clearoutVal = (TextView) clearOutDialog.findViewById(R.id.clearoutVal);
+
         boolean isCanClearout = false;
         Log.e("BeforeDialogCap", String.valueOf(usdRemainingCapacity));
         Log.e("BeforeDialogRecv", String.valueOf(usdReceivable));
         if (isFetchData) {
             if (isReceivableGet) {
-                capicityVal.setText("$" + String.format("%.2f", round(usdRemainingCapacity, 2)));
-                receivedVal.setText("$" + String.format("%.2f", round(usdReceivable, 2)));
+                capicityVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity, 2)));
+                receivedVal.setText(":$" + String.format("%.2f", round(usdReceivable, 2)));
+                clearoutVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity - usdReceivable, 2)));
+
                 isCanClearout = true;
             } else {
                 capicityVal.setText("N/A");
                 receivedVal.setText("N/A");
+                clearoutVal.setText("N/A");
+
                 isCanClearout = false;
             }
         } else {
             capicityVal.setText("N/A");
             receivedVal.setText("N/A");
+            clearoutVal.setText("N/A");
+
             isCanClearout = false;
         }
         final ImageView ivBack = clearOutDialog.findViewById(R.id.iv_back);
@@ -870,7 +885,10 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
 
                 String label = "clearout" + getUnixTimeStamp();
 
-                sendreceiveables(routingNodeId ,String.valueOf(mSatoshiReceivable) , label);
+                long mSatoshiSpendableTotal = (long) (mSatoshiCapacity - mSatoshiReceivable);
+
+
+                sendreceiveables(routingNodeId , mSatoshiSpendableTotal +"", label);
 
             } else {
                 final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(fContext);

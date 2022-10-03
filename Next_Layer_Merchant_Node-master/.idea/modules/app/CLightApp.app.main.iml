@@ -42,9 +42,9 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 29 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: C./Users/quoc1/Downloads/Next_Layer_Merchant_Node-master/Next_Layer_Merchant_Node-master/app/libs/activation.jar" level="project" />
-    <orderEntry type="library" name="Gradle: C./Users/quoc1/Downloads/Next_Layer_Merchant_Node-master/Next_Layer_Merchant_Node-master/app/libs/additional.jar" level="project" />
-    <orderEntry type="library" name="Gradle: C./Users/quoc1/Downloads/Next_Layer_Merchant_Node-master/Next_Layer_Merchant_Node-master/app/libs/mail.jar" level="project" />
+    <orderEntry type="library" name="Gradle: C./Users/quoc1/OneDrive/Documents/GitHub/NextLayer_Merchant_Node_V1/Next_Layer_Merchant_Node-master/app/libs/activation.jar" level="project" />
+    <orderEntry type="library" name="Gradle: C./Users/quoc1/OneDrive/Documents/GitHub/NextLayer_Merchant_Node_V1/Next_Layer_Merchant_Node-master/app/libs/additional.jar" level="project" />
+    <orderEntry type="library" name="Gradle: C./Users/quoc1/OneDrive/Documents/GitHub/NextLayer_Merchant_Node_V1/Next_Layer_Merchant_Node-master/app/libs/mail.jar" level="project" />
     <orderEntry type="library" name="Gradle: androidx.collection:collection:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-encoders:17.0.0" level="project" />
     <orderEntry type="library" name="Gradle: androidx.lifecycle:lifecycle-common:2.2.0" level="project" />

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\quoc1\\Downloads\\Next_Layer_Merchant_Node-master\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sq\\values-sq.xml",
+            "outputFile": "C:\\Users\\quoc1\\OneDrive\\Documents\\GitHub\\NextLayer_Merchant_Node_V1\\Next_Layer_Merchant_Node-master\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sq\\values-sq.xml",
             "map": [
                 {
                     "source": "C:\\Users\\quoc1\\.gradle\\caches\\transforms-2\\files-2.1\\5bd65d5a4135ed392be02e6bdf31e5e0\\jetified-firebase-messaging-23.0.0\\res\\values-sq\\values.xml",
