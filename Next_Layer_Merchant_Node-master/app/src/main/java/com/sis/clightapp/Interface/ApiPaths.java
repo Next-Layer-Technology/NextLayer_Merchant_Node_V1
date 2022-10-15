@@ -266,4 +266,12 @@ public interface ApiPaths {
             @Field("type") String type,
             @Field("key") String key
     );
+
+    @FormUrlEncoded
+    @POST("Refresh")
+    Call<get_session_response> refresh(
+            @Field("refresh") String accessToken,
+            @Field("twoFactor") String twoFactor,
+            @Field("time") String time
+    );
 }

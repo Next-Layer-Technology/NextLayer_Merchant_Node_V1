@@ -17,6 +17,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.os.Environment;
 import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -155,7 +157,7 @@ public class MainEntryActivityNew extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (sharedPreferences.getislogin("registered", bContext)) {
-                   //biometricPrompt.authenticate(promptInfo);
+                    //biometricPrompt.authenticate(promptInfo);
                     isLoginMerchant = true;
                     GlobalState.getInstance().setLogin(isLoginMerchant);
                     Intent i = keyguardManager.createConfirmDeviceCredentialIntent("Authentication required", "password");
@@ -170,26 +172,28 @@ public class MainEntryActivityNew extends BaseActivity {
         qrScan.setOrientationLocked(false);
         String prompt = getResources().getString(R.string.scanqrfornewmembertoken);
         qrScan.setPrompt(prompt);
-       //setToken();
+        //setToken();
     }
-    public void setToken(){
+
+    public void setToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("tFCM", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
-                        // Get new FCM registration token
-                        String token = task.getResult();
-                        sendRegistrationToServer(token);
-                        // Log and toast
-                        String msg = token;
-                        Log.d("tes2Fcm", msg);
-                        // Toast.makeText(ActivitySplash.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("tFCM", "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+                // Get new FCM registration token
+                String token = task.getResult();
+                sendRegistrationToServer(token);
+                // Log and toast
+                String msg = token;
+                Log.d("tes2Fcm", msg);
+                // Toast.makeText(ActivitySplash.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
     private void sendRegistrationToServer(String token) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://nextlayer.live/testfcm/")
@@ -203,17 +207,18 @@ public class MainEntryActivityNew extends BaseActivity {
             paramObject1.addProperty("pwsUpdate", "New Token");
             paramObject.add("payload", paramObject1);
 
-            Call<Object> call=apiInterface.FcmHitForToken(paramObject);
+            Call<Object> call = apiInterface.FcmHitForToken(paramObject);
             call.enqueue(new Callback<Object>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
-                       // JSONObject object=new JSONObject(new Gson().toJson(response.body()));
-                        Log.e("TAG", "onResponse: "+response.body().toString() );
+                    // JSONObject object=new JSONObject(new Gson().toJson(response.body()));
+                    Log.e("TAG", "onResponse: " + response.body().toString());
 
                 }
+
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
-                    Log.e("TAG", "onResponse: "+t.getMessage().toString() );
+                    Log.e("TAG", "onResponse: " + t.getMessage().toString());
 
                 }
             });
@@ -226,7 +231,7 @@ public class MainEntryActivityNew extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 241) {
+        if (requestCode == 241) {
             if (resultCode == RESULT_OK) {
                 if (sharedPreferences.getvalueofaccestoken("accessToken", bContext).equals("")) {
 
@@ -240,7 +245,7 @@ public class MainEntryActivityNew extends BaseActivity {
             } else {
                 Toast.makeText(this, "Failure: Unable to verify user's identity", Toast.LENGTH_SHORT).show();
             }
-        }else {
+        } else {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (result != null) {
                 //if qrcode has nothing in it
@@ -249,7 +254,7 @@ public class MainEntryActivityNew extends BaseActivity {
 
                 } else {
                     String memberToken = result.getContents();
-                    if(et_email != null) {
+                    if (et_email != null) {
                         et_email.setText(memberToken);
                     }
 
@@ -342,7 +347,7 @@ public class MainEntryActivityNew extends BaseActivity {
 
                         } else if (webSocketResponse.getCode() == 723) {
 
-                            showToast(webSocketResponse.getMessage());
+                            goTo2FaPasswordDialog(refresh);
                         } else if (webSocketResponse.getCode() == 724) {
                             showToast(webSocketResponse.getMessage());
 
@@ -363,7 +368,7 @@ public class MainEntryActivityNew extends BaseActivity {
     }
 
     private void getToken(String refresh, String twofactor_key) {
-        int time = new CustomSharedPreferences().getvalueofExpierTime("time", this);
+        int time = new CustomSharedPreferences().getvalueofExpierTime(this);
         JsonObject jsonObject1 = new JsonObject();
         jsonObject1.addProperty("refresh", refresh);
         jsonObject1.addProperty("twoFactor", twofactor_key);
@@ -373,6 +378,7 @@ public class MainEntryActivityNew extends BaseActivity {
         call.enqueue(new Callback<WebSocketOTPresponse>() {
             @Override
             public void onResponse(Call<WebSocketOTPresponse> call, Response<WebSocketOTPresponse> response) {
+                confirmingProgressDialog.dismiss();
                 if (response.body() != null) {
                     WebSocketOTPresponse webSocketOTPresponse = response.body();
 
@@ -386,12 +392,12 @@ public class MainEntryActivityNew extends BaseActivity {
                             } else {
                                 sharedPreferences.setvalueofaccestoken(webSocketOTPresponse.getToken(), "accessToken", bContext);
                                 createWebSocketClient();
-                                String isTokenSet=new CustomSharedPreferences().getvalue( "IsTokenSet", MainEntryActivityNew.this);
-                                if (isTokenSet.equals("1")){
-                                  String token= new CustomSharedPreferences().getString( "FcmToken", MainEntryActivityNew.this);
-                                  if (token!=null) {
-                                      setFCMToken(token,refresh);
-                                  }
+                                String isTokenSet = new CustomSharedPreferences().getvalue("IsTokenSet", MainEntryActivityNew.this);
+                                if (isTokenSet.equals("1")) {
+                                    String token = new CustomSharedPreferences().getString("FcmToken", MainEntryActivityNew.this);
+                                    if (token != null) {
+                                        setFCMToken(token, refresh);
+                                    }
                                 }
                             }
 
@@ -430,24 +436,27 @@ public class MainEntryActivityNew extends BaseActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<WebSocketOTPresponse> call, Throwable t) {
+                confirmingProgressDialog.dismiss();
                 Log.e("get-funding-nodes:", t.getMessage());
             }
         });
     }
-    private void setFCMToken(String tokenFCM,String refreshToken) {
+
+    private void setFCMToken(String tokenFCM, String refreshToken) {
         ///admin/invoice-to-client
         /*Authorization: Bearer {ACCESS_TOKEN_HERE}
         {"client_id": "C1640282683975726","invoice": "asdfjalksdjflaksjdf","store_name": "Some big store"}*/
-        String accessToken= new CustomSharedPreferences().getvalue("accessTokenLogin", getApplicationContext());
+        String accessToken = new CustomSharedPreferences().getvalue("accessTokenLogin", getApplicationContext());
         String RefToken = new CustomSharedPreferences().getvalueofaccestoken("accessToken", getApplicationContext());
-        String token="Bearer"+" "+accessToken;
+        String token = "Bearer" + " " + accessToken;
         JsonObject jsonObject1 = new JsonObject();
         jsonObject1.addProperty("refresh", refreshToken);
         jsonObject1.addProperty("fcmRegToken", tokenFCM);
 
-        Call<FCMResponse> call = (Call<FCMResponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).setFcmToken(token,jsonObject1);
+        Call<FCMResponse> call = (Call<FCMResponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).setFcmToken(token, jsonObject1);
         call.enqueue(new Callback<FCMResponse>() {
             @Override
             public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
@@ -458,6 +467,7 @@ public class MainEntryActivityNew extends BaseActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<FCMResponse> call, Throwable t) {
                 Log.e("get-funding-nodes:", t.getMessage());
@@ -526,9 +536,10 @@ public class MainEntryActivityNew extends BaseActivity {
         dialogBuilder.show();
     }
 
-     EditText et_email;
-     EditText et_ipaddress;
-     android.app.AlertDialog dialogBBuilder;
+    EditText et_email;
+    EditText et_ipaddress;
+    android.app.AlertDialog dialogBBuilder;
+
     public void dialogB() {
         dialogBBuilder = new android.app.AlertDialog.Builder(this, R.style.AlertDialog).create();
         LayoutInflater inflater = this.getLayoutInflater();
@@ -538,7 +549,7 @@ public class MainEntryActivityNew extends BaseActivity {
         dialogBBuilder.setCanceledOnTouchOutside(false);
 
 //        if (sharedPreferences.getvalueofRefresh("refreshToken", bContext).equals("")) {
-            et_email.setVisibility(View.VISIBLE);
+        et_email.setVisibility(View.VISIBLE);
 //        } else {
 //            et_email.setVisibility(View.GONE);
 //        }
@@ -752,9 +763,9 @@ public class MainEntryActivityNew extends BaseActivity {
                             new CustomSharedPreferences().setvalue(merchantData.getAccessToken(), "accessTokenLogin", MainEntryActivityNew.this);
                             new CustomSharedPreferences().setvalue(merchantData.getRefreshToken(), "refreshTokenLogin", MainEntryActivityNew.this);
 
-                            String mwsCommad = "ws://"+merchantData.getContainer_address()+":"+merchantData.getMws_port()+"/SendCommands";
+                            String mwsCommad = "ws://" + merchantData.getContainer_address() + ":" + merchantData.getMws_port() + "/SendCommands";
                             new CustomSharedPreferences().setvalueofMWSCommand(mwsCommad, "mws_command", MainEntryActivityNew.this);
-                            sharedPreferences.setvalueofipaddress(merchantData.getContainer_address()+":"+merchantData.getMws_port(), "ip", bContext);
+                            sharedPreferences.setvalueofipaddress(merchantData.getContainer_address() + ":" + merchantData.getMws_port(), "ip", bContext);
 
                             //private final String gdaxUrl = "ws://73.36.65.41:8095/SendCommands";
 
@@ -852,6 +863,7 @@ public class MainEntryActivityNew extends BaseActivity {
     }
 
     private void createWebSocketClient() {
+        Log.v(TAG, "createWebSocketClient: ");
         URI uri;
         try {
             // Connect to local host
@@ -896,6 +908,7 @@ public class MainEntryActivityNew extends BaseActivity {
 
                 } else if (s.equals("{\"code\":724,\"message\":\"Access token has expired, please request a new token\"}")) {
                     try {
+                        Log.v(TAG, "onTextReceived: "+s);
                         JSONObject jsonObject = new JSONObject(s);
                         code = jsonObject.getInt("code");
                         sharedPreferences.setvalueofSocketCode(code, "socketcode", bContext);
@@ -917,6 +930,15 @@ public class MainEntryActivityNew extends BaseActivity {
                     } catch (JSONException err) {
 
                     }
+
+                } else if (s.equals("{\"code\":723,\"message\":\"Access token is invalid\"}")) {
+                    Log.v(TAG, "onTextReceived: "+s);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            goTo2FaPasswordDialog(sharedPreferences.getvalueofRefresh("refreshToken", bContext));
+                        }
+                    });
 
                 } else {
                     if (GlobalState.getInstance().getLogin()) {
@@ -1112,7 +1134,7 @@ public class MainEntryActivityNew extends BaseActivity {
                                               @NonNull CharSequence errString) {
                 super.onAuthenticationError(errorCode, errString);
                 Toast.makeText(getApplicationContext(),
-                        "Authentication error: " + errString, Toast.LENGTH_SHORT)
+                                "Authentication error: " + errString, Toast.LENGTH_SHORT)
                         .show();
             }
 
@@ -1137,7 +1159,7 @@ public class MainEntryActivityNew extends BaseActivity {
             public void onAuthenticationFailed() {
                 super.onAuthenticationFailed();
                 Toast.makeText(getApplicationContext(), "Authentication failed",
-                        Toast.LENGTH_SHORT)
+                                Toast.LENGTH_SHORT)
                         .show();
             }
         });
@@ -1161,16 +1183,16 @@ public class MainEntryActivityNew extends BaseActivity {
 //                    if (loginresponse.getMessage().equals("successfully done")) {
                     if (loginresponse.getSession_token() != null) {
 //                        showToast(loginresponse.getSession_token());
-                        new CustomSharedPreferences().setvalueofExpierTime(Integer.parseInt(loginresponse.getSession_token()), "time", MainEntryActivityNew.this);
+                        new CustomSharedPreferences().setvalueofExpierTime(Integer.parseInt(loginresponse.getSession_token()), MainEntryActivityNew.this);
 
                     } else {
                         showToast("Response empty");
-                        new CustomSharedPreferences().setvalueofExpierTime(300, "time", MainEntryActivityNew.this);
+                        new CustomSharedPreferences().setvalueofExpierTime(300, MainEntryActivityNew.this);
                     }
 
 //                    }
-                }else {
-                    new CustomSharedPreferences().setvalueofExpierTime(300, "time", MainEntryActivityNew.this);
+                } else {
+                    new CustomSharedPreferences().setvalueofExpierTime(300, MainEntryActivityNew.this);
                 }
             }
 
@@ -1178,7 +1200,7 @@ public class MainEntryActivityNew extends BaseActivity {
             public void onFailure(Call<get_session_response> call, Throwable t) {
                 Log.e("get-funding-nodes:", t.getMessage());
 //                showToast(t.getMessage());
-                new CustomSharedPreferences().setvalueofExpierTime(300, "time", MainEntryActivityNew.this);
+                new CustomSharedPreferences().setvalueofExpierTime(300, MainEntryActivityNew.this);
             }
         });
 
@@ -1328,4 +1350,107 @@ public class MainEntryActivityNew extends BaseActivity {
         webSocketClient.connect();
     }
 
+    private void goTo2FaPasswordDialog(String accessToken) {
+        final Dialog enter2FaPassDialog;
+        enter2FaPassDialog = new Dialog(bContext);
+        enter2FaPassDialog.setContentView(R.layout.merchat_twofa_pass_lay);
+        Objects.requireNonNull(enter2FaPassDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        enter2FaPassDialog.setCancelable(false);
+        final EditText et_2Fa_pass = enter2FaPassDialog.findViewById(R.id.taskEditText);
+        final Button btn_confirm = enter2FaPassDialog.findViewById(R.id.btn_confirm);
+        final Button btn_cancel = enter2FaPassDialog.findViewById(R.id.btn_cancel);
+        final ImageView iv_back = enter2FaPassDialog.findViewById(R.id.iv_back);
+        iv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enter2FaPassDialog.dismiss();
+            }
+        });
+        btn_confirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // closeSoftKeyBoard();
+                String task = String.valueOf(et_2Fa_pass.getText());
+                if (task.isEmpty()) {
+                    showToast("Enter 2FA Password");
+                } else {
+                    //Get Session
+
+                    enter2FaPassDialog.dismiss();
+
+                    confirmingProgressDialog.show();
+                    confirmingProgressDialog.setCancelable(false);
+                    confirmingProgressDialog.setCanceledOnTouchOutside(false);
+
+                    getSessionToken(accessToken, task);
+                }
+
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enter2FaPassDialog.dismiss();
+            }
+        });
+        enter2FaPassDialog.show();
+    }
+
+    private void getSessionToken(String accessToken, String twoFaCode) {
+        Call<get_session_response> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).get_session("merchant", "haiww82uuw92iiwu292isk");
+        call.enqueue(new Callback<get_session_response>() {
+            @Override
+            public void onResponse(Call<get_session_response> call, Response<get_session_response> response) {
+                if (response.body() != null) {
+                    get_session_response loginresponse = response.body();
+                    if (Integer.parseInt(loginresponse.getSession_token()) != -1) {
+                        //callRefresh(accessToken, twoFaCode, loginresponse.getSession_token());
+                        new CustomSharedPreferences().setvalueofExpierTime(Integer.parseInt(loginresponse.getSession_token()), MainEntryActivityNew.this);
+                        String RefToken = new CustomSharedPreferences().getvalueofRefresh("refreshToken", bContext);
+                        getToken(RefToken, twoFaCode);
+                    } else {
+                        confirmingProgressDialog.dismiss();
+                        showToast("Response empty");
+                    }
+                } else {
+                    confirmingProgressDialog.dismiss();
+                    try {
+                        showToast(response.errorBody().string());
+                    } catch (IOException e) {
+                        showToast(e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<get_session_response> call, Throwable t) {
+                Log.e("get-funding-nodes:", t.getMessage());
+                confirmingProgressDialog.dismiss();
+                showToast(t.getMessage());
+            }
+        });
+    }
+
+    private void callRefresh(String accessToken, String twoFaCode, String sessionToken) {
+        Call<get_session_response> call = ApiClientBoost.getRefreshRetrofit(bContext).create(ApiPaths.class).refresh(accessToken, twoFaCode, sessionToken);
+        call.enqueue(new Callback<get_session_response>() {
+            @Override
+            public void onResponse(Call<get_session_response> call, Response<get_session_response> response) {
+                if (response.body() != null) {
+                    showToast("Success");
+                } else {
+                    try {
+                        showToast(response.errorBody().string());
+                    } catch (IOException e) {
+                        showToast(e.getMessage());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<get_session_response> call, Throwable t) {
+                showToast(t.getMessage());
+            }
+        });
+    }
 }

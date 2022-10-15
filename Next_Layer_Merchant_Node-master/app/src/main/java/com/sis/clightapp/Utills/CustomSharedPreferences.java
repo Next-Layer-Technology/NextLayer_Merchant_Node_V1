@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class CustomSharedPreferences {
 
+    public static final String TIME = "time";
+
     public void clearallsharedprefrencedata(String key, Context context) {
         SharedPreferences settings = context.getSharedPreferences(key, Context.MODE_PRIVATE);
         settings.edit().clear().commit();
@@ -355,17 +357,17 @@ public class CustomSharedPreferences {
     }
 
 
-    public void setvalueofExpierTime(int value, String key, Context context) {
+    public void setvalueofExpierTime(int value,  Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(key, value);
+        editor.putInt(TIME, value);
         editor.apply();
     }
 
 
-    public int getvalueofExpierTime(String key, Context context) {
+    public int getvalueofExpierTime(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getInt(key, 0);
+        return sharedPreferences.getInt(TIME, 0);
     }
 
     public void setvalueofMerchantId(int value, String key, Context context) {
@@ -389,9 +391,9 @@ public class CustomSharedPreferences {
     }
 
 
-    public String getvalueofContainerAddress(String key, Context context) {
+    public String getvalueofContainerAddress(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString(key, "");
+        return sharedPreferences.getString("container_address", "");
     }
 
     public void setvalueofLightningPort(String value, String key, Context context) {
@@ -428,10 +430,11 @@ public class CustomSharedPreferences {
     }
 
 
-    public String getvalueofMWSPort(String key, Context context) {
+    public String getvalueofMWSPort(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString(key, "");
+        return sharedPreferences.getString("mws_port", "");
     }
+
     public void setvalue(String value, String key, Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -444,6 +447,7 @@ public class CustomSharedPreferences {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getString(key, "");
     }
+
     public void setvalueofMWSCommand(String value, String key, Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();

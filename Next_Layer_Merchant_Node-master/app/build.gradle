@@ -28,6 +28,15 @@ android {
                 sourceCompatibility JavaVersion.VERSION_1_8
                 targetCompatibility JavaVersion.VERSION_1_8
             }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                outputFileName = "Next Layer Merchant${buildTime()}.apk"
+            }
+        }
+    }
 }
 
 dependencies {
@@ -107,4 +116,8 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.7'
 
+}
+
+static def buildTime() {
+    return new Date().format("_dd_MMM_yy_HH_mm")
 }
