@@ -28,7 +28,7 @@
             android:paddingLeft="@dimen/_10sdp">
 
             <ImageView
-                android:id="@+id/iv_back"
+                android:id="@+id/iv_back_invoice"
                 android:layout_width="@dimen/_20sdp"
                 android:layout_height="@dimen/_20sdp"
                 android:layout_centerVertical="true"
@@ -37,7 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/iv_back"
+                android:layout_toRightOf="@+id/iv_back_invoice"
                 android:gravity="center"
                 >
 

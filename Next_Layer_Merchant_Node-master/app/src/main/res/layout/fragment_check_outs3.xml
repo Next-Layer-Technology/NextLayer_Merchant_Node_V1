@@ -20,19 +20,25 @@
             android:layout_centerHorizontal="true"
             android:layout_marginRight="@dimen/_10sdp">
 
-            <Button
+            <!--            <Button-->
+            <!--                android:id="@+id/btnFlashPay"-->
+            <!--                android:layout_width="@dimen/_110sdp"-->
+            <!--                android:layout_height="48dp"-->
+            <!--                android:layout_alignParentLeft="true"-->
+            <!--                android:layout_marginLeft="26dp"-->
+            <!--                android:layout_marginTop="@dimen/_5sdp"-->
+            <!--                android:background="@drawable/flashpay"-->
+            <!--                android:gravity="center"-->
+            <!--                android:text="FLASH PAY"-->
+            <!--                android:textColor="@color/colorWhite"-->
+            <!--                android:textSize="@dimen/_10sdp"-->
+            <!--                android:textStyle="bold" />-->
+            <ImageView
                 android:id="@+id/btnFlashPay"
-                android:layout_width="@dimen/_110sdp"
+                android:layout_width="@dimen/_143sdp"
                 android:layout_height="48dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="26dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:background="@drawable/flashpay"
-                android:gravity="center"
-                android:text="FLASH PAY"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_10sdp"
-                android:textStyle="bold" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/btn_flashpay" />
 
         </RelativeLayout>
 

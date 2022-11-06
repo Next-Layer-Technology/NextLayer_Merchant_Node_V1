@@ -67,6 +67,7 @@
 
     <string name="sshkeyalertmsg2">In order to retain Sorvereign CONTROL of your device and your funds, we will now process, authorize, and enable this device as trusted and secured.</string>
     <string name="default_notification_channel_id">1</string>
+    <string name="payment_notification_channel_id">2</string>
     <string name="fcm_message">\"Next Layer Merchant\"</string>
     <string name="msg_token_fmt">22</string>
 

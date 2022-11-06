@@ -1,5 +1,8 @@
 package com.sis.clightapp.fragments.checkout;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.KEYGUARD_SERVICE;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,18 +11,17 @@ import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
@@ -39,6 +41,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -54,19 +59,24 @@ import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
+import com.sis.clightapp.Utills.Acknowledgement;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.Functions2;
 import com.sis.clightapp.Utills.GlobalState;
 import com.sis.clightapp.Utills.Print.PrintPic;
 import com.sis.clightapp.Utills.Print.PrinterCommands;
+import com.sis.clightapp.Utills.UrlConstants;
 import com.sis.clightapp.activity.CheckOutMain11;
 import com.sis.clightapp.activity.MainActivity;
 import com.sis.clightapp.adapter.CheckOutPayItemAdapter;
+import com.sis.clightapp.adapter.MerchantNodeAdapter;
 import com.sis.clightapp.adapter.SelectClientList;
+import com.sis.clightapp.listener.NearbyClientClickListener;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.ConfirmInvoice.ConfirmInvoiceResp;
 import com.sis.clightapp.model.GsonModel.CreateInvoice;
+import com.sis.clightapp.model.GsonModel.FirebaseNotificationModel;
 import com.sis.clightapp.model.GsonModel.Invoice;
 import com.sis.clightapp.model.GsonModel.InvoiceForPrint;
 import com.sis.clightapp.model.GsonModel.Items;
@@ -83,10 +93,16 @@ import com.sis.clightapp.model.REST.GetRouteResponse;
 import com.sis.clightapp.model.REST.StoreClients;
 import com.sis.clightapp.model.REST.TransactionInfo;
 import com.sis.clightapp.model.REST.TransactionResp;
+import com.sis.clightapp.model.REST.nearby_clients.NearbyClientResponse;
+import com.sis.clightapp.model.REST.nearby_clients.NearbyClients;
 import com.sis.clightapp.model.Tax;
+import com.sis.clightapp.model.WebsocketResponse.MWSWebSocketResponse;
 import com.sis.clightapp.model.WebsocketResponse.WebSocketOTPresponse;
+import com.sis.clightapp.model.WebsocketResponse.WebSocketResponse;
 import com.sis.clightapp.model.currency.CurrentAllRate;
 import com.sis.clightapp.model.currency.CurrentSpecificRateData;
+import com.sis.clightapp.model.rbs.Payload;
+import com.sis.clightapp.model.rbs.RBSRequest;
 import com.sis.clightapp.session.MyLogOutService;
 
 import org.json.JSONArray;
@@ -104,17 +120,24 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
+import io.socket.client.IO;
+import io.socket.client.Socket;
+import io.socket.emitter.Emitter;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
@@ -123,13 +146,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.KEYGUARD_SERVICE;
-
 public class CheckOutsFragment3 extends CheckOutBaseFragment {
 
     private CheckOutsFragment3 checkOutFragment3;
-    Button paywithclightbtn,btnFlashPay;
+    Button paywithclightbtn;
+    ImageView btnFlashPay;
     //RelativeLayout btnFlashPay;
     double totalGrandfinal = 0;
     private WebSocketClient webSocketClient;
@@ -184,7 +205,8 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
     private double AMOUNT_USD = 0;
     private double CONVERSION_RATE = 0;
     private double MSATOSHI = 0;
-
+    String getPaidLABEL = "";
+    String getPaidDescrition = "";
 
     // ClearOut KeySend//
     TextView receivable_tv, clearout, capacity_tv, tv_receivable;
@@ -201,6 +223,14 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
     boolean isFundingInfoGetSuccefully = false;
     Dialog clearOutDialog;
     MerchantData merchantData;
+
+    private Socket socket;
+    ProgressDialog confirmingProgressDialog;
+    private boolean isCreatingInvoice = false;
+    private BroadcastReceiver broadcastReceiver = null;
+    private IntentFilter intentFilter = new IntentFilter(AppConstants.PAYMENT_RECEIVED_NOTIFICATION);
+    Dialog distributeGetPaidDialog;
+    private NearbyClients globalNearByClient = null;
 
     public CheckOutsFragment3() {
         // Required empty public constructor
@@ -230,6 +260,9 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_check_outs3, container, false);
+
+        Log.d(TAG, "onCreateView: CheckOutsFragment3");
+
         isFundingInfoGetSuccefully = false;
         setTextWithSpan = view.findViewById(R.id.footer);
         StyleSpan boldStyle = new StyleSpan(Typeface.BOLD);
@@ -255,7 +288,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         grandtotal = view.findViewById(R.id.grandtotal);
         fContext = getContext();
         clearout = view.findViewById(R.id.clearout);
-        gdaxUrl=new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
+        gdaxUrl = new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
         sharedPreferences = new CustomSharedPreferences();
         String json = new CustomSharedPreferences().getvalueofMerchantData("data", getContext());
         Gson gson = new Gson();
@@ -278,35 +311,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         paywithclightbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<Items> dataSource = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-                int totalSaleIncurrency = 0;
-                int totalSaleInSatoshiBTC = 0;
-                if (dataSource != null && dataSource.size() > 0) {
-                    priceInCurrency = 0;
-                    priceInBTC = 0;
-                    grandTotalInCurrency = 0;
-                    getGrandTotalInBTC = 0;
-                    for (int q = 0; q < dataSource.size(); q++) {
-                        priceInCurrency = priceInCurrency + Double.parseDouble(dataSource.get(q).getPrice());
-                        //format  ::   Total : 1.25 BTC /  $34.95 USD
-                        if (GlobalState.getInstance().getChannel_btcResponseData() != null) {
-                            // ab e value nai use krra es ki jaga pe adapter se value utha ra direct btc ki
-                             //priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
-                            priceInBTC=1 /GlobalState.getInstance().getChannel_btcResponseData().getPrice();
-                            priceInBTC = priceInBTC * priceInCurrency;
-                            priceInBTC = round(priceInBTC, 9);
-                            grandTotalInCurrency = priceInCurrency + taxtInCurennccyAmount;
-                            getGrandTotalInBTC = priceInBTC + taxInBtcAmount;
-                            getGrandTotalInBTC = round(getGrandTotalInBTC, 9);
-                            //  totalpay.setText("Total:"+priceInBTC+"BTC"+"/"+"$"+priceInCurrency);
-                        } else {
-                            showToast("No BTC Rate");
-                        }
-                    }
-                    dialogBoxForInvoice(grandTotalInCurrency, getGrandTotalInBTC);
-                } else {
-                    showToast("Cart is Empty");
-                }
+                createGrandTotalForInvoice(null);
             }
         });
         clearout.setOnClickListener(new View.OnClickListener() {
@@ -316,16 +321,60 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             }
         });
         setAdapter();
-        btnFlashPay=view.findViewById(R.id.btnFlashPay);
+        btnFlashPay = view.findViewById(R.id.btnFlashPay);
         btnFlashPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getInStoreClients();
+                confirmingProgressDialog.show();
+                getNearbyClients();
+//                getInStoreClients();
             }
         });
+
+        confirmingProgressDialog = new ProgressDialog(fContext);
+        confirmingProgressDialog.setMessage("Confirming...");
+        confirmingProgressDialog.setCancelable(false);
+        confirmingProgressDialog.setCanceledOnTouchOutside(false);
+
         return view;
     }
-    private  void getInvoiceForFlashPay(String clientName,String clientID,String storeName){
+
+    private void createGrandTotalForInvoice(NearbyClients nearbyClients) {
+        Log.d("TEST_DOUBLE_CHECKOUT", "createGrandTotalForInvoice: ");
+        ArrayList<Items> dataSource = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
+        int totalSaleIncurrency = 0;
+        int totalSaleInSatoshiBTC = 0;
+        if (dataSource != null && dataSource.size() > 0) {
+            priceInCurrency = 0;
+            priceInBTC = 0;
+            grandTotalInCurrency = 0;
+            getGrandTotalInBTC = 0;
+            for (int q = 0; q < dataSource.size(); q++) {
+                priceInCurrency = priceInCurrency + Double.parseDouble(dataSource.get(q).getPrice());
+                //format  ::   Total : 1.25 BTC /  $34.95 USD
+                if (GlobalState.getInstance().getChannel_btcResponseData() != null) {
+                    // ab e value nai use krra es ki jaga pe adapter se value utha ra direct btc ki
+                    //priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
+                    priceInBTC = 1 / GlobalState.getInstance().getChannel_btcResponseData().getPrice();
+                    priceInBTC = priceInBTC * priceInCurrency;
+                    priceInBTC = round(priceInBTC, 9);
+                    grandTotalInCurrency = priceInCurrency + taxtInCurennccyAmount;
+                    getGrandTotalInBTC = priceInBTC + taxInBtcAmount;
+                    getGrandTotalInBTC = round(getGrandTotalInBTC, 9);
+
+                    dialogBoxForInvoice(grandTotalInCurrency, getGrandTotalInBTC, nearbyClients);
+                    //  totalpay.setText("Total:"+priceInBTC+"BTC"+"/"+"$"+priceInCurrency);
+                } else {
+                    showToast("No BTC Rate");
+                }
+            }
+
+        } else {
+            showToast("Cart is Empty");
+        }
+    }
+
+    private void getInvoiceForFlashPay(String clientName, String clientID, String storeName) {
         getItemListprogressDialog.show();
         ArrayList<Items> dataSource = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
         if (dataSource != null && dataSource.size() > 0) {
@@ -336,7 +385,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             for (int q = 0; q < dataSource.size(); q++) {
                 priceInCurrency = priceInCurrency + Double.parseDouble(dataSource.get(q).getPrice());
                 if (GlobalState.getInstance().getChannel_btcResponseData() != null) {
-                    priceInBTC=1 /GlobalState.getInstance().getChannel_btcResponseData().getPrice();
+                    priceInBTC = 1 / GlobalState.getInstance().getChannel_btcResponseData().getPrice();
                     priceInBTC = priceInBTC * priceInCurrency;
                     priceInBTC = round(priceInBTC, 9);
                     grandTotalInCurrency = priceInCurrency + taxtInCurennccyAmount;
@@ -347,14 +396,15 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                     showToast("No BTC Rate");
                 }
             }
-            invoiceForFLashPay(grandTotalInCurrency, getGrandTotalInBTC,clientName,clientID,storeName);
+            invoiceForFLashPay(grandTotalInCurrency, getGrandTotalInBTC, clientName, clientID, storeName);
         } else {
             getItemListprogressDialog.dismiss();
             showToast("Cart is Empty");
         }
 
     }
-    private void invoiceForFLashPay(double totalSaleCurrency, double totalSaleBTC,String name,String clientID,String storeName) {
+
+    private void invoiceForFLashPay(double totalSaleCurrency, double totalSaleBTC, String name, String clientID, String storeName) {
         double dTotalSaleInCurrency = totalSaleCurrency;
         double dTotalSaleBTC = totalSaleBTC;
         AMOUNT_USD = totalSaleCurrency;
@@ -370,13 +420,13 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         NumberFormat formatter = new DecimalFormat("#0");
         String rMSatoshi = formatter.format(dmSatoshi);
         labelGlobal = "sale" + uNixtimeStamp;
-        String label="sale"+uNixtimeStamp;
-        String descrption="FlashPay"+name;
+        String label = "sale" + uNixtimeStamp;
+        String descrption = "FlashPay" + name;
         currentTransactionLabel = label;
-        CreateInvoice(rMSatoshi, label, descrption);
-        CreateInvoice createInvoice=GlobalState.getInstance().getCreateInvoice();
-        String invoice=createInvoice.getBolt11();
-        makeFlashPayment(clientID,storeName,invoice);
+        CreateInvoice(rMSatoshi, label, descrption, null);
+        CreateInvoice createInvoice = GlobalState.getInstance().getCreateInvoice();
+        String invoice = createInvoice.getBolt11();
+        makeFlashPayment(clientID, storeName, invoice);
 
     }
 
@@ -438,6 +488,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
     public void onBackPressed() {
         ask_exit();
     }
+
     // Creating exit dialogue
     public void ask_exit() {
         final Dialog goAlertDialogwithOneBTnDialog;
@@ -557,11 +608,11 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 priceInCurrency = priceInCurrency + total;
                 //format  ::   Total : 1.25 BTC /  $34.95 USD
 
-               // if (GlobalState.getInstance().getCurrentAllRate() != null) {
-                    if(GlobalState.getInstance().getChannel_btcResponseData()!=null){
+                // if (GlobalState.getInstance().getCurrentAllRate() != null) {
+                if (GlobalState.getInstance().getChannel_btcResponseData() != null) {
 
-                   // priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
-                        priceInBTC = 1 /GlobalState.getInstance().getChannel_btcResponseData().getPrice();
+                    // priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
+                    priceInBTC = 1 / GlobalState.getInstance().getChannel_btcResponseData().getPrice();
                     Log.e("btcbefore", String.valueOf(priceInBTC));
                     priceInBTC = priceInBTC * priceInCurrency;
                     Log.e("btcafter", String.valueOf(btcRatePerDollar));
@@ -617,7 +668,13 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         grandtotal.setText("0.0 BTC/ 0.0 $");
     }
 
-    private void dialogBoxForInvoice(double totalSaleCurrency, double totalSaleBTC) {
+    private void dialogBoxForInvoice(double totalSaleCurrency, double totalSaleBTC, NearbyClients nearbyClients) {
+
+        if (invoiceDialog != null && invoiceDialog.isShowing()) {
+            return;
+        }
+
+        Log.d("TEST_DOUBLE_CHECKOUT", "dialogBoxForInvoice: ");
         double dTotalSaleInCurrency = totalSaleCurrency;
         double dTotalSaleBTC = totalSaleBTC;
         AMOUNT_USD = totalSaleCurrency;
@@ -640,17 +697,18 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         Objects.requireNonNull(invoiceDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         invoiceDialog.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
 //        dialog.getWindow().setLayout(500, 500);
-        invoiceDialog.setCancelable(false);
+        invoiceDialog.setCancelable(true);
         confirpaymentbtn = invoiceDialog.findViewById(R.id.confirpaymentbtn);
         final EditText et_msatoshi = invoiceDialog.findViewById(R.id.et_msatoshi);
         et_msatoshi.setInputType(InputType.TYPE_NULL);
         et_msatoshi.setText(String.valueOf(rMSatoshi));
         final EditText et_label = invoiceDialog.findViewById(R.id.et_lable);
         et_label.setInputType(InputType.TYPE_NULL);
-        et_label.setText("sale" + uNixtimeStamp);
+        String label = "sale" + uNixtimeStamp;
+        et_label.setText(label);
         labelGlobal = "sale" + uNixtimeStamp;
         final EditText et_description = invoiceDialog.findViewById(R.id.et_description);
-        final ImageView ivBack = invoiceDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = invoiceDialog.findViewById(R.id.iv_back_invoice);
         qRCodeImage = invoiceDialog.findViewById(R.id.imgQR);
         Button btnCreatInvoice = invoiceDialog.findViewById(R.id.btn_createinvoice);
         qRCodeImage.setVisibility(View.GONE);
@@ -691,8 +749,8 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 if (status) {
                     //TODO:when call cmd invoice :      createInvoiceProgressDialog.show();
                     currentTransactionLabel = label;
-
-                    CreateInvoice(msatoshi, label, descrption);
+                    isCreatingInvoice = false;
+                    CreateInvoice(msatoshi, label, descrption, nearbyClients);
                 }
 
             }
@@ -705,7 +763,13 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 ListInvoices(currentTransactionLabel);
             }
         });
-        invoiceDialog.show();
+
+        if (nearbyClients != null) {
+            CreateInvoice(String.valueOf(rMSatoshi), label, "Flashpay", nearbyClients);
+        } else {
+            invoiceDialog.show();
+        }
+
     }
 
     private void saveTransactionInLog(Invoice invoice) {
@@ -768,6 +832,16 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         CreateInvoice createInvoice = gson.fromJson(jsonString, type);
         GlobalState.getInstance().setCreateInvoice(createInvoice);
         return createInvoice;
+    }
+
+    private WebSocketResponse parseWebSocketResponse(String jsonString) {
+        return new Gson().fromJson(jsonString, new TypeToken<WebSocketResponse>() {
+        }.getType());
+    }
+
+    private MWSWebSocketResponse parseMWSWebSocketResponse(String jsonString) {
+        return new Gson().fromJson(jsonString, new TypeToken<MWSWebSocketResponse>() {
+        }.getType());
     }
 
     private Invoice parseJSONForConfirmPayment(String jsonString) {
@@ -976,7 +1050,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
 //        dialog.getWindow().setLayout(500, 500);
         blutoothDevicesDialog.setCancelable(false);
         //init dialog views
-        final ImageView ivBack = blutoothDevicesDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = blutoothDevicesDialog.findViewById(R.id.iv_back_invoice);
         final Button scanDevices = blutoothDevicesDialog.findViewById(R.id.btn_scanDevices);
         TextView tv_status = blutoothDevicesDialog.findViewById(R.id.tv_status);
         ListView blueDeviceListView = blutoothDevicesDialog.findViewById(R.id.blueDeviceListView);
@@ -1152,7 +1226,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                         //do something you want when pass the security
                         // Toast.makeText(getApplicationContext(),"done",Toast.LENGTH_SHORT).show();
                         //getReceivable();
-                       // Listfunds();
+                        // Listfunds();
 //                        getListPeers();
 
                         sendReceivable();
@@ -1196,23 +1270,24 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             }
         });
     }
+
     private void getInStoreClients() {
-        String accessToken= new CustomSharedPreferences().getvalue("accessTokenLogin", getContext());
-        String token="Bearer"+" "+accessToken;
+        String accessToken = new CustomSharedPreferences().getvalue("accessTokenLogin", getContext());
+        String token = "Bearer" + " " + accessToken;
         Call<ClientListModel> call = ApiClient.getRetrofit().create(ApiPaths.class).getInStoreClients(token);
         call.enqueue(new Callback<ClientListModel>() {
             @Override
             public void onResponse(Call<ClientListModel> call, Response<ClientListModel> response) {
                 if (response.body() != null) {
-                    ClientListModel clientListModel=response.body();
-                    List<StoreClients> list=clientListModel.getStoreClientsList();
-                    if (list.size()>0){
+                    ClientListModel clientListModel = response.body();
+                    List<StoreClients> list = clientListModel.getStoreClientsList();
+                    if (list.size() > 0) {
                         //ArrayList<StoreClients> list1=list;
                         showDialog(list);
-                    }else {
+                    } else {
                         showToast("No client found");
                     }
-                }else {
+                } else {
                     showToast(response.message());
                 }
             }
@@ -1225,7 +1300,78 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             }
         });
     }
-    private void showDialog(List<StoreClients> list){
+
+    private void getNearbyClients() {
+        String accessToken = new CustomSharedPreferences().getvalue("accessTokenLogin", getContext());
+        String token = "Bearer" + " " + accessToken;
+        Call<NearbyClientResponse> call = ApiClient.getRetrofit().create(ApiPaths.class).getNearbyClients(token);
+        call.enqueue(new Callback<NearbyClientResponse>() {
+            @Override
+            public void onResponse(Call<NearbyClientResponse> call, Response<NearbyClientResponse> response) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        confirmingProgressDialog.dismiss();
+                    }
+                });
+                if (response.body() != null) {
+                    NearbyClientResponse clientListModel = response.body();
+                    List<NearbyClients> list = clientListModel.getData();
+                    if (list.size() > 0) {
+                        //ArrayList<StoreClients> list1=list;
+                        showDialogNearbyClients(list);
+                    } else {
+                        showToast("No client found");
+                    }
+                } else {
+                    showToast(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NearbyClientResponse> call, Throwable t) {
+                Log.e("merchant_nearby_clients:", t.getMessage());
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        confirmingProgressDialog.dismiss();
+                    }
+                });
+                showToast(t.getMessage());
+
+            }
+        });
+    }
+
+    private void showDialogNearbyClients(List<NearbyClients> list) {
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialog_merchant_node_scrollbar);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
+
+        RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.recyclerView);
+
+        MerchantNodeAdapter adapter = new MerchantNodeAdapter(list, getContext(), new NearbyClientClickListener() {
+            @Override
+            public void itemClicked(NearbyClients nearbyClients) {
+                dialog.dismiss();
+                isCreatingInvoice = false;
+                //confirmingProgressDialog.show();
+                createGrandTotalForInvoice(nearbyClients);
+                //   subscribeRbs(nearbyClients.getClient_id(), "bolt_11_invoice");
+            }
+        });
+        recyclerView.setAdapter(adapter);
+
+        dialog.show();
+    }
+
+
+    private void showDialog(List<StoreClients> list) {
 
         final Dialog dialog = new Dialog(getContext());
 
@@ -1243,7 +1389,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 StoreClients tem = list.get(position);
 
-                getInvoiceForFlashPay(tem.getClient_name(),tem.getClient_id(),merchantData.getStore_name());
+                getInvoiceForFlashPay(tem.getClient_name(), tem.getClient_id(), merchantData.getStore_name());
 
 
             }
@@ -1254,73 +1400,75 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         dialog.show();
 
     }
-    private void makeFlashPayment(String clientID,String storeName,String invoice) {
+
+    private void makeFlashPayment(String clientID, String storeName, String invoice) {
         ///admin/invoice-to-client
         /*Authorization: Bearer {ACCESS_TOKEN_HERE}
         {"client_id": "C1640282683975726","invoice": "asdfjalksdjflaksjdf","store_name": "Some big store"}*/
-        String accessToken= new CustomSharedPreferences().getvalue("accessTokenLogin", getContext());
-        String token="Bearer"+" "+accessToken;
-            JsonObject jsonObject1 = new JsonObject();
-            jsonObject1.addProperty("client_id", clientID);
-            jsonObject1.addProperty("invoice", invoice);
-            jsonObject1.addProperty("store_name", storeName);
+        String accessToken = new CustomSharedPreferences().getvalue("accessTokenLogin", getContext());
+        String token = "Bearer" + " " + accessToken;
+        JsonObject jsonObject1 = new JsonObject();
+        jsonObject1.addProperty("client_id", clientID);
+        jsonObject1.addProperty("invoice", invoice);
+        jsonObject1.addProperty("store_name", storeName);
 
-            Call<WebSocketOTPresponse> call = (Call<WebSocketOTPresponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).flashPay(token,jsonObject1);
-            call.enqueue(new Callback<WebSocketOTPresponse>() {
-                @Override
-                public void onResponse(Call<WebSocketOTPresponse> call, Response<WebSocketOTPresponse> response) {
-                    if (response.body() != null) {
-                        WebSocketOTPresponse webSocketOTPresponse = response.body();
-                        getItemListprogressDialog.dismiss();
+        Call<WebSocketOTPresponse> call = (Call<WebSocketOTPresponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).flashPay(token, jsonObject1);
+        call.enqueue(new Callback<WebSocketOTPresponse>() {
+            @Override
+            public void onResponse(Call<WebSocketOTPresponse> call, Response<WebSocketOTPresponse> response) {
+                if (response.body() != null) {
+                    WebSocketOTPresponse webSocketOTPresponse = response.body();
+                    getItemListprogressDialog.dismiss();
 
-                        if (webSocketOTPresponse != null) {
+                    if (webSocketOTPresponse != null) {
 
-                            if (webSocketOTPresponse.getCode() == 700) {
+                        if (webSocketOTPresponse.getCode() == 700) {
 
 
-                            } else if (webSocketOTPresponse.getCode() == 701) {
+                        } else if (webSocketOTPresponse.getCode() == 701) {
 
-                                showToast("Missing 2FA code when requesting an access token");
-                            } else if (webSocketOTPresponse.getCode() == 702) {
+                            showToast("Missing 2FA code when requesting an access token");
+                        } else if (webSocketOTPresponse.getCode() == 702) {
 
-                                showToast("2FA code is incorrect / has timed out (30s window)");
-                            } else if (webSocketOTPresponse.getCode() == 703) {
-                                showToast("refresh token missing when requesting access code");
-                            } else if (webSocketOTPresponse.getCode() == 704) {
+                            showToast("2FA code is incorrect / has timed out (30s window)");
+                        } else if (webSocketOTPresponse.getCode() == 703) {
+                            showToast("refresh token missing when requesting access code");
+                        } else if (webSocketOTPresponse.getCode() == 704) {
 
-                                showToast("refresh token missing when requesting access code");
-                            } else if (webSocketOTPresponse.getCode() == 711) {
-                                showToast("error -> attempting to initialize 2FA with the admin refresh code in a client system");
+                            showToast("refresh token missing when requesting access code");
+                        } else if (webSocketOTPresponse.getCode() == 711) {
+                            showToast("error -> attempting to initialize 2FA with the admin refresh code in a client system");
 
-                            } else if (webSocketOTPresponse.getCode() == 716) {
-                                showToast("Refresh token has expired (6 months), a new one is being mailed to the user");
+                        } else if (webSocketOTPresponse.getCode() == 716) {
+                            showToast("Refresh token has expired (6 months), a new one is being mailed to the user");
 
-                            } else if (webSocketOTPresponse.getCode() == 721) {
-                                showToast("SendCommands is missing a \"commands\" field");
+                        } else if (webSocketOTPresponse.getCode() == 721) {
+                            showToast("SendCommands is missing a \"commands\" field");
 
-                            } else if (webSocketOTPresponse.getCode() == 722) {
-                                showToast("SendCommands is missing a \"token\" with the access token");
+                        } else if (webSocketOTPresponse.getCode() == 722) {
+                            showToast("SendCommands is missing a \"token\" with the access token");
 
-                            } else if (webSocketOTPresponse.getCode() == 723) {
+                        } else if (webSocketOTPresponse.getCode() == 723) {
 
-                                showToast("SendCommands received a refresh token instead of an access token");
-                            } else if (webSocketOTPresponse.getCode() == 724) {
-                                showToast("Access token has expired (at this point request 2FA code and get a new access token from /Refresh");
+                            showToast("SendCommands received a refresh token instead of an access token");
+                        } else if (webSocketOTPresponse.getCode() == 724) {
+                            showToast("Access token has expired (at this point request 2FA code and get a new access token from /Refresh");
 
-                            } else if (webSocketOTPresponse.getCode() == 725) {
-                                showToast("Misc websocket error, \"message\" field will include more data");
-                            }
+                        } else if (webSocketOTPresponse.getCode() == 725) {
+                            showToast("Misc websocket error, \"message\" field will include more data");
                         }
-                    }else {
-                        getItemListprogressDialog.dismiss();
                     }
-                }
-                @Override
-                public void onFailure(Call<WebSocketOTPresponse> call, Throwable t) {
-                    Log.e("get-funding-nodes:", t.getMessage());
+                } else {
                     getItemListprogressDialog.dismiss();
                 }
-            });
+            }
+
+            @Override
+            public void onFailure(Call<WebSocketOTPresponse> call, Throwable t) {
+                Log.e("get-funding-nodes:", t.getMessage());
+                getItemListprogressDialog.dismiss();
+            }
+        });
 
     }
 
@@ -1396,12 +1544,13 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         }
         return listFunds;
     }
+
     private ListPeers parseJSONForListPeers(String jsonresponse) {
         Log.d("ListPeersParsingResponse", jsonresponse);
         ListPeers listFunds = null;
         boolean sta = false;
         JSONArray jsonArr = null;
-        JSONObject jsonObject=null;
+        JSONObject jsonObject = null;
 
         /*
         * {
@@ -1501,8 +1650,8 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
 
 
         try {
-            jsonObject=new JSONObject(jsonresponse);
-            JSONArray ja_data=null;
+            jsonObject = new JSONObject(jsonresponse);
+            JSONArray ja_data = null;
             jsonArr = jsonObject.getJSONArray("peers");
 
 
@@ -1536,8 +1685,8 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                             double mcap = 0;
                             for (ListPeersChannels tempListFundChanel : listFunds.getChannels()) {
                                 if (listFunds.isConnected() && tempListFundChanel.state.equalsIgnoreCase("CHANNELD_NORMAL")) {
-                                    String tempmsat = tempListFundChanel.getReceivable_msatoshi()+"";
-                                    String tempmCap = tempListFundChanel.getSpendable_msatoshi()+"";
+                                    String tempmsat = tempListFundChanel.getReceivable_msatoshi() + "";
+                                    String tempmCap = tempListFundChanel.getSpendable_msatoshi() + "";
 //                                    if(tempmsat.length() > 4) {
 //                                        tempmsat = removeLastChars(tempmsat, 4);
 //                                    }
@@ -1551,7 +1700,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                                         tmsat = Double.parseDouble(tempmsat);
                                         tmcap = Double.parseDouble(tempmCap);
                                         BigDecimal value = new BigDecimal(tempmCap);
-                                        double  doubleValue = value.doubleValue();
+                                        double doubleValue = value.doubleValue();
                                         Log.e("StringToDouble:", String.valueOf(doubleValue));
                                     } catch (Exception e) {
                                         Log.e("StringToDouble:", e.getMessage());
@@ -1634,7 +1783,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
 
             isCanClearout = false;
         }
-        final ImageView ivBack = clearOutDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = clearOutDialog.findViewById(R.id.iv_back_invoice);
         Button noBtn = clearOutDialog.findViewById(R.id.noBtn);
         Button yesBtn = clearOutDialog.findViewById(R.id.yesBtn);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -1655,7 +1804,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                         } else {
                             sendReceivable();
                         }
-                    }else {
+                    } else {
                         sendReceivable();
                     }
                 } else {
@@ -1705,8 +1854,8 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 String clearOutQuery = "rpc-cmd,cli-node," + mlattitude + "_" + mlongitude + "," + getUnixTimeStamp() + ",[ keysend  " + routingNodeId + " " + mSatoshiReceivable + " " + label + " null 10" + " ]";
                 //   String clearOutQuery="rpc-cmd,cli-node,"+mlattitude+"_"+mlongitude+","+getUnixTimeStamp()+",[ keysend  "+tempDestinationId+" "+5700000+" "+label+" null 10"+" ]";
 
-               long mSatoshiSpendableTotal = (long) (mSatoshiCapacity - mSatoshiReceivable);
-               getRoute(routingNodeId, mSatoshiSpendableTotal +"", label);
+                long mSatoshiSpendableTotal = (long) (mSatoshiCapacity - mSatoshiReceivable);
+                getRoute(routingNodeId, mSatoshiSpendableTotal + "", label);
 //                sendreceiveables(routingNodeId, mSatoshiSpendableTotal +"", label);
 //                GetClearOutMsatoshi getClearOutMsatoshi = new GetClearOutMsatoshi(getActivity());
 //                if (Build.VERSION.SDK_INT >= 11/*HONEYCOMB*/) {
@@ -1737,6 +1886,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                     }).show();
         }
     }
+
     private void SubscrieChannel() {
         URI uri;
         try {
@@ -1877,75 +2027,122 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         webSocketClient.connect();
     }
 
-    public void CreateInvoice(final String rMSatoshi, final String label, final String descrption) {
+    CreateInvoice globalInvoice;
+    String globalRMSatoshi, globalLabel, globalDescrption;
+
+    public void CreateInvoice(final String rMSatoshi, final String label, final String descrption, NearbyClients nearbyClients) {
+
+        globalRMSatoshi = rMSatoshi;
+        globalLabel = label;
+        globalDescrption = descrption;
+        globalNearByClient = nearbyClients;
+
         OkHttpClient clientCoinPrice = new OkHttpClient();
         Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
 
-        WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
-            @Override
-            public void onOpen(WebSocket webSocket, okhttp3.Response response) {
+        if (!isCreatingInvoice) {
+            isCreatingInvoice = true;
+            Log.i("TAG", "CreateInvoice: " + gdaxUrl);
 
-                String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
+            WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
+                @Override
+                public void onOpen(WebSocket webSocket, okhttp3.Response response) {
 
-                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli invoice" + " " + rMSatoshi + " " + label + " " + descrption + "\"] }";
+                    String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
 
-                try {
+                    String json = UrlConstants.getInvoiceSendCommand(token, rMSatoshi, label, descrption);
 
-                    JSONObject obj = new JSONObject(json);
+                    try {
 
-                    Log.d("My App", obj.toString());
+                        JSONObject obj = new JSONObject(json);
 
-                    webSocket.send(String.valueOf(obj));
+                        Log.d("My App", obj.toString());
 
-                } catch (Throwable t) {
-                    Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+                        webSocket.send(String.valueOf(obj));
+
+                    } catch (Throwable t) {
+                        Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+                    }
                 }
-            }
 
-            @Override
-            public void onMessage(WebSocket webSocket, final String text) {
-                Log.e("TAG", "MESSAGE: " + text);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        parseJSONForCreatInvocie(text);
+                @Override
+                public void onMessage(WebSocket webSocket, final String text) {
+                    Log.e("TAG_onMessage", "MESSAGE: " + text);
 
+                    MWSWebSocketResponse response = parseMWSWebSocketResponse(text);
+                    if (response.isError()) {
+                        Log.e("TAG_onMessage", "Error: " + response.getMessage());
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showToast(response.getMessage());
+                            }
+                        });
+                    } else if (response.getCode() == 724) {
+                        Log.e("TAG_onMessage", response.getCode() + "");
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                goTo2FaPasswordDialog();
+                            }
+                        });
+                    } else if (response.getPayment_hash() != null) {
+                        Log.e("TAG_onMessage", "Hash: " + response.getPayment_hash());
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                globalInvoice = null;
+                                CreateInvoice invoice = parseJSONForCreatInvocie(text);
+                                globalInvoice = invoice;
+                                if (nearbyClients != null) {
+                                    confirmingProgressDialog.show();
+                                    webSocket.close(1000, null);
+                                    webSocket.cancel();
+                                    subscribeRbs(nearbyClients.getClient_id(), invoice.getBolt11());
+                                } else {
+                                    performPaymentCollectionFunction();
+                                }
+                            }
+                        });
+                    } else {
+                        showToast(text);
                     }
-                });
-            }
-            @Override
-            public void onMessage(WebSocket webSocket, ByteString bytes) {
-                Log.e("TAG", "MESSAGE: " + bytes.hex());
-            }
+                }
 
-            @Override
-            public void onClosing(WebSocket webSocket, int code, String reason) {
-                webSocket.close(1000, null);
-                webSocket.cancel();
-                Log.e("TAG", "CLOSE: " + code + " " + reason);
-            }
+                @Override
+                public void onMessage(WebSocket webSocket, ByteString bytes) {
+                    Log.e("TAG", "MESSAGE: " + bytes.hex());
+                }
 
-            @Override
-            public void onClosed(WebSocket webSocket, int code, String reason) {
-                //TODO: stuff
-            }
+                @Override
+                public void onClosing(WebSocket webSocket, int code, String reason) {
+                    webSocket.close(1000, null);
+                    webSocket.cancel();
+                    Log.e("TAG", "CLOSE: " + code + " " + reason);
+                }
 
-            @Override
-            public void onFailure(WebSocket webSocket, Throwable t, final okhttp3.Response response) {
-                //TODO: stuff
-                Log.e("TAG", "FAIL: " + response);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast(String.valueOf(response));
-                    }
-                });
+                @Override
+                public void onClosed(WebSocket webSocket, int code, String reason) {
+                    //TODO: stuff
+                }
 
-            }
-        };
+                @Override
+                public void onFailure(WebSocket webSocket, Throwable t, final okhttp3.Response response) {
+                    //TODO: stuff
+                    Log.e("TAG", "FAIL: " + response);
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //   showToast(String.valueOf(response));
+                        }
+                    });
 
-        clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);
-        clientCoinPrice.dispatcher().executorService().shutdown();
+                }
+            };
+
+            clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);
+            clientCoinPrice.dispatcher().executorService().shutdown();
+        }
     }
 
     public void Listfunds() {
@@ -2019,6 +2216,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);
         clientCoinPrice.dispatcher().executorService().shutdown();
     }
+
     public void getListPeers() {
         OkHttpClient clientCoinPrice = new OkHttpClient();
         Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
@@ -2108,13 +2306,14 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                     Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
                 }
             }
+
             @Override
             public void onMessage(WebSocket webSocket, final String text) {
                 Log.e("TAG", "MESSAGE: " + text);
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                //parseJSONForListFunds(text);
+                        //parseJSONForListFunds(text);
                     }
                 });
             }
@@ -2152,7 +2351,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         clientCoinPrice.dispatcher().executorService().shutdown();
     }
 
-    public void getRoute(final String routingnode_id, final String mstoshiReceivable, final String lable){
+    public void getRoute(final String routingnode_id, final String mstoshiReceivable, final String lable) {
         OkHttpClient clientCoinPrice = new OkHttpClient();
         Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
 
@@ -2163,7 +2362,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
                 //String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli invoice" + " " + routingnode_id + " " + mstoshiReceivable + " " + lable + "null 10" + "\"] }";
                 //String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"keysend" + routingnode_id +" " + mSatoshiReceivable + " " + lable + " null 10" + "\" ] }";
-                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli getroute" +" "+routingnode_id +" " + mstoshiReceivable +" " +1+"\"] }";
+                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli getroute" + " " + routingnode_id + " " + mstoshiReceivable + " " + 1 + "\"] }";
 
                 try {
 
@@ -2187,11 +2386,11 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                     @Override
                     public void run() {
                         String response = text;
-                        Log.d("quoc1111",text);
+                        Log.d("quoc1111", text);
                         Gson gson = new Gson();
                         GetRouteResponse getRouteResponse = gson.fromJson(response, GetRouteResponse.class);
-                        String mstoshiReceivableRemoveFee =  String.valueOf(Long.valueOf(mstoshiReceivable) - (getRouteResponse.routes.get(0).msatoshi - Long.valueOf(mstoshiReceivable)));
-                        sendreceiveables(routingnode_id, mstoshiReceivableRemoveFee,lable);
+                        String mstoshiReceivableRemoveFee = String.valueOf(Long.valueOf(mstoshiReceivable) - (getRouteResponse.routes.get(0).msatoshi - Long.valueOf(mstoshiReceivable)));
+                        sendreceiveables(routingnode_id, mstoshiReceivableRemoveFee, lable);
 
                     }
                 });
@@ -2240,9 +2439,9 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
 
                 String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
-               //String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli invoice" + " " + routingnode_id + " " + mstoshiReceivable + " " + lable + "null 10" + "\"] }";
+                //String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli invoice" + " " + routingnode_id + " " + mstoshiReceivable + " " + lable + "null 10" + "\"] }";
                 //String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"keysend" + routingnode_id +" " + mSatoshiReceivable + " " + lable + " null 10" + "\" ] }";
-                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli keysend" +" "+routingnode_id +" " + mstoshiReceivable+"\"] }";
+                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli keysend" + " " + routingnode_id + " " + mstoshiReceivable + "\"] }";
 
                 try {
 
@@ -2308,4 +2507,730 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         clientCoinPrice.dispatcher().executorService().shutdown();
     }
 
+    /*This method's success is unable to success at the moment of implementation, so I(developer) just called the performPaymentCollectionFunction()  in "err" of
+    socket instead of "msg" of socket*/
+    public void subscribeRbs(String clientId, String bolt11String) {
+
+        String token = new CustomSharedPreferences().getvalue("accessTokenLogin", getContext());
+
+        final IO.Options options = new IO.Options();
+        Map<String, List<String>> headers = new HashMap<>();
+        headers.put("Authorization", Arrays.asList("Bearer " + token));
+        headers.put("Content-Type", Arrays.asList("application/json"));
+
+        options.extraHeaders = headers;
+
+        try {
+            socket = IO.socket("https://realtime.nextlayer.live", options);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+        socket.connect();
+
+        socket.on(Socket.EVENT_CONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.v("subscribeRbs", "EVENT_CONNECT");
+                Log.v("subscribeRbs", Arrays.toString(args));
+
+                RBSRequest rbsRequest = new RBSRequest(clientId, "fp_merch2client_invoice", new Payload(bolt11String));
+
+                JSONObject payload = new JSONObject();
+                try {
+                    payload.accumulate("invoice", rbsRequest.getPayload().getInvoice());
+
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.accumulate("to", rbsRequest.getTo());
+                    jsonObject.accumulate("type", rbsRequest.getType());
+                    jsonObject.accumulate("payload", payload);
+
+                    Log.v("subscribeRbs", jsonObject.toString());
+
+                    socket.emit("msg", jsonObject, new Acknowledgement() {
+                        @Override
+                        public void call(Object... args) {
+                            super.call(args);
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (args.length != 0) {
+                                        Log.d("Socket", "Acknowledgement of zero element");
+                                      /*  if(onStartReceive()){
+                                            mActivity.startActivity(new Intent(mActivity,MerchantBoostTerminal.class).putExtra("node_id",mReceivingNodeId));
+                                        }
+                                        else {
+                                            showAlert();
+                                        }*/
+                                    } else {
+//                                        Toast.makeText(mActivity, "Message is not sent", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        socket.on(Socket.EVENT_CONNECT_ERROR, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.v("subscribeRbs", "EVENT_CONNECT_ERROR");
+                Log.v("subscribeRbs", Arrays.toString(args));
+            }
+        });
+
+        socket.on(Socket.EVENT_DISCONNECT, new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.v("subscribeRbs", "EVENT_DISCONNECT");
+                Log.v("subscribeRbs", Arrays.toString(args));
+            }
+        });
+
+        socket.on("err", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.v("subscribeRbs", "err");
+                Log.v("subscribeRbs", Arrays.toString(args));
+
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(args[0].toString());
+                            String message = jsonObject.getString("message");
+                            Log.v("subscribeRbs", "message -> " + message);
+                            showToast(String.valueOf(message));
+                            performPaymentCollectionFunction();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        confirmingProgressDialog.dismiss();
+
+                    }
+                });
+
+
+                socket.disconnect();
+            }
+        });
+
+        socket.on("msg", new Emitter.Listener() {
+            @Override
+            public void call(Object... args) {
+                Log.v("subscribeRbs", "msg");
+                Log.v("subscribeRbs", Arrays.toString(args));
+            }
+        });
+    }
+
+    private void performPaymentCollectionFunction() {
+        dialogBoxQRCodePayment();
+        listenToFcmBroadcast();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    private void listenToFcmBroadcast() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                try {
+
+                    Log.d("MyFirebaseMsgService", "BroadcastReceiver");
+
+                    if (intent != null) {
+
+                        Log.d("MyFirebaseMsgService", "intent != null");
+
+                        if (intent.getExtras() != null) {
+
+                            Log.d("MyFirebaseMsgService", "intent.getExtras() != null");
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    FirebaseNotificationModel notificationModel = new Gson().fromJson(intent.getStringExtra(AppConstants.PAYMENT_INVOICE),
+                                            FirebaseNotificationModel.class);
+
+                                    Log.d("MyFirebaseMsgService", notificationModel.getInvoice_label());
+
+//                                    dialogBoxForConfirmPaymentInvoice(final Invoice invoice)
+                                    fcmReceived();
+
+                                }
+                            });
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        getContext().registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    private void fcmReceived() {
+        if (distributeGetPaidDialog.isShowing()) {
+            distributeGetPaidDialog.dismiss();
+        }
+        unregisterBroadcastReceiver();
+
+        Confirmpayment();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        unregisterBroadcastReceiver();
+    }
+
+    private void unregisterBroadcastReceiver() {
+        if (broadcastReceiver != null) {
+            getContext().unregisterReceiver(broadcastReceiver);
+        }
+    }
+
+    private void dialogBoxQRCodePayment() {
+
+        if (distributeGetPaidDialog != null && distributeGetPaidDialog.isShowing()) {
+            return;
+        }
+
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        distributeGetPaidDialog = new Dialog(getContext());
+        distributeGetPaidDialog.setContentView(R.layout.dialoglayoutgetpaiddistribute);
+        Objects.requireNonNull(distributeGetPaidDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        distributeGetPaidDialog.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
+//        dialog.getWindow().setLayout(500, 500);
+        distributeGetPaidDialog.setCancelable(false);
+
+        TextView titile = (TextView) distributeGetPaidDialog.findViewById(R.id.tv_title);
+        Button btnCreatInvoice = distributeGetPaidDialog.findViewById(R.id.btn_createinvoice);
+        final EditText et_msatoshi = distributeGetPaidDialog.findViewById(R.id.et_msatoshi);
+        final EditText et_label = distributeGetPaidDialog.findViewById(R.id.et_lable);
+        final EditText et_description = distributeGetPaidDialog.findViewById(R.id.et_description);
+        final ImageView ivBack = distributeGetPaidDialog.findViewById(R.id.iv_back_invoice);
+        qRCodeImage = distributeGetPaidDialog.findViewById(R.id.imgQR);
+
+        confirpaymentbtn = distributeGetPaidDialog.findViewById(R.id.confirpaymentbtn);
+        titile.setText("Get Paid");
+        et_label.setInputType(InputType.TYPE_NULL);
+        et_label.setText(globalLabel);
+        et_msatoshi.setText(globalRMSatoshi);
+        et_description.setText(globalDescrption);
+
+        qRCodeImage.setVisibility(View.GONE);
+        confirpaymentbtn.setVisibility(View.GONE);
+        btnCreatInvoice.setVisibility(View.GONE);
+        confirpaymentbtn.setVisibility(View.GONE);
+
+        if (globalInvoice != null) {
+            if (globalInvoice.getBolt11() != null) {
+
+                String temHax = globalInvoice.getBolt11();
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+
+                try {
+                    BitMatrix bitMatrix = multiFormatWriter.encode(temHax, BarcodeFormat.QR_CODE, 600, 600);
+                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                    qRCodeImage.setImageBitmap(bitmap);
+                    qRCodeImage.setVisibility(View.VISIBLE);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        confirpaymentbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fcmReceived();
+            }
+        });
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                distributeGetPaidDialog.dismiss();
+            }
+        });
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    timer.cancel();
+                    requireActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            distributeGetPaidDialog.dismiss();
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.d("Timer Exception", Objects.requireNonNull(e.getMessage()));
+                }
+            }
+        }, 1000 * 60 * 5);
+
+        distributeGetPaidDialog.show();
+    }
+
+    public void Confirmpayment() {
+        confirmingProgressDialog.show();
+        OkHttpClient clientCoinPrice = new OkHttpClient();
+        Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
+
+        WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
+            @Override
+            public void onOpen(WebSocket webSocket, okhttp3.Response response) {
+                String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
+                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli listinvoices" + " " + globalLabel + "\"] }";
+                try {
+                    JSONObject obj = new JSONObject(json);
+                    Log.d("My App", obj.toString());
+                    webSocket.send(String.valueOf(obj));
+                } catch (Throwable t) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            confirmingProgressDialog.dismiss();
+                        }
+                    });
+                    Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+                }
+            }
+
+            @Override
+            public void onMessage(WebSocket webSocket, final String text) {
+                Log.e("TAG", "MESSAGE: " + text);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+
+                                confirmingProgressDialog.dismiss();
+
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForConfirmPaymentNew(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onMessage(WebSocket webSocket, ByteString bytes) {
+                Log.e("TAG", "MESSAGE: " + bytes.hex());
+            }
+
+            @Override
+            public void onClosing(WebSocket webSocket, int code, String reason) {
+                webSocket.close(1000, null);
+                webSocket.cancel();
+                Log.e("TAG", "CLOSE: " + code + " " + reason);
+            }
+
+            @Override
+            public void onClosed(WebSocket webSocket, int code, String reason) {
+                //TODO: stuff
+            }
+
+            @Override
+            public void onFailure(WebSocket webSocket, Throwable t, final okhttp3.Response response) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        confirmingProgressDialog.dismiss();
+                        showToast(String.valueOf(response));
+                    }
+                });
+            }
+        };
+
+        clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);
+        clientCoinPrice.dispatcher().executorService().shutdown();
+    }
+
+    private Invoice parseJSONForConfirmPaymentNew(String jsonString) {
+        String response = jsonString;
+        Gson gson = new Gson();
+        JSONArray jsonArray = null;
+        String json = "";
+        try {
+            jsonArray = new JSONObject(response).getJSONArray("invoices");
+            json = jsonArray.get(0).toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Invoice invoice = gson.fromJson(json, Invoice.class);
+        GlobalState.getInstance().setInvoice(invoice);
+
+
+        if (invoice != null) {
+            if (invoice.getStatus().equals("paid")) {
+                dialogBoxForConfirmPaymentInvoice(invoice);
+                confirmInvoicePamentProgressDialog.dismiss();
+                confirmingProgressDialog.dismiss();
+            } else {
+                confirmingProgressDialog.dismiss();
+                distributeGetPaidDialog.dismiss();
+                confirmInvoicePamentProgressDialog.dismiss();
+                new AlertDialog.Builder(getContext())
+                        .setMessage("Payment Not Recieved")
+                        .setPositiveButton("Retry", null)
+                        .show();
+
+            }
+
+        } else {
+            confirmingProgressDialog.dismiss();
+            distributeGetPaidDialog.dismiss();
+            confirmInvoicePamentProgressDialog.dismiss();
+            new AlertDialog.Builder(getContext())
+                    .setMessage("Payment Not Recieved")
+                    .setPositiveButton("Retry", null)
+                    .show();
+        }
+        return invoice;
+    }
+
+    private void dialogBoxForConfirmPaymentInvoice(final Invoice invoice) {
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
+        distributeGetPaidDialog = new Dialog(getContext());
+        distributeGetPaidDialog.setContentView(R.layout.customlayoutofconfirmpaymentdialogformerchantadmin);
+        Objects.requireNonNull(distributeGetPaidDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        distributeGetPaidDialog.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
+//        dialog.getWindow().setLayout(500, 500);
+        distributeGetPaidDialog.setCancelable(false);
+        //init dialog views
+        final ImageView ivBack = distributeGetPaidDialog.findViewById(R.id.iv_back_invoice);
+        final TextView amount = distributeGetPaidDialog.findViewById(R.id.et_amount);
+        final ImageView payment_preImage = distributeGetPaidDialog.findViewById(R.id.et_preimage);
+        final TextView paid_at = distributeGetPaidDialog.findViewById(R.id.et_paidat);
+        final TextView purchased_Items = distributeGetPaidDialog.findViewById(R.id.et_perchaseditems);
+        //  final TextView tax=distributeGetPaidDialog.findViewById(R.id.et_tax);
+        final Button printInvoice = distributeGetPaidDialog.findViewById(R.id.btn_printinvoice);
+        amount.setVisibility(View.GONE);
+        payment_preImage.setVisibility(View.GONE);
+        paid_at.setVisibility(View.GONE);
+        purchased_Items.setVisibility(View.GONE);
+        //   tax.setVisibility(View.GONE);
+        printInvoice.setVisibility(View.GONE);
+
+        if (invoice != null) {
+            if (invoice.getStatus().equals("paid")) {
+                InvoiceForPrint invoiceForPrint = new InvoiceForPrint();
+
+                //before // invoiceForPrint.setMsatoshi(invoice.getMsatoshi()/1000);
+                //After
+                invoiceForPrint.setMsatoshi(invoice.getMsatoshi());
+                invoiceForPrint.setPayment_preimage(invoice.getPayment_preimage());
+                invoiceForPrint.setPaid_at(invoice.getPaid_at());
+                invoiceForPrint.setPurchasedItems(invoice.getDescription());
+                invoiceForPrint.setDesscription(invoice.getDescription());
+                invoiceForPrint.setMode("distributeGetPaid");
+                GlobalState.getInstance().setInvoiceForPrint(invoiceForPrint);
+                amount.setVisibility(View.VISIBLE);
+                payment_preImage.setVisibility(View.VISIBLE);
+                paid_at.setVisibility(View.VISIBLE);
+                purchased_Items.setVisibility(View.VISIBLE);
+                //    tax.setVisibility(View.VISIBLE);
+                printInvoice.setVisibility(View.VISIBLE);
+                String amountInBtc = excatFigure(mSatoshoToBtc(invoice.getMsatoshi()));
+                double amounttempusd = round(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi())), 2);
+                DecimalFormat precision = new DecimalFormat("0.00");
+                amount.setText(excatFigure(round((mSatoshoToBtc(invoice.getMsatoshi())), 9)) + "BTC\n$" + precision.format(round(amounttempusd, 2)) + "USD");
+
+                payment_preImage.setImageBitmap(getBitMapImg(invoice.getPayment_preimage(), 300, 300));
+                paid_at.setText(getDateFromUTCTimestamp(invoice.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
+                purchased_Items.setText(invoice.getDescription());
+
+                // tax.setText(excatFigure(round(getTaxOfBTC(mSatoshoToBtc(invoice.getMsatoshi())),9))+" BTC\n"+round(getTaxOfUSD(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi()))),2)+"$");
+
+            } else {
+                InvoiceForPrint invoiceForPrint = new InvoiceForPrint();
+                invoiceForPrint.setMsatoshi(0.0);
+                invoiceForPrint.setPayment_preimage("N/A");
+                invoiceForPrint.setPaid_at(0000);
+                invoiceForPrint.setMode("distributeGetPaid");
+                GlobalState.getInstance().setInvoiceForPrint(invoiceForPrint);
+                amount.setVisibility(View.VISIBLE);
+                payment_preImage.setVisibility(View.VISIBLE);
+                paid_at.setVisibility(View.VISIBLE);
+                purchased_Items.setVisibility(View.VISIBLE);
+                //    tax.setVisibility(View.VISIBLE);
+                printInvoice.setVisibility(View.VISIBLE);
+                DecimalFormat precision = new DecimalFormat("0.00");
+                amount.setText(excatFigure(round((mSatoshoToBtc(invoice.getMsatoshi())), 9)) + "BTC\n$" + precision.format(round(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi())), 2)) + "USD");
+                paid_at.setText(getDateFromUTCTimestamp(invoice.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
+                // payment_preImage.setImageBitmap(getBitMapFromHex(invoice.getPayment_preimage()));
+                payment_preImage.setImageBitmap(getBitMapImg(invoice.getPayment_preimage(), 300, 300));
+                ArrayList<Items> mselectedDatasourceForPAyment = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
+
+                purchased_Items.setText("N/A");
+
+                //  tax.setText("N/A");
+                //TODO: if payment not recived
+            }
+        }
+        printInvoice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                InvoiceForPrint invoiceForPrint = GlobalState.getInstance().getInvoiceForPrint();
+                if (invoice.getStatus().equals("paid")) {
+                    if (invoiceForPrint != null) {
+                        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                        if (!mBluetoothAdapter.isEnabled()) {
+                            dialogBoxForConnecctingBTPrinter();
+                        } else {
+                            if (mBluetoothSocket != null) {
+                                Toast.makeText(getContext(), "Already Connected", Toast.LENGTH_LONG).show();
+                                try {
+                                    sendData("getPaidDistribute");
+                                } catch (IOException e) {
+                                    Log.e("SendDataError", e.toString());
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                dialogBoxForConnecctingBTPrinter();
+                            }
+                        }
+                        //:TODO : do what need to make print..
+                    } else {
+                        confirmPaymentDialog.dismiss();
+                        //TODO: do when nothin to print
+                    }
+                } else {
+                    //TODO:When Unpaid
+                    if (invoiceForPrint != null) {
+                        //:TODO : do what need to make print..
+                        confirmPaymentDialog.dismiss();
+                    } else {
+                        confirmPaymentDialog.dismiss();
+                        //TODO: do when nothin to print
+                    }
+                }
+            }
+        });
+
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                distributeGetPaidDialog.dismiss();
+            }
+        });
+        distributeGetPaidDialog.show();
+    }
+
+    void sendData(String getPaidDistribute) throws IOException {
+        try {
+            switch (getPaidDistribute) {
+                case "getPaidDistribute":
+                    btoutputstream = mBluetoothSocket.getOutputStream();
+                    // the text typed by the user
+                    InvoiceForPrint recInvoiceForPrint = GlobalState.getInstance().getInvoiceForPrint();
+                    DecimalFormat precision = new DecimalFormat("0.00");
+                    if (recInvoiceForPrint != null) {
+                        final String paidAt = getDateFromUTCTimestamp(recInvoiceForPrint.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE);
+                        final String amount = excatFigure(round((mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 9)) + "BTC/$" + precision.format(round(getUsdFromBtc(mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 2)) + "USD";
+                        final String amountInBtc = excatFigure(round((mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 9)) + " BTC";
+                        final String amountInUsd = precision.format(round(getUsdFromBtc(mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 2)) + " USD";
+                        final String des = recInvoiceForPrint.getPurchasedItems();
+                        final Bitmap bitmap = getBitMapFromHex(recInvoiceForPrint.getPayment_preimage());
+                        printingProgressBar.show();
+                        printingProgressBar.setCancelable(false);
+                        printingProgressBar.setCanceledOnTouchOutside(false);
+                        Thread t = new Thread() {
+                            public void run() {
+                                try {
+                                    // This is printer specific code you can comment ==== > Start
+                                    btoutputstream.write(PrinterCommands.reset);
+                                    btoutputstream.write(PrinterCommands.INIT);
+                                    btoutputstream.write("\n\n".getBytes());
+                                    btoutputstream.write("    Sale / Incoming Funds".getBytes());
+                                    btoutputstream.write("\n".getBytes());
+                                    btoutputstream.write("    ---------------------".getBytes());
+                                    btoutputstream.write("\n".getBytes());
+                                    btoutputstream.write(des.getBytes());
+                                    btoutputstream.write("\n\n".getBytes());
+                                    btoutputstream.write("\tAmount: ".getBytes());
+                                    btoutputstream.write("\n\t".getBytes());
+                                    //amountInBTC should right
+                                    btoutputstream.write(amountInBtc.getBytes());
+                                    btoutputstream.write("\n\t".getBytes());
+                                    //amountInBTC should right
+                                    btoutputstream.write(amountInUsd.getBytes());
+                                    btoutputstream.write("\n".getBytes());
+                                    btoutputstream.write("\n".getBytes());
+                                    //Paid at title should center
+                                    btoutputstream.write("\tReceived:".getBytes());
+                                    btoutputstream.write("\n  ".getBytes());
+                                    //Paid at   should center
+                                    btoutputstream.write("  ".getBytes());
+                                    btoutputstream.write(paidAt.getBytes());
+                                    btoutputstream.write("\n\n".getBytes());
+                                    btoutputstream.write("\tPayment Hash:".getBytes());
+                                    printNewLine();
+                                    if (bitmap != null) {
+                                        Bitmap bMapScaled = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
+                                        new ByteArrayOutputStream();
+                                        PrintPic printPic = PrintPic.getInstance();
+                                        printPic.init(bMapScaled);
+                                        byte[] bitmapdata = printPic.printDraw();
+                                        btoutputstream.write(PrinterCommands.print);
+                                        btoutputstream.write(bitmapdata);
+                                        btoutputstream.write(PrinterCommands.print);
+                                        btoutputstream.write("\n\n".getBytes());
+                                    }
+
+                                    btoutputstream.write("\n\n".getBytes());
+                                    Thread.sleep(1000);
+                                    printingProgressBar.dismiss();
+
+
+                                } catch (Exception e) {
+                                    Log.e("PrintError", "Exe ", e);
+
+                                }
+
+                            }
+                        };
+                        t.start();
+                    } else {
+                        btoutputstream.write(PrinterCommands.reset);
+                        btoutputstream.write(PrinterCommands.INIT);
+                        btoutputstream.write(PrinterCommands.FEED_LINE);
+                        String paidAt = "\n\n\n\n\n\n\nNot Data Found\n\n\n\n\n\n\n";
+                        btoutputstream.write(paidAt.getBytes());
+                    }
+                    break;
+                case "commandeerRefund":
+                    Log.e("errorhe", "commandeerRefund Case me");
+                    btoutputstream = mBluetoothSocket.getOutputStream();
+                    InvoiceForPrint recInvoiceForPrint2 = GlobalState.getInstance().getInvoiceForPrint();
+                    DecimalFormat precision2 = new DecimalFormat("0.00");
+                    if (recInvoiceForPrint2 != null) {
+                        Log.e("errorhe", " recInvoiceForPrint2 not Null");
+                        final String paidAt2 = getDateFromUTCTimestamp(recInvoiceForPrint2.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE);
+                        final String amount2 = excatFigure(round((mSatoshoToBtc(recInvoiceForPrint2.getMsatoshi())), 9)) + "BTC/$" + precision2.format(round(getUsdFromBtc(mSatoshoToBtc(recInvoiceForPrint2.getMsatoshi())), 2)) + "USD";
+                        final String amountInBtc2 = excatFigure(round((mSatoshoToBtc(recInvoiceForPrint2.getMsatoshi())), 9)) + " BTC";
+                        final String amountInUsd2 = precision2.format(round(getUsdFromBtc(mSatoshoToBtc(recInvoiceForPrint2.getMsatoshi())), 2)) + " USD";
+                        final String des2 = recInvoiceForPrint2.getPurchasedItems();
+                        final Bitmap paymentHashBitmap = getBitMapFromHex(recInvoiceForPrint2.getPayment_preimage());
+                        final Bitmap destinationBitmap = getBitMapFromHex(recInvoiceForPrint2.getDestination());
+                        printingProgressBar.show();
+                        printingProgressBar.setCancelable(false);
+                        printingProgressBar.setCanceledOnTouchOutside(false);
+                        Thread t2 = new Thread() {
+                            public void run() {
+                                try {
+                                    // This is printer specific code you can comment ==== > Start
+                                    btoutputstream.write(PrinterCommands.reset);
+                                    btoutputstream.write(PrinterCommands.INIT);
+                                    btoutputstream.write("\n\n".getBytes());
+                                    btoutputstream.write("    Refund / Payout".getBytes());
+                                    btoutputstream.write("\n".getBytes());
+                                    btoutputstream.write("    ---------------".getBytes());
+                                    btoutputstream.write("\n".getBytes());
+                                    btoutputstream.write(des2.getBytes());
+                                    btoutputstream.write("\n\n".getBytes());
+                                    btoutputstream.write("\tAmount: ".getBytes());
+                                    btoutputstream.write("\n\t".getBytes());
+                                    //amountInBTC should right
+                                    btoutputstream.write(amountInBtc2.getBytes());
+                                    btoutputstream.write("\n\t".getBytes());
+                                    //amountInBTC should right
+                                    btoutputstream.write(amountInUsd2.getBytes());
+                                    btoutputstream.write("\n".getBytes());
+                                    btoutputstream.write("\n".getBytes());
+                                    //Paid at title should center
+                                    btoutputstream.write("\tReceived:".getBytes());
+                                    btoutputstream.write("\n  ".getBytes());
+                                    //Paid at   should center
+                                    btoutputstream.write("  ".getBytes());
+                                    btoutputstream.write(paidAt2.getBytes());
+                                    btoutputstream.write("\n\n".getBytes());
+                                    btoutputstream.write("\n".getBytes());
+                                    btoutputstream.write("\tBolt 11:".getBytes());
+                                    if (destinationBitmap != null) {
+                                        Bitmap bMapScaled = Bitmap.createScaledBitmap(destinationBitmap, 250, 250, true);
+                                        new ByteArrayOutputStream();
+                                        PrintPic printPic = PrintPic.getInstance();
+                                        printPic.init(bMapScaled);
+                                        byte[] bitmapdata = printPic.printDraw();
+                                        btoutputstream.write(PrinterCommands.print);
+                                        btoutputstream.write(bitmapdata);
+                                        btoutputstream.write(PrinterCommands.print);
+                                    }
+                                    btoutputstream.write("\n".getBytes());
+                                    btoutputstream.write("\tPayment Hash:".getBytes());
+                                    printNewLine();
+                                    if (paymentHashBitmap != null) {
+                                        Bitmap bMapScaled = Bitmap.createScaledBitmap(paymentHashBitmap, 250, 250, true);
+                                        new ByteArrayOutputStream();
+                                        PrintPic printPic = PrintPic.getInstance();
+                                        printPic.init(bMapScaled);
+                                        byte[] bitmapdata = printPic.printDraw();
+                                        btoutputstream.write(PrinterCommands.print);
+                                        btoutputstream.write(bitmapdata);
+                                        btoutputstream.write(PrinterCommands.print);
+                                    }
+                                    btoutputstream.write("\n\n".getBytes());
+                                    Thread.sleep(1000);
+                                    printingProgressBar.dismiss();
+                                } catch (Exception e) {
+                                    Log.e("PrintError", "Exe ", e);
+                                    Log.e("errorhe", "0");
+                                }
+
+                            }
+                        };
+                        t2.start();
+                    } else {
+                        Log.e("errorhe", "recInvoiceForPrint2 Is Null");
+                        Log.e("errorhe", "1");
+                        btoutputstream.write(PrinterCommands.reset);
+                        btoutputstream.write(PrinterCommands.INIT);
+                        btoutputstream.write(PrinterCommands.FEED_LINE);
+                        String paidAt = "\n\n\n\n\n\n\nNot Data Found\n\n\n\n\n\n\n";
+                        btoutputstream.write(paidAt.getBytes());
+                    }
+                    break;
+            }
+
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            Log.e("errorhe", "3");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("errorhe", "3");
+        }
+    }
 }

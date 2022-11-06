@@ -2,23 +2,16 @@ package com.sis.clightapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
-import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
 import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.CancellationSignal;
-import android.os.Environment;
-import android.util.ArrayMap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,19 +22,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.sis.clightapp.Interface.ApiClient;
 import com.sis.clightapp.Interface.ApiClient2;
 import com.sis.clightapp.Interface.ApiClientBoost;
 import com.sis.clightapp.Interface.ApiFCM;
@@ -50,35 +39,23 @@ import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.fragments.admin.AdminFragment1;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.FCMResponse;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantLoginResp;
-import com.sis.clightapp.model.REST.FundingNode;
-import com.sis.clightapp.model.REST.FundingNodeListResp;
-import com.sis.clightapp.model.REST.Loginresponse;
 import com.sis.clightapp.model.REST.get_session_response;
 import com.sis.clightapp.model.WebsocketResponse.WebSocketOTPresponse;
 import com.sis.clightapp.model.WebsocketResponse.WebSocketResponse;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.WebSocket;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -117,6 +94,7 @@ public class MainEntryActivityNew extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_entry_new);
+
         //        MobileBiometric();
         confirmingProgressDialog = new ProgressDialog(MainEntryActivityNew.this);
         confirmingProgressDialog.setMessage("Confirming...");
@@ -173,6 +151,8 @@ public class MainEntryActivityNew extends BaseActivity {
         String prompt = getResources().getString(R.string.scanqrfornewmembertoken);
         qrScan.setPrompt(prompt);
         //setToken();
+
+//        throw new RuntimeException("Test Crash"); // Force a crash
     }
 
     public void setToken() {
@@ -346,11 +326,11 @@ public class MainEntryActivityNew extends BaseActivity {
                             showToast(webSocketResponse.getMessage());
 
                         } else if (webSocketResponse.getCode() == 723) {
-
-                            goTo2FaPasswordDialog(refresh);
-                        } else if (webSocketResponse.getCode() == 724) {
                             showToast(webSocketResponse.getMessage());
 
+                        } else if (webSocketResponse.getCode() == 724) {
+                            goTo2FaPasswordDialog(refresh);
+                            showToast(webSocketResponse.getMessage());
                         } else if (webSocketResponse.getCode() == 725) {
                             showToast(webSocketResponse.getMessage());
                         }
@@ -429,7 +409,7 @@ public class MainEntryActivityNew extends BaseActivity {
                             showToast("SendCommands received a refresh token instead of an access token");
                         } else if (webSocketOTPresponse.getCode() == 724) {
                             showToast("Access token has expired (at this point request 2FA code and get a new access token from /Refresh");
-
+                            goTo2FaPasswordDialog(refresh);
                         } else if (webSocketOTPresponse.getCode() == 725) {
                             showToast("Misc websocket error, \"message\" field will include more data");
                         }
@@ -456,10 +436,11 @@ public class MainEntryActivityNew extends BaseActivity {
         jsonObject1.addProperty("refresh", refreshToken);
         jsonObject1.addProperty("fcmRegToken", tokenFCM);
 
-        Call<FCMResponse> call = (Call<FCMResponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).setFcmToken(token, jsonObject1);
+        Call<FCMResponse> call = (Call<FCMResponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).setFcmToken( jsonObject1);
         call.enqueue(new Callback<FCMResponse>() {
             @Override
             public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
+                Log.d(TAG, "onResponse: " + response.body().toString());
                 if (response.body() != null) {
                     FCMResponse fcmResponse = response.body();
                     if (fcmResponse.getCode() == 700) {
@@ -872,6 +853,8 @@ public class MainEntryActivityNew extends BaseActivity {
             e.printStackTrace();
             return;
         }
+
+        Log.v(TAG, "createWebSocketClient: " + uri);
         webSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen() {
@@ -882,13 +865,8 @@ public class MainEntryActivityNew extends BaseActivity {
                 try {
 
                     JSONObject obj = new JSONObject(json);
-
                     Log.d("My App", obj.toString());
-
-
                     webSocketClient.send(String.valueOf(obj));
-
-
                 } catch (Throwable t) {
                     Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
                 }
@@ -908,7 +886,7 @@ public class MainEntryActivityNew extends BaseActivity {
 
                 } else if (s.equals("{\"code\":724,\"message\":\"Access token has expired, please request a new token\"}")) {
                     try {
-                        Log.v(TAG, "onTextReceived: "+s);
+                        Log.v(TAG, "onTextReceived: " + s);
                         JSONObject jsonObject = new JSONObject(s);
                         code = jsonObject.getInt("code");
                         sharedPreferences.setvalueofSocketCode(code, "socketcode", bContext);
@@ -932,7 +910,7 @@ public class MainEntryActivityNew extends BaseActivity {
                     }
 
                 } else if (s.equals("{\"code\":723,\"message\":\"Access token is invalid\"}")) {
-                    Log.v(TAG, "onTextReceived: "+s);
+                    Log.v(TAG, "onTextReceived: " + s);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -1359,7 +1337,7 @@ public class MainEntryActivityNew extends BaseActivity {
         final EditText et_2Fa_pass = enter2FaPassDialog.findViewById(R.id.taskEditText);
         final Button btn_confirm = enter2FaPassDialog.findViewById(R.id.btn_confirm);
         final Button btn_cancel = enter2FaPassDialog.findViewById(R.id.btn_cancel);
-        final ImageView iv_back = enter2FaPassDialog.findViewById(R.id.iv_back);
+        final ImageView iv_back = enter2FaPassDialog.findViewById(R.id.iv_back_invoice);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -24,7 +24,7 @@
                 >
                 <ImageView
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:id="@+id/iv_back"
+                    android:id="@+id/iv_back_invoice"
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:src="@drawable/icn_arrow_back_size"
@@ -37,15 +37,16 @@
                     android:layout_marginRight="@dimen/_5sdp"
                     android:gravity="center"
                     android:layout_marginLeft="@dimen/_5sdp">
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="PASSWORD"
+                        android:layout_alignParentRight="true"
                         android:gravity="center"
-                        android:textSize="@dimen/_15sdp"
+                        android:text="PASSWORD"
                         android:textColor="@color/colorBlack"
-                        android:textStyle="bold"
-                        android:layout_alignParentRight="true">
+                        android:textSize="@dimen/_15sdp"
+                        android:textStyle="bold">
 
                     </TextView>
 
@@ -85,18 +86,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center">
+
                             <EditText
                                 android:id="@+id/taskEditText"
-                                android:inputType="textPassword"
-                                android:hint="Enter 2FA Password"
-                                android:gravity="center"
-                                android:textColorHint="@color/colorDarkGrey"
-                                android:background="@color/zxing_transparent"
-                                android:layout_alignParentRight="true"
                                 android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentRight="true"
+                                android:background="@color/zxing_transparent"
+                                android:gravity="center"
+                                android:hint="Enter 2FA Password"
+                                android:inputType="textPassword"
 
-                                android:layout_height="match_parent">
-                            </EditText>
+                                android:textColorHint="@color/colorDarkGrey"></EditText>
 
                         </RelativeLayout>
 

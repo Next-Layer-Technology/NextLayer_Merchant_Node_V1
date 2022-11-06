@@ -43,13 +43,42 @@
       },
       "oauth_client": [
         {
-          "client_id": "484298010710-dp6lpcrijjf59c8clq8sib10snqnrmgu.apps.googleusercontent.com",
+          "client_id": "484298010710-2hufdht22e2d440a41cfdll929goeg0s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.sis.clightapp",
-            "certificate_hash": "5a73af621086936e0959e574154d5d68f7680c6d"
+            "certificate_hash": "262d97730e4f0f91442ac140065f9e1285c2e171"
           }
         },
+        {
+          "client_id": "484298010710-reefe53ckvl0lnlide3e0s8q03i0p0qq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBL4LAtz6L_xXW7uG81JrxerXLZ-s-GOqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484298010710-reefe53ckvl0lnlide3e0s8q03i0p0qq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484298010710:android:3a216312906e2ff82b8bf7",
+        "android_client_info": {
+          "package_name": "com.sis.clighteningboost"
+        }
+      },
+      "oauth_client": [
         {
           "client_id": "484298010710-reefe53ckvl0lnlide3e0s8q03i0p0qq.apps.googleusercontent.com",
           "client_type": 3

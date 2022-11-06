@@ -1,29 +1,19 @@
 package com.sis.clightapp.fragments.merchant;
 
-import static android.content.Context.MODE_PRIVATE;
-
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
 import android.os.Handler;
-import android.os.strictmode.WebViewMethodCalledOnWrongThreadViolation;
-import android.preference.PreferenceManager;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,21 +25,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.sis.clightapp.Interface.ApiClientStartStop;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.NetworkManager;
 import com.sis.clightapp.activity.MainActivity;
 
 import com.sis.clightapp.activity.MainEntryActivity;
-import com.sis.clightapp.activity.MainEntryActivityNew;
 import com.sis.clightapp.model.GsonModel.Getinfoerror;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
-import com.sis.clightapp.model.GsonModel.Sale;
 import com.sis.clightapp.model.REST.ServerStartStop.Node.NodeResp;
 import com.sis.clightapp.model.ScreenInfo;
 import com.sis.clightapp.session.MyLogOutService;
@@ -58,7 +44,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -826,7 +811,7 @@ public class MerchantFragment3 extends MerchantBaseFragment {
         et_2Fa_pass.setHint("Enter Administrative Password");
         final Button btn_confirm = enter2FaPassDialog.findViewById(R.id.btn_confirm);
         final Button btn_cancel = enter2FaPassDialog.findViewById(R.id.btn_cancel);
-        final ImageView iv_back = enter2FaPassDialog.findViewById(R.id.iv_back);
+        final ImageView iv_back = enter2FaPassDialog.findViewById(R.id.iv_back_invoice);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1752,10 +1737,22 @@ public class MerchantFragment3 extends MerchantBaseFragment {
                     @Override
                     public void run() {
 //                        parseJSONForRefunds(text);
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                startcall.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });
-                startcall.show();
+
             }
 
             @Override
@@ -1844,7 +1841,19 @@ public class MerchantFragment3 extends MerchantBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        stopcall.dismiss();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                stopcall.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });
@@ -2092,103 +2101,117 @@ public class MerchantFragment3 extends MerchantBaseFragment {
             @Override
             public void onMessage(WebSocket webSocket, final String text) {
                 Log.e("TAG", "MESSAGE: " + text);
-                if (text.equals("There are screens on:\r\r\n")) {
 
-                } else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addScreen(); //1
-                        } });
+                try {
+                    JSONObject jsonObject = new JSONObject(text);
+                    if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                        webSocket.close(1000, null);
+                        webSocket.cancel();
+                        goTo2FaPasswordDialog();
+                    } else {
 
-                } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String s = text;
-                            s = s.replaceAll("[\\n\\t\\r]", " ");
-                            s = s.toLowerCase();
-                            String words[] = s.split(" ");
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].equals("(detached)") || words[i].equals("(attached)") || words[i].equals("detached") || words[i].equals("attached")) {
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setStatus(words[i]);
-                                    if (list.size() == 0) {
-                                        list.add(0, secreeninfo);
-                                    } else {
-                                        list.add(list.size(), secreeninfo);
-                                    }
+                        if (text.equals("There are screens on:\r\r\n")) {
 
-                                }
-
-                            }
-                            newlist.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].contains(".lightning")) {
-                                    String str = words[i];
-                                    String kept = str.substring(0, str.indexOf("."));
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setPid(kept);
-                                    if (newlist.size() == 0) {
-                                        newlist.add(0, secreeninfo);
-                                    } else {
-                                        newlist.add(newlist.size(), secreeninfo);
-                                    }
-
-                                }
-
-                            }
-
-                            for (int i = 0; i < list.size(); i++) {
-                                for (int j = 0; j < newlist.size(); j++) {
-                                    if (i == j) {
-                                        list.get(i).setPid(newlist.get(j).getPid());
-                                    }
-                                }
-                            }
-                            if (list.size() == 0) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        screenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                list.clear();
-                                                addScreen(); //2
-                                                simpleLoader.dismiss();
-                                            }
-                                        }, 2000);
-
-                                    }
-                                });
-
-                            } else {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        screenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                QuitcreenScnerio();
-                                                simpleLoader.dismiss();
-                                            }
-                                        }, 2000);
-
-                                    }
-                                });
-                            }
+                        } else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addScreen(); //1
+                                } });
 
                         }
-                    });
-                }
+                        else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String s = text;
+                                    s = s.replaceAll("[\\n\\t\\r]", " ");
+                                    s = s.toLowerCase();
+                                    String words[] = s.split(" ");
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].equals("(detached)") || words[i].equals("(attached)") || words[i].equals("detached") || words[i].equals("attached")) {
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setStatus(words[i]);
+                                            if (list.size() == 0) {
+                                                list.add(0, secreeninfo);
+                                            } else {
+                                                list.add(list.size(), secreeninfo);
+                                            }
 
-                screenCall.dismiss();
+                                        }
+
+                                    }
+                                    newlist.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].contains(".lightning")) {
+                                            String str = words[i];
+                                            String kept = str.substring(0, str.indexOf("."));
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setPid(kept);
+                                            if (newlist.size() == 0) {
+                                                newlist.add(0, secreeninfo);
+                                            } else {
+                                                newlist.add(newlist.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    for (int i = 0; i < list.size(); i++) {
+                                        for (int j = 0; j < newlist.size(); j++) {
+                                            if (i == j) {
+                                                list.get(i).setPid(newlist.get(j).getPid());
+                                            }
+                                        }
+                                    }
+                                    if (list.size() == 0) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                screenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        list.clear();
+                                                        addScreen(); //2
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 2000);
+
+                                            }
+                                        });
+
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                screenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        QuitcreenScnerio();
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 2000);
+
+                                            }
+                                        });
+                                    }
+
+                                }
+                            });
+                        }
+
+                        screenCall.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -2260,104 +2283,122 @@ public class MerchantFragment3 extends MerchantBaseFragment {
             @Override
             public void onMessage(WebSocket webSocket, final String text) {
                 Log.e("TAG", "MESSAGE: " + text);
-                if (text.equals("There are screens on:\r\r\n")) {
 
-                }else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addScreen();//3
-                        } });
-                } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String s = text;
-                            s = s.replaceAll("[\\n\\t\\r]", " ");
-                            s = s.toLowerCase();
-                            String words[] = s.split(" ");
-                            listafterDetach.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].equals("(detached)") || words[i].equals("attached") || words[i].equals("(attached)") || words[i].equals("detached")) {
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setStatus(words[i]);
-                                    if (listafterDetach.size() == 0) {
-                                        listafterDetach.add(0, secreeninfo);
-                                    } else {
-                                        listafterDetach.add(listafterDetach.size(), secreeninfo);
-                                    }
-
-                                }
-
+                try {
+                    JSONObject jsonObject = new JSONObject(text);
+                    if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
                             }
-                            newlist.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].contains(".lightning")) {
-                                    String str = words[i];
-                                    String kept = str.substring(0, str.indexOf("."));
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setPid(kept);
-                                    if (newlist.size() == 0) {
-                                        newlist.add(0, secreeninfo);
-                                    } else {
-                                        newlist.add(newlist.size(), secreeninfo);
-                                    }
+                        });
+                    } else {
+                        if (text.equals("There are screens on:\r\r\n")) {
 
-                                }
-
-                            }
-
-                            for (int i = 0; i < list.size(); i++) {
-                                for (int j = 0; j < newlist.size(); j++) {
-                                    if (i == j) {
-                                        list.get(i).setPid(newlist.get(j).getPid());
-                                    }
-                                }
-                            }
-                            if (listafterDetach.size() == 0) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        screenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                addScreen(); //4
-                                                simpleLoader.dismiss();
-                                            }
-                                        }, 2000);
-
-                                    }
-                                });
-
-                            } else {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        screenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Ifdetached();
-                                                simpleLoader.dismiss();
-                                            }
-                                        }, 2000);
-
-                                    }
-                                });
-
-
-                            }
-
-
+                        }else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addScreen();//3
+                                } });
                         }
-                    });
+                        else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String s = text;
+                                    s = s.replaceAll("[\\n\\t\\r]", " ");
+                                    s = s.toLowerCase();
+                                    String words[] = s.split(" ");
+                                    listafterDetach.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].equals("(detached)") || words[i].equals("attached") || words[i].equals("(attached)") || words[i].equals("detached")) {
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setStatus(words[i]);
+                                            if (listafterDetach.size() == 0) {
+                                                listafterDetach.add(0, secreeninfo);
+                                            } else {
+                                                listafterDetach.add(listafterDetach.size(), secreeninfo);
+                                            }
 
-                    screenCall.dismiss();
+                                        }
+
+                                    }
+                                    newlist.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].contains(".lightning")) {
+                                            String str = words[i];
+                                            String kept = str.substring(0, str.indexOf("."));
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setPid(kept);
+                                            if (newlist.size() == 0) {
+                                                newlist.add(0, secreeninfo);
+                                            } else {
+                                                newlist.add(newlist.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    for (int i = 0; i < list.size(); i++) {
+                                        for (int j = 0; j < newlist.size(); j++) {
+                                            if (i == j) {
+                                                list.get(i).setPid(newlist.get(j).getPid());
+                                            }
+                                        }
+                                    }
+                                    if (listafterDetach.size() == 0) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                screenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        addScreen(); //4
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 2000);
+
+                                            }
+                                        });
+
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                screenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Ifdetached();
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 2000);
+
+                                            }
+                                        });
+
+
+                                    }
+
+
+                                }
+                            });
+
+                            screenCall.dismiss();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -2429,92 +2470,110 @@ public class MerchantFragment3 extends MerchantBaseFragment {
             @Override
             public void onMessage(WebSocket webSocket, final String text) {
                 Log.e("TAG", "MESSAGE: " + text);
-                if (text.equals("There are screens on:\r\r\n")) {
 
-                }else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addScreen(); //5
-                        } });
-                } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            String s = text;
-                            s = s.replaceAll("[\\n\\t\\r]", " ");
-                            s = s.toLowerCase();
-                            String words[] = s.split(" ");
-                            listafterAdd.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].equals("(detached)") || words[i].equals("(attached)") || words[i].equals("detached") || words[i].equals("attached")) {
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setStatus(words[i]);
-                                    if (listafterAdd.size() == 0) {
-                                        listafterAdd.add(0, secreeninfo);
-                                    } else {
-                                        listafterAdd.add(listafterAdd.size(), secreeninfo);
-                                    }
-
-                                }
-
+                try {
+                    JSONObject jsonObject = new JSONObject(text);
+                    if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
                             }
-                            newlist.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].contains(".lightning")) {
-                                    String str = words[i];
-                                    String kept = str.substring(0, str.indexOf("."));
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setPid(kept);
-                                    if (newlist.size() == 0) {
-                                        newlist.add(0, secreeninfo);
-                                    } else {
-                                        newlist.add(newlist.size(), secreeninfo);
-                                    }
+                        });
+                    } else {
+                        if (text.equals("There are screens on:\r\r\n")) {
 
-                                }
-
-                            }
-
-                            for (int i = 0; i < list.size(); i++) {
-                                for (int j = 0; j < newlist.size(); j++) {
-                                    if (i == j) {
-                                        list.get(i).setPid(newlist.get(j).getPid());
-                                    }
-                                }
-                            }
-                            if (listafterAdd.size() == 0) {
-                                simpleLoader.show();
-                                final Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        screenCall.dismiss();
-                                        listafterAdd.clear();
-                                        addScreen();//6
-                                        simpleLoader.dismiss();
-                                    }
-                                }, 2000);
-
-                            } else {
-                                screenCall.dismiss();
-                                simpleLoader.show();
-                                final Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                        DetachscreenScnerio();
-                                        simpleLoader.dismiss();
-                                    }
-                                }, 2000);
-                            }
-
-
+                        }else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addScreen(); //5
+                                } });
                         }
-                    });
-                    screenCall.dismiss();
+                        else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+                                    String s = text;
+                                    s = s.replaceAll("[\\n\\t\\r]", " ");
+                                    s = s.toLowerCase();
+                                    String words[] = s.split(" ");
+                                    listafterAdd.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].equals("(detached)") || words[i].equals("(attached)") || words[i].equals("detached") || words[i].equals("attached")) {
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setStatus(words[i]);
+                                            if (listafterAdd.size() == 0) {
+                                                listafterAdd.add(0, secreeninfo);
+                                            } else {
+                                                listafterAdd.add(listafterAdd.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+                                    newlist.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].contains(".lightning")) {
+                                            String str = words[i];
+                                            String kept = str.substring(0, str.indexOf("."));
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setPid(kept);
+                                            if (newlist.size() == 0) {
+                                                newlist.add(0, secreeninfo);
+                                            } else {
+                                                newlist.add(newlist.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    for (int i = 0; i < list.size(); i++) {
+                                        for (int j = 0; j < newlist.size(); j++) {
+                                            if (i == j) {
+                                                list.get(i).setPid(newlist.get(j).getPid());
+                                            }
+                                        }
+                                    }
+                                    if (listafterAdd.size() == 0) {
+                                        simpleLoader.show();
+                                        final Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                screenCall.dismiss();
+                                                listafterAdd.clear();
+                                                addScreen();//6
+                                                simpleLoader.dismiss();
+                                            }
+                                        }, 2000);
+
+                                    } else {
+                                        screenCall.dismiss();
+                                        simpleLoader.show();
+                                        final Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                DetachscreenScnerio();
+                                                simpleLoader.dismiss();
+                                            }
+                                        }, 2000);
+                                    }
+
+
+                                }
+                            });
+                            screenCall.dismiss();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -2590,60 +2649,74 @@ public class MerchantFragment3 extends MerchantBaseFragment {
                     @Override
                     public void run() {
 
-                        String s = text;
-                        s = s.replaceAll("[\\n\\t\\r]", " ");
-                        s = s.toLowerCase();
-                        String words[] = s.split(" ");
-                        for (int i = 0; i < words.length; i++) {
-                            if (words[i].equals("(detached)") || words[i].equals("(attached)")) {
-                                ScreenInfo secreeninfo = new ScreenInfo();
-                                secreeninfo.setStatus(words[i]);
-                                if (listafterDetach.size() == 0) {
-                                    listafterDetach.add(0, secreeninfo);
-                                } else {
-                                    listafterDetach.add(listafterDetach.size(), secreeninfo);
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        webSocket.close(1000, null);
+                                        webSocket.cancel();
+                                        goTo2FaPasswordDialog();
+                                    }
+                                });
+                            } else {
+                                String s = text;
+                                s = s.replaceAll("[\\n\\t\\r]", " ");
+                                s = s.toLowerCase();
+                                String words[] = s.split(" ");
+                                for (int i = 0; i < words.length; i++) {
+                                    if (words[i].equals("(detached)") || words[i].equals("(attached)")) {
+                                        ScreenInfo secreeninfo = new ScreenInfo();
+                                        secreeninfo.setStatus(words[i]);
+                                        if (listafterDetach.size() == 0) {
+                                            listafterDetach.add(0, secreeninfo);
+                                        } else {
+                                            listafterDetach.add(listafterDetach.size(), secreeninfo);
+                                        }
+
+                                    }
+
                                 }
+                                for (int i = 0; i < words.length; i++) {
+                                    if (words[i].contains(".lightning")) {
+                                        for (int j = 0; j < listafterDetach.size(); j++) {
+                                            String str = words[i];
+                                            String kept = str.substring(0, str.indexOf("."));
+                                            listafterDetach.get(j).setPid(kept);
+                                        }
 
-                            }
-
-                        }
-                        for (int i = 0; i < words.length; i++) {
-                            if (words[i].contains(".lightning")) {
-                                for (int j = 0; j < listafterDetach.size(); j++) {
-                                    String str = words[i];
-                                    String kept = str.substring(0, str.indexOf("."));
-                                    listafterDetach.get(j).setPid(kept);
+                                    }
                                 }
-
-                            }
-                        }
-                        countDetach++;
-                        if (listafterAdd.size() == countDetach) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    detachscreencall.dismiss();
-                                    simpleLoader.show();
-                                    final Handler handler = new Handler();
-                                    handler.postDelayed(new Runnable() {
+                                countDetach++;
+                                if (listafterAdd.size() == countDetach) {
+                                    getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            screen_ls_afterdetach();
-                                            countDetach = 0;
-                                            listafterAdd.clear();
-                                            simpleLoader.dismiss();
+                                            detachscreencall.dismiss();
+                                            simpleLoader.show();
+                                            final Handler handler = new Handler();
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    screen_ls_afterdetach();
+                                                    countDetach = 0;
+                                                    listafterAdd.clear();
+                                                    simpleLoader.dismiss();
+                                                }
+                                            }, 2000);
+
                                         }
-                                    }, 2000);
+                                    });
 
                                 }
-                            });
-
+                                detachscreencall.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-
                     }
-
                 });
-                detachscreencall.dismiss();
             }
 
             @Override
@@ -2725,33 +2798,51 @@ public class MerchantFragment3 extends MerchantBaseFragment {
                 @Override
                 public void onMessage(WebSocket webSocket, final String text) {
                     Log.e("TAG", "MESSAGE: " + text);
-                    if (text.equals("routing-node-4@routingnode4-desktop:~$ ")) {
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(text);
+                        if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    webSocket.close(1000, null);
+                                    webSocket.cancel();
+                                    goTo2FaPasswordDialog();
+                                }
+                            });
+                        } else {
+                            if (text.equals("routing-node-4@routingnode4-desktop:~$ ")) {
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        addscreenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
+                                        getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                screen_ls_afterAddnew();
-                                                simpleLoader.dismiss();
+                                                addscreenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        screen_ls_afterAddnew();
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 3000);
+
                                             }
-                                        }, 3000);
+                                        });
+
 
                                     }
                                 });
 
-
+                            } else {
+                                addscreenCall.dismiss();
                             }
-                        });
 
-                    } else {
-                        addscreenCall.dismiss();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
 
                 }
@@ -2843,24 +2934,39 @@ public class MerchantFragment3 extends MerchantBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        quitCall.dismiss();
-                        simpleLoader.show();
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
 
-                                if (countquit == list.size()) {
-                                    addScreen(); //7
-                                    list.clear();
-                                    countquit = 0;
-                                }
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        webSocket.close(1000, null);
+                                        webSocket.cancel();
+                                        goTo2FaPasswordDialog();
+                                    }
+                                });
+                            } else {
+                                quitCall.dismiss();
+                                simpleLoader.show();
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                simpleLoader.dismiss();
+                                        if (countquit == list.size()) {
+                                            addScreen(); //7
+                                            list.clear();
+                                            countquit = 0;
+                                        }
+
+                                        simpleLoader.dismiss();
+                                    }
+                                }, 2000);
                             }
-                        }, 2000);
-
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 

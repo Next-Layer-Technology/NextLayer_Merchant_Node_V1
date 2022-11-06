@@ -1,12 +1,10 @@
 package com.sis.clightapp.fragments.merchant;
 
 import android.Manifest;
-import android.app.Activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ContentProvider;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,10 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.media.AudioManager;
-import android.media.ToneGenerator;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -36,16 +31,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
@@ -55,22 +47,13 @@ import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.Functions2;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.ImageBase64Encrpytion;
-import com.sis.clightapp.Utills.ImageToBase16Hex;
-import com.sis.clightapp.Utills.NetworkManager;
-import com.sis.clightapp.activity.CheckOutMain11;
-import com.sis.clightapp.activity.LoginActivity;
 import com.sis.clightapp.activity.MainActivity;
 
-import com.sis.clightapp.activity.MerchnatMain11;
 import com.sis.clightapp.adapter.MerchantItemAdapter;
-import com.sis.clightapp.adapter.MerchantToInventoryAdater;
 import com.sis.clightapp.model.Channel_BTCResponseData;
-import com.sis.clightapp.model.FCMResponse;
 import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.AddItemsModel;
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemLIstModel;
@@ -91,7 +74,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -417,7 +399,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
 //
         final Button btnUpdate = dialog.findViewById(R.id.btnUpdate2);//btnUpdate2
         final Button btnDelete = dialog.findViewById(R.id.btnDelete);
-        final ImageView ivBack = dialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = dialog.findViewById(R.id.iv_back_invoice);
 
         edtUpdateName.setText(itemLIstModel.getName());
         edtUpdatePrice.setText(itemLIstModel.getUnit_price());
@@ -571,7 +553,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
 //        edtUpdateDescription.setFocusable(false);
 //        edtUpdateDescription.setFocusableInTouchMode(false);
         final Button btnUpdate = dialog.findViewById(R.id.btnUpdate2);
-        final ImageView ivBack = dialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = dialog.findViewById(R.id.iv_back_invoice);
         String itemName = String.valueOf(selectedItemName);
         ArrayList<Items> mdSource = GlobalState.getInstance().getmDataSourceCheckOutInventory();
         if (mdSource != null) {
@@ -652,7 +634,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
         edtUpdateDescription.setVisibility(View.GONE);
         btnUpdate.setVisibility(View.GONE);
 
-        final ImageView ivBack = dialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = dialog.findViewById(R.id.iv_back_invoice);
         // progressBar = dialog.findViewById(R.id.progress_bar);
         Spinner dropdown = (Spinner) dialog.findViewById(R.id.spinner1);
 
@@ -886,7 +868,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
         final EditText etCardNumber = addItemDialog.findViewById(R.id.et_card_number);
         final EditText etCVV = addItemDialog.findViewById(R.id.et_cvv);
         final EditText etExpiryDate = addItemDialog.findViewById(R.id.et_expiry_date);
-        final ImageView ivBack = addItemDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = addItemDialog.findViewById(R.id.iv_back_invoice);
 
         itemImage = addItemDialog.findViewById(R.id.itemImage);
 //        itemImage.setImageResource(R.drawable.question2);
@@ -1230,7 +1212,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
 //        dialog.getWindow().setLayout(500, 500);
-        final ImageView ivBack = dialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = dialog.findViewById(R.id.iv_back_invoice);
         Spinner dropdown = (Spinner) dialog.findViewById(R.id.spinner1);
 
 
@@ -1307,7 +1289,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
         final View deleteDialogView = factory.inflate(R.layout.alertdialogdeletel_ayout, null);
         final AlertDialog deleteDialog = new AlertDialog.Builder(getContext()).create();
         deleteDialog.setView(deleteDialogView);
-        deleteDialogView.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+        deleteDialogView.findViewById(R.id.iv_back_invoice).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 deleteDialog.dismiss();

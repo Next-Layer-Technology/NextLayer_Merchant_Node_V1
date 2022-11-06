@@ -44,40 +44,46 @@ public interface ApiPaths2 {
     @Headers("Content-Type: application/json")
     @POST("/admin/invoice-to-client")
     Call<WebSocketOTPresponse> flashPay(
-            @Header("Authorization")String token,@Body JsonObject params);
+            @Header("Authorization") String token, @Body JsonObject params);
     //SetFCMRegToken
 
     @Headers("Content-Type: application/json")
     @POST("/SetFCMRegToken")
     Call<FCMResponse> setFcmToken(
-            @Header("Authorization")String token,@Body JsonObject params);
+            @Header("Authorization") String token, @Body JSONObject params);
+
+    @Headers("Content-Type: application/json")
+    @POST("/SetFCMRegToken")
+    Call<FCMResponse> setFcmToken(
+            @Body JsonObject params);
+
     @Multipart
-   //@Headers("Content-Type: application/json")
+    //@Headers("Content-Type: application/json")
     @POST("/UserStorage/upload")
     Call<ItemPhotoPath> uploadImage(
-            @Header("Authorization")String token,@Part MultipartBody.Part file);
+            @Header("Authorization") String token, @Part MultipartBody.Part file);
 
     @Headers("Content-Type: application/json")
     @GET("/UserStorage/inventory/")
     Call<ItemsDataMerchant> getInventoryItems(
-            @Header("Authorization")String token
-    //        @Body JsonObject params
+            @Header("Authorization") String token
+            //        @Body JsonObject params
     );
 
     @Headers("Content-Type: application/json")
     @POST("/UserStorage/inventory/store")
     Call<AddItemsModel> addInventoryItems(
-            @Header("Authorization")String token,@Body JsonObject params);
+            @Header("Authorization") String token, @Body JsonObject params);
 
     @Headers("Content-Type: application/json")
     @PUT("/UserStorage/inventory/{id}/update")
     Call<AddItemsModel> updateInventoryItems(
-            @Header("Authorization")String token, @Path("id") int id, @Body JsonObject params);
+            @Header("Authorization") String token, @Path("id") int id, @Body JsonObject params);
 
     @Headers("Content-Type: application/json")
     @DELETE("/UserStorage/inventory/{id}/delete")
     Call<AddItemsModel> deleteInventoryItems(
-            @Header("Authorization")String token, @Path("id") int id);
+            @Header("Authorization") String token, @Path("id") int id);
 
     /*POST http://ip:port/UserStorage/upload
 multipart/form-data

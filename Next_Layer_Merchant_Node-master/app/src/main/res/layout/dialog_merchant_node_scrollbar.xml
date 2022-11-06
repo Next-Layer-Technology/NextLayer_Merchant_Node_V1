@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="450dp"
+    android:background="@drawable/bg_nearby_client_rounded"
+    android:gravity="center"
+    android:paddingBottom="20dp">
+
+    <ImageView
+        android:id="@+id/ivFlashPay"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_flashpay" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvInStore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivFlashPay"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-20dp"
+        android:fontFamily="@font/helvetica_bold"
+        android:text="IN-STORE"
+        android:textColor="@color/black" />
+
+    <View
+        android:id="@+id/viewDivider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/tvInStore"
+        android:layout_margin="10dp"
+        android:background="#b74b2a" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        style="@style/ScrollbarStyleMerchant"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ivScroll"
+        android:layout_below="@+id/viewDivider"
+        android:layout_marginEnd="10dp"
+        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:spanCount="3"
+        tools:listitem="@layout/item_merchant_node" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivScroll"
+        android:layout_width="35dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
+
+</RelativeLayout>

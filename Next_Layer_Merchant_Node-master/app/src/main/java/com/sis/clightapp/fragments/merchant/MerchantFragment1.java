@@ -10,7 +10,6 @@ import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,7 +18,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -27,9 +25,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.format.DateFormat;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -70,17 +66,14 @@ import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.Functions2;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.NetworkManager;
 import com.sis.clightapp.Utills.Print.PrintPic;
 import com.sis.clightapp.Utills.Print.PrinterCommands;
-import com.sis.clightapp.Utills.Print.UnicodeFormatter;
 
+import com.sis.clightapp.Utills.UrlConstants;
 import com.sis.clightapp.activity.MainActivity;
-import com.sis.clightapp.activity.MerchnatMain11;
 import com.sis.clightapp.adapter.MerchantRefundsListAdapter;
 import com.sis.clightapp.adapter.MerchantSalesListAdapter;
 
-import com.sis.clightapp.fragments.checkout.CheckOutsFragment3;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.CreateInvoice;
 import com.sis.clightapp.model.GsonModel.DecodePayBolt11;
@@ -92,12 +85,10 @@ import com.sis.clightapp.model.GsonModel.Pay;
 import com.sis.clightapp.model.GsonModel.Refund;
 import com.sis.clightapp.model.GsonModel.Sale;
 
-import com.sis.clightapp.model.InvoiceResponse;
 import com.sis.clightapp.model.Invoices.InvoicesResponse;
 import com.sis.clightapp.model.REST.TransactionInfo;
 import com.sis.clightapp.model.REST.TransactionResp;
 import com.sis.clightapp.model.RefundsData.RefundResponse;
-import com.sis.clightapp.model.ScreenInfo;
 import com.sis.clightapp.model.Tax;
 import com.sis.clightapp.model.UserInfo;
 import com.sis.clightapp.model.currency.CurrentAllRate;
@@ -115,12 +106,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
-import java.security.KeyStore;
-import java.sql.Ref;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -128,9 +115,7 @@ import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -151,7 +136,6 @@ import tech.gusavila92.websocketclient.WebSocketClient;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.KEYGUARD_SERVICE;
-import static android.content.Context.MODE_APPEND;
 
 public class MerchantFragment1 extends MerchantBaseFragment {
     private MerchantFragment1 merchantFragment1;
@@ -735,6 +719,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 //        }
 
     }
+
     private void parseJSONForSales(String jsonString) {
         String temre = jsonString;
         Gson gson = new Gson();
@@ -913,7 +898,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         et_label.setText("sale" + getUnixTimeStamp());
         getPaidLABEL = (et_label.getText().toString());
         final EditText et_description = distributeGetPaidDialog.findViewById(R.id.et_description);
-        final ImageView ivBack = distributeGetPaidDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = distributeGetPaidDialog.findViewById(R.id.iv_back_invoice);
         qRCodeImage = distributeGetPaidDialog.findViewById(R.id.imgQR);
         Button btnCreatInvoice = distributeGetPaidDialog.findViewById(R.id.btn_createinvoice);
         qRCodeImage.setVisibility(View.GONE);
@@ -953,9 +938,9 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                     //TODO:when call cmd invoice :      createInvoiceProgressDialog.show();
                     currentTransactionLabel = label;
                     AMOUNT_USD = Double.parseDouble(msatoshi);
-                    double priceInBTC=1 /GlobalState.getInstance().getChannel_btcResponseData().getPrice();
+                    double priceInBTC = 1 / GlobalState.getInstance().getChannel_btcResponseData().getPrice();
 
-                   // double priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
+                    // double priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
                     priceInBTC = priceInBTC * Double.parseDouble(msatoshi);
                     AMOUNT_BTC = priceInBTC;
                     double amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi;
@@ -1026,11 +1011,11 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         Gson gson = new Gson();
 //        Type type = new TypeToken<Invoice>() {
 //        }.getType();
-        JSONArray jsonArray=null;
-        String json="";
+        JSONArray jsonArray = null;
+        String json = "";
         try {
-            jsonArray=new JSONObject(response).getJSONArray("invoices");
-            json=jsonArray.get(0).toString();
+            jsonArray = new JSONObject(response).getJSONArray("invoices");
+            json = jsonArray.get(0).toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1075,7 +1060,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         confirmPaymentDialog.setCancelable(false);
         //init dialog views
 
-        final ImageView ivBack = confirmPaymentDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = confirmPaymentDialog.findViewById(R.id.iv_back_invoice);
         final TextView amount = confirmPaymentDialog.findViewById(R.id.et_amount);
         final ImageView payment_preImage = confirmPaymentDialog.findViewById(R.id.et_preimage);
         final TextView paid_at = confirmPaymentDialog.findViewById(R.id.et_paidat);
@@ -1220,7 +1205,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 //        dialog.getWindow().setLayout(500, 500);
         commandeerRefundDialog.setCancelable(false);
         final EditText bolt11 = commandeerRefundDialog.findViewById(R.id.bolt11val);
-        final ImageView ivBack = commandeerRefundDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = commandeerRefundDialog.findViewById(R.id.iv_back_invoice);
         Button btnNext = commandeerRefundDialog.findViewById(R.id.btn_next);
         Button btnscanQr = commandeerRefundDialog.findViewById(R.id.btn_scanQR);
         // progressBar = dialog.findViewById(R.id.progress_bar);
@@ -1280,7 +1265,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         String mst = msatoshi;
         MSATOSHI = (Double.valueOf(msatoshi));
         double btc = mSatoshoToBtc(Double.valueOf(msatoshi));
-       // double priceInBTC = GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
+        // double priceInBTC = GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
         double priceInBTC = GlobalState.getInstance().getChannel_btcResponseData().getPrice();
         double usd = priceInBTC * btc;
         AMOUNT_USD = usd;
@@ -1293,7 +1278,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         final EditText amount = commandeerRefundDialogstep2.findViewById(R.id.amountval);
         amount.setText(mst);
         amount.setInputType(InputType.TYPE_NULL);
-        final ImageView ivBack = commandeerRefundDialogstep2.findViewById(R.id.iv_back);
+        final ImageView ivBack = commandeerRefundDialogstep2.findViewById(R.id.iv_back_invoice);
         Button excecute = commandeerRefundDialogstep2.findViewById(R.id.btn_next);
         bolt11.setText(bolt11value);
         label.setText("outgoing" + getUnixTimeStamp());
@@ -1419,7 +1404,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 
     private void executeCommandeerRefundApi(String bolt11value, String labelval, String amountusd) {
         //double priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
-        double priceInBTC = 1/GlobalState.getInstance().getChannel_btcResponseData().getPrice();
+        double priceInBTC = 1 / GlobalState.getInstance().getChannel_btcResponseData().getPrice();
         priceInBTC = priceInBTC * Double.parseDouble(amountusd);
         double amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi;
         amountInMsatoshi = amountInMsatoshi * AppConstants.satoshiToMSathosi;
@@ -1431,6 +1416,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         //luqman pending
         PayRequestToOther(bolt11value, rMSatoshi, labelval);
     }
+
     protected void paytoothersResponse(String result) {
 
 
@@ -1487,7 +1473,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         commandeerRefundDialogstep2 = new Dialog(getContext());
         commandeerRefundDialogstep2.setContentView(R.layout.dialoglayoutrefundcommandeerlaststepconfirmedpay);
         Objects.requireNonNull(commandeerRefundDialogstep2.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final ImageView ivBack = commandeerRefundDialogstep2.findViewById(R.id.iv_back);
+        final ImageView ivBack = commandeerRefundDialogstep2.findViewById(R.id.iv_back_invoice);
         final TextView textView = commandeerRefundDialogstep2.findViewById(R.id.textView2);
         final Button ok = commandeerRefundDialogstep2.findViewById(R.id.btn_ok);
         commandeerRefundDialogstep2.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
@@ -1708,7 +1694,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 //        dialog.getWindow().setLayout(500, 500);
         blutoothDevicesDialog.setCancelable(false);
         //init dialog views
-        final ImageView ivBack = blutoothDevicesDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = blutoothDevicesDialog.findViewById(R.id.iv_back_invoice);
         final Button scanDevices = blutoothDevicesDialog.findViewById(R.id.btn_scanDevices);
         TextView tv_status = blutoothDevicesDialog.findViewById(R.id.tv_status);
         ListView blueDeviceListView = blutoothDevicesDialog.findViewById(R.id.blueDeviceListView);
@@ -1943,6 +1929,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
             e.printStackTrace();
         }
     }
+
     //TODO: UPload Transaction to Web PAnnel
     private void saveGetPaidTransactionInLog(Invoice invoice) {
         DecimalFormat precision = new DecimalFormat("0.00");
@@ -2855,6 +2842,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 
 
     }
+
     private void SubscrieChannel() {
         simpleloader.show();
         URI uri;
@@ -3089,7 +3077,19 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForConfirmPayment(text);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForConfirmPayment(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });
@@ -3143,7 +3143,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 
                 String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
 
-                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli invoice" + " " + rMSatoshi + " " + label + " " + descrption + "\"] }";
+                String json = UrlConstants.getInvoiceSendCommand(token, rMSatoshi, label, descrption);
 
                 try {
 
@@ -3168,8 +3168,24 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForCreatInvocie(text);
-                        simpleloader.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        webSocket.close(1000, null);
+                                        webSocket.cancel();
+                                        goTo2FaPasswordDialog();
+                                    }
+                                });
+                            } else {
+                                parseJSONForCreatInvocie(text);
+                                simpleloader.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 
@@ -3246,8 +3262,19 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForSales(text);
-                        simpleloader.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForSales(text);
+                                simpleloader.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 
@@ -3325,8 +3352,21 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForRefunds(text);
-                        simpleloader.dismiss();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForRefunds(text);
+                                simpleloader.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
 
@@ -3403,8 +3443,21 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForRefunds(text);
-                        simpleloader.dismiss();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForRefunds(text);
+                                simpleloader.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
 
@@ -3481,19 +3534,34 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (!text.contains("error")) {
-                            parseJSONForDecodePayBolt11(text);
-                            simpleloader.dismiss();
-                        }else {
-                            simpleloader.dismiss();
-                            try {
-                                JSONObject jsonObject=new JSONObject(text);
-                                String message=jsonObject.getString("message");
-                                showToast(message);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                if (!text.contains("error")) {
+                                    parseJSONForDecodePayBolt11(text);
+                                    simpleloader.dismiss();
+                                } else {
+                                    simpleloader.dismiss();
+                                    try {
+                                        JSONObject jsonObject1 = new JSONObject(text);
+                                        String message = jsonObject1.getString("message");
+                                        showToast(message);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+
+
+
                     }
                 });
             }
@@ -3569,8 +3637,20 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        paytoothersResponse(text);
-                        simpleloader.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                paytoothersResponse(text);
+                                simpleloader.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
                 });

@@ -1,6 +1,5 @@
 package com.sis.clightapp.fragments.admin;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -9,24 +8,19 @@ import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
-import android.text.format.DateFormat;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +38,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -61,17 +54,12 @@ import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.Functions2;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.NetworkManager;
 import com.sis.clightapp.Utills.Print.PrintPic;
 import com.sis.clightapp.Utills.Print.PrinterCommands;
-import com.sis.clightapp.Utills.Print.UnicodeFormatter;
-import com.sis.clightapp.activity.AdminMain11;
+import com.sis.clightapp.Utills.UrlConstants;
 import com.sis.clightapp.activity.MainActivity;
 import com.sis.clightapp.adapter.AdminReceiveablesListAdapter;
 import com.sis.clightapp.adapter.AdminSendablesListAdapter;
-import com.sis.clightapp.adapter.MerchantRefundsListAdapter;
-import com.sis.clightapp.fragments.checkout.CheckOutFragment1;
-import com.sis.clightapp.fragments.merchant.MerchantFragment1;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.CreateInvoice;
 import com.sis.clightapp.model.GsonModel.DecodePayBolt11;
@@ -85,7 +73,6 @@ import com.sis.clightapp.model.Invoices.InvoicesResponse;
 import com.sis.clightapp.model.REST.TransactionInfo;
 import com.sis.clightapp.model.REST.TransactionResp;
 import com.sis.clightapp.model.RefundsData.RefundResponse;
-import com.sis.clightapp.model.Tax;
 import com.sis.clightapp.model.currency.CurrentAllRate;
 import com.sis.clightapp.model.currency.CurrentSpecificRateData;
 import com.sis.clightapp.session.MyLogOutService;
@@ -98,16 +85,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Type;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Objects;
@@ -128,6 +111,7 @@ import tech.gusavila92.websocketclient.WebSocketClient;
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.KEYGUARD_SERVICE;
 //qq
+
 /**
  * By
  * khuwajahassan15@gmail.com
@@ -156,7 +140,7 @@ public class AdminFragment1 extends AdminBaseFragment {
     String distributeDescription = "";
     String commandeerDescription = "";
     //creat scan object
-   // private final String gdaxUrl = "ws://98.226.215.246:8095/SendCommands";
+    // private final String gdaxUrl = "ws://98.226.215.246:8095/SendCommands";
     private String gdaxUrl = "ws://73.36.65.41:8095/SendCommands";
     private IntentIntegrator qrScan;
     //TODO:For Printing Purpose
@@ -285,12 +269,12 @@ public class AdminFragment1 extends AdminBaseFragment {
         ViewGroup.LayoutParams lp2 = (ViewGroup.LayoutParams) sendeableslistview.getLayoutParams();
         lp2.width = setwidht;
         sendeableslistview.setLayoutParams(lp2);
-        gdaxUrl=new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
+        gdaxUrl = new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
 
         getInvoicelist();
         getRefundslist();
         if (CheckNetwork.isInternetAvailable(getContext())) {
-           // getcurrentrate();
+            // getcurrentrate();
             SubscrieChannel();
             //getHeartBeat();
         } else {
@@ -641,6 +625,7 @@ public class AdminFragment1 extends AdminBaseFragment {
 //            getSalesListProgressDialog.setCanceledOnTouchOutside(false);
 //        }
     }
+
     private void parseJSONForSales(String jsonString) {
         String temre = jsonString;
         Gson gson = new Gson();
@@ -864,7 +849,7 @@ public class AdminFragment1 extends AdminBaseFragment {
         et_label.setText("sale" + getUnixTimeStamp());
         getPaidLABEL = (et_label.getText().toString());
         final EditText et_description = distributeGetPaidDialog.findViewById(R.id.et_description);
-        final ImageView ivBack = distributeGetPaidDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = distributeGetPaidDialog.findViewById(R.id.iv_back_invoice);
         qRCodeImage = distributeGetPaidDialog.findViewById(R.id.imgQR);
         Button btnCreatInvoice = distributeGetPaidDialog.findViewById(R.id.btn_createinvoice);
         qRCodeImage.setVisibility(View.GONE);
@@ -911,7 +896,7 @@ public class AdminFragment1 extends AdminBaseFragment {
                     currentTransactionLabel = label;
                     AMOUNT_USD = Double.parseDouble(msatoshi);
                     //double priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
-                    double priceInBTC=1 /GlobalState.getInstance().getChannel_btcResponseData().getPrice();
+                    double priceInBTC = 1 / GlobalState.getInstance().getChannel_btcResponseData().getPrice();
                     priceInBTC = priceInBTC * Double.parseDouble(msatoshi);
                     AMOUNT_BTC = priceInBTC;
                     double amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi;
@@ -924,7 +909,7 @@ public class AdminFragment1 extends AdminBaseFragment {
                     String rMSatoshi = formatter.format(amountInMsatoshi);
                     distributeDescription = descrption;
                     CreateInvoice(rMSatoshi, label, descrption);
-                   // creatInvoice(rMSatoshi, label, descrption);
+                    // creatInvoice(rMSatoshi, label, descrption);
                 }
 
             }
@@ -944,6 +929,7 @@ public class AdminFragment1 extends AdminBaseFragment {
         });
         distributeGetPaidDialog.show();
     }
+
     private CreateInvoice parseJSONForCreatInvocie(String jsonString) {
         Log.e("CreatInvoice", jsonString);
         String response = jsonString;
@@ -996,11 +982,11 @@ public class AdminFragment1 extends AdminBaseFragment {
       }
    ]
 }*/
-        JSONArray jsonArray=null;
-        String json="";
+        JSONArray jsonArray = null;
+        String json = "";
         try {
-             jsonArray=new JSONObject(response).getJSONArray("invoices");
-            json=jsonArray.get(0).toString();
+            jsonArray = new JSONObject(response).getJSONArray("invoices");
+            json = jsonArray.get(0).toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1048,7 +1034,7 @@ public class AdminFragment1 extends AdminBaseFragment {
 //        dialog.getWindow().setLayout(500, 500);
         distributeGetPaidDialog.setCancelable(false);
         //init dialog views
-        final ImageView ivBack = distributeGetPaidDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = distributeGetPaidDialog.findViewById(R.id.iv_back_invoice);
         final TextView amount = distributeGetPaidDialog.findViewById(R.id.et_amount);
         final ImageView payment_preImage = distributeGetPaidDialog.findViewById(R.id.et_preimage);
         final TextView paid_at = distributeGetPaidDialog.findViewById(R.id.et_paidat);
@@ -1252,7 +1238,7 @@ public class AdminFragment1 extends AdminBaseFragment {
 
 
         final EditText bolt11 = commandeerRefundDialog.findViewById(R.id.bolt11val);
-        final ImageView ivBack = commandeerRefundDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = commandeerRefundDialog.findViewById(R.id.iv_back_invoice);
         final TextView tv_title = commandeerRefundDialog.findViewById(R.id.tv_title);
         tv_title.setText("COMMANDEER");
         Button btnNext = commandeerRefundDialog.findViewById(R.id.btn_next);
@@ -1318,8 +1304,8 @@ public class AdminFragment1 extends AdminBaseFragment {
         MSATOSHI = (Double.valueOf(msatoshi));
         double btc = mSatoshoToBtc(Double.valueOf(msatoshi));
 
-       // double priceInBTC = GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
-        double priceInBTC=GlobalState.getInstance().getChannel_btcResponseData().getPrice();
+        // double priceInBTC = GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
+        double priceInBTC = GlobalState.getInstance().getChannel_btcResponseData().getPrice();
         double usd = priceInBTC * btc;
         AMOUNT_USD = usd;
         AMOUNT_BTC = btc;
@@ -1333,7 +1319,7 @@ public class AdminFragment1 extends AdminBaseFragment {
         final EditText amount = commandeerRefundDialogstep2.findViewById(R.id.amountval);
         amount.setText(mst);
         amount.setInputType(InputType.TYPE_NULL);
-        final ImageView ivBack = commandeerRefundDialogstep2.findViewById(R.id.iv_back);
+        final ImageView ivBack = commandeerRefundDialogstep2.findViewById(R.id.iv_back_invoice);
         Button excecute = commandeerRefundDialogstep2.findViewById(R.id.btn_next);
         bolt11.setText(bolt11value);
         label.setText("outgoing" + getUnixTimeStamp());
@@ -1383,7 +1369,7 @@ public class AdminFragment1 extends AdminBaseFragment {
 
     private void executeCommandeerRefundApi(String bolt11value, String labelval, String amountusd) {
         //double priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
-        double priceInBTC=1 /GlobalState.getInstance().getChannel_btcResponseData().getPrice();
+        double priceInBTC = 1 / GlobalState.getInstance().getChannel_btcResponseData().getPrice();
         priceInBTC = priceInBTC * Double.parseDouble(amountusd);
         double amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi;
         amountInMsatoshi = amountInMsatoshi * AppConstants.satoshiToMSathosi;
@@ -1399,6 +1385,7 @@ public class AdminFragment1 extends AdminBaseFragment {
 //        payOtherProgressDialog.setCancelable(false);
 //        payOtherProgressDialog.setCanceledOnTouchOutside(false);
     }
+
     protected void paytoothersResponse(String result) {
         // this method is called back on the UI thread, so it's safe to
         //  make UI calls (like dismissing a dialog) here
@@ -1479,7 +1466,7 @@ public class AdminFragment1 extends AdminBaseFragment {
         commandeerRefundDialogstep2 = new Dialog(getContext());
         commandeerRefundDialogstep2.setContentView(R.layout.dialoglayoutrefundcommandeerlaststepconfirmedpay);
         Objects.requireNonNull(commandeerRefundDialogstep2.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        final ImageView ivBack = commandeerRefundDialogstep2.findViewById(R.id.iv_back);
+        final ImageView ivBack = commandeerRefundDialogstep2.findViewById(R.id.iv_back_invoice);
         final TextView textView = commandeerRefundDialogstep2.findViewById(R.id.textView2);
         final Button ok = commandeerRefundDialogstep2.findViewById(R.id.btn_ok);
         commandeerRefundDialogstep2.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
@@ -1681,7 +1668,7 @@ public class AdminFragment1 extends AdminBaseFragment {
 //        dialog.getWindow().setLayout(500, 500);
         blutoothDevicesDialog.setCancelable(false);
         //init dialog views
-        final ImageView ivBack = blutoothDevicesDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = blutoothDevicesDialog.findViewById(R.id.iv_back_invoice);
         final Button scanDevices = blutoothDevicesDialog.findViewById(R.id.btn_scanDevices);
         TextView tv_status = blutoothDevicesDialog.findViewById(R.id.tv_status);
         ListView blueDeviceListView = blutoothDevicesDialog.findViewById(R.id.blueDeviceListView);
@@ -1964,12 +1951,14 @@ public class AdminFragment1 extends AdminBaseFragment {
 
 
     }
+
     public void ifPostSuccefully() {
         getContext().stopService(new Intent(getContext(), MyLogOutService.class));
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
 
     }
+
     private String getDateInCorrectFormat(int year, int monthOfYear, int dayOfMonth) {
         String date = "";
         String formatedMonth = "";
@@ -2223,7 +2212,19 @@ public class AdminFragment1 extends AdminBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForSales(text);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForSales(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 
@@ -2297,7 +2298,19 @@ public class AdminFragment1 extends AdminBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForRefunds(text);
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForRefunds(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
                 });
@@ -2372,7 +2385,20 @@ public class AdminFragment1 extends AdminBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForRefunds(text);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForRefunds(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
                 });
@@ -2425,8 +2451,7 @@ public class AdminFragment1 extends AdminBaseFragment {
 
                 String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
 
-                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli invoice" + " " + rMSatoshi + " " + label + " " + descrption + "\"] }";
-
+                String json = UrlConstants.getInvoiceSendCommand(token, rMSatoshi, label, descrption);
                 try {
 
                     JSONObject obj = new JSONObject(json);
@@ -2450,8 +2475,20 @@ public class AdminFragment1 extends AdminBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForCreatInvocie(text);
-                        simpleloader.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForCreatInvocie(text);
+                                simpleloader.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
 
@@ -2529,7 +2566,19 @@ public class AdminFragment1 extends AdminBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForConfirmPayment(text);
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForConfirmPayment(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });
@@ -2608,20 +2657,30 @@ public class AdminFragment1 extends AdminBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (!text.contains("error")){
-                        parseJSONForDecodePayBolt11(text);
-                        simpleloader.dismiss();}
-                        else {
-                            simpleloader.dismiss();
-                            try {
-                                JSONObject jsonObject=new JSONObject(text);
-                                String message=jsonObject.getString("message");
-                                showToast(message);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                if (!text.contains("error")) {
+                                    parseJSONForDecodePayBolt11(text);
+                                    simpleloader.dismiss();
+                                } else {
+                                    simpleloader.dismiss();
+                                    try {
+                                        JSONObject jsonObject1 = new JSONObject(text);
+                                        String message = jsonObject1.getString("message");
+                                        showToast(message);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-
                     }
                 });
 
@@ -2698,8 +2757,20 @@ public class AdminFragment1 extends AdminBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        paytoothersResponse(text);
-                        simpleloader.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                paytoothersResponse(text);
+                                simpleloader.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
 
                     }
                 });

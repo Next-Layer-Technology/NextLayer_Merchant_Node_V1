@@ -1,25 +1,18 @@
 package com.sis.clightapp.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,13 +23,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
-import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.NetworkManager;
 import com.sis.clightapp.ViewPager.CustomViewPager;
 import com.sis.clightapp.ViewPager.FragmentAdapter;
-import com.sis.clightapp.fragments.admin.AdminFragment1;
 import com.sis.clightapp.fragments.checkout.CheckOutFragment1;
 import com.sis.clightapp.fragments.checkout.CheckOutsFragment2;
 import com.sis.clightapp.fragments.checkout.CheckOutsFragment3;
@@ -137,7 +126,7 @@ public class CheckOutMain11 extends BaseActivity {
                     case 0:
                         CheckOutFragment1 firstFragment = (CheckOutFragment1) getSupportFragmentManager().getFragments().get(0);
                     //    firstFragment.hideCheckBox();
-                        firstFragment.refreshAdapter();
+                        firstFragment.refreshAdapter(true);
                         break;
                     case 1:
                          CheckOutsFragment2 secondFragment = (CheckOutsFragment2) getSupportFragmentManager().getFragments().get(1);

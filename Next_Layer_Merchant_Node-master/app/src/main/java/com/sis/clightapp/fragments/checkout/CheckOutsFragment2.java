@@ -1,6 +1,5 @@
 package com.sis.clightapp.fragments.checkout;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.KeyguardManager;
@@ -12,15 +11,10 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 
-import android.os.Handler;
-import android.text.InputType;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,22 +24,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.sis.clightapp.Interface.ApiClient;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.Functions;
 import com.sis.clightapp.Utills.Functions2;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.NetworkManager;
 import com.sis.clightapp.activity.CheckOutMain11;
 import com.sis.clightapp.activity.MainActivity;
 import com.sis.clightapp.model.Channel_BTCResponseData;
@@ -66,7 +55,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -147,8 +135,8 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         amount = view.findViewById(R.id.et_amount);
         rcieptnum = view.findViewById(R.id.recieptno);
         amount.setShowSoftInputOnFocus(false);
-        gdaxUrl=new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
-       // SubscrieChannel();
+        gdaxUrl = new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
+        // SubscrieChannel();
         sharedPreferences = new CustomSharedPreferences();
         btnAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,7 +210,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                         //getReceivable();
                         //getfundslist();
                         getListPeers();
-                        String s="- screen -ls | egrep \"^\\s*[0-9]+.Lightning\" | awk -F \".\" '{print $1}' | xargs kill";
+                        String s = "- screen -ls | egrep \"^\\s*[0-9]+.Lightning\" | awk -F \".\" '{print $1}' | xargs kill";
                     }
                 }
             }
@@ -332,6 +320,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         });
         goAlertDialogwithOneBTnDialog.show();
     }
+
     @Override
     public void onClick(View view) {
 
@@ -481,12 +470,14 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<FundingNodeListResp> call, Throwable t) {
                 Log.e("get-funding-nodes:", t.getMessage());
             }
         });
     }
+
     public void getListPeers() {
         OkHttpClient clientCoinPrice = new OkHttpClient();
         Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
@@ -515,7 +506,23 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForListPeers(text);
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        webSocket.close(1000, null);
+                                        webSocket.cancel();
+                                        goTo2FaPasswordDialog();
+                                    }
+                                });
+                            } else {
+                                parseJSONForListPeers(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -553,6 +560,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);
         clientCoinPrice.dispatcher().executorService().shutdown();
     }
+
     public void getfundslist() {
         OkHttpClient clientCoinPrice = new OkHttpClient();
         Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
@@ -620,6 +628,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);
         clientCoinPrice.dispatcher().executorService().shutdown();
     }
+
     private ListFunds parseJSONForListFunds(String jsonresponse) {
         Log.d("ListFundParsingResponse", jsonresponse);
         ListFunds listFunds = null;
@@ -691,15 +700,16 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         }
         return listFunds;
     }
+
     private ListPeers parseJSONForListPeers(String jsonresponse) {
         Log.d("ListPeersParsingResponse", jsonresponse);
         ListPeers listFunds = null;
         boolean sta = false;
         JSONArray jsonArr = null;
-        JSONObject jsonObject=null;
+        JSONObject jsonObject = null;
         try {
-            jsonObject=new JSONObject(jsonresponse);
-            JSONArray ja_data=null;
+            jsonObject = new JSONObject(jsonresponse);
+            JSONArray ja_data = null;
             jsonArr = jsonObject.getJSONArray("peers");
 
 
@@ -731,8 +741,8 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                             double mcap = 0;
                             for (ListPeersChannels tempListFundChanel : listFunds.getChannels()) {
                                 if (listFunds.isConnected() && tempListFundChanel.state.equalsIgnoreCase("CHANNELD_NORMAL")) {
-                                    String tempmsat = tempListFundChanel.getReceivable_msatoshi()+"";
-                                    String tempmCap = tempListFundChanel.getSpendable_msatoshi()+"";
+                                    String tempmsat = tempListFundChanel.getReceivable_msatoshi() + "";
+                                    String tempmCap = tempListFundChanel.getSpendable_msatoshi() + "";
 //                                    if(tempmsat.length() > 4) {
 //                                        tempmsat = removeLastChars(tempmsat, 4);
 //                                    }
@@ -746,7 +756,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                                         tmsat = Double.parseDouble(tempmsat);
                                         tmcap = Double.parseDouble(tempmCap);
                                         BigDecimal value = new BigDecimal(tempmCap);
-                                        double  doubleValue = value.doubleValue();
+                                        double doubleValue = value.doubleValue();
                                         Log.e("StringToDouble:", String.valueOf(doubleValue));
                                     } catch (Exception e) {
                                         Log.e("StringToDouble:", e.getMessage());
@@ -774,6 +784,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         }
         return listFunds;
     }
+
     //Manipulate Receivable Amount
     private void setReceivableAndCapacity(String receivableMSat, String capcaityMSat, boolean sta) {
         mSatoshiReceivable = Double.valueOf(receivableMSat);
@@ -828,7 +839,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
 
             isCanClearout = false;
         }
-        final ImageView ivBack = clearOutDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = clearOutDialog.findViewById(R.id.iv_back_invoice);
         Button noBtn = clearOutDialog.findViewById(R.id.noBtn);
         Button yesBtn = clearOutDialog.findViewById(R.id.yesBtn);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -888,7 +899,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                 long mSatoshiSpendableTotal = (long) (mSatoshiCapacity - mSatoshiReceivable);
 
 
-                sendreceiveables(routingNodeId , mSatoshiSpendableTotal +"", label);
+                sendreceiveables(routingNodeId, mSatoshiSpendableTotal + "", label);
 
             } else {
                 final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(fContext);
@@ -1052,6 +1063,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         webSocketClient.enableAutomaticReconnection(5000);
         webSocketClient.connect();
     }
+
     public void sendreceiveables(final String routingnode_id, final String mstoshiReceivable, final String lable) {
         OkHttpClient clientCoinPrice = new OkHttpClient();
         Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
@@ -1062,8 +1074,8 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
 
                 String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
                 //String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli invoice" + " " + routingnode_id + " " + mstoshiReceivable + " " + lable +"null 10" +"\"] }";
-              // String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"keysend" + routingnode_id +" " + mSatoshiReceivable + " " + lable + " null 10" + "\" ] }";
-                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli keysend" +" "+routingnode_id +" " + mstoshiReceivable+"\"] }";
+                // String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"keysend" + routingnode_id +" " + mSatoshiReceivable + " " + lable + " null 10" + "\" ] }";
+                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli keysend" + " " + routingnode_id + " " + mstoshiReceivable + "\"] }";
 
 
                 try {
@@ -1088,11 +1100,22 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                       String response = text;
-                        Gson gson = new Gson();
-                        Sendreceiveableresponse sendreceiveableresponse = gson.fromJson(response, Sendreceiveableresponse.class);
-                        showToast(String.valueOf(sendreceiveableresponse.getMsatoshi()));
+                        String response = text;
 
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                Gson gson = new Gson();
+                                Sendreceiveableresponse sendreceiveableresponse = gson.fromJson(response, Sendreceiveableresponse.class);
+                                showToast(String.valueOf(sendreceiveableresponse.getMsatoshi()));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 

@@ -1,18 +1,12 @@
 package com.sis.clightapp.activity;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -25,7 +19,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,45 +26,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.sis.clightapp.Interface.ApiClient;
-import com.sis.clightapp.Interface.ApiClientBoost;
 import com.sis.clightapp.Interface.ApiClientStartStop;
 import com.sis.clightapp.Interface.ApiPaths;
-import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.GpsUtils;
 import com.sis.clightapp.Utills.NetworkManager;
-import com.sis.clightapp.model.Data;
-import com.sis.clightapp.model.GsonModel.Invoice;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
-import com.sis.clightapp.model.GsonModel.Merchant.MerchantLoginResp;
-import com.sis.clightapp.model.GsonModel.UPCofImages;
-import com.sis.clightapp.model.ImageRelocation.AddImageResp;
-import com.sis.clightapp.model.ImageRelocation.GetItemImageRSP;
 import com.sis.clightapp.model.REST.ServerStartStop.Node.NodeResp;
-import com.sis.clightapp.model.REST.TransactionInfo;
-import com.sis.clightapp.model.REST.TransactionResp;
 import com.sis.clightapp.model.server.ServerData;
-
-import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.DataInputStream;
@@ -82,16 +54,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 import okhttp3.MediaType;
@@ -560,7 +528,7 @@ public class MainEntryActivity extends BaseActivity {
         final EditText et_2Fa_pass = enter2FaPassDialog.findViewById(R.id.taskEditText);
         final Button btn_confirm = enter2FaPassDialog.findViewById(R.id.btn_confirm);
         final Button btn_cancel = enter2FaPassDialog.findViewById(R.id.btn_cancel);
-        final ImageView iv_back = enter2FaPassDialog.findViewById(R.id.iv_back);
+        final ImageView iv_back = enter2FaPassDialog.findViewById(R.id.iv_back_invoice);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -641,7 +609,7 @@ public class MainEntryActivity extends BaseActivity {
         getAndConfirmSshKeyDialog.setCancelable(false);
         final Button btn_confirm = getAndConfirmSshKeyDialog.findViewById(R.id.btn_confirm);
         final Button btn_cancel = getAndConfirmSshKeyDialog.findViewById(R.id.btn_cancel);
-        final ImageView iv_back = getAndConfirmSshKeyDialog.findViewById(R.id.iv_back);
+        final ImageView iv_back = getAndConfirmSshKeyDialog.findViewById(R.id.iv_back_invoice);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -699,7 +667,7 @@ public class MainEntryActivity extends BaseActivity {
         final EditText et_2Fa_pass = entergoTOGetsshkeyPass.findViewById(R.id.taskEditText);
         final Button btn_confirm = entergoTOGetsshkeyPass.findViewById(R.id.btn_confirm);
         final Button btn_cancel = entergoTOGetsshkeyPass.findViewById(R.id.btn_cancel);
-        final ImageView iv_back = entergoTOGetsshkeyPass.findViewById(R.id.iv_back);
+        final ImageView iv_back = entergoTOGetsshkeyPass.findViewById(R.id.iv_back_invoice);
         iv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

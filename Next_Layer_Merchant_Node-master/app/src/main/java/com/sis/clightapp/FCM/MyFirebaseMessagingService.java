@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -20,16 +22,14 @@ import com.sis.clightapp.Interface.ApiClient2;
 import com.sis.clightapp.Interface.ApiFCM;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
+import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.activity.MainEntryActivityNew;
 import com.sis.clightapp.model.FCMResponse;
-import com.sis.clightapp.model.WebsocketResponse.WebSocketOTPresponse;
+import com.sis.clightapp.model.GsonModel.FirebaseNotificationModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,6 +73,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
+            try {
+                FirebaseNotificationModel notificationModel = new Gson().fromJson(remoteMessage.getData().get("pwsUpdate"), FirebaseNotificationModel.class);
+                if (!notificationModel.getInvoice_label().isEmpty()) {
+
+                    //Broadcast this message to checkout page 3
+
+                    String body;
+                    try {
+                        body = notificationModel.getBody().replace("msat", " $");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        body = notificationModel.getBody();
+                    }
+
+                    sendIncomingPaymentNotification(notificationModel.getTitle(), notificationModel.getInvoice_label(), notificationModel.getBody());
+
+                    Intent broadcastIntent = new Intent(AppConstants.PAYMENT_RECEIVED_NOTIFICATION);
+                    broadcastIntent.putExtra(AppConstants.PAYMENT_INVOICE, new Gson().toJson(notificationModel));
+                    getApplicationContext().sendOrderedBroadcast(broadcastIntent, null);
+
+                } else {
+                    sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+                }
+            } catch (Exception e) {
+                sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            }
+
+
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use WorkManager.
                 scheduleJob();
@@ -85,7 +113,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+//            Log.d(TAG, "Message Notification: " + remoteMessage.getNotification());
+//            Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+//            Log.d(TAG, "Message Notification Title: " + remoteMessage.getNotification().getTitle());
+//            Log.d(TAG, "Message Notification Tag: " + remoteMessage.getNotification().getTag());
+//            Log.d(TAG, "Message Notification Channel ID: " + remoteMessage.getNotification().getChannelId());
+//            Log.d(TAG, "Message Notification Title Local Key: " + remoteMessage.getNotification().getTitleLocalizationKey());
+//            Log.d(TAG, "Message Notification Body Local Key: " + remoteMessage.getNotification().getBodyLocalizationKey());
+//            Log.d(TAG, "Message Notification Data: " + remoteMessage.getData());
+//
+//            Log.d(TAG, "Message Notification pwsUpdate: " + remoteMessage.getData().get("pwsUpdate"));
+
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
@@ -95,6 +133,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
     // [START on_new_token]
+
     /**
      * There are two scenarios when onNewToken is called:
      * 1) When a new token is generated on initial app startup
@@ -136,7 +175,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     /**
      * Persist token to third-party servers.
-     *
+     * <p>
      * Modify this method to associate the user's FCM registration token with any
      * server-side account maintained by your application.
      *
@@ -155,17 +194,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             JsonObject paramObject1 = new JsonObject();
             paramObject1.addProperty("pwsUpdate", "New Token");
             paramObject.add("payload", paramObject1);
-            Call<Object> call=apiInterface.FcmHitForToken(paramObject);
+            Call<Object> call = apiInterface.FcmHitForToken(paramObject);
             call.enqueue(new Callback<Object>() {
                 @Override
                 public void onResponse(Call<Object> call, Response<Object> response) {
                     try {
-                        JSONObject object=new JSONObject(new Gson().toJson(response.body()));
-                        Log.e("TAG", "onResponse: "+object );
+                        JSONObject object = new JSONObject(new Gson().toJson(response.body()));
+                        Log.e("TAG", "onResponse: " + object);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+
                 @Override
                 public void onFailure(Call<Object> call, Throwable t) {
                 }
@@ -175,18 +215,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         // TODO: Implement this method to send token to your app server.
     }
+
     private void setFCMToken(String token2) {
         ///admin/invoice-to-client
         /*Authorization: Bearer {ACCESS_TOKEN_HERE}
         {"client_id": "C1640282683975726","invoice": "asdfjalksdjflaksjdf","store_name": "Some big store"}*/
-        String accessToken= new CustomSharedPreferences().getvalue("accessTokenLogin", getApplicationContext());
+        String accessToken = new CustomSharedPreferences().getvalue("accessTokenLogin", getApplicationContext());
         String RefToken = new CustomSharedPreferences().getvalueofaccestoken("accessToken", getApplicationContext());
-        String token="Bearer"+" "+accessToken;
+        String token = "Bearer" + " " + accessToken;
         JsonObject jsonObject1 = new JsonObject();
         jsonObject1.addProperty("refresh", RefToken);
         jsonObject1.addProperty("fcmRegToken", token);
 
-        Call<FCMResponse> call = (Call<FCMResponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).setFcmToken(accessToken,jsonObject1);
+        Call<FCMResponse> call = (Call<FCMResponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).setFcmToken(jsonObject1);
         call.enqueue(new Callback<FCMResponse>() {
             @Override
             public void onResponse(Call<FCMResponse> call, Response<FCMResponse> response) {
@@ -202,6 +243,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<FCMResponse> call, Throwable t) {
                 Log.e("get-funding-nodes:", t.getMessage());
@@ -215,7 +257,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String title, String messageBody) {
         Intent intent = new Intent(this, MainEntryActivityNew.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -223,11 +265,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.newappicon);
+
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.newappicon)
-                        .setContentTitle(getString(R.string.fcm_message))
+                        .setContentTitle(title)
                         .setContentText(messageBody)
+                        .setLargeIcon(largeIcon)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
                         .setContentIntent(pendingIntent);
@@ -245,4 +291,42 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
     }
+
+
+    private void sendIncomingPaymentNotification(String title, String invoiceLabel, String messageBody) {
+        Intent intent = new Intent(this, MainEntryActivityNew.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.ic_notification_regular);
+
+        String channelId = getString(R.string.payment_notification_channel_id);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.newappicon)
+                        .setContentTitle(title)
+                        .setContentText(invoiceLabel)
+                        .setLargeIcon(largeIcon)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .bigText(messageBody))
+                        .setAutoCancel(true)
+                        .setSound(defaultSoundUri)
+                        .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    }
+
 }
