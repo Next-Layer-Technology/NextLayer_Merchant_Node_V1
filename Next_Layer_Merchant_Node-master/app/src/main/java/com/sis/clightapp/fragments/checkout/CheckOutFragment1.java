@@ -1,6 +1,5 @@
 package com.sis.clightapp.fragments.checkout;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.KeyguardManager;
@@ -12,14 +11,10 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import android.os.Handler;
-import android.text.InputType;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,13 +45,10 @@ import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.Functions2;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.NetworkManager;
 import com.sis.clightapp.activity.CheckOutMain11;
 import com.sis.clightapp.activity.MainActivity;
 
-import com.sis.clightapp.activity.MainEntryActivityNew;
 import com.sis.clightapp.adapter.CheckOutMainListAdapter;
-import com.sis.clightapp.fragments.merchant.MerchantFragment1;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemLIstModel;
@@ -75,7 +66,6 @@ import com.sis.clightapp.model.ImageRelocation.GetItemImageRSP;
 import com.sis.clightapp.model.ImageRelocation.GetItemImageReloc;
 import com.sis.clightapp.model.REST.FundingNode;
 import com.sis.clightapp.model.REST.FundingNodeListResp;
-import com.sis.clightapp.model.REST.NodeLineInfo;
 import com.sis.clightapp.model.Tax;
 import com.sis.clightapp.model.currency.CurrentAllRate;
 import com.sis.clightapp.model.currency.CurrentSpecificRateData;
@@ -89,9 +79,8 @@ import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -155,7 +144,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
 
     boolean isFundingInfoGetSuccefully = false;
     Dialog clearOutDialog;
-
+    String TAG = "CheckOutFragment1";
 
     public CheckOutFragment1() {
         // Required empty public constructor
@@ -260,7 +249,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         getItemListprogressDialog = new ProgressDialog(getContext());
         getItemListprogressDialog.setMessage("Loading...");
         btcRate = view.findViewById(R.id.btcRateTextview);
-        gdaxUrl=new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
+        gdaxUrl = new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
 
         findMerchant(new CustomSharedPreferences().getvalueofMerchantname("merchant_name", getContext()), new CustomSharedPreferences().getvalueofMerchantpassword("merchant_pass", getContext()));
         fContext = getContext();
@@ -313,9 +302,9 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         });
 
         MerchantData merchantData = GlobalState.getInstance().getMerchantData();
-       if(merchantData!=null){
-           getAllItems();
-        //getAllItemsImageList(merchantData);
+        if (merchantData != null) {
+            getAllItems();
+            //getAllItemsImageList(merchantData);
         }
 
         return view;
@@ -331,7 +320,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 if (requestCode == 1234) {
                     if (resultCode == RESULT_OK) {
                         //getReceivable();
-                       // getfundslist();
+                        // getfundslist();
                         getListPeers();
                     }
                 }
@@ -369,6 +358,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                                             GlobalState.getInstance().addInmDataScannedForPage1(itemsArrayList.get(itr));
                                             GlobalState.getInstance().addInmSeletedForPayDataSourceCheckOutInventory(itemsArrayList.get(itr));
                                             GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(GlobalState.getInstance().getmDataScannedForPage1());
+                                            Log.d(TAG, "onActivityResult: 372");
                                             setAdapter();
                                         }
                                     }
@@ -386,6 +376,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 break;
         }
     }
+
 
     public void onBackPressed() {
         //  hideCheckBox();
@@ -430,9 +421,11 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
 
     //Reloaded ALl Adapter
     private void setAdapter() {
+        Log.d(TAG, "setAdapter: ");
         int countitem = 0;
         ArrayList<Items> ttd = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
         if (ttd != null) {
+            Log.d(TAG, "setAdapter: ttd != null: " + ttd.toString());
             for (Items items : ttd) {
                 countitem = countitem + items.getSelectQuatity();
             }
@@ -440,6 +433,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         }
         final ArrayList<Items> dataSource = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
         if (dataSource != null) {
+            Log.d(TAG, "setAdapter: dataSource != null: " + Arrays.toString(Arrays.stream(dataSource.toArray()).toArray()));
             if (dataSource.size() > 0) {
                 checkOutMainListAdapter = new CheckOutMainListAdapter(getContext(), dataSource);
                 checkOutListVieww.setAdapter(checkOutMainListAdapter);
@@ -460,6 +454,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                                     GlobalState.getInstance().removeInmSeletedForPayDataSourceCheckOutInventory(tem);
 //                                dataSource.remove(position);
                                     checkOutMainListAdapter.notifyDataSetChanged();
+                                    Log.d(TAG, "onClick: 465");
                                     setAdapter();
                                 } else {
                                     GlobalState.getInstance().removeInMDataScannedForPage1(tem);
@@ -467,6 +462,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                                     GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(GlobalState.getInstance().getmDataScannedForPage1());
 //                                  dataSource.remove(position);
                                     checkOutMainListAdapter.notifyDataSetChanged();
+                                    Log.d(TAG, "onClick: 473");
                                     setAdapter();
                                 }
                             }
@@ -498,10 +494,11 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         }
     }
 
-    public void refreshAdapter() {
+    public void refreshAdapter(boolean isFirstTime) {
+        Log.d(TAG, "refreshAdapter: " + isFirstTime);
         setAdapter();
-
     }
+
     public void getItemList() {
         OkHttpClient clientCoinPrice = new OkHttpClient();
         Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
@@ -534,8 +531,19 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        setItemList(text);
 
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                setItemList(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 
@@ -575,7 +583,8 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);
         clientCoinPrice.dispatcher().executorService().shutdown();
     }
-    public void setItemList(String result){
+
+    public void setItemList(String result) {
         String response = result;
         String[] resaray = response.split(",");
         if (resaray[0].contains("resp")) {
@@ -604,7 +613,8 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
 
     private void parseJSON(String jsonString) {
         Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Items>>() {}.getType();
+        Type type = new TypeToken<ArrayList<Items>>() {
+        }.getType();
         ArrayList<Items> itemsList = new ArrayList<>();
         //itemsList = gson.fromJson(jsonString, type);
 
@@ -614,7 +624,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
             GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
         }
         ArrayList<GetItemImageReloc> itemImageRelocArrayList = GlobalState.getInstance().getCurrentItemImageRelocArrayList();
-        if (itemsList.size()==0) {
+        if (itemsList.size() == 0) {
             for (int j = 0; j < itemImageRelocArrayList.size(); j++) {
                 Items items = new Items();
 //                if (itemImageRelocArrayList.get(j).getUpc_number() != null) {
@@ -652,18 +662,19 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
 
         //withOutImageRealodAdapter();
         //  getImagesOfItems();
-        refreshAdapter();
+        refreshAdapter(false);
     }
 
     private void withOutImageRealodAdapter() {
         ArrayList<Items> itemsArrayList = GlobalState.getInstance().getmDataSourceCheckOutInventory();
     }
+
     private void getAllItems() {
         String RefToken = new CustomSharedPreferences().getvalueofRefresh("refreshToken", getContext());
         String token = "Bearer" + " " + RefToken;
         JsonObject jsonObject1 = new JsonObject();
         jsonObject1.addProperty("refresh", RefToken);
-      String merchantId=  new CustomSharedPreferences().getvalueofMerchantname("merchant_name", getContext());
+        String merchantId = new CustomSharedPreferences().getvalueofMerchantname("merchant_name", getContext());
 
         Call<ItemsDataMerchant> call = (Call<ItemsDataMerchant>) ApiClient2.getRetrofit().create(ApiPaths2.class).getInventoryItems(token);
         call.enqueue(new Callback<ItemsDataMerchant>() {
@@ -671,19 +682,19 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
             public void onResponse(Call<ItemsDataMerchant> call, Response<ItemsDataMerchant> response) {
                 if (response.body() != null) {
                     ItemsDataMerchant itemsDataMerchant = response.body();
-                    ArrayList<GetItemImageReloc> itemImageRelocArrayList =new ArrayList<GetItemImageReloc>();
+                    ArrayList<GetItemImageReloc> itemImageRelocArrayList = new ArrayList<GetItemImageReloc>();
                     if (itemsDataMerchant.getSuccess()) {
 //                        showToast(itemsDataMerchant.getMessage());
                         List<ItemLIstModel> lIstModelList = itemsDataMerchant.getList();
-                       for (int i=0;i < lIstModelList.size();i++){
-                           ItemLIstModel itemLIstModel=lIstModelList.get(i);
-                           GetItemImageReloc getItemImageReloc=new GetItemImageReloc(Integer.parseInt(itemLIstModel.getId()),1,itemLIstModel.getUpc_code(),itemLIstModel.getImage_path(),itemLIstModel.getName(),itemLIstModel.getQuantity_left(),itemLIstModel.getUnit_price(),"i","1",0.0,"i","i","i");
-                           itemImageRelocArrayList.add(getItemImageReloc);
-                       }
-                       if (itemImageRelocArrayList.size()>0) {
-                           GlobalState.getInstance().setCurrentItemImageRelocArrayList(itemImageRelocArrayList);
-                           parseJSON("");
-                       }
+                        for (int i = 0; i < lIstModelList.size(); i++) {
+                            ItemLIstModel itemLIstModel = lIstModelList.get(i);
+                            GetItemImageReloc getItemImageReloc = new GetItemImageReloc(Integer.parseInt(itemLIstModel.getId()), 1, itemLIstModel.getUpc_code(), itemLIstModel.getImage_path(), itemLIstModel.getName(), itemLIstModel.getQuantity_left(), itemLIstModel.getUnit_price(), "i", "1", 0.0, "i", "i", "i");
+                            itemImageRelocArrayList.add(getItemImageReloc);
+                        }
+                        if (itemImageRelocArrayList.size() > 0) {
+                            GlobalState.getInstance().setCurrentItemImageRelocArrayList(itemImageRelocArrayList);
+                            parseJSON("");
+                        }
                     }
                 }
             }
@@ -824,8 +835,8 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
             Log.e("ListFundParsing2", e.getMessage());
         }
         if (sta == false) {
-              //String temp1 = jsonObj.toString();
-             //Log.e("jsonObj",jsonObj.toString());
+            //String temp1 = jsonObj.toString();
+            //Log.e("jsonObj",jsonObj.toString());
             listFunds = new ListFunds();
             Gson gson = new Gson();
             boolean failed = false;
@@ -875,16 +886,17 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         }
         return listFunds;
     }
+
     private ListPeers parseJSONForListPeers(String jsonresponse) {
         Log.d("ListPeersParsingResponse", jsonresponse);
         ListPeers listFunds = null;
         boolean sta = false;
         JSONArray jsonArr = null;
-        JSONObject jsonObject=null;
+        JSONObject jsonObject = null;
 
         try {
-            jsonObject=new JSONObject(jsonresponse);
-            JSONArray ja_data=null;
+            jsonObject = new JSONObject(jsonresponse);
+            JSONArray ja_data = null;
             jsonArr = jsonObject.getJSONArray("peers");
 
             //jsonArr = new JSONArray(jsonresponse);
@@ -917,8 +929,8 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                             double mcap = 0;
                             for (ListPeersChannels tempListFundChanel : listFunds.getChannels()) {
                                 if (listFunds.isConnected() && tempListFundChanel.state.equalsIgnoreCase("CHANNELD_NORMAL")) {
-                                    String tempmsat = tempListFundChanel.getReceivable_msatoshi()+"";
-                                    String tempmCap = tempListFundChanel.getSpendable_msatoshi()+"";
+                                    String tempmsat = tempListFundChanel.getReceivable_msatoshi() + "";
+                                    String tempmCap = tempListFundChanel.getSpendable_msatoshi() + "";
 //                                    if(tempmsat.length() > 4) {
 //                                        tempmsat = removeLastChars(tempmsat, 4);
 //                                    }
@@ -932,7 +944,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                                         tmsat = Double.parseDouble(tempmsat);
                                         tmcap = Double.parseDouble(tempmCap);
                                         BigDecimal value = new BigDecimal(tempmCap);
-                                        double  doubleValue = value.doubleValue();
+                                        double doubleValue = value.doubleValue();
                                         Log.e("StringToDouble:", String.valueOf(doubleValue));
                                     } catch (Exception e) {
                                         Log.e("StringToDouble:", e.getMessage());
@@ -1013,7 +1025,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
 
             isCanClearout = false;
         }
-        final ImageView ivBack = clearOutDialog.findViewById(R.id.iv_back);
+        final ImageView ivBack = clearOutDialog.findViewById(R.id.iv_back_invoice);
         Button noBtn = clearOutDialog.findViewById(R.id.noBtn);
         Button yesBtn = clearOutDialog.findViewById(R.id.yesBtn);
         ivBack.setOnClickListener(new View.OnClickListener() {
@@ -1072,7 +1084,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
 
                 long mSatoshiSpendableTotal = (long) (mSatoshiCapacity - mSatoshiReceivable);
 
-                sendreceiveables(routingNodeId, mSatoshiSpendableTotal +"",label);
+                sendreceiveables(routingNodeId, mSatoshiSpendableTotal + "", label);
 
             } else {
                 final androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(fContext);
@@ -1313,7 +1325,18 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForListFunds(text);
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForListFunds(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -1381,7 +1404,18 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        parseJSONForListPeers(text);
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                parseJSONForListPeers(text);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }
@@ -1432,7 +1466,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
 
                 //String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli invoice" + " " + routingnode_id + " " + mstoshiReceivable + " " + lable + "null 10" + "\"] }";
 
-                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli keysend" +" "+routingnode_id +" " + mstoshiReceivable+"\"] }";
+                String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli keysend" + " " + routingnode_id + " " + mstoshiReceivable + "\"] }";
 
                 try {
                     JSONObject obj = new JSONObject(json);
@@ -1452,13 +1486,27 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String response = text;
-                        Gson gson = new Gson();
-                        Sendreceiveableresponse sendreceiveableresponse = gson.fromJson(response, Sendreceiveableresponse.class);
-                        showToast(String.valueOf(sendreceiveableresponse.getMsatoshi()));
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                String response = text;
+                                Gson gson = new Gson();
+                                Sendreceiveableresponse sendreceiveableresponse = gson.fromJson(response, Sendreceiveableresponse.class);
+                                showToast(String.valueOf(sendreceiveableresponse.getMsatoshi()));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 });
             }
+
             @Override
             public void onMessage(WebSocket webSocket, ByteString bytes) {
                 Log.e("TAG", "MESSAGE: " + bytes.hex());
@@ -1493,4 +1541,5 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice);
         clientCoinPrice.dispatcher().executorService().shutdown();
     }
+
 }

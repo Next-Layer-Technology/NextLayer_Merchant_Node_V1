@@ -12,6 +12,7 @@ import com.sis.clightapp.model.REST.ServerStartStop.Node.NodeResp;
 import com.sis.clightapp.model.REST.StoreClients;
 import com.sis.clightapp.model.REST.TransactionResp;
 import com.sis.clightapp.model.REST.get_session_response;
+import com.sis.clightapp.model.REST.nearby_clients.NearbyClientResponse;
 import com.sis.clightapp.model.WebsocketResponse.WebSocketResponse;
 import com.sis.clightapp.model.currency.CurrentAllRate;
 
@@ -266,4 +267,18 @@ public interface ApiPaths {
             @Field("type") String type,
             @Field("key") String key
     );
+
+    @FormUrlEncoded
+    @POST("Refresh")
+    Call<get_session_response> refresh(
+            @Field("refresh") String accessToken,
+            @Field("twoFactor") String twoFactor,
+            @Field("time") String time
+    );
+
+    @GET("merchant_nearby_clients")
+    Call<NearbyClientResponse> getNearbyClients(
+            @Header("Authorization") String token
+    );
+
 }

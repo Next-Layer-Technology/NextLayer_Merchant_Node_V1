@@ -29,7 +29,8 @@
     <color name="active_text_colour">#7fbf7f</color>
     <color name="inactive_text_colour">#8c0034</color>
     <color name="temp">#8c0034</color>
-
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 
 
 

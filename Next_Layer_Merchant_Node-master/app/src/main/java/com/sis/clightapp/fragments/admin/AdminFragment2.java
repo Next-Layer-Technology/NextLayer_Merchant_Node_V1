@@ -110,7 +110,7 @@ public class AdminFragment2 extends AdminBaseFragment {
 //        handler.removeCallbacks(runnable);
         super.onDestroy();
         //ExitingFromServerOnDestroy exitingFromServer = new ExitingFromServerOnDestroy(getActivity());
-       //exitingFromServer.execute(new String[]{new String("bye")});
+        //exitingFromServer.execute(new String[]{new String("bye")});
     }
 
     public void startPage() {
@@ -159,7 +159,7 @@ public class AdminFragment2 extends AdminBaseFragment {
         simpleLoader = new ProgressDialog(getContext());
         simpleLoader.setMessage("In progress...");
         simpleLoader.setCancelable(false);
-        gdaxUrl=new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
+        gdaxUrl = new CustomSharedPreferences().getvalueofMWSCommand("mws_command", getContext());
         sharedPreferences = new CustomSharedPreferences();
         currentMerchantData = GlobalState.getInstance().getMerchantData();
         if (currentMerchantData != null) {
@@ -609,6 +609,7 @@ public class AdminFragment2 extends AdminBaseFragment {
         });
         goAlertDialogwithOneBTnDialog.show();
     }
+
     public void ifPostSuccefully() {
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
@@ -746,6 +747,7 @@ public class AdminFragment2 extends AdminBaseFragment {
 //        });
 
     }
+
     //TODO:START AND STOP Bitcoin SERVER APIs
     private void startBitcoinServer(String type, String host, String port, String sshUsername, String sshPass) {
 //        startServerPD.show();
@@ -873,7 +875,8 @@ public class AdminFragment2 extends AdminBaseFragment {
 //        });
 
     }
-    //TODO:Update the Result on View 
+
+    //TODO:Update the Result on View
     private void updateResultLightningStatus(String s) {
         result_Lightning.setText(s);
     }
@@ -917,10 +920,21 @@ public class AdminFragment2 extends AdminBaseFragment {
                     @Override
                     public void run() {
 //                        parseJSONForRefunds(text);
-
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                startcall.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
-                startcall.show();
+
             }
 
             @Override
@@ -1009,7 +1023,19 @@ public class AdminFragment2 extends AdminBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        stopcall.dismiss();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                stopcall.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                     }
                 });
@@ -1251,104 +1277,124 @@ public class AdminFragment2 extends AdminBaseFragment {
             @Override
             public void onMessage(WebSocket webSocket, final String text) {
                 Log.e("TAG", "MESSAGE: " + text);
-                if (text.equals("There are screens on:\r\r\n")) {
 
-                } else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addScreen(); //1
+                try {
+                    JSONObject jsonObject = new JSONObject(text);
+                    if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                        webSocket.close(1000, null);
+                        webSocket.cancel();
+                        goTo2FaPasswordDialog();
+                    } else {
+                        if (text.equals("There are screens on:\r\r\n")) {
+
                         }
-                    });
+                        else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addScreen(); //1
+                                }
+                            });
 
-                } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String s = text;
-                            s = s.replaceAll("[\\n\\t\\r]", " ");
-                            s = s.toLowerCase();
-                            String words[] = s.split(" ");
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].equals("(detached)") || words[i].equals("(attached)") || words[i].equals("detached") || words[i].equals("attached")) {
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setStatus(words[i]);
+                        }
+                        else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+
+
+
+                                    String s = text;
+                                    s = s.replaceAll("[\\n\\t\\r]", " ");
+                                    s = s.toLowerCase();
+                                    String words[] = s.split(" ");
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].equals("(detached)") || words[i].equals("(attached)") || words[i].equals("detached") || words[i].equals("attached")) {
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setStatus(words[i]);
+                                            if (list.size() == 0) {
+                                                list.add(0, secreeninfo);
+                                            } else {
+                                                list.add(list.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+                                    newlist.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].contains(".lightning")) {
+                                            String str = words[i];
+                                            String kept = str.substring(0, str.indexOf("."));
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setPid(kept);
+                                            if (newlist.size() == 0) {
+                                                newlist.add(0, secreeninfo);
+                                            } else {
+                                                newlist.add(newlist.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    for (int i = 0; i < list.size(); i++) {
+                                        for (int j = 0; j < newlist.size(); j++) {
+                                            if (i == j) {
+                                                list.get(i).setPid(newlist.get(j).getPid());
+                                            }
+                                        }
+                                    }
                                     if (list.size() == 0) {
-                                        list.add(0, secreeninfo);
-                                    } else {
-                                        list.add(list.size(), secreeninfo);
-                                    }
-
-                                }
-
-                            }
-                            newlist.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].contains(".lightning")) {
-                                    String str = words[i];
-                                    String kept = str.substring(0, str.indexOf("."));
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setPid(kept);
-                                    if (newlist.size() == 0) {
-                                        newlist.add(0, secreeninfo);
-                                    } else {
-                                        newlist.add(newlist.size(), secreeninfo);
-                                    }
-
-                                }
-
-                            }
-
-                            for (int i = 0; i < list.size(); i++) {
-                                for (int j = 0; j < newlist.size(); j++) {
-                                    if (i == j) {
-                                        list.get(i).setPid(newlist.get(j).getPid());
-                                    }
-                                }
-                            }
-                            if (list.size() == 0) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        screenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
+                                        getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                list.clear();
-                                                addScreen(); //2
-                                                simpleLoader.dismiss();
+                                                screenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        list.clear();
+                                                        addScreen(); //2
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 2000);
+
                                             }
-                                        }, 2000);
+                                        });
 
-                                    }
-                                });
-
-                            } else {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        screenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                QuitcreenScnerio();
-                                                simpleLoader.dismiss();
+                                                screenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        QuitcreenScnerio();
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 2000);
+
                                             }
-                                        }, 2000);
-
+                                        });
                                     }
-                                });
-                            }
 
+                                }
+                            });
                         }
-                    });
+
+                        screenCall.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
 
-                screenCall.dismiss();
+
+
 
             }
 
@@ -1420,105 +1466,118 @@ public class AdminFragment2 extends AdminBaseFragment {
             @Override
             public void onMessage(WebSocket webSocket, final String text) {
                 Log.e("TAG", "MESSAGE: " + text);
-                if (text.equals("There are screens on:\r\r\n")) {
 
-                } else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addScreen();//3
+                try {
+                    JSONObject jsonObject = new JSONObject(text);
+                    if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                        webSocket.close(1000, null);
+                        webSocket.cancel();
+                        goTo2FaPasswordDialog();
+                    } else {
+                        if (text.equals("There are screens on:\r\r\n")) {
+
+                        } else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addScreen();//3
+                                }
+                            });
                         }
-                    });
-                } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String s = text;
-                            s = s.replaceAll("[\\n\\t\\r]", " ");
-                            s = s.toLowerCase();
-                            String words[] = s.split(" ");
-                            listafterDetach.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].equals("(detached)") || words[i].equals("attached") || words[i].equals("(attached)") || words[i].equals("detached")) {
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setStatus(words[i]);
+                        else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String s = text;
+                                    s = s.replaceAll("[\\n\\t\\r]", " ");
+                                    s = s.toLowerCase();
+                                    String words[] = s.split(" ");
+                                    listafterDetach.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].equals("(detached)") || words[i].equals("attached") || words[i].equals("(attached)") || words[i].equals("detached")) {
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setStatus(words[i]);
+                                            if (listafterDetach.size() == 0) {
+                                                listafterDetach.add(0, secreeninfo);
+                                            } else {
+                                                listafterDetach.add(listafterDetach.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+                                    newlist.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].contains(".lightning")) {
+                                            String str = words[i];
+                                            String kept = str.substring(0, str.indexOf("."));
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setPid(kept);
+                                            if (newlist.size() == 0) {
+                                                newlist.add(0, secreeninfo);
+                                            } else {
+                                                newlist.add(newlist.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    for (int i = 0; i < list.size(); i++) {
+                                        for (int j = 0; j < newlist.size(); j++) {
+                                            if (i == j) {
+                                                list.get(i).setPid(newlist.get(j).getPid());
+                                            }
+                                        }
+                                    }
                                     if (listafterDetach.size() == 0) {
-                                        listafterDetach.add(0, secreeninfo);
-                                    } else {
-                                        listafterDetach.add(listafterDetach.size(), secreeninfo);
-                                    }
-
-                                }
-
-                            }
-                            newlist.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].contains(".lightning")) {
-                                    String str = words[i];
-                                    String kept = str.substring(0, str.indexOf("."));
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setPid(kept);
-                                    if (newlist.size() == 0) {
-                                        newlist.add(0, secreeninfo);
-                                    } else {
-                                        newlist.add(newlist.size(), secreeninfo);
-                                    }
-
-                                }
-
-                            }
-
-                            for (int i = 0; i < list.size(); i++) {
-                                for (int j = 0; j < newlist.size(); j++) {
-                                    if (i == j) {
-                                        list.get(i).setPid(newlist.get(j).getPid());
-                                    }
-                                }
-                            }
-                            if (listafterDetach.size() == 0) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        screenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
+                                        getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                addScreen(); //4
-                                                simpleLoader.dismiss();
+                                                screenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        addScreen(); //4
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 2000);
+
                                             }
-                                        }, 2000);
+                                        });
 
-                                    }
-                                });
-
-                            } else {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        screenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Ifdetached();
-                                                simpleLoader.dismiss();
+                                                screenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Ifdetached();
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 2000);
+
                                             }
-                                        }, 2000);
+                                        });
+
 
                                     }
-                                });
 
 
-                            }
+                                }
+                            });
 
-
+                            screenCall.dismiss();
                         }
-                    });
-
-                    screenCall.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -1590,93 +1649,106 @@ public class AdminFragment2 extends AdminBaseFragment {
             @Override
             public void onMessage(WebSocket webSocket, final String text) {
                 Log.e("TAG", "MESSAGE: " + text);
-                if (text.equals("There are screens on:\r\r\n")) {
 
-                } else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            addScreen(); //5
+                try {
+                    JSONObject jsonObject = new JSONObject(text);
+                    if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                        webSocket.close(1000, null);
+                        webSocket.cancel();
+                        goTo2FaPasswordDialog();
+                    } else {
+                        if (text.equals("There are screens on:\r\r\n")) {
+
+                        } else if (text.equals("No Sockets found in /run/screen/S-routing-node-4.\r\n\r\r\n")) {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    addScreen(); //5
+                                }
+                            });
                         }
-                    });
-                } else {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                        else {
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
 
-                            String s = text;
-                            s = s.replaceAll("[\\n\\t\\r]", " ");
-                            s = s.toLowerCase();
-                            String words[] = s.split(" ");
-                            listafterAdd.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].equals("(detached)") || words[i].equals("(attached)") || words[i].equals("detached") || words[i].equals("attached")) {
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setStatus(words[i]);
+                                    String s = text;
+                                    s = s.replaceAll("[\\n\\t\\r]", " ");
+                                    s = s.toLowerCase();
+                                    String words[] = s.split(" ");
+                                    listafterAdd.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].equals("(detached)") || words[i].equals("(attached)") || words[i].equals("detached") || words[i].equals("attached")) {
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setStatus(words[i]);
+                                            if (listafterAdd.size() == 0) {
+                                                listafterAdd.add(0, secreeninfo);
+                                            } else {
+                                                listafterAdd.add(listafterAdd.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+                                    newlist.clear();
+                                    for (int i = 0; i < words.length; i++) {
+                                        if (words[i].contains(".lightning")) {
+                                            String str = words[i];
+                                            String kept = str.substring(0, str.indexOf("."));
+                                            ScreenInfo secreeninfo = new ScreenInfo();
+                                            secreeninfo.setPid(kept);
+                                            if (newlist.size() == 0) {
+                                                newlist.add(0, secreeninfo);
+                                            } else {
+                                                newlist.add(newlist.size(), secreeninfo);
+                                            }
+
+                                        }
+
+                                    }
+
+                                    for (int i = 0; i < list.size(); i++) {
+                                        for (int j = 0; j < newlist.size(); j++) {
+                                            if (i == j) {
+                                                list.get(i).setPid(newlist.get(j).getPid());
+                                            }
+                                        }
+                                    }
                                     if (listafterAdd.size() == 0) {
-                                        listafterAdd.add(0, secreeninfo);
+                                        simpleLoader.show();
+                                        final Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                screenCall.dismiss();
+                                                listafterAdd.clear();
+                                                addScreen();//6
+                                                simpleLoader.dismiss();
+                                            }
+                                        }, 2000);
+
                                     } else {
-                                        listafterAdd.add(listafterAdd.size(), secreeninfo);
-                                    }
-
-                                }
-
-                            }
-                            newlist.clear();
-                            for (int i = 0; i < words.length; i++) {
-                                if (words[i].contains(".lightning")) {
-                                    String str = words[i];
-                                    String kept = str.substring(0, str.indexOf("."));
-                                    ScreenInfo secreeninfo = new ScreenInfo();
-                                    secreeninfo.setPid(kept);
-                                    if (newlist.size() == 0) {
-                                        newlist.add(0, secreeninfo);
-                                    } else {
-                                        newlist.add(newlist.size(), secreeninfo);
-                                    }
-
-                                }
-
-                            }
-
-                            for (int i = 0; i < list.size(); i++) {
-                                for (int j = 0; j < newlist.size(); j++) {
-                                    if (i == j) {
-                                        list.get(i).setPid(newlist.get(j).getPid());
-                                    }
-                                }
-                            }
-                            if (listafterAdd.size() == 0) {
-                                simpleLoader.show();
-                                final Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
                                         screenCall.dismiss();
-                                        listafterAdd.clear();
-                                        addScreen();//6
-                                        simpleLoader.dismiss();
+                                        simpleLoader.show();
+                                        final Handler handler = new Handler();
+                                        handler.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+
+                                                DetachscreenScnerio();
+                                                simpleLoader.dismiss();
+                                            }
+                                        }, 2000);
                                     }
-                                }, 2000);
-
-                            } else {
-                                screenCall.dismiss();
-                                simpleLoader.show();
-                                final Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-
-                                        DetachscreenScnerio();
-                                        simpleLoader.dismiss();
-                                    }
-                                }, 2000);
-                            }
 
 
+                                }
+                            });
+                            screenCall.dismiss();
                         }
-                    });
-                    screenCall.dismiss();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -1752,54 +1824,65 @@ public class AdminFragment2 extends AdminBaseFragment {
                     @Override
                     public void run() {
 
-                        String s = text;
-                        s = s.replaceAll("[\\n\\t\\r]", " ");
-                        s = s.toLowerCase();
-                        String words[] = s.split(" ");
-                        for (int i = 0; i < words.length; i++) {
-                            if (words[i].equals("(detached)") || words[i].equals("(attached)")) {
-                                ScreenInfo secreeninfo = new ScreenInfo();
-                                secreeninfo.setStatus(words[i]);
-                                if (listafterDetach.size() == 0) {
-                                    listafterDetach.add(0, secreeninfo);
-                                } else {
-                                    listafterDetach.add(listafterDetach.size(), secreeninfo);
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                String s = text;
+                                s = s.replaceAll("[\\n\\t\\r]", " ");
+                                s = s.toLowerCase();
+                                String words[] = s.split(" ");
+                                for (int i = 0; i < words.length; i++) {
+                                    if (words[i].equals("(detached)") || words[i].equals("(attached)")) {
+                                        ScreenInfo secreeninfo = new ScreenInfo();
+                                        secreeninfo.setStatus(words[i]);
+                                        if (listafterDetach.size() == 0) {
+                                            listafterDetach.add(0, secreeninfo);
+                                        } else {
+                                            listafterDetach.add(listafterDetach.size(), secreeninfo);
+                                        }
+
+                                    }
+
                                 }
+                                for (int i = 0; i < words.length; i++) {
+                                    if (words[i].contains(".lightning")) {
+                                        for (int j = 0; j < listafterDetach.size(); j++) {
+                                            String str = words[i];
+                                            String kept = str.substring(0, str.indexOf("."));
+                                            listafterDetach.get(j).setPid(kept);
+                                        }
 
-                            }
-
-                        }
-                        for (int i = 0; i < words.length; i++) {
-                            if (words[i].contains(".lightning")) {
-                                for (int j = 0; j < listafterDetach.size(); j++) {
-                                    String str = words[i];
-                                    String kept = str.substring(0, str.indexOf("."));
-                                    listafterDetach.get(j).setPid(kept);
+                                    }
                                 }
-
-                            }
-                        }
-                        countDetach++;
-                        if (listafterAdd.size() == countDetach) {
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    detachscreencall.dismiss();
-                                    simpleLoader.show();
-                                    final Handler handler = new Handler();
-                                    handler.postDelayed(new Runnable() {
+                                countDetach++;
+                                if (listafterAdd.size() == countDetach) {
+                                    getActivity().runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            screen_ls_afterdetach();
-                                            countDetach = 0;
-                                            listafterAdd.clear();
-                                            simpleLoader.dismiss();
+                                            detachscreencall.dismiss();
+                                            simpleLoader.show();
+                                            final Handler handler = new Handler();
+                                            handler.postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    screen_ls_afterdetach();
+                                                    countDetach = 0;
+                                                    listafterAdd.clear();
+                                                    simpleLoader.dismiss();
+                                                }
+                                            }, 2000);
+
                                         }
-                                    }, 2000);
+                                    });
 
                                 }
-                            });
-
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
 
                     }
@@ -1891,24 +1974,35 @@ public class AdminFragment2 extends AdminBaseFragment {
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        addscreenCall.dismiss();
-                                        simpleLoader.show();
-                                        final Handler handler = new Handler();
-                                        handler.postDelayed(new Runnable() {
+
+                                try {
+                                    JSONObject jsonObject = new JSONObject(text);
+                                    if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                        webSocket.close(1000, null);
+                                        webSocket.cancel();
+                                        goTo2FaPasswordDialog();
+                                    } else {
+                                        getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                screen_ls_afterAddnew();
-                                                simpleLoader.dismiss();
+                                                addscreenCall.dismiss();
+                                                simpleLoader.show();
+                                                final Handler handler = new Handler();
+                                                handler.postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        screen_ls_afterAddnew();
+                                                        simpleLoader.dismiss();
+                                                    }
+                                                }, 3000);
+
                                             }
-                                        }, 3000);
+                                        });
 
                                     }
-                                });
-
-
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         });
 
@@ -2005,24 +2099,35 @@ public class AdminFragment2 extends AdminBaseFragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        quitCall.dismiss();
-                        simpleLoader.show();
-                        final Handler handler = new Handler();
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
 
-                                if (countquit == list.size()) {
-                                    addScreen(); //7
-                                    list.clear();
-                                    countquit = 0;
-                                }
+                        try {
+                            JSONObject jsonObject = new JSONObject(text);
+                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                                webSocket.close(1000, null);
+                                webSocket.cancel();
+                                goTo2FaPasswordDialog();
+                            } else {
+                                quitCall.dismiss();
+                                simpleLoader.show();
+                                final Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
 
-                                simpleLoader.dismiss();
+                                        if (countquit == list.size()) {
+                                            addScreen(); //7
+                                            list.clear();
+                                            countquit = 0;
+                                        }
+
+                                        simpleLoader.dismiss();
+                                    }
+                                }, 2000);
+
                             }
-                        }, 2000);
-
-
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
 

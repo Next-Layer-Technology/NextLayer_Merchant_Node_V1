@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 // Apply the Crashlytics Gradle plugin
 apply plugin: 'com.google.gms.google-services'
+
+apply plugin: 'com.google.firebase.crashlytics'
 //apply plugin: 'com.google.firebase.crashlytics'
 
 android {
@@ -28,6 +30,15 @@ android {
                 sourceCompatibility JavaVersion.VERSION_1_8
                 targetCompatibility JavaVersion.VERSION_1_8
             }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                outputFileName = "Next Layer Merchant${buildTime()}.apk"
+            }
+        }
+    }
 }
 
 dependencies {
@@ -61,6 +72,7 @@ dependencies {
    // implementation 'com.google.firebase:firebase-analytics:20.0.2'
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     // Add the Firebase Crashlytics SDK.
    // implementation 'com.google.firebase:firebase-crashlytics:18.2.7'
@@ -107,4 +119,12 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.7'
 
+    implementation ('io.socket:socket.io-client:2.0.0') {
+        exclude group: 'org.json', module: 'json'
+    }
+
+}
+
+static def buildTime() {
+    return new Date().format("_dd_MMM_yy_HH_mm")
 }

@@ -1,6 +1,7 @@
 package com.sis.clightapp.Utills;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.Data;
@@ -33,6 +34,7 @@ import java.util.Set;
 
 
 public class GlobalState extends Application {
+    public static final String TAG = "GlobalState";
     private int itemCountInCart;
     private String merchant_id;
     Boolean isLogin;
@@ -93,6 +95,11 @@ public class GlobalState extends Application {
     private NodeLineInfo nodeLineInfo;
     private MerchantData merchantData;
 
+    private boolean isMerchantConfirm = false;
+
+    //This arraylist is set when /UserStorage/inventory/ is called from CheckOutFragment1
+    private ArrayList<GetItemImageReloc> currentItemImageRelocArrayList;
+
     public String getSendPylist() {
         return sendPylist;
     }
@@ -117,14 +124,11 @@ public class GlobalState extends Application {
         this.channel_btcResponseData = channel_btcResponseData;
     }
 
-    private boolean isMerchantConfirm = false;
-
-    private ArrayList<GetItemImageReloc> currentItemImageRelocArrayList;
-
     public ArrayList<GetItemImageReloc> getCurrentItemImageRelocArrayList() {
         return currentItemImageRelocArrayList;
     }
 
+    //This arraylist is set when /UserStorage/inventory/ is called from CheckOutFragment1
     public void setCurrentItemImageRelocArrayList(ArrayList<GetItemImageReloc> currentItemImageRelocArrayList) {
         this.currentItemImageRelocArrayList = currentItemImageRelocArrayList;
     }
@@ -551,12 +555,18 @@ public class GlobalState extends Application {
         isCheckoutBtnPress = checkoutBtnPress;
     }
 
+
+    /*
+    These Items appear in Checkout Page 3
+     */
     public ArrayList<Items> getmSeletedForPayDataSourceCheckOutInventory() {
+        Log.v(TAG, "getmSeletedForPayDataSourceCheckOutInventory: ");
         return mSeletedForPayDataSourceCheckOutInventory;
+
     }
 
     public void addAllmSeletedForPayDataSourceCheckOutInventory(ArrayList<Items> addAllList) {
-
+        Log.v(TAG, "addAllmSeletedForPayDataSourceCheckOutInventory: " + addAllList.toString());
         if (this.mSeletedForPayDataSourceCheckOutInventory != null) {
             this.mSeletedForPayDataSourceCheckOutInventory.addAll(addAllList);
             Set<Items> s = new HashSet<Items>();
@@ -570,6 +580,7 @@ public class GlobalState extends Application {
     }
 
     public void setmSeletedForPayDataSourceCheckOutInventory(ArrayList<Items> mSeletedForPayDataSourceCheckOutInventory) {
+        Log.v(TAG, "setmSeletedForPayDataSourceCheckOutInventory: " + mSeletedForPayDataSourceCheckOutInventory.toString());
         this.mSeletedForPayDataSourceCheckOutInventory = mSeletedForPayDataSourceCheckOutInventory;
     }
 
@@ -620,6 +631,7 @@ public class GlobalState extends Application {
     }
 
     public void addInmSeletedForPayDataSourceCheckOutInventory(Items item) {
+        Log.v(TAG, "addInmSeletedForPayDataSourceCheckOutInventory: " + item.toString());
         if (this.mSeletedForPayDataSourceCheckOutInventory != null) {
             this.mSeletedForPayDataSourceCheckOutInventory.add(item);
         } else {
@@ -629,6 +641,7 @@ public class GlobalState extends Application {
     }
 
     public void removeInmSeletedForPayDataSourceCheckOutInventory(Items item) {
+        Log.v(TAG, "removeInmSeletedForPayDataSourceCheckOutInventory: " + item.toString());
         if (this.mSeletedForPayDataSourceCheckOutInventory.size() > 0) {
             this.mSeletedForPayDataSourceCheckOutInventory.remove(item);
         }
