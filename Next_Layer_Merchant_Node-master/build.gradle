@@ -5,6 +5,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()  // Maven Central repository
         maven { url "https://jitpack.io" }
 
         
@@ -17,7 +18,7 @@ buildscript {
 
         // Check that you have the Google Services Gradle plugin v4.3.2 or later
         // (if not, add it).
-        classpath 'com.google.gms:google-services:4.3.10'
+        classpath 'com.google.gms:google-services:4.3.3'
         // Add the dependency for the Crashlytics Gradle plugin
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
 
@@ -32,6 +33,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()  // Maven Central repository
         maven { url "https://jitpack.io" }
     }
 }
