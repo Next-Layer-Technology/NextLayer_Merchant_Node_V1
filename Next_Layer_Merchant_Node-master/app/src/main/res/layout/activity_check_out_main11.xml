@@ -16,12 +16,11 @@ tools:context=".activity.CheckOutMainActivity">
     <include layout="@layout/layout_header_checkout" />
 
     <com.sis.clightapp.ViewPager.CustomViewPager
+        android:id="@+id/custom_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/custom_view_pager"
-        android:background="@color/colorWhite"
         android:layout_marginTop="@dimen/_100sdp"
-        />
+        android:background="@color/colorWhite" />
     <ProgressBar
         android:id="@+id/pb_home"
         android:layout_width="wrap_content"

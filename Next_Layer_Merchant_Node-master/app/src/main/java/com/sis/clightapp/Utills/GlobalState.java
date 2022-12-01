@@ -48,8 +48,8 @@ public class GlobalState extends Application {
     private String ServerURL;
     private ArrayList<Items> mSelectedDataSourceCheckOutInventory;
     private ArrayList<Items> mDataSourceCheckOutInventory;
-    private ArrayList<Items> mDataScannedForPage1;
-    private ArrayList<Items> mDataScanedSourceCheckOutInventory;
+    private ArrayList<Items> mDataScannedForPage1 = new ArrayList();
+    private ArrayList<Items> mDataScanedSourceCheckOutInventory = new ArrayList();
     private ArrayList<Sale> mMerchantSalesListDataSource;
     private ArrayList<Refund> mMerchantRefundsLIstDataSource;
     private ArrayList<Sale> mAdminReceiveablesListDataSource;

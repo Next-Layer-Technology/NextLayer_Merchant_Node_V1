@@ -37,9 +37,7 @@ import java.util.Objects;
 public class CheckOutMainActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private CustomViewPager customViewPager;
-    int setwidht, setheight;
     ProgressBar progressBar;
-    int width;
 
     @Override
     public void onDestroy() {
@@ -54,7 +52,6 @@ public class CheckOutMainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_out_main11);
-        width = Resources.getSystem().getDisplayMetrics().widthPixels;
         Log.e(TAG, "Mode:Login As UserMode/CheckOut");
         initView();
         setViewPagerAdapter();
@@ -101,7 +98,7 @@ public class CheckOutMainActivity extends BaseActivity {
                 switch (position) {
                     case 0:
                         CheckOutFragment1 firstFragment = (CheckOutFragment1) getSupportFragmentManager().getFragments().get(0);
-                        firstFragment.refreshAdapter(true);
+                        firstFragment.setAdapter();
                         break;
                     case 1:
                         CheckOutsFragment2 secondFragment = (CheckOutsFragment2) getSupportFragmentManager().getFragments().get(1);
@@ -130,12 +127,6 @@ public class CheckOutMainActivity extends BaseActivity {
     }
 
     private void configureNavigationDrawer() {
-        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        setwidht = width * 45;
-        setwidht = setwidht / 100;
-        setheight = height / 2;
-
         drawerLayout = findViewById(R.id.checkoutdrawer_layout);
         NavigationView navView = findViewById(R.id.checkoutnavigation);
 

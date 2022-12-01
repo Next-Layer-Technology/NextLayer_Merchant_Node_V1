@@ -187,32 +187,24 @@ public class CheckOutBaseFragment extends Fragment {
         final Button btn_confirm = enter2FaPassDialog.findViewById(R.id.btn_confirm);
         final Button btn_cancel = enter2FaPassDialog.findViewById(R.id.btn_cancel);
         final ImageView iv_back = enter2FaPassDialog.findViewById(R.id.iv_back_invoice);
-        iv_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        iv_back.setOnClickListener(v -> enter2FaPassDialog.dismiss());
+        btn_confirm.setOnClickListener(v -> {
+            // closeSoftKeyBoard();
+            String twoFaString = String.valueOf(et_2Fa_pass.getText());
+            if (twoFaString.isEmpty()) {
+                showToast("Enter 2FA Password");
+            } else {
+                //Get Session
+
                 enter2FaPassDialog.dismiss();
+
+                confirmingProgressDialog.show();
+                confirmingProgressDialog.setCancelable(false);
+                confirmingProgressDialog.setCanceledOnTouchOutside(false);
+
+                getSessionToken(twoFaString);
             }
-        });
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // closeSoftKeyBoard();
-                String twoFaString = String.valueOf(et_2Fa_pass.getText());
-                if (twoFaString.isEmpty()) {
-                    showToast("Enter 2FA Password");
-                } else {
-                    //Get Session
 
-                    enter2FaPassDialog.dismiss();
-
-                    confirmingProgressDialog.show();
-                    confirmingProgressDialog.setCancelable(false);
-                    confirmingProgressDialog.setCanceledOnTouchOutside(false);
-
-                    getSessionToken(twoFaString);
-                }
-
-            }
         });
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override

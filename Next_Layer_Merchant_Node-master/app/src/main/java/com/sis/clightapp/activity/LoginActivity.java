@@ -9,10 +9,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.sis.clightapp.Interface.ApiClientBoost;
 import com.sis.clightapp.Interface.ApiPaths;
@@ -29,17 +30,12 @@ import retrofit2.Response;
 public class LoginActivity extends BaseActivity {
     String role = "";
     Button loginbtn;
-    //    RelativeLayout btnForgetPassword;
     EditText etEmail, etPassword;
-    int ADMINROLE = 0;
-    int MERCHANTROLE = 1000;
-    final int CHECKOUT = 2000;
     TextView setTextWithSpan;
     String merchant_id = "";
 
     @Override
     public void onBackPressed() {
-        //  super.onBackPressed();
         ask_exit();
     }
 
@@ -57,21 +53,13 @@ public class LoginActivity extends BaseActivity {
         nobtn.setText("No");
         alertTitle_tv.setText(getString(R.string.exit_title));
         alertMessage_tv.setText(getString(R.string.exit_subtitle));
-        yesbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                intent.putExtra("isFromLogin", true);
-                startActivity(intent);
-                finish();
-            }
+        yesbtn.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            intent.putExtra("isFromLogin", true);
+            startActivity(intent);
+            finish();
         });
-        nobtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goAlertDialogwithOneBTnDialog.dismiss();
-            }
-        });
+        nobtn.setOnClickListener(v -> goAlertDialogwithOneBTnDialog.dismiss());
         goAlertDialogwithOneBTnDialog.show();
 
     }
@@ -97,189 +85,82 @@ public class LoginActivity extends BaseActivity {
         loginLodingProgressDialog.setMessage("Logging In");
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
-        //btnForgetPassword = findViewById(R.id.btn_forget_password);
+        etEmail.setText("checkout");
+        etPassword.setText("abc123");
         loginbtn = findViewById(R.id.btn_login);
-        //  checkLocationPermisiion();
-//        getLatestLocation();
         merchant_id = GlobalState.getInstance().getMerchantData().getMerchant_data_id();
         Intent iin = getIntent();
         Bundle b = iin.getExtras();
         if (b != null) {
             role = (String) b.get("role");
         }
-        loginbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                clodeSoftKeyBoard();
-                String strEmail = etEmail.getText().toString();
-                String strPassword = etPassword.getText().toString();
-                if (strEmail.isEmpty()) {
-                    showToast(getString(R.string.empty));
-                    return;
-                }
-                if (strEmail.isEmpty()) {
-                    showToast(getString(R.string.empty));
-                    //showToast(getString(R.string.email_format));
-                    return;
-                }
-                if (strPassword.isEmpty()) {
-                    showToast(getString(R.string.empty));
-                    return;
-                }
-                setlogin(strEmail, strPassword);
+        loginbtn.setOnClickListener(view -> {
+            clodeSoftKeyBoard();
+            String strEmail = etEmail.getText().toString();
+            String strPassword = etPassword.getText().toString();
+            if (strEmail.isEmpty()) {
+                showToast(getString(R.string.empty));
+                return;
             }
-
+            if (strPassword.isEmpty()) {
+                return;
+            }
+            setlogin(strEmail, strPassword);
         });
-//        btnForgetPassword.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            }
-//        });
     }
 
     private void setlogin(String strEmail, String strPassword) {
-
-        if (role.equals("admin")) {
-
-            ClickLogin(merchant_id, strEmail, strPassword, "Admin");
-
-            /* RPC call
-            final int ROLE = 0;
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserID(strEmail);
-            userInfo.setUserPass(strPassword);
-            userInfo.setUserRole(ROLE);
-            userInfo.setImageUrl("www.image.com/admin.jpg");
-            GlobalState.getInstance().setUserInfo(userInfo);
-            String ip = "";
-            String portstring = "";
-            if (GlobalState.getInstance().getServerData() != null) {
-                ip = GlobalState.getInstance().getServerData().getIp();
-                portstring = GlobalState.getInstance().getServerData().getPort();
-
-                ConnectToServerAsAdmin connectToServer = new ConnectToServerAsAdmin(LoginActivity.this);
-                connectToServer.execute(new String[]{new String(ip),
-                        new String(portstring)});
-
-
-            }
-*/
-
-        } else if (role.equals("merchant")) {
-
-            ClickLogin(merchant_id, strEmail, strPassword, "Merchant");
-
-             /* RPC call
-             final int ROLE = 1000;
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserID(strEmail);
-            userInfo.setUserPass(strPassword);
-            userInfo.setUserRole(ROLE);
-            userInfo.setImageUrl("www.image.com/merchant.jpg");
-            GlobalState.getInstance().setUserInfo(userInfo);
-            String ip = "";
-            String portstring = "";
-            if (GlobalState.getInstance().getServerData() != null) {
-                ip = GlobalState.getInstance().getServerData().getIp();
-                portstring = GlobalState.getInstance().getServerData().getPort();
-                ConnectToServerAsMerchant connectToServer = new ConnectToServerAsMerchant(LoginActivity.this);
-                connectToServer.execute(new String[]{new String(ip),
-                        new String(portstring)});
-
-            }
-
-              */
-
-        } else if (role.equals("checkout")) {
-
-            ClickLogin(merchant_id, strEmail, strPassword, "Checkout");
-
-             /* RPC call
-
-            final int ROLE = 1000;
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserID(strEmail);
-            userInfo.setUserPass(strPassword);
-            userInfo.setUserRole(ROLE);
-            userInfo.setImageUrl("www.image.com/checkout.jpg");
-            GlobalState.getInstance().setUserInfo(userInfo);
-
-            String ip = "";
-            String portstring = "";
-            if (GlobalState.getInstance().getServerData() != null) {
-                ip = GlobalState.getInstance().getServerData().getIp();
-                portstring = GlobalState.getInstance().getServerData().getPort();
-                ConnectToServerAsCheckout connectToServer = new ConnectToServerAsCheckout(LoginActivity.this);
-                connectToServer.execute(new String[]{new String(ip),
-                        new String(portstring)});
-            }
-            */
+        switch (role) {
+            case "admin":
+                onLoginClicked(merchant_id, strEmail, strPassword, "Admin");
+                break;
+            case "merchant":
+                onLoginClicked(merchant_id, strEmail, strPassword, "Merchant");
+                break;
+            case "checkout":
+                onLoginClicked(merchant_id, strEmail, strPassword, "Checkout");
+                break;
         }
     }
-    private void getTaxCheckout() {
-        GlobalState.getInstance().setItemCountInCart(0);
-        sharedPreferences.setBoolean(true, IS_USER_LOGIN, this);
-        Intent i = new Intent(getApplicationContext(), CheckOutMainActivity.class);
-        // i.putExtra("role","checkout");
-        startActivity(i);
-        finish();
-    }
 
-    private void getTaxMerchant() {
-        GlobalState.getInstance().setItemCountInCart(0);
-        sharedPreferences.setBoolean(true, IS_USER_LOGIN, this);
-        Intent i = new Intent(getApplicationContext(), MerchantMainActivity.class);
-        // i.putExtra("role","merchant");
-        startActivity(i);
-        finish();
-    }
-
-    private void getTaxAdmin() {
-        GlobalState.getInstance().setItemCountInCart(0);
-        sharedPreferences.setBoolean(true, IS_USER_LOGIN, this);
-        Intent i = new Intent(getApplicationContext(), AdminMainActivity.class);
-        //i.putExtra("role","admin");
-        startActivity(i);
-        finish();
-    }
-
-    private void ClickLogin(String merchant_id, String name, String password, String type) {
+    private void onLoginClicked(String merchant_id, String name, String password, String type) {
         Call<Loginresponse> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).merchantsuser_login(merchant_id, name, password, type);
         call.enqueue(new Callback<Loginresponse>() {
             @Override
-            public void onResponse(Call<Loginresponse> call, Response<Loginresponse> response) {
+            public void onResponse(@NonNull Call<Loginresponse> call, @NonNull Response<Loginresponse> response) {
                 if (response.body() != null) {
                     Loginresponse loginresponse = response.body();
 
                     if (loginresponse.getMessage().equals("successfully done")) {
                         if (loginresponse.getLoginData() != null) {
                             sharedPreferences.setBoolean(true, IS_USER_LOGIN, LoginActivity.this);
-                            if (loginresponse.getLoginData().getUser_type().equals("Checkout")) {
-                                Intent i = new Intent(getApplicationContext(), CheckOutMainActivity.class);
-                                startActivity(i);
-                                //finish();
-                            } else if (loginresponse.getLoginData().getUser_type().equals("Admin")) {
-
-                                sharedPreferences.setBoolean(true, IS_USER_LOGIN, LoginActivity.this);
-                                Intent i = new Intent(getApplicationContext(), AdminMainActivity.class);
-                                //i.putExtra("role","admin");
-                                startActivity(i);
-
-                            } else if (loginresponse.getLoginData().getUser_type().equals("Merchant")) {
-                                sharedPreferences.setBoolean(true, IS_USER_LOGIN, LoginActivity.this);
-                                Intent i = new Intent(getApplicationContext(), MerchantMainActivity.class);
-                                // i.putExtra("role","merchant");
-                                startActivity(i);
-
-                            }else {
-                                showToast("text mismatch");
+                            switch (loginresponse.getLoginData().getUser_type()) {
+                                case "Checkout": {
+                                    Intent i = new Intent(getApplicationContext(), CheckOutMainActivity.class);
+                                    startActivity(i);
+                                    break;
+                                }
+                                case "Admin": {
+                                    sharedPreferences.setBoolean(true, IS_USER_LOGIN, LoginActivity.this);
+                                    Intent i = new Intent(getApplicationContext(), AdminMainActivity.class);
+                                    startActivity(i);
+                                    break;
+                                }
+                                case "Merchant": {
+                                    sharedPreferences.setBoolean(true, IS_USER_LOGIN, LoginActivity.this);
+                                    Intent i = new Intent(getApplicationContext(), MerchantMainActivity.class);
+                                    startActivity(i);
+                                    break;
+                                }
+                                default:
+                                    showToast("text mismatch");
+                                    break;
                             }
 
-                        }else {
+                        } else {
                             showToast("Response empty");
                         }
-                    }else {
+                    } else {
                         showToast("Invalid User Name Or Password");
 
                     }
@@ -287,8 +168,8 @@ public class LoginActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<Loginresponse> call, Throwable t) {
-                Log.e("get-funding-nodes:", t.getMessage());
+            public void onFailure(@NonNull Call<Loginresponse> call, @NonNull Throwable t) {
+                Log.e("get-funding-nodes:", Objects.requireNonNull(t.getMessage()));
                 showToast(t.getMessage());
             }
         });

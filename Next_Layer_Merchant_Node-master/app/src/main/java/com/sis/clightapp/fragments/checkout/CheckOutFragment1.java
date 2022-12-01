@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -91,8 +92,9 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
     CheckOutFragment1 checkOutFragment1;
     int setwidht, setheight;
     Button checkOutbtn, scanUPCbtn;
+    CheckBox cbList, cbScan;
     private WebSocketClient webSocketClient;
-    ListView checkOutListVieww;
+    ListView checkOutListView;
     CheckOutMainListAdapter checkOutMainListAdapter;
     TextView btcRate;
     private String gdaxUrl = "ws://73.36.65.41:8095/SendCommands";
@@ -103,6 +105,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
     ProgressDialog confirmingProgressDialog;
 
     TextView setTextWithSpan;
+
     static boolean isReceivableGet = false;
     double mSatoshiReceivable = 0;
     double btcReceivable = 0;
@@ -118,6 +121,9 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
     boolean isFundingInfoGetSuccefully = false;
     Dialog clearOutDialog;
     String TAG = "CheckOutFragment1";
+
+    boolean isListMode = true;
+    boolean isScanMode = false;
 
     public CheckOutFragment1() {
     }
@@ -153,13 +159,37 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 getString(R.string.welcome_text_bold),
                 boldStyle);
         checkOutbtn = view.findViewById(R.id.checkoutbtn);
+        cbList = view.findViewById(R.id.cbList);
+        cbScan = view.findViewById(R.id.cbScan);
+
+        cbList.setOnClickListener((compoundButton) -> {
+            isListMode = true;
+            isScanMode = false;
+            cbScan.setChecked(false);
+            cbList.setChecked(true);
+            checkOutMainListAdapter = new CheckOutMainListAdapter(requireContext(), GlobalState.getInstance().getmDataSourceCheckOutInventory());
+            if (checkOutListView != null)
+                checkOutListView.setAdapter(checkOutMainListAdapter);
+        });
+        cbScan.setOnClickListener((compoundButton) -> {
+            isScanMode = true;
+            isListMode = false;
+            cbList.setChecked(false);
+            cbScan.setChecked(true);
+            ArrayList<Items> dataSource = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
+            if (dataSource == null) {
+                dataSource = new ArrayList<>();
+            }
+            checkOutMainListAdapter = new CheckOutMainListAdapter(requireContext(), dataSource);
+            checkOutListView.setAdapter(checkOutMainListAdapter);
+        });
         scanUPCbtn = view.findViewById(R.id.scanUPC);
-        checkOutListVieww = view.findViewById(R.id.checkoutitemlist);
+        checkOutListView = view.findViewById(R.id.checkoutitemlist);
         confirmingProgressDialog = new ProgressDialog(getContext());
         confirmingProgressDialog.setCancelable(false);
         confirmingProgressDialog.setMessage("Loading ...");
         mScanedDataSourceItemList = new ArrayList<>();
-        GlobalState.getInstance().setmDataScannedForPage1(new ArrayList<Items>());
+        GlobalState.getInstance().setmDataScannedForPage1(new ArrayList<>());
         //create scan object
         IntentIntegrator qrScan = new IntentIntegrator(getActivity());
         qrScan.setOrientationLocked(false);
@@ -253,9 +283,12 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                                             itemsArrayList.get(itr).setSelectQuatity(1);
                                             GlobalState.getInstance().addInmDataScannedForPage1(itemsArrayList.get(itr));
                                             GlobalState.getInstance().addInmSeletedForPayDataSourceCheckOutInventory(itemsArrayList.get(itr));
-                                            GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(GlobalState.getInstance().getmDataScannedForPage1());
+                                            ArrayList<Items> items = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
+                                            items.add(itemsArrayList.get(itr));
+                                            GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(items);
                                             Log.d(TAG, "onActivityResult: 372");
                                             setAdapter();
+                                            break;
                                         }
                                     }
                                 }
@@ -308,24 +341,30 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
     }
 
     //Reloaded ALl Adapter
-    private void setAdapter() {
-        Log.d(TAG, "setAdapter: ");
-        int countitem = 0;
+    public void setAdapter() {
+        int countItem = 0;
         ArrayList<Items> ttd = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
         if (ttd != null) {
             Log.d(TAG, "setAdapter: ttd != null: " + ttd);
             for (Items items : ttd) {
-                countitem = countitem + items.getSelectQuatity();
+                countItem = countItem + items.getSelectQuatity();
             }
-            ((CheckOutMainActivity) requireActivity()).updateCartIcon(countitem);
+            ((CheckOutMainActivity) requireActivity()).updateCartIcon(countItem);
         }
-        final ArrayList<Items> dataSource = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
+        ArrayList<Items> dataSource;
+
+        if (isListMode) {
+            dataSource = GlobalState.getInstance().getmDataSourceCheckOutInventory();
+        } else {
+            dataSource = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
+        }
+
         if (dataSource != null) {
             Log.d(TAG, "setAdapter: dataSource != null: " + Arrays.toString(Arrays.stream(dataSource.toArray()).toArray()));
             if (dataSource.size() > 0) {
                 checkOutMainListAdapter = new CheckOutMainListAdapter(requireContext(), dataSource);
-                checkOutListVieww.setAdapter(checkOutMainListAdapter);
-                checkOutListVieww.setOnItemLongClickListener((adapterView, view, i, l) -> {
+                checkOutListView.setAdapter(checkOutMainListAdapter);
+                checkOutListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
                     final int position = i;
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle(getString(R.string.delete_title));
@@ -333,22 +372,11 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                     builder.setCancelable(true);
                     // Action if user selects 'yes'
                     builder.setPositiveButton("Yes", (dialogInterface, i12) -> {
-                        Items tem = dataSource.get(position);
-                        if (tem.getIsManual() != null) {
-                            GlobalState.getInstance().removeInmSeletedForPayDataSourceCheckOutInventory(tem);
-                            checkOutMainListAdapter.notifyDataSetChanged();
-                            Log.d(TAG, "onClick: 465");
-                        } else {
-                            GlobalState.getInstance().removeInMDataScannedForPage1(tem);
-                            GlobalState.getInstance().removeInmSeletedForPayDataSourceCheckOutInventory(tem);
-                            GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(GlobalState.getInstance().getmDataScannedForPage1());
-                            checkOutMainListAdapter.notifyDataSetChanged();
-                            Log.d(TAG, "onClick: 473");
-                        }
-                        setAdapter();
-                    });
-                    // Actions if user selects 'no'
-                    builder.setNegativeButton("No", (dialogInterface, i1) -> {
+                        Items item = dataSource.get(position);
+                        GlobalState.getInstance().removeInmSeletedForPayDataSourceCheckOutInventory(item);
+                        GlobalState.getInstance().removeInMDataScannedForPage1(item);
+                        GlobalState.getInstance().removeInmScannedDataSourceCheckOutInventory(item);
+                        checkOutMainListAdapter.notifyDataSetChanged();
                     });
                     // Create the alert dialog using alert dialog builder
                     AlertDialog dialog = builder.create();
@@ -360,7 +388,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 GlobalState.getInstance().setCheckoutBtnPress(false);
             } else {
                 checkOutMainListAdapter = new CheckOutMainListAdapter(requireContext(), dataSource);
-                checkOutListVieww.setAdapter(checkOutMainListAdapter);
+                checkOutListView.setAdapter(checkOutMainListAdapter);
                 ((CheckOutMainActivity) requireActivity()).updateCartIcon(0);
             }
         } else {
@@ -368,10 +396,6 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         }
     }
 
-    public void refreshAdapter(boolean isFirstTime) {
-        Log.d(TAG, "refreshAdapter: " + isFirstTime);
-        setAdapter();
-    }
 
     private void parseJSON() {
         ArrayList<Items> itemsList = new ArrayList<>();
@@ -390,7 +414,6 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 items.setQuantity(itemImageRelocArrayList.get(j).getQuantity());
             } else {
                 items.setQuantity("1");
-
             }
             items.setPrice(itemImageRelocArrayList.get(j).getPrice());
             items.setTotalPrice(itemImageRelocArrayList.get(j).getTotal_price());
@@ -400,12 +423,11 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         }
 
         GlobalState.getInstance().setmDataSourceCheckOutInventory(itemsList);
-        GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(itemsList);
         for (Items items : itemsList) {
             Log.e("ItemsDetails", "Name:" + items.getName() + "-" + "Quantity:" + items.getQuantity() + "-" + "Price:" + items.getPrice() + "-" + "UPC:" + items.getUPC() + "-" + "ImageURl:" + items.getImageUrl());
         }
 
-        refreshAdapter(false);
+        setAdapter();
     }
 
     private void getAllItems() {
