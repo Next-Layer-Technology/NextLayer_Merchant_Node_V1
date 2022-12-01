@@ -1,52 +1,27 @@
 package com.sis.clightapp.activity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.sis.clightapp.Interface.ApiClient;
-import com.sis.clightapp.Interface.ApiClient2;
 import com.sis.clightapp.Interface.ApiClientBoost;
 import com.sis.clightapp.Interface.ApiPaths;
-import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.NetworkManager;
-import com.sis.clightapp.fragments.checkout.CheckOutFragment1;
-import com.sis.clightapp.model.Data;
 import com.sis.clightapp.model.REST.Loginresponse;
-import com.sis.clightapp.model.Tax;
-import com.sis.clightapp.model.UserInfo;
-import com.sis.clightapp.model.WebsocketResponse.WebSocketOTPresponse;
-import com.sis.clightapp.session.MyLogOutService;
 
 import java.util.Objects;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -85,7 +60,7 @@ public class LoginActivity extends BaseActivity {
         yesbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                 intent.putExtra("isFromLogin", true);
                 startActivity(intent);
                 finish();
@@ -245,7 +220,7 @@ public class LoginActivity extends BaseActivity {
     private void getTaxCheckout() {
         GlobalState.getInstance().setItemCountInCart(0);
         sharedPreferences.setBoolean(true, IS_USER_LOGIN, this);
-        Intent i = new Intent(getApplicationContext(), CheckOutMain11.class);
+        Intent i = new Intent(getApplicationContext(), CheckOutMainActivity.class);
         // i.putExtra("role","checkout");
         startActivity(i);
         finish();
@@ -254,7 +229,7 @@ public class LoginActivity extends BaseActivity {
     private void getTaxMerchant() {
         GlobalState.getInstance().setItemCountInCart(0);
         sharedPreferences.setBoolean(true, IS_USER_LOGIN, this);
-        Intent i = new Intent(getApplicationContext(), MerchnatMain11.class);
+        Intent i = new Intent(getApplicationContext(), MerchantMainActivity.class);
         // i.putExtra("role","merchant");
         startActivity(i);
         finish();
@@ -263,7 +238,7 @@ public class LoginActivity extends BaseActivity {
     private void getTaxAdmin() {
         GlobalState.getInstance().setItemCountInCart(0);
         sharedPreferences.setBoolean(true, IS_USER_LOGIN, this);
-        Intent i = new Intent(getApplicationContext(), AdminMain11.class);
+        Intent i = new Intent(getApplicationContext(), AdminMainActivity.class);
         //i.putExtra("role","admin");
         startActivity(i);
         finish();
@@ -281,19 +256,19 @@ public class LoginActivity extends BaseActivity {
                         if (loginresponse.getLoginData() != null) {
                             sharedPreferences.setBoolean(true, IS_USER_LOGIN, LoginActivity.this);
                             if (loginresponse.getLoginData().getUser_type().equals("Checkout")) {
-                                Intent i = new Intent(getApplicationContext(), CheckOutMain11.class);
+                                Intent i = new Intent(getApplicationContext(), CheckOutMainActivity.class);
                                 startActivity(i);
                                 //finish();
                             } else if (loginresponse.getLoginData().getUser_type().equals("Admin")) {
 
                                 sharedPreferences.setBoolean(true, IS_USER_LOGIN, LoginActivity.this);
-                                Intent i = new Intent(getApplicationContext(), AdminMain11.class);
+                                Intent i = new Intent(getApplicationContext(), AdminMainActivity.class);
                                 //i.putExtra("role","admin");
                                 startActivity(i);
 
                             } else if (loginresponse.getLoginData().getUser_type().equals("Merchant")) {
                                 sharedPreferences.setBoolean(true, IS_USER_LOGIN, LoginActivity.this);
-                                Intent i = new Intent(getApplicationContext(), MerchnatMain11.class);
+                                Intent i = new Intent(getApplicationContext(), MerchantMainActivity.class);
                                 // i.putExtra("role","merchant");
                                 startActivity(i);
 

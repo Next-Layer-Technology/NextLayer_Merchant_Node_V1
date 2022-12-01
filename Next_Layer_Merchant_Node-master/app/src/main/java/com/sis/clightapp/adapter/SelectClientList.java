@@ -1,31 +1,21 @@
 package com.sis.clightapp.adapter;
 
-import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
-import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.activity.CheckOutMain11;
-import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.REST.StoreClients;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 

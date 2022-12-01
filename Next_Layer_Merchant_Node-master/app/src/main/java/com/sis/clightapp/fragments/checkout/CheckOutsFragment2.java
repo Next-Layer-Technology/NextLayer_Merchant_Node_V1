@@ -35,8 +35,8 @@ import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.Functions2;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.activity.CheckOutMain11;
-import com.sis.clightapp.activity.MainActivity;
+import com.sis.clightapp.activity.CheckOutMainActivity;
+import com.sis.clightapp.activity.HomeActivity;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.GsonModel.ListFunds.ListFundChannel;
@@ -161,7 +161,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
             @Override
             public void onClick(View view) {
                 //  ArrayList<Items> selectedItems=GlobalState.getInstance().getmSelectedDataSourceCheckOutInventory();
-                ((CheckOutMain11) getActivity()).swipeToCheckOutFragment3(2);
+                ((CheckOutMainActivity) getActivity()).swipeToCheckOutFragment3(2);
             }
         });
         if (CheckNetwork.isInternetAvailable(fContext)) {
@@ -240,7 +240,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                     for (Items items : after) {
                         countitem = countitem + items.getSelectQuatity();
                     }
-                    ((CheckOutMain11) getActivity()).updateCartIcon(countitem);
+                    ((CheckOutMainActivity) getActivity()).updateCartIcon(countitem);
 
                 }
                 newManualItem = null;
@@ -308,7 +308,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
             public void onClick(View v) {
                 cleanAllDataSource();
                 getContext().stopService(new Intent(getContext(), MyLogOutService.class));
-                Intent ii = new Intent(getContext(), MainActivity.class);
+                Intent ii = new Intent(getContext(), HomeActivity.class);
                 startActivity(ii);
             }
         });

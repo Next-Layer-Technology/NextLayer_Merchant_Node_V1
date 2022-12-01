@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -21,13 +20,12 @@ import com.bumptech.glide.Glide;
 import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.activity.CheckOutMain11;
+import com.sis.clightapp.activity.CheckOutMainActivity;
 import com.sis.clightapp.fragments.checkout.CheckOutsFragment3;
 import com.sis.clightapp.model.GsonModel.Items;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -126,7 +124,7 @@ public class CheckOutPayItemAdapter extends ArrayAdapter<Items> {
                                 {
                                     countitem=countitem+items.getSelectQuatity();
                                 }
-                                ((CheckOutMain11)mContext).updateCartIcon(countitem);
+                                ((CheckOutMainActivity)mContext).updateCartIcon(countitem);
                                 ((CheckOutsFragment3)myCheckOutFragment3).setAdapter();
                                 refresh(after);
                               //  Toast.makeText(getContext(),"Add",Toast.LENGTH_SHORT).show();
@@ -197,7 +195,7 @@ public class CheckOutPayItemAdapter extends ArrayAdapter<Items> {
                                 {
                                     countitem=countitem+items.getSelectQuatity();
                                 }
-                                ((CheckOutMain11)mContext).updateCartIcon(countitem);
+                                ((CheckOutMainActivity)mContext).updateCartIcon(countitem);
                                 ((CheckOutsFragment3)myCheckOutFragment3).setAdapter();
                                 refresh(after);
 

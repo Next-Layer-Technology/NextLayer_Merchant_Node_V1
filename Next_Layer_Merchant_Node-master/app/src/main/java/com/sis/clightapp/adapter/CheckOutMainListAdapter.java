@@ -2,19 +2,13 @@ package com.sis.clightapp.adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -22,10 +16,8 @@ import com.bumptech.glide.Glide;
 import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.ImageToBase16Hex;
-import com.sis.clightapp.activity.CheckOutMain11;
+import com.sis.clightapp.activity.CheckOutMainActivity;
 import com.sis.clightapp.model.GsonModel.Items;
-import com.sis.clightapp.model.Item;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -101,7 +93,7 @@ public class CheckOutMainListAdapter  extends ArrayAdapter<Items> {
                                 {
                                     countitem=countitem+items.getSelectQuatity();
                                 }
-                                ((CheckOutMain11)mContext).updateCartIcon(countitem);
+                                ((CheckOutMainActivity)mContext).updateCartIcon(countitem);
                                 /*for purpose of page 1 dataSource*/
                                 GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(itemsArrayList);
                                 refresh(itemsArrayList);
@@ -158,7 +150,7 @@ public class CheckOutMainListAdapter  extends ArrayAdapter<Items> {
                                 {
                                     countitem=countitem+items.getSelectQuatity();
                                 }
-                                ((CheckOutMain11)mContext).updateCartIcon(countitem);
+                                ((CheckOutMainActivity)mContext).updateCartIcon(countitem);
                                 /*for purpose of page 1 dataSource*/
                                 GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(itemsArrayList);
 

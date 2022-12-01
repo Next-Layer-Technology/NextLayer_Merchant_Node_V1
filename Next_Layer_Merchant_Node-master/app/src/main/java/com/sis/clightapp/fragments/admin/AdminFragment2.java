@@ -1,7 +1,5 @@
 package com.sis.clightapp.fragments.admin;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -9,10 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.text.style.StyleSpan;
@@ -25,20 +20,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.sis.clightapp.Interface.ApiClient;
-import com.sis.clightapp.Interface.ApiClientBoost;
-import com.sis.clightapp.Interface.ApiClientStartStop;
-import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.NetworkManager;
-import com.sis.clightapp.activity.MainActivity;
+import com.sis.clightapp.activity.HomeActivity;
 
 import com.sis.clightapp.model.GsonModel.Getinfoerror;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
-import com.sis.clightapp.model.REST.ServerStartStop.Node.NodeResp;
 import com.sis.clightapp.model.ScreenInfo;
 
 import org.json.JSONException;
@@ -54,9 +42,6 @@ import okhttp3.Request;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
 /**
@@ -611,7 +596,7 @@ public class AdminFragment2 extends AdminBaseFragment {
     }
 
     public void ifPostSuccefully() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), HomeActivity.class);
         startActivity(intent);
     }
 

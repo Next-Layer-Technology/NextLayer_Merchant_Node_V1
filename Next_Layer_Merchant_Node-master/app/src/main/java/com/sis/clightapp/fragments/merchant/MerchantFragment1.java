@@ -70,7 +70,7 @@ import com.sis.clightapp.Utills.Print.PrintPic;
 import com.sis.clightapp.Utills.Print.PrinterCommands;
 
 import com.sis.clightapp.Utills.UrlConstants;
-import com.sis.clightapp.activity.MainActivity;
+import com.sis.clightapp.activity.HomeActivity;
 import com.sis.clightapp.adapter.MerchantRefundsListAdapter;
 import com.sis.clightapp.adapter.MerchantSalesListAdapter;
 
@@ -2820,7 +2820,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
             @Override
             public void onClick(View v) {
                 getContext().stopService(new Intent(getContext(), MyLogOutService.class));
-                Intent ii = new Intent(getContext(), MainActivity.class);
+                Intent ii = new Intent(getContext(), HomeActivity.class);
                 startActivity(ii);
               /*  ExitingFromServer exitingFromServer = new ExitingFromServer(getActivity());
                 if (Build.VERSION.SDK_INT >= 11) {

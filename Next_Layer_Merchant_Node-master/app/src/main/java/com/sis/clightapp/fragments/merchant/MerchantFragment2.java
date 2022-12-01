@@ -50,7 +50,7 @@ import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.Functions2;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.activity.MainActivity;
+import com.sis.clightapp.activity.HomeActivity;
 
 import com.sis.clightapp.adapter.MerchantItemAdapter;
 import com.sis.clightapp.model.Channel_BTCResponseData;
@@ -366,7 +366,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
             @Override
             public void onClick(View v) {
                 getContext().stopService(new Intent(getContext(), MyLogOutService.class));
-                Intent ii = new Intent(getContext(), MainActivity.class);
+                Intent ii = new Intent(getContext(), HomeActivity.class);
                 startActivity(ii);
             }
         });

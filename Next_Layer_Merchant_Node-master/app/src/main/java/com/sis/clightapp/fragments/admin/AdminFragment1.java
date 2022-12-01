@@ -57,7 +57,7 @@ import com.sis.clightapp.Utills.GlobalState;
 import com.sis.clightapp.Utills.Print.PrintPic;
 import com.sis.clightapp.Utills.Print.PrinterCommands;
 import com.sis.clightapp.Utills.UrlConstants;
-import com.sis.clightapp.activity.MainActivity;
+import com.sis.clightapp.activity.HomeActivity;
 import com.sis.clightapp.adapter.AdminReceiveablesListAdapter;
 import com.sis.clightapp.adapter.AdminSendablesListAdapter;
 import com.sis.clightapp.model.Channel_BTCResponseData;
@@ -1954,7 +1954,7 @@ public class AdminFragment1 extends AdminBaseFragment {
 
     public void ifPostSuccefully() {
         getContext().stopService(new Intent(getContext(), MyLogOutService.class));
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), HomeActivity.class);
         startActivity(intent);
 
     }

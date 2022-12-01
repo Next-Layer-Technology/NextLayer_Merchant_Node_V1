@@ -31,9 +31,9 @@ import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.activity.MainActivity;
+import com.sis.clightapp.activity.HomeActivity;
 
-import com.sis.clightapp.activity.MainEntryActivity;
+import com.sis.clightapp.activity.MainEntryActivityNew;
 import com.sis.clightapp.model.GsonModel.Getinfoerror;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
 import com.sis.clightapp.model.REST.ServerStartStop.Node.NodeResp;
@@ -769,7 +769,7 @@ public class MerchantFragment3 extends MerchantBaseFragment {
                                         startServerPD.dismiss();
                                         result_RebootUpdateUpgrade.setText(resp.getMessage());
                                         sharedPreferences.clearAllPrefExceptOfSShkeyPassword(getContext());
-                                        startActivity(new Intent(getActivity(), MainEntryActivity.class));
+                                        startActivity(new Intent(getActivity(), MainEntryActivityNew.class));
                                     }
                                 }, AppConstants.TIMEFORWAITLN2);
                             } else {
@@ -843,7 +843,7 @@ public class MerchantFragment3 extends MerchantBaseFragment {
                         }
                         sharedPreferences.clearAllPrefExceptOfSShkeyPassword(getContext());
                         enter2FaPassDialog.dismiss();
-                        startActivity(new Intent(getActivity(), MainEntryActivity.class));
+                        startActivity(new Intent(getActivity(), MainEntryActivityNew.class));
                     } else {
                         goAlertDialogwithOneBTn(1, "", "Incorrect Password", "Retry", "");
                     }
@@ -1677,7 +1677,7 @@ public class MerchantFragment3 extends MerchantBaseFragment {
             public void onClick(View v) {
 
                 getContext().stopService(new Intent(getContext(), MyLogOutService.class));
-                Intent ii = new Intent(getContext(), MainActivity.class);
+                Intent ii = new Intent(getContext(), HomeActivity.class);
                 startActivity(ii);
                // PostRequestServer postRequestServer = new PostRequestServer(getActivity());
                 //postRequestServer.execute(new String[]{new String("bye")});
@@ -1699,7 +1699,7 @@ public class MerchantFragment3 extends MerchantBaseFragment {
     }
     public void ifPostSuccefully() {
         getContext().stopService(new Intent(getContext(), MyLogOutService.class));
-        Intent intent = new Intent(getContext(), MainActivity.class);
+        Intent intent = new Intent(getContext(), HomeActivity.class);
         startActivity(intent);
     }
     public void startlightning() {

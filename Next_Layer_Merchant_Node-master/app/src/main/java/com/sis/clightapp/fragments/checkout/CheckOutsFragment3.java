@@ -67,8 +67,8 @@ import com.sis.clightapp.Utills.GlobalState;
 import com.sis.clightapp.Utills.Print.PrintPic;
 import com.sis.clightapp.Utills.Print.PrinterCommands;
 import com.sis.clightapp.Utills.UrlConstants;
-import com.sis.clightapp.activity.CheckOutMain11;
-import com.sis.clightapp.activity.MainActivity;
+import com.sis.clightapp.activity.CheckOutMainActivity;
+import com.sis.clightapp.activity.HomeActivity;
 import com.sis.clightapp.adapter.CheckOutPayItemAdapter;
 import com.sis.clightapp.adapter.MerchantNodeAdapter;
 import com.sis.clightapp.adapter.SelectClientList;
@@ -509,7 +509,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             public void onClick(View v) {
                 cleanAllDataSource();
                 getContext().stopService(new Intent(getContext(), MyLogOutService.class));
-                Intent ii = new Intent(getContext(), MainActivity.class);
+                Intent ii = new Intent(getContext(), HomeActivity.class);
                 startActivity(ii);
             }
         });
@@ -533,7 +533,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             for (Items items : dataSource) {
                 countitem = countitem + items.getSelectQuatity();
             }
-            ((CheckOutMain11) getActivity()).updateCartIcon(countitem);
+            ((CheckOutMainActivity) getActivity()).updateCartIcon(countitem);
             checkOutPayItemAdapter = new CheckOutPayItemAdapter(getContext(), dataSource, CheckOutsFragment3.this);
             checkoutPayItemslistview.setAdapter(checkOutPayItemAdapter);
             checkoutPayItemslistview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -589,7 +589,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             });
             GlobalState.getInstance().setCheckoutBtnPress(false);
         } else {
-            ((CheckOutMain11) getActivity()).updateCartIcon(0);
+            ((CheckOutMainActivity) getActivity()).updateCartIcon(0);
         }
 
         if (dataSource != null && dataSource.size() > 0) {
@@ -655,13 +655,13 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             for (Items items : dataSource) {
                 countitem = countitem + items.getSelectQuatity();
             }
-            ((CheckOutMain11) getActivity()).updateCartIcon(countitem);
+            ((CheckOutMainActivity) getActivity()).updateCartIcon(countitem);
 
             checkOutPayItemAdapter = new CheckOutPayItemAdapter(getContext(), dataSource, CheckOutsFragment3.this);
             checkoutPayItemslistview.setAdapter(checkOutPayItemAdapter);
             GlobalState.getInstance().setCheckoutBtnPress(false);
         } else {
-            ((CheckOutMain11) getActivity()).updateCartIcon(0);
+            ((CheckOutMainActivity) getActivity()).updateCartIcon(0);
         }
         totalpay.setText("Total:" + "0.0 BTC" + " / " + "0.0 $");
         taxpay.setText("Tax:0.0 BTC/0.0 $");
