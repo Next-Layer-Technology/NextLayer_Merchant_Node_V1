@@ -3,11 +3,7 @@ package com.sis.clightapp.model.currency;
 import org.json.JSONObject;
 
 public class CurrentSpecificRateData {
-
-
-   private double rateinbitcoin;
-
-
+    private double rateinbitcoin;
 
     public double getRateinbitcoin() {
         return rateinbitcoin;
@@ -16,9 +12,4 @@ public class CurrentSpecificRateData {
     public void setRateinbitcoin(double rateinbitcoin) {
         this.rateinbitcoin = rateinbitcoin;
     }
-
-
-
-
-
 }

@@ -9,52 +9,38 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
-import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
 
-import com.sis.clightapp.Utills.NetworkManager;
 import com.sis.clightapp.ViewPager.CustomViewPager;
 import com.sis.clightapp.ViewPager.FragmentAdapter;
 import com.sis.clightapp.fragments.admin.AdminFragment1;
+import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.session.MyLogOutService;
 //import com.sis.clightapp.fragments.admin.AdminFragment2;
 
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class AdminMainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
     private CustomViewPager customViewPager;
-    int setwidht,setheight;
+    int setwidht, setheight;
     ProgressBar progressBar;
     public ActionBar actionbar;
-    private  boolean staus=true;
+    private boolean staus = true;
     private Handler handler;
     Runnable my_runnable;
     DrawerLayout mDrawerLayout;
@@ -69,17 +55,18 @@ public class AdminMainActivity extends BaseActivity {
         System.gc();
         stopService(new Intent(bContext, MyLogOutService.class));
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_main11);
-        progressBar=findViewById(R.id.pb_home);
+        progressBar = findViewById(R.id.pb_home);
         initView();
         //configureToolbar(R.drawable.ic_menu, "");
         setViewPagerAdapter();
         configureNavigationDrawer();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbaradmin);
-        ImageView navImg=(ImageView) toolbar.findViewById(R.id.imageView9);
+        ImageView navImg = (ImageView) toolbar.findViewById(R.id.imageView9);
         navImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,6 +98,7 @@ public class AdminMainActivity extends BaseActivity {
 //        }, 180000);
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -120,11 +108,13 @@ public class AdminMainActivity extends BaseActivity {
         }
         return true;
     }
+
     private void initView() {
 
         customViewPager = findViewById(R.id.custom_view_pager);
         drawerLayout = (DrawerLayout) findViewById(R.id.admindrawer_layout);
     }
+
     private void setViewPagerAdapter() {
 
         customViewPager.setPagingEnabled(false);
@@ -163,19 +153,21 @@ public class AdminMainActivity extends BaseActivity {
             }
         });
     }
+
     private List<Fragment> getFragment() {
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(new AdminFragment1().getInstance());
 //        fragmentList.add(new AdminFragment2().getInstance());
         return fragmentList;
     }
+
     private void configureNavigationDrawer() {
 
-        int width  = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
         int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        setwidht=width*45;
-        setwidht=setwidht/100;
-        setheight=height/2;
+        setwidht = width * 45;
+        setwidht = setwidht / 100;
+        setheight = height / 2;
         drawerLayout = (DrawerLayout) findViewById(R.id.admindrawer_layout);
         NavigationView navView = (NavigationView) findViewById(R.id.adminnavigation);
         View headerView = navView.getHeaderView(0);
@@ -208,36 +200,27 @@ public class AdminMainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 int itemId = menuItem.getItemId();
                 if (itemId == R.id.menu_1) {
-                    setFragment(0);
+                    setFragment();
                 }
                 return false;
             }
         });
     }
-    private void setFragment(int fragmentPosition) {
+
+    private void setFragment() {
         drawerLayout.closeDrawers();
-        customViewPager.setCurrentItem(fragmentPosition);
+        customViewPager.setCurrentItem(0);
     }
-    public void  clearcache()
-    {
-        sharedPreferences.clearAllPrefExceptOfSShkeyPassword(getApplicationContext());
-    }
+
+
     @Override
     public void onBackPressed() {
-        int position=  customViewPager.getCurrentItem();
-        switch (position) {
-            case 0:
-                AdminFragment1 firstFragment = (AdminFragment1) getSupportFragmentManager().getFragments().get(0);
-                firstFragment.onBackPressed();
-                break;
-            case 1:
-//                AdminFragment2 secondFragment = (AdminFragment2) getSupportFragmentManager().getFragments().get(1);
-//                secondFragment.onBackPressed();
-                break;
-            default:
-                return;
-        }
-
-
+        new ExitDialogFragment(() -> {
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("isFromLogin", true);
+            startActivity(intent);
+            finish();
+            return null;
+        }).show(getSupportFragmentManager(), null);
     }
 }

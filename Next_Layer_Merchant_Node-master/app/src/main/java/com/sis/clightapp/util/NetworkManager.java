@@ -1,4 +1,4 @@
-package com.sis.clightapp.Utills;
+package com.sis.clightapp.util;
 
 import android.os.StrictMode;
 import android.util.Log;
@@ -12,16 +12,12 @@ import java.io.PrintWriter;
 import java.security.GeneralSecurityException;
 import java.security.cert.X509Certificate;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
-
-import static android.util.Config.LOGV;
 
 public class NetworkManager {
     private static NetworkManager networkManager = null;

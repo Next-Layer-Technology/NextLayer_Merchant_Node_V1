@@ -2,7 +2,7 @@ package com.sis.clightapp.Interface;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.util.GlobalState;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
 
 import java.util.concurrent.TimeUnit;

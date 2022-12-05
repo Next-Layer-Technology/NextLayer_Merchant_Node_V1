@@ -47,9 +47,9 @@ import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.Functions2;
-import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.util.CustomSharedPreferences;
+import com.sis.clightapp.util.Functions2;
+import com.sis.clightapp.util.GlobalState;
 import com.sis.clightapp.activity.HomeActivity;
 
 import com.sis.clightapp.adapter.MerchantItemAdapter;
@@ -61,7 +61,6 @@ import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemPhotoPath;
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemsDataMerchant;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
 import com.sis.clightapp.model.GsonModel.StringImageOfUPCItem;
-import com.sis.clightapp.model.GsonModel.UPCofImages;
 
 import com.sis.clightapp.model.ImageRelocation.AddImageResp;
 import com.sis.clightapp.model.ImageRelocation.GetItemImageRSP;
@@ -1063,7 +1062,6 @@ public class MerchantFragment2 extends MerchantBaseFragment {
                                 }
                             }
 
-                            GlobalState.getInstance().setDellSelectedItemName(itemName);
                             GlobalState.getInstance().setDellSelectedItemUPC(itemSelectedUPC);
                             ask_deleteItem(pos);
 

@@ -28,9 +28,8 @@ import com.google.gson.Gson;
 import com.sis.clightapp.Interface.ApiClientStartStop;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.util.AppConstants;
+import com.sis.clightapp.util.CustomSharedPreferences;
 import com.sis.clightapp.activity.HomeActivity;
 
 import com.sis.clightapp.activity.MainEntryActivityNew;
@@ -162,12 +161,9 @@ public class MerchantFragment3 extends MerchantBaseFragment {
         currentMerchantData = merchantData;
         if (currentMerchantData != null) {
             isConfirmMerchant = true;
-            GlobalState.getInstance().setMerchantConfirm(true);
         } else {
             isConfirmMerchant = false;
-            GlobalState.getInstance().setMerchantConfirm(false);
         }
-        //startBitcoin,stopBitcoin,startLightning,stopLightning
         rebootUpdateUpgradeBtn = view.findViewById(R.id.rebootUpdateUpgradeBtn);
         removeSshKeyBtn = view.findViewById(R.id.removeSshKeyBtn);
         startBitcoinBtn = view.findViewById(R.id.startBitcoinBtn);

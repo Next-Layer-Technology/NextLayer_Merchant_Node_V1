@@ -19,8 +19,8 @@ import android.widget.TextView;
 import com.sis.clightapp.Interface.ApiClientStartStop;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
-import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.util.AppConstants;
+import com.sis.clightapp.util.GlobalState;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
 import com.sis.clightapp.model.REST.ServerStartStop.Node.NodeResp;
 
@@ -90,25 +90,13 @@ public class HomeActivity extends BaseActivity {
         nobtn.setText("No");
         alertTitle_tv.setText(getString(R.string.exit_title));
         alertMessage_tv.setText(getString(R.string.exit_subtitle));
-        yesbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                sharedPreferences.clearAllPrefExceptOfSShkeyPassword(MainActivity.this);
-//                Intent ii = new Intent(MainActivity.this, MainEntryActivity.class);
-                Intent ii = new Intent(HomeActivity.this, MainEntryActivityNew.class);
-                startActivity(ii);
+        yesbtn.setOnClickListener(v -> {
+            Intent ii = new Intent(HomeActivity.this, MainEntryActivityNew.class);
+            startActivity(ii);
 
-            }
         });
-        nobtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goAlertDialogwithOneBTnDialog.dismiss();
-            }
-        });
+        nobtn.setOnClickListener(v -> goAlertDialogwithOneBTnDialog.dismiss());
         goAlertDialogwithOneBTnDialog.show();
-
-
     }
 
     @Override
@@ -116,8 +104,6 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recallTime = 0;
-        //checkLocationPermisiion();
-        //getLatestLocation();
         checkStatusPD = new ProgressDialog(bContext);
         checkStatusPD.setMessage("Loading...");
         checkStatusPD.setCancelable(false);
@@ -134,11 +120,9 @@ public class HomeActivity extends BaseActivity {
         if (currentMerchantData != null) {
             isConfirmMerchant = true;
             isThorConfirmed = true;
-            GlobalState.getInstance().setMerchantConfirm(true);
         } else {
             isThorConfirmed = false;
             isConfirmMerchant = false;
-            GlobalState.getInstance().setMerchantConfirm(false);
         }
         dialog = new ProgressDialog(bContext);
         dialog.setMessage("Connecting...");
@@ -169,11 +153,11 @@ public class HomeActivity extends BaseActivity {
             public void onClick(View view) {
 
 //                if (isThorConfirmed) {
-                    Log.e(TAG, "Admin Mode Selected");
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    i.putExtra("role", "admin");
-                    startActivity(i);
-                    finish();
+                Log.e(TAG, "Admin Mode Selected");
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                i.putExtra("role", "admin");
+                startActivity(i);
+                finish();
 //                } else {
 //                    goAlertDialogwithOneBTn(1, "", "Your Sorvereign is Not Connect!!!", "OK", "");
 //

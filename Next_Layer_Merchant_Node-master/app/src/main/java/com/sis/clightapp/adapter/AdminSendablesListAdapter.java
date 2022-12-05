@@ -21,7 +21,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
+import com.sis.clightapp.util.AppConstants;
 import com.sis.clightapp.model.GsonModel.Refund;
 
 import java.math.BigDecimal;

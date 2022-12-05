@@ -31,13 +31,11 @@ import com.sis.clightapp.Interface.ApiClient;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.Utils;
+import com.sis.clightapp.util.AppConstants;
+import com.sis.clightapp.util.CustomSharedPreferences;
+import com.sis.clightapp.util.GlobalState;
+import com.sis.clightapp.util.Utils;
 import com.sis.clightapp.activity.CheckOutMainActivity;
-import com.sis.clightapp.activity.HomeActivity;
-import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.GsonModel.ListPeers.ListPeers;
@@ -55,7 +53,6 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import okhttp3.OkHttpClient;
@@ -72,7 +69,6 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.KEYGUARD_SERVICE;
 
 public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnClickListener {
-    private CheckOutsFragment2 checkOutsFragment2;
     EditText amount, rcieptnum;
     TextView[] btn = new TextView[12];
     TextView btnAddItem, btnCheckOut;
@@ -224,9 +220,6 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
 
     }
 
-    public void onBackPressed() {
-        new ExitDialogFragment().show(getChildFragmentManager(), null);
-    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -282,12 +275,6 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
     public CheckOutsFragment2() {
     }
 
-    public CheckOutsFragment2 getInstance() {
-        if (checkOutsFragment2 == null) {
-            checkOutsFragment2 = new CheckOutsFragment2();
-        }
-        return checkOutsFragment2;
-    }
 
 
     @SuppressLint("SetTextI18n")
@@ -426,13 +413,10 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
             sta = false;
             Log.e("ListFundParsing2", e.getMessage());
         }
-        if (sta == true) {
-            listFunds = new ListPeers();
+        if (sta) {
             Gson gson = new Gson();
-            boolean failed = false;
             try {
                 listFunds = gson.fromJson(jsonObj.toString(), ListPeers.class);
-                failed = false;
                 if (listFunds != null) {
                     if (listFunds.getChannels() != null) {
                         if (listFunds.getChannels().size() > 0) {
@@ -469,7 +453,6 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                 }
             } catch (IllegalStateException | JsonSyntaxException exception) {
                 Log.e("ListFundParsing3", exception.getMessage());
-                failed = true;
             }
         } else {
             Log.e("Error", "Error");
@@ -607,16 +590,12 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                 } catch (Throwable t) {
                     Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
                 }
-
                 Log.i("WebSocket", "Session is starting");
             }
 
             @Override
             public void onTextReceived(String s) {
                 Log.i("WebSocket", "Message received");
-                final String message = s;
-
-
                 if (!s.isEmpty()) {
                     try {
                         JSONObject jsonObject = new JSONObject(s);

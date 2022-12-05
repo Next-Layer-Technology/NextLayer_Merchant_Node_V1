@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.navigation.NavigationView;
@@ -28,6 +29,7 @@ import com.sis.clightapp.ViewPager.FragmentAdapter;
 import com.sis.clightapp.fragments.checkout.CheckOutFragment1;
 import com.sis.clightapp.fragments.checkout.CheckOutsFragment2;
 import com.sis.clightapp.fragments.checkout.CheckOutsFragment3;
+import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.session.MyLogOutService;
 
 import java.util.ArrayList;
@@ -85,7 +87,7 @@ public class CheckOutMainActivity extends BaseActivity {
 
     private void setViewPagerAdapter() {
         customViewPager.setPagingEnabled(false);
-        FragmentAdapter pagerAdapter = new FragmentAdapter(getSupportFragmentManager(), 0, getFragment());
+        FragmentAdapter pagerAdapter = new FragmentAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,getFragment());
         customViewPager.setAdapter(pagerAdapter);
         customViewPager.setOffscreenPageLimit(5);
         customViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -120,9 +122,9 @@ public class CheckOutMainActivity extends BaseActivity {
 
     private List<Fragment> getFragment() {
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new CheckOutFragment1().getInstance());
-        fragmentList.add(new CheckOutsFragment2().getInstance());
-        fragmentList.add(new CheckOutsFragment3().getInstance());
+        fragmentList.add(new CheckOutFragment1());
+        fragmentList.add(new CheckOutsFragment2());
+        fragmentList.add(new CheckOutsFragment3());
         return fragmentList;
     }
 
@@ -182,22 +184,12 @@ public class CheckOutMainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        int position = customViewPager.getCurrentItem();
-        switch (position) {
-            case 0:
-                CheckOutFragment1 firstFragment = (CheckOutFragment1) getSupportFragmentManager().getFragments().get(0);
-                firstFragment.onBackPressed();
-                break;
-            case 1:
-                CheckOutsFragment2 secondFragment = (CheckOutsFragment2) getSupportFragmentManager().getFragments().get(1);
-                secondFragment.onBackPressed();
-                break;
-            case 2:
-                CheckOutsFragment3 thirdFragment = (CheckOutsFragment3) getSupportFragmentManager().getFragments().get(2);
-                thirdFragment.onBackPressed();
-                break;
-            default:
-        }
+        new ExitDialogFragment(() -> {
+            stopService(new Intent(this, MyLogOutService.class));
+            Intent intent = new Intent(this, HomeActivity.class);
+            startActivity(intent);
+            return null;
+        }).show(getSupportFragmentManager(), null);
     }
 
     public void updateCartIcon(int count) {

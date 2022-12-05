@@ -1,4 +1,4 @@
-package com.sis.clightapp.Utills;
+package com.sis.clightapp.util;
 
 /*
 By!

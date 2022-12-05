@@ -2,7 +2,7 @@ package com.sis.clightapp.EmailSdk;
 
 import android.util.Log;
 
-import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.util.GlobalState;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

@@ -1,4 +1,4 @@
-package com.sis.clightapp.Utills.Print;
+package com.sis.clightapp.util.print;
 public class PrinterCommands {
     public static final byte HT = 0x9;
     public static final byte LF = 0x0A;

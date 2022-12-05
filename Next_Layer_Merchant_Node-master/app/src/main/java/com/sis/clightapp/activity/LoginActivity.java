@@ -1,11 +1,8 @@
 package com.sis.clightapp.activity;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.style.StyleSpan;
 import android.util.Log;
@@ -18,7 +15,8 @@ import androidx.annotation.NonNull;
 import com.sis.clightapp.Interface.ApiClientBoost;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.util.GlobalState;
+import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.model.REST.Loginresponse;
 
 import java.util.Objects;
@@ -36,32 +34,13 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        ask_exit();
-    }
-
-    private void ask_exit() {
-        final Dialog goAlertDialogwithOneBTnDialog;
-        goAlertDialogwithOneBTnDialog = new Dialog(LoginActivity.this);
-        goAlertDialogwithOneBTnDialog.setContentView(R.layout.alert_dialog_layout);
-        Objects.requireNonNull(goAlertDialogwithOneBTnDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        goAlertDialogwithOneBTnDialog.setCancelable(false);
-        final TextView alertTitle_tv = goAlertDialogwithOneBTnDialog.findViewById(R.id.alertTitle);
-        final TextView alertMessage_tv = goAlertDialogwithOneBTnDialog.findViewById(R.id.alertMessage);
-        final Button yesbtn = goAlertDialogwithOneBTnDialog.findViewById(R.id.yesbtn);
-        final Button nobtn = goAlertDialogwithOneBTnDialog.findViewById(R.id.nobtn);
-        yesbtn.setText("Yes");
-        nobtn.setText("No");
-        alertTitle_tv.setText(getString(R.string.exit_title));
-        alertMessage_tv.setText(getString(R.string.exit_subtitle));
-        yesbtn.setOnClickListener(v -> {
+        new ExitDialogFragment(() -> {
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             intent.putExtra("isFromLogin", true);
             startActivity(intent);
             finish();
-        });
-        nobtn.setOnClickListener(v -> goAlertDialogwithOneBTnDialog.dismiss());
-        goAlertDialogwithOneBTnDialog.show();
-
+            return null;
+        }).show(getSupportFragmentManager(), null);
     }
 
     @Override

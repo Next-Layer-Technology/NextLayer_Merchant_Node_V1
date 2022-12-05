@@ -16,8 +16,7 @@ import androidx.annotation.Nullable;
 
 
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.ImageBase64Encrpytion;
-import com.sis.clightapp.Utills.ImageToBase16Hex;
+import com.sis.clightapp.util.ImageToBase16Hex;
 import com.sis.clightapp.model.GsonModel.Items;
 
 import java.util.ArrayList;

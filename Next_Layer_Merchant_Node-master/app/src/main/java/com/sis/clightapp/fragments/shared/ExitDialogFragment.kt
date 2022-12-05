@@ -11,10 +11,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.sis.clightapp.R
-import com.sis.clightapp.activity.HomeActivity
-import com.sis.clightapp.session.MyLogOutService
 
-class ExitDialogFragment : DialogFragment() {
+class ExitDialogFragment(val onConfirm: () -> Unit) : DialogFragment() {
+
     @SuppressLint("SetTextI18n")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = Dialog(requireContext())
@@ -36,9 +35,7 @@ class ExitDialogFragment : DialogFragment() {
         alertMessage.text = getString(R.string.exit_subtitle)
         yes.setOnClickListener { v: View? ->
             dialog.dismiss()
-            requireContext().stopService(Intent(context, MyLogOutService::class.java))
-            val intent = Intent(context, HomeActivity::class.java)
-            startActivity(intent)
+            onConfirm()
         }
         no.setOnClickListener { v: View? -> dialog.dismiss() }
         dialog.show()

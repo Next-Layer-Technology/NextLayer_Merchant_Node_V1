@@ -1,4 +1,4 @@
-package com.sis.clightapp.Utills;
+package com.sis.clightapp.util;
 
 public class UrlConstants {
     public static String getInvoiceSendCommand(String token, String rMSatoshi, String label, String description) {

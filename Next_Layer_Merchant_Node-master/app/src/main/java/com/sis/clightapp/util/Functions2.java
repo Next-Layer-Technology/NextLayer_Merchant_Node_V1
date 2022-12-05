@@ -1,4 +1,4 @@
-package com.sis.clightapp.Utills;
+package com.sis.clightapp.util;
 
 import com.sis.clightapp.Interface.ApiPaths;
 
@@ -7,8 +7,6 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static com.sis.clightapp.Interface.BaseUrl.App_Url;
 
 public class Functions2 {
 

@@ -33,9 +33,8 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.MyApplication;
+import com.sis.clightapp.util.CustomSharedPreferences;
+import com.sis.clightapp.util.GlobalState;
 import com.sis.clightapp.session.MyLogOutService;
 
 import java.io.File;

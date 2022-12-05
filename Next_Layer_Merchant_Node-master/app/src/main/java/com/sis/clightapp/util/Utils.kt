@@ -1,7 +1,6 @@
-package com.sis.clightapp.Utills
+package com.sis.clightapp.util
 
 import android.text.format.DateFormat
-import java.sql.Timestamp
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.pow

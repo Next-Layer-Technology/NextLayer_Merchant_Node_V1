@@ -1,20 +1,16 @@
 package com.sis.clightapp.adapter;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,14 +20,11 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
-import com.sis.clightapp.Utills.ImageToBase16Hex;
+import com.sis.clightapp.util.AppConstants;
 import com.sis.clightapp.fragments.merchant.MerchantFragment2;
-import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemLIstModel;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;

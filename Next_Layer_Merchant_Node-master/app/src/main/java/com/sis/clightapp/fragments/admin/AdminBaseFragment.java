@@ -31,9 +31,9 @@ import com.sis.clightapp.Interface.ApiClientBoost;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.util.AppConstants;
+import com.sis.clightapp.util.CustomSharedPreferences;
+import com.sis.clightapp.util.GlobalState;
 import com.sis.clightapp.model.REST.get_session_response;
 import com.sis.clightapp.model.WebsocketResponse.WebSocketOTPresponse;
 

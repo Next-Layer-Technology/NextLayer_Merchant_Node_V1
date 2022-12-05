@@ -2,9 +2,6 @@ package com.sis.clightapp.model.rbs;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.sis.clightapp.model.REST.nearby_clients.NearbyClients;
-
-import java.util.List;
 
 public class RBSRequest {
 

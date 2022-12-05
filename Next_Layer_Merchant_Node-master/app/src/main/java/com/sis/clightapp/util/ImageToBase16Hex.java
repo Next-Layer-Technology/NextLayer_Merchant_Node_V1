@@ -1,9 +1,8 @@
-package com.sis.clightapp.Utills;
+package com.sis.clightapp.util;
 
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;

@@ -1,4 +1,4 @@
-package com.sis.clightapp.Utills.Print;
+package com.sis.clightapp.util.print;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;

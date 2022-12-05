@@ -1,5 +1,6 @@
 package com.sis.clightapp.fragments.printing
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
@@ -11,17 +12,20 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.DialogFragment
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
@@ -29,11 +33,12 @@ import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.sis.clightapp.R
-import com.sis.clightapp.Utills.AppConstants
-import com.sis.clightapp.Utills.GlobalState
-import com.sis.clightapp.Utills.Print.PrintPic
-import com.sis.clightapp.Utills.Print.PrinterCommands
-import com.sis.clightapp.Utills.Utils
+import com.sis.clightapp.util.AppConstants
+import com.sis.clightapp.util.GlobalState
+import com.sis.clightapp.util.print.PrintPic
+import com.sis.clightapp.util.print.PrinterCommands
+import com.sis.clightapp.util.Utils
+import com.sis.clightapp.model.GsonModel.InvoiceForPrint
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.text.DecimalFormat
@@ -41,11 +46,9 @@ import java.util.*
 
 class PrintDialogFragment : DialogFragment() {
     private val requestCode = 2
-    private lateinit var mBluetoothAdapter: BluetoothAdapter
+    private lateinit var bluetoothAdapter: BluetoothAdapter
     var btReceiver: BroadcastReceiver? = null
-    private val applicationUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
-    lateinit var mBluetoothDevice: BluetoothDevice
-    private val mBluetoothSocket: BluetoothSocket? = null
+    private val uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     private lateinit var printingProgressBar: ProgressDialog
     private lateinit var btDevicesDialog: Dialog
 
@@ -65,6 +68,16 @@ class PrintDialogFragment : DialogFragment() {
         initializeBluetooth()
         scanDevices.setOnClickListener { initializeBluetooth() }
         ivBack.setOnClickListener { btDevicesDialog.dismiss() }
+
+        val permissions: MutableList<String> = ArrayList()
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        permissions.add(Manifest.permission.BLUETOOTH)
+        permissions.add(Manifest.permission.BLUETOOTH_ADMIN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT)
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN)
+        }
+        ActivityCompat.requestPermissions(requireActivity(), permissions.toTypedArray(), 1)
         return btDevicesDialog
     }
 
@@ -81,17 +94,39 @@ class PrintDialogFragment : DialogFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun initializeBluetooth() {
+        if (ActivityCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.BLUETOOTH_SCAN
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         val dialog: ProgressBar = btDevicesDialog.findViewById(R.id.printerProgress)
         dialog.visibility = View.VISIBLE
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        if (!mBluetoothAdapter.isEnabled) {
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        if (!bluetoothAdapter.isEnabled) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             startActivityForResult(enableBtIntent, requestCode)
             return
         }
-        mBluetoothAdapter.startDiscovery()
+
+        bluetoothAdapter.startDiscovery()
         val mPairedDevicesArrayAdapter =
-            ArrayAdapter<BluetoothDevice>(requireContext(), R.layout.device_name)
+            object : ArrayAdapter<BluetoothDevice>(requireContext(), R.layout.device_name) {
+                @SuppressLint("MissingPermission")
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    var currentItemView: View? = convertView
+                    if (currentItemView == null) {
+                        currentItemView = LayoutInflater.from(context)
+                            .inflate(android.R.layout.simple_list_item_1, parent, false);
+                    }
+                    val item = getItem(position)!!
+                    (currentItemView as TextView?)?.let {
+                        it.text = item.name.toString() + " - " + item.address
+                    }
+                    return currentItemView!!
+                }
+            }
         val blueDeviceListView: ListView =
             btDevicesDialog.findViewById(R.id.blueDeviceListView)
         blueDeviceListView.adapter = mPairedDevicesArrayAdapter
@@ -101,33 +136,42 @@ class PrintDialogFragment : DialogFragment() {
                 try {
                     dialog.visibility = View.VISIBLE
                     tvStatus.text = "Device Status:Connecting...."
-                    mBluetoothAdapter.cancelDiscovery()
-                    mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(
+                    bluetoothAdapter.cancelDiscovery()
+                    val device = bluetoothAdapter.getRemoteDevice(
                         mPairedDevicesArrayAdapter.getItem(mPosition)!!.address
                     )
-                    Handler(Looper.getMainLooper()).post {
-                        try {
-                            val mBluetoothSocket =
-                                mBluetoothDevice.createRfcommSocketToServiceRecord(applicationUUID)
-                            mBluetoothAdapter.cancelDiscovery()
-                            mBluetoothSocket.connect()
-                            sendData()
-                            tvStatus.text = "Device Status:Connected"
-                            dialog.visibility = View.GONE
-                        } catch (eConnectException: IOException) {
-                            tvStatus.text = "Device Status:Try Again"
-                            dialog.visibility = View.GONE
-                            Log.e("ConnectError", eConnectException.toString())
+                    try {
+                        GlobalState.getInstance().invoiceForPrint = InvoiceForPrint().apply {
+                            msatoshi = 1.0
+                            paid_at = 12312312312312
+                            purchasedItems = "Items"
+                            tax = "1.0"
+                            desscription = "Description"
+                            created_at = 12312312312312.0
+                            destination = "Destination"
+                            payment_hash = "Hash"
+
                         }
+                        ConnectThread(device).start()
+                        printingProgressBar.show()
+                        printingProgressBar.setCancelable(false)
+                        printingProgressBar.setCanceledOnTouchOutside(false)
+                        tvStatus.text = "Status: Connecting"
+                        dialog.visibility = View.GONE
+                    } catch (eConnectException: IOException) {
+                        tvStatus.text = "Status: Try Again"
+                        dialog.visibility = View.GONE
+                        Log.e("ConnectError", eConnectException.toString())
                     }
                 } catch (ex: java.lang.Exception) {
                     Log.e("ConnectError", ex.toString())
                 }
             }
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         val mPairedDevices =
-            HashSet(mBluetoothAdapter.bondedDevices)
+            HashSet(bluetoothAdapter.bondedDevices)
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+        mPairedDevicesArrayAdapter.addAll(mPairedDevices)
         btReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 val action = intent.action
@@ -152,37 +196,74 @@ class PrintDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val TAG = "PurchaseConfirmationDialog"
+        const val TAG = "PrintDialogFragment"
     }
 
-    fun sendData() {
-        try {
-            val outputStream = mBluetoothSocket!!.outputStream
-            // the text typed by the user
-            val recInvoiceForPrint = GlobalState.getInstance().invoiceForPrint
-            val precision = DecimalFormat("0.00")
-            if (recInvoiceForPrint != null) {
-                val paidAt: String = Utils.dateStringUTCTimestamp(
-                    recInvoiceForPrint.paid_at,
-                    AppConstants.OUTPUT_DATE_FORMATE
-                )
-                val amountInBtc: String = Utils.round(
-                    Utils.satoshiToBtc(recInvoiceForPrint.msatoshi),
-                    9
-                ).toString() + " BTC"
-                val amountInUsd = precision.format(
-                    Utils.round(
-                        Utils.btcToUsd(
-                            Utils.satoshiToBtc(recInvoiceForPrint.msatoshi)
-                        ), 2
+    @SuppressLint("MissingPermission")
+    private inner class ConnectThread(device: BluetoothDevice) : Thread() {
+        private val mmSocket: BluetoothSocket? by lazy(LazyThreadSafetyMode.NONE) {
+            device.createRfcommSocketToServiceRecord(uuid)
+        }
+
+        override fun run() {
+            bluetoothAdapter.cancelDiscovery()
+            mmSocket?.let { socket ->
+                socket.connect()
+                sendData(socket)
+            }
+        }
+
+        // Closes the client socket and causes the thread to finish.
+        fun cancel() {
+            try {
+                mmSocket?.close()
+            } catch (e: IOException) {
+                Log.e(TAG, "Could not close the client socket", e)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1 && grantResults.all {
+                it == PackageManager.PERMISSION_GRANTED
+            }) {
+            initializeBluetooth()
+        } else {
+            Toast.makeText(requireContext(), "Please allow all permissions", Toast.LENGTH_LONG)
+                .show()
+        }
+    }
+
+    private fun sendData(socket: BluetoothSocket) {
+        Thread {
+            try {
+                val outputStream = socket.outputStream
+                // the text typed by the user
+                val recInvoiceForPrint = GlobalState.getInstance().invoiceForPrint
+                val precision = DecimalFormat("0.00")
+                if (recInvoiceForPrint != null) {
+                    val paidAt: String = Utils.dateStringUTCTimestamp(
+                        recInvoiceForPrint.paid_at,
+                        AppConstants.OUTPUT_DATE_FORMATE
                     )
-                ) + " USD"
-                val des = recInvoiceForPrint.purchasedItems
-                val bitmap = getBitMapFromHex(recInvoiceForPrint.payment_preimage)
-                printingProgressBar.show()
-                printingProgressBar.setCancelable(false)
-                printingProgressBar.setCanceledOnTouchOutside(false)
-                val t = Thread {
+                    val amountInBtc: String = Utils.round(
+                        Utils.satoshiToBtc(recInvoiceForPrint.msatoshi),
+                        9
+                    ).toString() + " BTC"
+                    val amountInUsd = precision.format(
+                        Utils.round(
+                            Utils.btcToUsd(
+                                Utils.satoshiToBtc(recInvoiceForPrint.msatoshi)
+                            ), 2
+                        )
+                    ) + " USD"
+                    val des = recInvoiceForPrint.purchasedItems
+                    val bitmap: Bitmap? = getBitMapFromHex(recInvoiceForPrint.payment_preimage)
                     try {
                         // This is printer specific code you can comment ==== > Start
                         outputStream.write(PrinterCommands.reset)
@@ -223,29 +304,34 @@ class PrintDialogFragment : DialogFragment() {
                             outputStream.write(PrinterCommands.print)
                             outputStream.write("\n\n".toByteArray())
                         }
-                        outputStream.write("\n\n".toByteArray())
+                        outputStream.write(PrinterCommands.FEED_PAPER_AND_CUT)
                         Thread.sleep(1000)
-                        printingProgressBar.dismiss()
                     } catch (e: java.lang.Exception) {
                         Log.e("PrintError", "Exe ", e)
                     }
+                } else {
+                    outputStream.write(PrinterCommands.reset)
+                    outputStream.write(PrinterCommands.INIT)
+                    outputStream.write(PrinterCommands.FEED_LINE)
+                    val paidAt = "Not Data Found"
+                    outputStream.write(paidAt.toByteArray())
                 }
-                t.start()
-            } else {
-                outputStream.write(PrinterCommands.reset)
-                outputStream.write(PrinterCommands.INIT)
-                outputStream.write(PrinterCommands.FEED_LINE)
-                val paidAt = "Not Data Found"
-                outputStream.write(paidAt.toByteArray())
+                socket.close()
+                requireActivity().runOnUiThread {
+                    printingProgressBar.dismiss()
+                }
+            } catch (e: java.lang.Exception) {
+                e.printStackTrace()
+                Log.e(TAG, "Error printing")
             }
-        } catch (e: java.lang.Exception) {
-            e.printStackTrace()
-            Log.e(TAG, "Error printing")
-        }
+
+        }.start()
     }
 
 
     private fun getBitMapFromHex(hex: String?): Bitmap? {
+        if (hex == null)
+            return null
         val multiFormatWriter = MultiFormatWriter()
         var bitMatrix: BitMatrix? = null
         try {
@@ -255,15 +341,6 @@ class PrintDialogFragment : DialogFragment() {
         }
         val barcodeEncoder = BarcodeEncoder()
         return barcodeEncoder.createBitmap(bitMatrix)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        try {
-            mBluetoothSocket?.close()
-        } catch (e: Exception) {
-            Log.e("Tag", "Exe ", e)
-        }
     }
 
 }

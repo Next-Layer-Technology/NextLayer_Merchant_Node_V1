@@ -20,14 +20,10 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
+import com.sis.clightapp.util.AppConstants;
 import com.sis.clightapp.model.GsonModel.Refund;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

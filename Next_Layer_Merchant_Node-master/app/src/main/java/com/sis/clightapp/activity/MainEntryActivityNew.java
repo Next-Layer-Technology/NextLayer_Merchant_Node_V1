@@ -20,8 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -33,9 +31,8 @@ import com.sis.clightapp.Interface.ApiFCM;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.model.Channel_BTCResponseData;
+import com.sis.clightapp.util.CustomSharedPreferences;
+import com.sis.clightapp.util.GlobalState;
 import com.sis.clightapp.model.FCMResponse;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantLoginResp;
@@ -652,7 +649,6 @@ public class MainEntryActivityNew extends BaseActivity {
                             }
                         } else {
                             isConfirmMerchant = false;
-                            GlobalState.getInstance().setMerchantConfirm(false);
                             goAlertDialogwithOneBTn("Invalid Merchant ID!");
                         }
                     } else {
@@ -671,7 +667,6 @@ public class MainEntryActivityNew extends BaseActivity {
             @Override
             public void onFailure(@NonNull Call<MerchantLoginResp> call, @NonNull Throwable t) {
                 isConfirmMerchant = false;
-                GlobalState.getInstance().setMerchantConfirm(false);
                 confirmingProgressDialog.dismiss();
                 goAlertDialogwithOneBTn("Network Error");
             }

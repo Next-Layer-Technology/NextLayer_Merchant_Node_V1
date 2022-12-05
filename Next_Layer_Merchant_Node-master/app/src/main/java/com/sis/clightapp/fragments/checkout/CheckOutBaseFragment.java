@@ -24,16 +24,14 @@ import com.sis.clightapp.Interface.ApiClientBoost;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.model.GsonModel.Items;
+import com.sis.clightapp.util.CustomSharedPreferences;
+import com.sis.clightapp.util.GlobalState;
 import com.sis.clightapp.model.REST.get_session_response;
 import com.sis.clightapp.model.Tax;
 import com.sis.clightapp.model.WebsocketResponse.WebSocketOTPresponse;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -49,8 +47,8 @@ public class CheckOutBaseFragment extends Fragment {
     ProgressDialog addItemprogressDialog, getItemListprogressDialog, exitFromServerProgressDialog, createInvoiceProgressDialog, confirmInvoicePamentProgressDialog, connectCLiChannel, updatingInventoryProgressDialog;
     Context fContext;
     String TAG = "CLighting App";
-    ProgressDialog confirmingProgressDialog;
-    CustomSharedPreferences sharedPreferences;
+    private ProgressDialog confirmingProgressDialog;
+    private CustomSharedPreferences sharedPreferences;
 
     public void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
@@ -164,13 +162,10 @@ public class CheckOutBaseFragment extends Fragment {
                 showToast("Enter 2FA Password");
             } else {
                 //Get Session
-
                 enter2FaPassDialog.dismiss();
-
                 confirmingProgressDialog.show();
                 confirmingProgressDialog.setCancelable(false);
                 confirmingProgressDialog.setCanceledOnTouchOutside(false);
-
                 getSessionToken(twoFaString);
             }
 
@@ -226,7 +221,7 @@ public class CheckOutBaseFragment extends Fragment {
         jsonObject1.addProperty("twoFactor", twofactor_key);
         jsonObject1.addProperty("time", time);
 
-        Call<WebSocketOTPresponse> call = (Call<WebSocketOTPresponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).gettoken(jsonObject1);
+        Call<WebSocketOTPresponse> call = ApiClient2.getRetrofit().create(ApiPaths2.class).gettoken(jsonObject1);
         call.enqueue(new Callback<WebSocketOTPresponse>() {
             @Override
             public void onResponse(Call<WebSocketOTPresponse> call, Response<WebSocketOTPresponse> response) {

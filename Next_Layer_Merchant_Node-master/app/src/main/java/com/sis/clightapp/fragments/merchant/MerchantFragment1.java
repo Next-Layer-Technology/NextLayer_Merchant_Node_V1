@@ -62,14 +62,14 @@ import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Network.CheckNetwork;
 
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.Functions2;
-import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.Print.PrintPic;
-import com.sis.clightapp.Utills.Print.PrinterCommands;
+import com.sis.clightapp.util.AppConstants;
+import com.sis.clightapp.util.CustomSharedPreferences;
+import com.sis.clightapp.util.Functions2;
+import com.sis.clightapp.util.GlobalState;
+import com.sis.clightapp.util.print.PrintPic;
+import com.sis.clightapp.util.print.PrinterCommands;
 
-import com.sis.clightapp.Utills.UrlConstants;
+import com.sis.clightapp.util.UrlConstants;
 import com.sis.clightapp.activity.HomeActivity;
 import com.sis.clightapp.adapter.MerchantRefundsListAdapter;
 import com.sis.clightapp.adapter.MerchantSalesListAdapter;
@@ -812,10 +812,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 
             totalSaleList = merchantSaleList;
             mSaleDataSource = totalPaidSaleList;
-            GlobalState.getInstance().setmTodaySaleList(todaySaleList);
-            GlobalState.getInstance().setmTotalPaidSaleList(totalPaidSaleList);
-            GlobalState.getInstance().setmTotalSaleList(totalSaleList);
-            GlobalState.getInstance().setmTotalUnPaidSaleList(totalUnPaidSaleList);
             merchantSalesListAdapter = new MerchantSalesListAdapter(getContext(), todaySaleList);
             saleslistview.setAdapter(merchantSalesListAdapter);
         }
@@ -868,10 +864,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
             }
             mRefundDataSource = mTotalCompleteRefundList;
             mTotalRefundList = merchantRefundList;
-            GlobalState.getInstance().setmTodayRefundList(mTodayRefundList);
-            GlobalState.getInstance().setmTotalCompleteRefundList(mTotalCompleteRefundList);
-            GlobalState.getInstance().setmTotalUnCompleteRefundList(mTotalUnCompleteList);
-            GlobalState.getInstance().setmTotalRefundList(mTotalRefundList);
             merchantRefundsListAdapter = new MerchantRefundsListAdapter(getContext(), mTodayRefundList);
             refundslistview.setAdapter(merchantRefundsListAdapter);
         }
@@ -962,7 +954,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         confirpaymentbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Confirmpayment(currentTransactionLabel);
+                confirmPayment(currentTransactionLabel);
 //                ConfirmInvoicePaymentFromServer confirmInvoicePaymentFromServer = new ConfirmInvoicePaymentFromServer(getActivity());
 //                confirmInvoicePaymentFromServer.execute(new String[]{new String(currentTransactionLabel)});
 //                confirmInvoicePamentProgressDialog.show();
@@ -1084,7 +1076,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 invoiceForPrint.setPaid_at(invoice.getPaid_at());
                 invoiceForPrint.setPurchasedItems(getPaidDescrition);
                 invoiceForPrint.setTax(excatFigure(round((mSatoshoToBtc(invoice.getMsatoshi())), 9)) + "BTC\n$" + round(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi())), 2) + "USD");
-                GlobalState.getInstance().setInvoiceForPrint(invoiceForPrint);
+                GlobalState.getInstance().invoiceForPrint =(invoiceForPrint);
                 amount.setVisibility(View.VISIBLE);
                 payment_preImage.setVisibility(View.VISIBLE);
                 paid_at.setVisibility(View.VISIBLE);
@@ -1110,7 +1102,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 invoiceForPrint.setPurchasedItems(getPaidDescrition);
                 invoiceForPrint.setDesscription(getPaidDescrition);
                 invoiceForPrint.setTax(excatFigure(round((mSatoshoToBtc(invoice.getMsatoshi())), 9)) + "BTC\n$" + round(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi())), 2) + "USD");
-                GlobalState.getInstance().setInvoiceForPrint(invoiceForPrint);
+                GlobalState.getInstance().invoiceForPrint=(invoiceForPrint);
                 amount.setVisibility(View.VISIBLE);
                 payment_preImage.setVisibility(View.VISIBLE);
                 paid_at.setVisibility(View.VISIBLE);
@@ -1369,7 +1361,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 //                Type type = new TypeToken<DecodePayBolt11>() {
 //                }.getType();
                 decodePayBolt11 = gson.fromJson(jsonString, DecodePayBolt11.class);
-                GlobalState.getInstance().setCurrentDecodePayBolt11(decodePayBolt11);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
             }
@@ -1386,7 +1377,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 } else {
                     DecodePayBolt11 decode2PayBolt11 = new DecodePayBolt11();
                     decode2PayBolt11.setMsatoshi(0);
-                    GlobalState.getInstance().setCurrentDecodePayBolt11(decode2PayBolt11);
                     decodePayBolt11ProgressDialog.dismiss();
                     dialogBoxForRefundCommandeerStep2(bolt11fromqr, String.valueOf(decode2PayBolt11.getMsatoshi()));
                 }
@@ -1394,7 +1384,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
             } else {
                 decodePayBolt11 = new DecodePayBolt11();
                 decodePayBolt11.setMsatoshi(0);
-                GlobalState.getInstance().setCurrentDecodePayBolt11(decodePayBolt11);
                 decodePayBolt11ProgressDialog.dismiss();
                 dialogBoxForRefundCommandeerStep2(bolt11fromqr, String.valueOf(decodePayBolt11.getMsatoshi()));
             }
@@ -1467,7 +1456,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         // invoiceForPrint.setPayment_hash(payresponse.getPayment_hash());
         invoiceForPrint.setPurchasedItems(current_transaction_description);
         invoiceForPrint.setDesscription(current_transaction_description);
-        GlobalState.getInstance().setInvoiceForPrint(invoiceForPrint);
+        GlobalState.getInstance().invoiceForPrint =(invoiceForPrint);
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
         int height = Resources.getSystem().getDisplayMetrics().heightPixels;
         commandeerRefundDialogstep2 = new Dialog(getContext());
@@ -3033,65 +3022,50 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 
             @Override
             public void onFailure(Call<MerchantLoginResp> call, Throwable t) {
-                GlobalState.getInstance().setMerchantConfirm(false);
                 confirmingProgressDialog.dismiss();
-
             }
         });
 
     }
 
-    public void Confirmpayment(final String lable) {
+    public void confirmPayment(final String lable) {
         simpleloader.show();
         OkHttpClient clientCoinPrice = new OkHttpClient();
         Request requestCoinPrice = new Request.Builder().url(gdaxUrl).build();
 
         WebSocketListener webSocketListenerCoinPrice = new WebSocketListener() {
             @Override
-            public void onOpen(WebSocket webSocket, okhttp3.Response response) {
+            public void onOpen(@NonNull WebSocket webSocket, @NonNull okhttp3.Response response) {
 
                 String token = sharedPreferences.getvalueofaccestoken("accessToken", getContext());
-
                 String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli listinvoices" + " " + lable + "\"] }";
-
                 try {
-
                     JSONObject obj = new JSONObject(json);
-
                     Log.d("My App", obj.toString());
-
-
                     webSocket.send(String.valueOf(obj));
-
-
                 } catch (Throwable t) {
                     simpleloader.dismiss();
                     Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
                 }
-
             }
 
             @Override
             public void onMessage(WebSocket webSocket, final String text) {
                 Log.e("TAG", "MESSAGE: " + text);
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(text);
-                            if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
-                                webSocket.close(1000, null);
-                                webSocket.cancel();
-                                goTo2FaPasswordDialog();
-                            } else {
-                                parseJSONForConfirmPayment(text);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                getActivity().runOnUiThread(() -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(text);
+                        if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
+                            webSocket.close(1000, null);
+                            webSocket.cancel();
+                            goTo2FaPasswordDialog();
+                        } else {
+                            parseJSONForConfirmPayment(text);
                         }
-
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
+
                 });
 
             }

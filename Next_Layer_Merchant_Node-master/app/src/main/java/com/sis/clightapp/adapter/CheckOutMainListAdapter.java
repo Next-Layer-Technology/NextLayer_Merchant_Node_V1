@@ -14,15 +14,13 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
-import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.util.AppConstants;
 import com.sis.clightapp.activity.CheckOutMainActivity;
 import com.sis.clightapp.model.GsonModel.Items;
+import com.sis.clightapp.util.GlobalState;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -30,7 +28,7 @@ public class CheckOutMainListAdapter extends ArrayAdapter<Items> {
     private final Context mContext;
     private final List<Items> inventoryItemList;
 
-    public CheckOutMainListAdapter(@NonNull Context context, ArrayList<Items> list) {
+    public CheckOutMainListAdapter(@NonNull Context context, List<Items> list) {
         super(context, 0, list);
         mContext = context;
         inventoryItemList = list;
@@ -63,10 +61,10 @@ public class CheckOutMainListAdapter extends ArrayAdapter<Items> {
                 for (Items items : inventoryItemList) {
                     count = count + items.getSelectQuatity();
                 }
+                GlobalState.getInstance().selectedItems.add(currentItem);
                 ((CheckOutMainActivity) mContext).updateCartIcon(count);
                 this.notifyDataSetChanged();
             } else {
-                // do nothing when selected quatity = item total quantity
                 new AlertDialog.Builder(getContext())
                         .setMessage("Total Quantity is:" + currentItem.getQuantity())
                         .setPositiveButton("Ok", null)

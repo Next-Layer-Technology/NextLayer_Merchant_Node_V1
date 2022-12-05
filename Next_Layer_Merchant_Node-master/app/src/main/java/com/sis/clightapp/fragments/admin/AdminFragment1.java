@@ -29,7 +29,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -46,14 +45,13 @@ import com.sis.clightapp.Interface.ApiClient;
 import com.sis.clightapp.Interface.ApiPaths;
 import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.AppConstants;
-import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.UrlConstants;
-import com.sis.clightapp.activity.HomeActivity;
+import com.sis.clightapp.util.AppConstants;
+import com.sis.clightapp.util.CustomSharedPreferences;
+import com.sis.clightapp.util.GlobalState;
+import com.sis.clightapp.util.UrlConstants;
 import com.sis.clightapp.adapter.AdminReceiveablesListAdapter;
 import com.sis.clightapp.adapter.AdminSendablesListAdapter;
-import com.sis.clightapp.fragments.shared.ExitDialogFragment;
+import com.sis.clightapp.fragments.printing.PrintDialogFragment;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.CreateInvoice;
 import com.sis.clightapp.model.GsonModel.DecodePayBolt11;
@@ -142,10 +140,6 @@ public class AdminFragment1 extends AdminBaseFragment {
             adminFragment1 = new AdminFragment1();
         }
         return adminFragment1;
-    }
-
-    public void onBackPressed() {
-        new ExitDialogFragment().show(getChildFragmentManager(), null);
     }
 
     @Override
@@ -523,10 +517,6 @@ public class AdminFragment1 extends AdminBaseFragment {
                 }
             }
             mTotalReceiveablesList_Sale = mAdminReceiveablesListDataSource;
-            GlobalState.getInstance().setmTodayReceiveablesList_Sale(mTodayReceiveablesList_Sale);
-            GlobalState.getInstance().setmTotalReceiveablesList_Sale(mTotalReceiveablesList_Sale);
-            GlobalState.getInstance().setmTotalPaidReceiveablesList_Sale(mTotalPaidReceiveablesList_Sale);
-            GlobalState.getInstance().setmTotalUnPaidReceiveablesListt_Sale(mTotalUnPaidReceiveablesListt_Sale);
             adminReceiveablesListAdapter = new AdminReceiveablesListAdapter(requireContext(), mTodayReceiveablesList_Sale);
             receiveableslistview.setAdapter(adminReceiveablesListAdapter);
         }
@@ -567,11 +557,6 @@ public class AdminFragment1 extends AdminBaseFragment {
 
             }
             mTotalSendeableList_Refund = mAdminSaleablesListDataSource;
-            GlobalState.getInstance().setmTodaySendeableList_Refund(mTodaySendeableList_Refund);
-            GlobalState.getInstance().setmTotalSendeableList_Refund(mTotalSendeableList_Refund);
-            GlobalState.getInstance().setmTotalCompleteSendeableList_Refund(mTotalCompleteSendeableList_Refund);
-            GlobalState.getInstance().setmTotalUnCompleteSendeableList_Refund(mTotalUnCompleteSendeableList_Refund);
-
             adminSendablesListAdapter = new AdminSendablesListAdapter(requireContext(), mTodaySendeableList_Refund);
             sendeableslistview.setAdapter(adminSendablesListAdapter);
 
@@ -748,7 +733,7 @@ public class AdminFragment1 extends AdminBaseFragment {
                 invoiceForPrint.setPurchasedItems(distributeDescription);
                 invoiceForPrint.setDesscription(distributeDescription);
                 invoiceForPrint.setMode("distributeGetPaid");
-                GlobalState.getInstance().setInvoiceForPrint(invoiceForPrint);
+                GlobalState.getInstance().invoiceForPrint =(invoiceForPrint);
                 amount.setVisibility(View.VISIBLE);
                 payment_preImage.setVisibility(View.VISIBLE);
                 paid_at.setVisibility(View.VISIBLE);
@@ -770,7 +755,7 @@ public class AdminFragment1 extends AdminBaseFragment {
                 invoiceForPrint.setPayment_preimage("N/A");
                 invoiceForPrint.setPaid_at(0000);
                 invoiceForPrint.setMode("distributeGetPaid");
-                GlobalState.getInstance().setInvoiceForPrint(invoiceForPrint);
+                GlobalState.getInstance().invoiceForPrint = (invoiceForPrint);
                 amount.setVisibility(View.VISIBLE);
                 payment_preImage.setVisibility(View.VISIBLE);
                 paid_at.setVisibility(View.VISIBLE);
@@ -791,22 +776,7 @@ public class AdminFragment1 extends AdminBaseFragment {
                 getSendeableListFromMerchantServer();
                 getReceiveablesListFromMerchantServer();
                 if (invoiceForPrint != null) {
-                    mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                    if (!mBluetoothAdapter.isEnabled()) {
-//                        dialogBoxForConnecctingBTPrinter();
-                    } else {
-//                        if (mBluetoothSocket != null) {
-                        Toast.makeText(getContext(), "Already Connected", Toast.LENGTH_LONG).show();
-//                            try {
-//                                sendData("getPaidDistribute");
-//                            } catch (IOException e) {
-//                                Log.e("SendDataError", e.toString());
-//                                e.printStackTrace();
-//                            }
-//                        } else {
-//                            dialogBoxForConnecctingBTPrinter();
-//                        }
-                    }
+                    new PrintDialogFragment().show(getChildFragmentManager(),null);
                 } else {
                     confirmPaymentDialog.dismiss();
                 }
@@ -868,7 +838,6 @@ public class AdminFragment1 extends AdminBaseFragment {
             Type type = new TypeToken<DecodePayBolt11>() {
             }.getType();
             decodePayBolt11 = gson.fromJson(jsonString, type);
-            GlobalState.getInstance().setCurrentDecodePayBolt11(decodePayBolt11);
         } catch (Exception e) {
             Log.e("Error", Objects.requireNonNull(e.getMessage()));
         }
@@ -926,7 +895,7 @@ public class AdminFragment1 extends AdminBaseFragment {
         invoiceForPrint.setCreated_at(payresponse.getCreated_at());
         invoiceForPrint.setPurchasedItems(current_transaction_description);
         invoiceForPrint.setDesscription(current_transaction_description);
-        GlobalState.getInstance().setInvoiceForPrint(invoiceForPrint);
+        GlobalState.getInstance().invoiceForPrint = (invoiceForPrint);
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
         int height = Resources.getSystem().getDisplayMetrics().heightPixels;
         commandeerRefundDialogstep2 = new Dialog(getContext());
@@ -948,22 +917,7 @@ public class AdminFragment1 extends AdminBaseFragment {
                 getSendeableListFromMerchantServer();
                 if (invoiceForPrint1 != null) {
                     mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                    if (!mBluetoothAdapter.isEnabled()) {
-//                        dialogBoxForConnecctingBTPrinter();
-                    } else {
-//                        if (mBluetoothSocket != null) {
-                        Toast.makeText(getContext(), "Already Connected", Toast.LENGTH_LONG).show();
-//                            try {
-//                                sendData("commandeerRefund");
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//
-//                            }
-                        commandeerRefundDialogstep2.dismiss();
-//                        } else {
-//                            dialogBoxForConnecctingBTPrinter();
-//                        }
-                    }
+                    new PrintDialogFragment().show(getChildFragmentManager(),null);
                 } else {
                     confirmPaymentDialog.dismiss();
                 }

@@ -1,4 +1,4 @@
-package com.sis.clightapp.Utills.Print;
+package com.sis.clightapp.util.print;
 
 /**
  * Created by hp on 12/23/2016.
