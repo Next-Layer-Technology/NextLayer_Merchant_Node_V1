@@ -325,7 +325,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     }
 
                     // Actions if user selects 'no'
-                    builder.setNegativeButton("No") { dialogInterface: DialogInterface?, i12: Int -> }
+                    builder.setNegativeButton("No") { _: DialogInterface?, _: Int -> }
 
                     // Create the alert dialog using alert dialog builder
                     val dialog = builder.create()
@@ -447,11 +447,11 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         createInvoice(rMSatoshi, label, "Flashpay")
     }
 
-    private fun getBitMapImg(hex: String?, widht: Int, height: Int): Bitmap {
+    private fun getBitMapImg(hex: String?, width: Int, height: Int): Bitmap {
         val multiFormatWriter = MultiFormatWriter()
         var bitMatrix: BitMatrix? = null
         try {
-            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, widht, height)
+            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, width, height)
         } catch (e: WriterException) {
             e.printStackTrace()
         }
@@ -606,8 +606,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         val ivBack = clearOutDialog.findViewById<ImageView>(R.id.iv_back_invoice)
         val noBtn = clearOutDialog.findViewById<Button>(R.id.noBtn)
         val yesBtn = clearOutDialog.findViewById<Button>(R.id.yesBtn)
-        ivBack.setOnClickListener { v: View? -> clearOutDialog.dismiss() }
-        yesBtn.setOnClickListener { view: View? ->
+        ivBack.setOnClickListener { clearOutDialog.dismiss() }
+        yesBtn.setOnClickListener {
             if (isFetchData) {
                 val km =
                     requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
@@ -943,10 +943,10 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         et_label.setText(globalLabel)
         et_msatoshi.setText(globalRMSatoshi)
         et_description.setText(globalDescription)
-        qRCodeImage.setVisibility(GONE)
-        confirpaymentbtn.setVisibility(GONE)
+        qRCodeImage.visibility = GONE
+        confirpaymentbtn.visibility = GONE
         btnCreatInvoice.visibility = GONE
-        confirpaymentbtn.setVisibility(GONE)
+        confirpaymentbtn.visibility = GONE
         if (globalInvoice != null) {
             if (globalInvoice!!.bolt11 != null) {
                 val temHax = globalInvoice!!.bolt11
@@ -963,7 +963,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 }
             }
         }
-        confirpaymentbtn.setOnClickListener(OnClickListener { v: View? -> fcmReceived() })
+        confirpaymentbtn.setOnClickListener { fcmReceived() }
         ivBack.setOnClickListener { v: View? -> distributeGetPaidDialog.dismiss() }
         val timer = Timer()
         timer.schedule(object : TimerTask() {

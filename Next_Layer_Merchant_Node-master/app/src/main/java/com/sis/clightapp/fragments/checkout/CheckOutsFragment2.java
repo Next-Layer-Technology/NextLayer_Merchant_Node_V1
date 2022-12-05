@@ -191,14 +191,12 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
             amount.getText().clear();
             rcieptnum.getText().clear();
             if (newManualItem != null) {
-//                GlobalState.getInstance().addInmSeletedForPayDataSourceCheckOutInventory(newManualItem);
-//                ArrayList<Items> after = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-//                int count = 0;
-//                for (Items items : after) {
-//                    count = count + items.getSelectQuatity();
-//                }
-//                ((CheckOutMainActivity) requireActivity()).updateCartIcon(count);
-
+                GlobalState.getInstance().selectedItems.add(newManualItem);
+                int count = 0;
+                for (Items items : GlobalState.getInstance().selectedItems) {
+                    count = count + items.getSelectQuatity();
+                }
+                ((CheckOutMainActivity) requireActivity()).updateCartIcon(count);
             }
             newManualItem = null;
             dialogInterface.dismiss();
