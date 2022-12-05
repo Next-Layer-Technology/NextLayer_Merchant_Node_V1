@@ -34,8 +34,10 @@ import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.Utills.Utils;
 import com.sis.clightapp.activity.CheckOutMainActivity;
 import com.sis.clightapp.activity.HomeActivity;
+import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.GsonModel.ListPeers.ListPeers;
@@ -223,32 +225,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
     }
 
     public void onBackPressed() {
-        ask_exit();
-    }
-
-    // Creating exit dialogue
-    @SuppressLint("SetTextI18n")
-    public void ask_exit() {
-        final Dialog goAlertDialogwithOneBTnDialog;
-        goAlertDialogwithOneBTnDialog = new Dialog(getContext());
-        goAlertDialogwithOneBTnDialog.setContentView(R.layout.alert_dialog_layout);
-        Objects.requireNonNull(goAlertDialogwithOneBTnDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        goAlertDialogwithOneBTnDialog.setCancelable(false);
-        final TextView alertTitle_tv = goAlertDialogwithOneBTnDialog.findViewById(R.id.alertTitle);
-        final TextView alertMessage_tv = goAlertDialogwithOneBTnDialog.findViewById(R.id.alertMessage);
-        final Button yesbtn = goAlertDialogwithOneBTnDialog.findViewById(R.id.yesbtn);
-        final Button nobtn = goAlertDialogwithOneBTnDialog.findViewById(R.id.nobtn);
-        yesbtn.setText("Yes");
-        nobtn.setText("No");
-        alertTitle_tv.setText(getString(R.string.exit_title));
-        alertMessage_tv.setText(getString(R.string.exit_subtitle));
-        yesbtn.setOnClickListener(v -> {
-            requireContext().stopService(new Intent(getContext(), MyLogOutService.class));
-            Intent ii = new Intent(getContext(), HomeActivity.class);
-            startActivity(ii);
-        });
-        nobtn.setOnClickListener(v -> goAlertDialogwithOneBTnDialog.dismiss());
-        goAlertDialogwithOneBTnDialog.show();
+        new ExitDialogFragment().show(getChildFragmentManager(), null);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -302,7 +279,8 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
 
     }
 
-    public CheckOutsFragment2() {}
+    public CheckOutsFragment2() {
+    }
 
     public CheckOutsFragment2 getInstance() {
         if (checkOutsFragment2 == null) {
@@ -504,11 +482,11 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         mSatoshiReceivable = Double.parseDouble(receivableMSat);
         btcReceivable = mSatoshiReceivable / AppConstants.satoshiToMSathosi;
         btcReceivable = btcReceivable / AppConstants.btcToSathosi;
-        usdReceivable = getUsdFromBtc(btcReceivable);
+        usdReceivable = Utils.Companion.btcToUsd(btcReceivable);
         mSatoshiCapacity = Double.parseDouble(capcaityMSat);
         btcCapacity = mSatoshiCapacity / AppConstants.satoshiToMSathosi;
         btcCapacity = btcCapacity / AppConstants.btcToSathosi;
-        usdCapacity = getUsdFromBtc(btcCapacity);
+        usdCapacity = Utils.Companion.btcToUsd(btcCapacity);
         btcRemainingCapacity = btcCapacity /*- btcReceivable*/;
         usdRemainingCapacity = usdCapacity /*- usdReceivable*/;
         goToClearOutDialog(sta);
@@ -531,9 +509,9 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         Log.e("BeforeDialogRecv", String.valueOf(usdReceivable));
         if (isFetchData) {
             if (isReceivableGet) {
-                capicityVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity, 2)));
-                receivedVal.setText(":$" + String.format("%.2f", round(usdReceivable, 2)));
-                clearoutVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity - usdReceivable, 2)));
+                capicityVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdRemainingCapacity, 2)));
+                receivedVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdReceivable, 2)));
+                clearoutVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdRemainingCapacity - usdReceivable, 2)));
 
             } else {
                 capicityVal.setText("N/A");

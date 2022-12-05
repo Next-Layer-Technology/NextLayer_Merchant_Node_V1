@@ -42,10 +42,12 @@ import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
+import com.sis.clightapp.Utills.Utils;
 import com.sis.clightapp.activity.CheckOutMainActivity;
 import com.sis.clightapp.activity.HomeActivity;
 
 import com.sis.clightapp.adapter.CheckOutMainListAdapter;
+import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemLIstModel;
@@ -216,9 +218,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         setwidht = setwidht / 100;
         setheight = height / 2;
         scanUPCbtn.setOnClickListener(view13 -> {
-            //TODO:on scan upc
             IntentIntegrator.forSupportFragment(CheckOutFragment1.this).initiateScan();
-
         });
         checkOutbtn.setOnClickListener(view1 -> ((CheckOutMainActivity) requireActivity()).swipeToCheckOutFragment3(2));
         view.findViewById(R.id.clearout).setOnClickListener(view12 -> {
@@ -266,7 +266,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                         if (itemsList.size() > 0) {
                             for (int itr = 0; itr < itemsList.size(); itr++) {
                                 if (itemsList.get(itr).getUPC().equals(getUpc)) {
-                                    if ( GlobalState.getInstance().selectedItems.contains(itemsList.get(itr))) {
+                                    if (GlobalState.getInstance().selectedItems.contains(itemsList.get(itr))) {
                                         new AlertDialog.Builder(getContext())
                                                 .setMessage("Item Already Add")
                                                 .setPositiveButton("OK", null)
@@ -296,35 +296,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
 
 
     public void onBackPressed() {
-        ask_exit();
-    }
-
-    // Creating exit dialogue
-    @SuppressLint("SetTextI18n")
-    public void ask_exit() {
-        final Dialog goAlertDialogwithOneBTnDialog;
-        goAlertDialogwithOneBTnDialog = new Dialog(getContext());
-        goAlertDialogwithOneBTnDialog.setContentView(R.layout.alert_dialog_layout);
-        Objects.requireNonNull(goAlertDialogwithOneBTnDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        goAlertDialogwithOneBTnDialog.setCancelable(false);
-        final TextView alertTitle_tv = goAlertDialogwithOneBTnDialog.findViewById(R.id.alertTitle);
-        final TextView alertMessage_tv = goAlertDialogwithOneBTnDialog.findViewById(R.id.alertMessage);
-        final Button yesbtn = goAlertDialogwithOneBTnDialog.findViewById(R.id.yesbtn);
-        final Button nobtn = goAlertDialogwithOneBTnDialog.findViewById(R.id.nobtn);
-        yesbtn.setText("Yes");
-        nobtn.setText("No");
-        alertTitle_tv.setText(getString(R.string.exit_title));
-        alertMessage_tv.setText(getString(R.string.exit_subtitle));
-        yesbtn.setOnClickListener(v -> {
-            goAlertDialogwithOneBTnDialog.dismiss();
-            requireActivity().stopService(new Intent(getContext(), MyLogOutService.class));
-            Intent ii = new Intent(getContext(), HomeActivity.class);
-            startActivity(ii);
-        });
-        nobtn.setOnClickListener(v -> goAlertDialogwithOneBTnDialog.dismiss());
-        goAlertDialogwithOneBTnDialog.show();
-
-
+        new ExitDialogFragment().show(getChildFragmentManager(), null);
     }
 
     //Reloaded ALl Adapter
@@ -540,11 +512,11 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         mSatoshiReceivable = Double.parseDouble(receivableMSat);
         btcReceivable = mSatoshiReceivable / AppConstants.satoshiToMSathosi;
         btcReceivable = btcReceivable / AppConstants.btcToSathosi;
-        usdReceivable = getUsdFromBtc(btcReceivable);
+        usdReceivable = Utils.Companion.btcToUsd(btcReceivable);
         mSatoshiCapacity = Double.parseDouble(capcaityMSat);
         btcCapacity = mSatoshiCapacity / AppConstants.satoshiToMSathosi;
         btcCapacity = btcCapacity / AppConstants.btcToSathosi;
-        usdCapacity = getUsdFromBtc(btcCapacity);
+        usdCapacity = Utils.Companion.btcToUsd(btcCapacity);
         btcRemainingCapacity = btcCapacity /*- btcReceivable*/;
         usdRemainingCapacity = usdCapacity /*- usdReceivable*/;
         goToClearOutDialog(sta);
@@ -562,9 +534,9 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         TextView clearoutVal = clearOutDialog.findViewById(R.id.clearoutVal);
         if (isFetchData) {
             if (isReceivableGet) {
-                capicityVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity, 2)));
-                receivedVal.setText(":$" + String.format("%.2f", round(usdReceivable, 2)));
-                clearoutVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity - usdReceivable, 2)));
+                capicityVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdRemainingCapacity, 2)));
+                receivedVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdReceivable, 2)));
+                clearoutVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdRemainingCapacity - usdReceivable, 2)));
             } else {
                 capicityVal.setText("N/A");
                 receivedVal.setText("N/A");
