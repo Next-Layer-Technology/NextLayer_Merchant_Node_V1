@@ -65,13 +65,7 @@ public class CheckOutBaseFragment extends Fragment {
     }
 
 
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
-    }
+
 
     public String getUnixTimeStamp() {
         Long tsLong = System.currentTimeMillis() / 1000;
@@ -79,32 +73,7 @@ public class CheckOutBaseFragment extends Fragment {
         return uNixtimeStamp;
     }
 
-    public void cleanAllDataSource() {
-        GlobalState.getInstance().setmSelectedDataSourceCheckOutInventory(new ArrayList<Items>());
-        GlobalState.getInstance().setmSeletedForPayDataSourceCheckOutInventory(new ArrayList<Items>());
-        GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(new ArrayList<Items>());
-        GlobalState.getInstance().setmDataScannedForPage1(new ArrayList<Items>());
-        ArrayList<Items> temp1 = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-        ArrayList<Items> temp2 = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
-    }
 
-    public double getUsdFromBtc(double btc) {
-        double ret = 0.0;
-        // GlobalState.getInstance().setChannel_btcResponseData(channel_btcResponseData)
-        //if(GlobalState.getInstance().getCurrentAllRate()!=null)
-        if (GlobalState.getInstance().getChannel_btcResponseData() != null) {
-            Log.e("btcbefore", String.valueOf(btc));
-            //double btcRate=GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
-            double btcRate = GlobalState.getInstance().getChannel_btcResponseData().getPrice();
-            double priceInUSD = btcRate * btc;
-            Log.e("btcaftertousd", String.valueOf(priceInUSD));
-            ret = priceInUSD;
-        } else {
-            ret = 0.0;
-        }
-
-        return ret;
-    }
 
     public double getBtcFromUsd(double usd) {
         double ret = 0.0;

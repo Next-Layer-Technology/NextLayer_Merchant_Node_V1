@@ -27,19 +27,15 @@ import java.util.Set;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CheckOutMainListAdapter extends ArrayAdapter<Items> {
-    private Context mContext;
-    private List<Items> invenotryItemList = new ArrayList<>();
+    private final Context mContext;
+    private final List<Items> inventoryItemList;
 
     public CheckOutMainListAdapter(@NonNull Context context, ArrayList<Items> list) {
         super(context, 0, list);
         mContext = context;
-        invenotryItemList = list;
+        inventoryItemList = list;
     }
 
-    public void refresh(ArrayList<Items> list) {
-        this.invenotryItemList = list;
-        this.notifyDataSetChanged();
-    }
 
     @NonNull
     @Override
@@ -47,116 +43,45 @@ public class CheckOutMainListAdapter extends ArrayAdapter<Items> {
         View listItem = convertView;
         if (listItem == null)
             listItem = LayoutInflater.from(mContext).inflate(R.layout.checkoutinventoryitemlist, parent, false);
-        final Items currentItem = invenotryItemList.get(position);
+        final Items currentItem = inventoryItemList.get(position);
         CircleImageView imageView = listItem.findViewById(R.id.tv_title);
 
         Glide.with(mContext).load(AppConstants.MERCHANT_ITEM_IMAGE + currentItem.getImageUrl()).into(imageView);
 
-        TextView name = (TextView) listItem.findViewById(R.id.tv_card_numb);
-//        name.setText(currentItem.getName());
-        TextView price = (TextView) listItem.findViewById(R.id.tv_card_expiry);
+        TextView name = listItem.findViewById(R.id.tv_card_numb);
+        TextView price = listItem.findViewById(R.id.tv_card_expiry);
         name.setText(currentItem.getName());
         price.setText(currentItem.getPrice());
-        //luqman
-//        price.setText("$"+String.format("%.2f",round(Double.parseDouble(currentItem.getPrice()),2)));
-        final TextView count = listItem.findViewById(R.id.countvalue);
-        count.setText(String.valueOf(currentItem.getSelectQuatity()));
+        final TextView tvQty = listItem.findViewById(R.id.countvalue);
+        tvQty.setText(String.valueOf(currentItem.getSelectQuatity()));
         ImageView plus = listItem.findViewById(R.id.plus);
         ImageView minus = listItem.findViewById(R.id.minus);
-        plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int countvl = Integer.parseInt(count.getText().toString());
-                ArrayList<Items> itemsArrayList = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
-                if (countvl < Integer.parseInt(currentItem.getQuantity())) {
-                    if (itemsArrayList != null) {
-                        for (int itration = 0; itration < itemsArrayList.size(); itration++) {
-                            if (itemsArrayList.get(itration).equals(currentItem)) {
-                                countvl++;
-                                itemsArrayList.get(itration).setSelectQuatity(countvl);
-                                /*for update list for page 3 From*/
-                                ArrayList<Items> before = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-//                                before.addAllmSeletedForPayDataSourceCheckOutInventory(itemsArrayList);
-                                GlobalState.getInstance().addAllmSeletedForPayDataSourceCheckOutInventory(itemsArrayList);
-                                ArrayList<Items> list = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-                                //Removing Duplicates;
-                                Set<Items> s = new HashSet<Items>();
-                                s.addAll(list);
-                                list = new ArrayList<Items>();
-                                list.addAll(s);
-                                GlobalState.getInstance().addAllmSeletedForPayDataSourceCheckOutInventory(list);
-                                // GlobalState.getInstance().setmSeletedForPayDataSourceCheckOutInventory(before);
-                                ArrayList<Items> after = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-                                /*Here*/
-                                int countitem = 0;
-                                for (Items items : after) {
-                                    countitem = countitem + items.getSelectQuatity();
-                                }
-                                ((CheckOutMainActivity) mContext).updateCartIcon(countitem);
-                                /*for purpose of page 1 dataSource*/
-                                GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(itemsArrayList);
-                                refresh(itemsArrayList);
-                                // Toast.makeText(getContext(),"Add",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                } else {
-                    // do nothing when selected quatity = item total quantity
-                    new AlertDialog.Builder(getContext())
-                            .setMessage("Total Quantity is:" + currentItem.getQuantity())
-                            .setPositiveButton("Ok", null)
-                            .show();
+        plus.setOnClickListener(view -> {
+            if (currentItem.getSelectQuatity() < Integer.parseInt(currentItem.getQuantity())) {
+                currentItem.setSelectQuatity(currentItem.getSelectQuatity() + 1);
+                int count = 0;
+                for (Items items : inventoryItemList) {
+                    count = count + items.getSelectQuatity();
                 }
+                ((CheckOutMainActivity) mContext).updateCartIcon(count);
+                this.notifyDataSetChanged();
+            } else {
+                // do nothing when selected quatity = item total quantity
+                new AlertDialog.Builder(getContext())
+                        .setMessage("Total Quantity is:" + currentItem.getQuantity())
+                        .setPositiveButton("Ok", null)
+                        .show();
             }
         });
-        minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int countvl = Integer.parseInt(count.getText().toString());
-                if (countvl < 2) {
-                    //do nothing when slsected quaity is 1
-                } else {
-                    ArrayList<Items> itemsArrayList = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
-                    if (itemsArrayList != null) {
-                        for (int itration = 0; itration < itemsArrayList.size(); itration++) {
-                            if (itemsArrayList.get(itration).equals(currentItem)) {
-                                countvl--;
-                                itemsArrayList.get(itration).setSelectQuatity(countvl);
-                                /*for update list for page 3 From*/
-                                ArrayList<Items> before = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-//                                before.addAllmSeletedForPayDataSourceCheckOutInventory(itemsArrayList);
-
-                                GlobalState.getInstance().addAllmSeletedForPayDataSourceCheckOutInventory(itemsArrayList);
-                                ArrayList<Items> list = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-
-                                //Removing Duplicates;
-                                Set<Items> s = new HashSet<Items>();
-                                s.addAll(list);
-                                list = new ArrayList<Items>();
-                                list.addAll(s);
-                                GlobalState.getInstance().addAllmSeletedForPayDataSourceCheckOutInventory(list);
-                                // GlobalState.getInstance().setmSeletedForPayDataSourceCheckOutInventory(before);
-                                ArrayList<Items> after = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-
-                                /*Here*/
-                                int countitem = 0;
-                                for (Items items : after) {
-                                    countitem = countitem + items.getSelectQuatity();
-                                }
-                                ((CheckOutMainActivity) mContext).updateCartIcon(countitem);
-                                /*for purpose of page 1 dataSource*/
-                                GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(itemsArrayList);
-
-
-                                refresh(GlobalState.getInstance().getmDataScanedSourceCheckOutInventory());
-
-                            }
-                        }
-                    }
-
-                    refresh(GlobalState.getInstance().getmDataScanedSourceCheckOutInventory());
-                    //  Toast.makeText(getContext(),"Minus",Toast.LENGTH_SHORT).show();
+        minus.setOnClickListener(view -> {
+            if (currentItem.getSelectQuatity() > 1) {
+                currentItem.setSelectQuatity(currentItem.getSelectQuatity() - 1);
+                int count = 0;
+                for (Items items : inventoryItemList) {
+                    count = count + items.getSelectQuatity();
                 }
+                ((CheckOutMainActivity) mContext).updateCartIcon(count);
+                this.notifyDataSetChanged();
             }
         });
         return listItem;

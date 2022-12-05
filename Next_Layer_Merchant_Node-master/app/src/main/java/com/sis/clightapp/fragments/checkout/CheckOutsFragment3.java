@@ -4,14 +4,10 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.Context.KEYGUARD_SERVICE;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.app.ProgressDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +18,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.InputType;
 import android.text.format.DateFormat;
 import android.text.style.StyleSpan;
@@ -31,15 +25,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,13 +50,13 @@ import com.sis.clightapp.Utills.Acknowledgement;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.Print.PrintPic;
-import com.sis.clightapp.Utills.Print.PrinterCommands;
 import com.sis.clightapp.Utills.UrlConstants;
+import com.sis.clightapp.Utills.Utils;
 import com.sis.clightapp.activity.CheckOutMainActivity;
-import com.sis.clightapp.activity.HomeActivity;
-import com.sis.clightapp.adapter.CheckOutPayItemAdapter;
+import com.sis.clightapp.adapter.CheckOutMainListAdapter;
 import com.sis.clightapp.adapter.MerchantNodeAdapter;
+import com.sis.clightapp.fragments.printing.PrintDialogFragment;
+import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.CreateInvoice;
 import com.sis.clightapp.model.GsonModel.FirebaseNotificationModel;
@@ -92,9 +82,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.net.URI;
@@ -112,11 +99,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -144,7 +129,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
     CustomSharedPreferences sharedPreferences;
     Context fContext;
     TextView btcRate, totalpay, taxpay, grandtotal;
-    CheckOutPayItemAdapter checkOutPayItemAdapter;
+    CheckOutMainListAdapter checkOutPayItemAdapter;
     double priceInBTC = 0;
     double priceInCurrency = 0;
     double taxpayInBTC = 1;
@@ -159,16 +144,10 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
     double taxtInCurennccyAmount = 0;
     double taxBtcOnP3ToPopUp = 0;
     double taxUsdOnP3ToPopUp = 0;
-    private static final int REQUEST_ENABLE_BT = 2;
-    BluetoothAdapter mBluetoothAdapter;
-    private final UUID applicationUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private BluetoothSocket mBluetoothSocket;
-    BluetoothDevice mBluetoothDevice;
-    private static OutputStream btoutputstream;
-    ProgressDialog printingProgressBar;
-    Dialog blutoothDevicesDialog;
+
     TextView setTextWithSpan;
     String labelGlobal = "sale123";
+    BroadcastReceiver blReceiver;
 
     TextView clearout;
     static boolean isReceivableGet = false;
@@ -191,6 +170,8 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
     private BroadcastReceiver broadcastReceiver = null;
     private final IntentFilter intentFilter = new IntentFilter(AppConstants.PAYMENT_RECEIVED_NOTIFICATION);
     Dialog distributeGetPaidDialog;
+    ArrayList<Items> selectedItems = new ArrayList<>();
+
 
     public CheckOutsFragment3() {
     }
@@ -205,13 +186,10 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        try {
-            if (mBluetoothSocket != null)
-                mBluetoothSocket.close();
-        } catch (Exception e) {
-            Log.e("Tag", "Exe ", e);
-        }
         requireContext().stopService(new Intent(requireContext(), MyLogOutService.class));
+        if (blReceiver != null) {
+            requireActivity().unregisterReceiver(blReceiver);
+        }
     }
 
     @Override
@@ -229,8 +207,6 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 getString(R.string.welcome_text),
                 getString(R.string.welcome_text_bold),
                 boldStyle);
-        printingProgressBar = new ProgressDialog(requireContext());
-        printingProgressBar.setMessage("Printing...");
         confirmInvoicePamentProgressDialog = new ProgressDialog(requireContext());
         confirmInvoicePamentProgressDialog.setMessage("Confirming Payment");
         updatingInventoryProgressDialog = new ProgressDialog(requireContext());
@@ -267,9 +243,6 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         paywithclightbtn = view.findViewById(R.id.imageView5);
         checkoutPayItemslistview = view.findViewById(R.id.checkout2listview);
         paywithclightbtn.setOnClickListener(view12 -> createGrandTotalForInvoice(null));
-//        paywithclightbtn.setOnClickListener(view12 -> {
-//                dialogBoxForConnecctingBTPrinter();
-//        });
         clearout.setOnClickListener(view1 -> getListPeers());
         setAdapter();
         btnFlashPay = view.findViewById(R.id.btnFlashPay);
@@ -282,28 +255,27 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         confirmingProgressDialog.setMessage("Confirming...");
         confirmingProgressDialog.setCancelable(false);
         confirmingProgressDialog.setCanceledOnTouchOutside(false);
-
+        selectedItems = GlobalState.getInstance().selectedItems;
         return view;
     }
 
     private void createGrandTotalForInvoice(NearbyClients nearbyClients) {
         Log.d("TEST_DOUBLE_CHECKOUT", "createGrandTotalForInvoice: ");
-        ArrayList<Items> dataSource = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-        if (dataSource != null && dataSource.size() > 0) {
+        if (selectedItems != null && selectedItems.size() > 0) {
             priceInCurrency = 0;
             priceInBTC = 0;
             grandTotalInCurrency = 0;
             getGrandTotalInBTC = 0;
-            for (int q = 0; q < dataSource.size(); q++) {
-                priceInCurrency = priceInCurrency + Double.parseDouble(dataSource.get(q).getPrice());
+            for (int q = 0; q < selectedItems.size(); q++) {
+                priceInCurrency = priceInCurrency + Double.parseDouble(selectedItems.get(q).getPrice());
                 //format  ::   Total : 1.25 BTC /  $34.95 USD
                 if (GlobalState.getInstance().getChannel_btcResponseData() != null) {
                     priceInBTC = 1 / GlobalState.getInstance().getChannel_btcResponseData().getPrice();
                     priceInBTC = priceInBTC * priceInCurrency;
-                    priceInBTC = round(priceInBTC, 9);
+                    priceInBTC = Utils.Companion.round(priceInBTC, 9);
                     grandTotalInCurrency = priceInCurrency + taxtInCurennccyAmount;
                     getGrandTotalInBTC = priceInBTC + taxInBtcAmount;
-                    getGrandTotalInBTC = round(getGrandTotalInBTC, 9);
+                    getGrandTotalInBTC = Utils.Companion.round(getGrandTotalInBTC, 9);
 
                     dialogBoxForInvoice(nearbyClients);
                 } else {
@@ -321,33 +293,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
     }
 
     public void onBackPressed() {
-        ask_exit();
-    }
-
-    // Creating exit dialogue
-    @SuppressLint("SetTextI18n")
-    public void ask_exit() {
-        final Dialog goAlertDialogwithOneBTnDialog;
-        goAlertDialogwithOneBTnDialog = new Dialog(requireContext());
-        goAlertDialogwithOneBTnDialog.setContentView(R.layout.alert_dialog_layout);
-        Objects.requireNonNull(goAlertDialogwithOneBTnDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        goAlertDialogwithOneBTnDialog.setCancelable(false);
-        final TextView alertTitle_tv = goAlertDialogwithOneBTnDialog.findViewById(R.id.alertTitle);
-        final TextView alertMessage_tv = goAlertDialogwithOneBTnDialog.findViewById(R.id.alertMessage);
-        final Button yesbtn = goAlertDialogwithOneBTnDialog.findViewById(R.id.yesbtn);
-        final Button nobtn = goAlertDialogwithOneBTnDialog.findViewById(R.id.nobtn);
-        yesbtn.setText("Yes");
-        nobtn.setText("No");
-        alertTitle_tv.setText(getString(R.string.exit_title));
-        alertMessage_tv.setText(getString(R.string.exit_subtitle));
-        yesbtn.setOnClickListener(v -> {
-            cleanAllDataSource();
-            requireContext().stopService(new Intent(requireContext(), MyLogOutService.class));
-            Intent ii = new Intent(requireContext(), HomeActivity.class);
-            startActivity(ii);
-        });
-        nobtn.setOnClickListener(v -> goAlertDialogwithOneBTnDialog.dismiss());
-        goAlertDialogwithOneBTnDialog.show();
+        new ExitDialogFragment().show(getChildFragmentManager(), null);
     }
 
     public void refreshAdapter() {
@@ -356,14 +302,13 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
 
     @SuppressLint("SetTextI18n")
     public void setAdapter() {
-        final ArrayList<Items> dataSource = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-        if (dataSource != null && dataSource.size() > 0) {
+        if (selectedItems != null && selectedItems.size() > 0) {
             int countitem = 0;
-            for (Items items : dataSource) {
+            for (Items items : selectedItems) {
                 countitem = countitem + items.getSelectQuatity();
             }
             ((CheckOutMainActivity) requireActivity()).updateCartIcon(countitem);
-            checkOutPayItemAdapter = new CheckOutPayItemAdapter(requireContext(), dataSource, CheckOutsFragment3.this);
+            checkOutPayItemAdapter = new CheckOutMainListAdapter(requireContext(), selectedItems);
             checkoutPayItemslistview.setAdapter(checkOutPayItemAdapter);
             checkoutPayItemslistview.setOnItemLongClickListener((adapterView, view, i, l) -> {
 
@@ -377,19 +322,13 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 // Action if user selects 'yes'
                 builder.setPositiveButton("Yes", (dialogInterface, i1) -> {
 
-                    Items tem = dataSource.get(position);
+                    Items tem = selectedItems.get(position);
 
                     if (tem.getIsManual() != null) {
-                        GlobalState.getInstance().removeInmSeletedForPayDataSourceCheckOutInventory(tem);
-//                                dataSource.remove(position);
                         checkOutPayItemAdapter.notifyDataSetChanged();
                         setAdapter();
 
                     } else {
-                        GlobalState.getInstance().removeInMDataScannedForPage1(tem);
-                        GlobalState.getInstance().removeInmSeletedForPayDataSourceCheckOutInventory(tem);
-                        GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(GlobalState.getInstance().getmDataScannedForPage1());
-//                                dataSource.remove(position);
                         checkOutPayItemAdapter.notifyDataSetChanged();
                         setAdapter();
                     }
@@ -412,17 +351,17 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             ((CheckOutMainActivity) requireActivity()).updateCartIcon(0);
         }
 
-        if (dataSource != null && dataSource.size() > 0) {
+        if (selectedItems != null && selectedItems.size() > 0) {
             priceInCurrency = 0;
             priceInBTC = 0;
 
-            for (int q = 0; q < dataSource.size(); q++) {
+            for (int q = 0; q < selectedItems.size(); q++) {
                 double total;
-                if (dataSource.get(q).getPrice() != null) {
-                    total = dataSource.get(q).getSelectQuatity() * Double.parseDouble(dataSource.get(q).getPrice());
+                if (selectedItems.get(q).getPrice() != null) {
+                    total = selectedItems.get(q).getSelectQuatity() * Double.parseDouble(selectedItems.get(q).getPrice());
 
                 } else {
-                    total = dataSource.get(q).getSelectQuatity() * Double.parseDouble("0");
+                    total = selectedItems.get(q).getSelectQuatity() * Double.parseDouble("0");
 
                 }
                 priceInCurrency = priceInCurrency + total;
@@ -434,24 +373,24 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                     Log.e("btcbefore", String.valueOf(priceInBTC));
                     priceInBTC = priceInBTC * priceInCurrency;
                     Log.e("btcafter", String.valueOf(btcRatePerDollar));
-                    priceInBTC = round(priceInBTC, 9);
-                    priceInCurrency = round(priceInCurrency, 2);
+                    priceInBTC = Utils.Companion.round(priceInBTC, 9);
+                    priceInCurrency = Utils.Companion.round(priceInCurrency, 2);
                     DecimalFormat precision = new DecimalFormat("0.00");
-                    totalpay.setText("Total:" + excatFigure(priceInBTC) + " BTC/ $" + precision.format(priceInCurrency));
+                    totalpay.setText("Total:" + exactFigure(priceInBTC) + " BTC/ $" + precision.format(priceInCurrency));
                     double percent = GlobalState.getInstance().getTax().getTaxpercent() / 100;
 
                     taxInBtcAmount = priceInBTC * percent;
                     taxBtcOnP3ToPopUp = taxInBtcAmount;
-                    taxInBtcAmount = round(taxInBtcAmount, 9);
+                    taxInBtcAmount = Utils.Companion.round(taxInBtcAmount, 9);
                     taxtInCurennccyAmount = priceInCurrency * percent;
                     taxUsdOnP3ToPopUp = taxtInCurennccyAmount;
-                    taxtInCurennccyAmount = round(taxtInCurennccyAmount, 2);
-                    taxpay.setText("Tax:" + excatFigure(taxInBtcAmount) + " BTC/ $" + precision.format(taxtInCurennccyAmount));
+                    taxtInCurennccyAmount = Utils.Companion.round(taxtInCurennccyAmount, 2);
+                    taxpay.setText("Tax:" + exactFigure(taxInBtcAmount) + " BTC/ $" + precision.format(taxtInCurennccyAmount));
                     grandTotalInCurrency = priceInCurrency + taxtInCurennccyAmount;
                     getGrandTotalInBTC = priceInBTC + taxInBtcAmount;
-                    getGrandTotalInBTC = round(getGrandTotalInBTC, 9);
-                    grandTotalInCurrency = round(grandTotalInCurrency, 2);
-                    grandtotal.setText(excatFigure(getGrandTotalInBTC) + " BTC/ $" + precision.format(grandTotalInCurrency));
+                    getGrandTotalInBTC = Utils.Companion.round(getGrandTotalInBTC, 9);
+                    grandTotalInCurrency = Utils.Companion.round(grandTotalInCurrency, 2);
+                    grandtotal.setText(exactFigure(getGrandTotalInBTC) + " BTC/ $" + precision.format(grandTotalInCurrency));
                     totalGrandfinal = getGrandTotalInBTC;
                 } else {
                     totalpay.setText("Total:" + "0.0 BTC" + " / " + "0.00 $");
@@ -552,18 +491,6 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         }.getType());
     }
 
-    public Bitmap getBitMapFromHex(String hex) {
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        BitMatrix bitMatrix = null;
-        try {
-            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, 600, 600);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-        BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-        return barcodeEncoder.createBitmap(bitMatrix);
-
-    }
 
     public Bitmap getBitMapImg(String hex, int widht, int height) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -578,167 +505,17 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
 
     }
 
-    public String excatFigure(double value) {
+    public String exactFigure(double value) {
         BigDecimal d = new BigDecimal(String.valueOf(value));
         return d.toPlainString();
     }
 
-    public String getDateFromUTCTimestamp(long mTimestamp, String mDateFormate) {
-        String date = null;
-        try {
-            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone(""));
-            cal.setTimeInMillis(mTimestamp * 1000L);
-            date = DateFormat.format(mDateFormate, cal.getTimeInMillis()).toString();
-
-            SimpleDateFormat formatter = new SimpleDateFormat(mDateFormate, Locale.US);
-            formatter.setTimeZone(TimeZone.getTimeZone("CST"));
-            Date value = formatter.parse(date);
-
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(mDateFormate, Locale.US);
-            dateFormatter.setTimeZone(TimeZone.getDefault());
-            if (value != null) {
-                date = dateFormatter.format(value);
-            }
-            return date;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return date;
-    }
-
-    public double mSatoshoToBtc(double msatoshhi) {
-        double msatoshiToSatoshi = msatoshhi / AppConstants.satoshiToMSathosi;
-        return msatoshiToSatoshi / AppConstants.btcToSathosi;
-    }
-
-    private void initializeBluetooth() {
-        ProgressBar tv_prgbar = blutoothDevicesDialog.findViewById(R.id.printerProgress);
-        tv_prgbar.setVisibility(View.VISIBLE);
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
-        if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
-            return;
-        }
-
-        ArrayAdapter<String> mPairedDevicesArrayAdapter = new ArrayAdapter<>(requireContext(), R.layout.device_name);
-
-        ListView t_blueDeviceListView = blutoothDevicesDialog.findViewById(R.id.blueDeviceListView);
-        t_blueDeviceListView.setAdapter(mPairedDevicesArrayAdapter);
-        t_blueDeviceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @SuppressLint("SetTextI18n")
-            public void onItemClick(AdapterView<?> mAdapterView, View mView, int mPosition, long mLong) {
-                TextView tv_status = blutoothDevicesDialog.findViewById(R.id.tv_status);
-                ProgressBar tv_prgbar = blutoothDevicesDialog.findViewById(R.id.printerProgress);
-                try {
-                    tv_prgbar.setVisibility(View.VISIBLE);
-                    tv_status.setText("Device Status:Connecting....");
-                    mBluetoothAdapter.cancelDiscovery();
-                    String mDeviceInfo = ((TextView) mView).getText().toString();
-                    String mDeviceAddress = mDeviceInfo.substring(mDeviceInfo.length() - 17);
-                    mBluetoothDevice = mBluetoothAdapter.getRemoteDevice(mDeviceAddress);
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        // Code here will run in UI thread
-                        try {
-                            mBluetoothSocket = mBluetoothDevice.createRfcommSocketToServiceRecord(applicationUUID);
-                            mBluetoothAdapter.cancelDiscovery();
-                            mBluetoothSocket.connect();
-                            tv_status.setText("Device Status:Connected");
-                            tv_prgbar.setVisibility(View.GONE);
-                            blutoothDevicesDialog.dismiss();
-                        } catch (IOException eConnectException) {
-                            tv_status.setText("Device Status:Try Again");
-                            tv_prgbar.setVisibility(View.GONE);
-                            Log.e("ConnectError", eConnectException.toString());
-                            closeSocket(mBluetoothSocket);
-                        }
-
-                    });
-                } catch (Exception ex) {
-                    Log.e("ConnectError", ex.toString());
-                }
-            }
-        });
-
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        Set<BluetoothDevice> mPairedDevices = mBluetoothAdapter.getBondedDevices();
-
-        if (mPairedDevices.size() > 0) {
-            for (BluetoothDevice mDevice : mPairedDevices) {
-                mPairedDevicesArrayAdapter.add(mDevice.getName() + "\n" + mDevice.getAddress());
-            }
-        } else {
-            String mNoDevices = "None Paired";
-            mPairedDevicesArrayAdapter.add(mNoDevices);
-        }
-        tv_prgbar.setVisibility(View.GONE);
-    }
-
-
-    private void dialogBoxForConnecctingBTPrinter() {
-        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        blutoothDevicesDialog = new Dialog(requireContext());
-        blutoothDevicesDialog.setContentView(R.layout.blutoothdevicelistdialoglayout);
-        Objects.requireNonNull(blutoothDevicesDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        blutoothDevicesDialog.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
-        blutoothDevicesDialog.setCancelable(false);
-        //init dialog views
-        final ImageView ivBack = blutoothDevicesDialog.findViewById(R.id.iv_back_invoice);
-        final Button scanDevices = blutoothDevicesDialog.findViewById(R.id.btn_scanDevices);
-        initializeBluetooth();
-        scanDevices.setOnClickListener(view -> initializeBluetooth());
-        ivBack.setOnClickListener(v -> blutoothDevicesDialog.dismiss());
-        blutoothDevicesDialog.show();
-
-    }
-
-    private void closeSocket(BluetoothSocket nOpenSocket) {
-        try {
-            nOpenSocket.close();
-            Log.d("", "SocketClosed");
-        } catch (IOException ex) {
-            Log.d("", "CouldNotCloseSocket");
-        }
-    }
-
-    private void ListPairedDevices() {
-        Set<BluetoothDevice> mPairedDevices = mBluetoothAdapter
-                .getBondedDevices();
-        if (mPairedDevices.size() > 0) {
-            for (BluetoothDevice mDevice : mPairedDevices) {
-                Log.v("", "PairedDevices: " + mDevice.getName() + "  "
-                        + mDevice.getAddress());
-            }
-        }
-    }
-
-    protected void printNewLine() {
-        try {
-            btoutputstream.write(PrinterCommands.FEED_LINE);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void onActivityResult(int mRequestCode, int mResultCode, Intent mDataIntent) {
         super.onActivityResult(mRequestCode, mResultCode, mDataIntent);
-        switch (mRequestCode) {
-            case REQUEST_ENABLE_BT:
-                if (mResultCode == Activity.RESULT_OK) {
-                    ListPairedDevices();
-                    initializeBluetooth();
-                } else {
-                    Toast.makeText(requireContext(), "Message", Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case 1234:
-                // HANDLE LockIng
-                if (mResultCode == RESULT_OK) {
-                    sendReceivable();
-                }
-                break;
+        if (mRequestCode == 1234) {// HANDLE LockIng
+            if (mResultCode == RESULT_OK) {
+                sendReceivable();
+            }
         }
     }
 
@@ -807,7 +584,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(true);
 
-        RecyclerView recyclerView = (RecyclerView) dialog.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = dialog.findViewById(R.id.recyclerView);
 
         MerchantNodeAdapter adapter = new MerchantNodeAdapter(list, requireContext(), nearbyClients -> {
             dialog.dismiss();
@@ -877,11 +654,11 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         mSatoshiReceivable = Double.parseDouble(receivableMSat);
         btcReceivable = mSatoshiReceivable / AppConstants.satoshiToMSathosi;
         btcReceivable = btcReceivable / AppConstants.btcToSathosi;
-        usdReceivable = getUsdFromBtc(btcReceivable);
+        usdReceivable = Utils.Companion.btcToUsd(btcReceivable);
         mSatoshiCapacity = Double.parseDouble(capcaityMSat);
         btcCapacity = mSatoshiCapacity / AppConstants.satoshiToMSathosi;
         btcCapacity = btcCapacity / AppConstants.btcToSathosi;
-        usdCapacity = getUsdFromBtc(btcCapacity);
+        usdCapacity = Utils.Companion.btcToUsd(btcCapacity);
         btcRemainingCapacity = btcCapacity;
         usdRemainingCapacity = usdCapacity;
         goToClearOutDialog(sta);
@@ -893,17 +670,17 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         clearOutDialog.setContentView(R.layout.clearout_dialog_layout);
         Objects.requireNonNull(clearOutDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         clearOutDialog.setCancelable(false);
-        TextView receivedVal = (TextView) clearOutDialog.findViewById(R.id.receivedVal);
-        TextView capicityVal = (TextView) clearOutDialog.findViewById(R.id.capicityVal);
-        TextView clearoutVal = (TextView) clearOutDialog.findViewById(R.id.clearoutVal);
+        TextView receivedVal = clearOutDialog.findViewById(R.id.receivedVal);
+        TextView capicityVal = clearOutDialog.findViewById(R.id.capicityVal);
+        TextView clearoutVal = clearOutDialog.findViewById(R.id.clearoutVal);
 
         Log.e("BeforeDialogCap", String.valueOf(usdRemainingCapacity));
         Log.e("BeforeDialogRecv", String.valueOf(usdReceivable));
         if (isFetchData) {
             if (isReceivableGet) {
-                capicityVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity, 2)));
-                receivedVal.setText(":$" + String.format("%.2f", round(usdReceivable, 2)));
-                clearoutVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity - usdReceivable, 2)));
+                capicityVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdRemainingCapacity, 2)));
+                receivedVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdReceivable, 2)));
+                clearoutVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdRemainingCapacity - usdReceivable, 2)));
             } else {
                 capicityVal.setText("N/A");
                 receivedVal.setText("N/A");
@@ -1553,7 +1330,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         distributeGetPaidDialog.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
         distributeGetPaidDialog.setCancelable(false);
 
-        TextView titile = (TextView) distributeGetPaidDialog.findViewById(R.id.tv_title);
+        TextView titile = distributeGetPaidDialog.findViewById(R.id.tv_title);
         Button btnCreatInvoice = distributeGetPaidDialog.findViewById(R.id.btn_createinvoice);
         final EditText et_msatoshi = distributeGetPaidDialog.findViewById(R.id.et_msatoshi);
         final EditText et_label = distributeGetPaidDialog.findViewById(R.id.et_lable);
@@ -1765,12 +1542,12 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 purchased_Items.setVisibility(View.VISIBLE);
                 //    tax.setVisibility(View.VISIBLE);
                 printInvoice.setVisibility(View.VISIBLE);
-                double amounttempusd = round(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi())), 2);
+                double amounttempusd = Utils.Companion.round(Utils.Companion.btcToUsd(Utils.Companion.satoshiToBtc(invoice.getMsatoshi())), 2);
                 DecimalFormat precision = new DecimalFormat("0.00");
-                amount.setText(excatFigure(round((mSatoshoToBtc(invoice.getMsatoshi())), 9)) + "BTC\n$" + precision.format(round(amounttempusd, 2)) + "USD");
+                amount.setText(exactFigure(Utils.Companion.round((Utils.Companion.btcToUsd(invoice.getMsatoshi())), 9)) + "BTC\n$" + precision.format(Utils.Companion.round(amounttempusd, 2)) + "USD");
 
                 payment_preImage.setImageBitmap(getBitMapImg(invoice.getPayment_preimage(), 300, 300));
-                paid_at.setText(getDateFromUTCTimestamp(invoice.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
+                paid_at.setText(Utils.Companion.dateStringUTCTimestamp(invoice.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
                 purchased_Items.setText(invoice.getDescription());
 
             } else {
@@ -1786,8 +1563,8 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
                 //    tax.setVisibility(View.VISIBLE);
                 printInvoice.setVisibility(View.VISIBLE);
                 DecimalFormat precision = new DecimalFormat("0.00");
-                amount.setText(excatFigure(round((mSatoshoToBtc(invoice.getMsatoshi())), 9)) + "BTC\n$" + precision.format(round(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi())), 2)) + "USD");
-                paid_at.setText(getDateFromUTCTimestamp(invoice.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
+                amount.setText(exactFigure(Utils.Companion.round((Utils.Companion.satoshiToBtc(invoice.getMsatoshi())), 9)) + "BTC\n$" + precision.format(Utils.Companion.round(Utils.Companion.btcToUsd(Utils.Companion.satoshiToBtc(invoice.getMsatoshi())), 2)) + "USD");
+                paid_at.setText(Utils.Companion.dateStringUTCTimestamp(invoice.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
                 payment_preImage.setImageBitmap(getBitMapImg(invoice.getPayment_preimage(), 300, 300));
                 purchased_Items.setText("N/A");
 
@@ -1797,17 +1574,7 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
             InvoiceForPrint invoiceForPrint = GlobalState.getInstance().getInvoiceForPrint();
             if (invoice != null && invoice.getStatus().equals("paid")) {
                 if (invoiceForPrint != null) {
-                    mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                    if (!mBluetoothAdapter.isEnabled()) {
-                        dialogBoxForConnecctingBTPrinter();
-                    } else {
-                        if (mBluetoothSocket != null) {
-                            Toast.makeText(requireContext(), "Already Connected", Toast.LENGTH_LONG).show();
-                            sendData();
-                        } else {
-                            dialogBoxForConnecctingBTPrinter();
-                        }
-                    }
+                    new PrintDialogFragment().show(getChildFragmentManager(), null);
                 }
             }
         });
@@ -1816,85 +1583,4 @@ public class CheckOutsFragment3 extends CheckOutBaseFragment {
         distributeGetPaidDialog.show();
     }
 
-    void sendData() {
-        try {
-            btoutputstream = mBluetoothSocket.getOutputStream();
-            // the text typed by the user
-            InvoiceForPrint recInvoiceForPrint = GlobalState.getInstance().getInvoiceForPrint();
-            DecimalFormat precision = new DecimalFormat("0.00");
-            if (recInvoiceForPrint != null) {
-                final String paidAt = getDateFromUTCTimestamp(recInvoiceForPrint.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE);
-                final String amountInBtc = excatFigure(round((mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 9)) + " BTC";
-                final String amountInUsd = precision.format(round(getUsdFromBtc(mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 2)) + " USD";
-                final String des = recInvoiceForPrint.getPurchasedItems();
-                final Bitmap bitmap = getBitMapFromHex(recInvoiceForPrint.getPayment_preimage());
-                printingProgressBar.show();
-                printingProgressBar.setCancelable(false);
-                printingProgressBar.setCanceledOnTouchOutside(false);
-                Thread t = new Thread(() -> {
-                    try {
-                        // This is printer specific code you can comment ==== > Start
-                        btoutputstream.write(PrinterCommands.reset);
-                        btoutputstream.write(PrinterCommands.INIT);
-                        btoutputstream.write("\n\n".getBytes());
-                        btoutputstream.write("    Sale / Incoming Funds".getBytes());
-                        btoutputstream.write("\n".getBytes());
-                        btoutputstream.write("    ---------------------".getBytes());
-                        btoutputstream.write("\n".getBytes());
-                        btoutputstream.write(des.getBytes());
-                        btoutputstream.write("\n\n".getBytes());
-                        btoutputstream.write("\tAmount: ".getBytes());
-                        btoutputstream.write("\n\t".getBytes());
-                        //amountInBTC should right
-                        btoutputstream.write(amountInBtc.getBytes());
-                        btoutputstream.write("\n\t".getBytes());
-                        //amountInBTC should right
-                        btoutputstream.write(amountInUsd.getBytes());
-                        btoutputstream.write("\n".getBytes());
-                        btoutputstream.write("\n".getBytes());
-                        //Paid at title should center
-                        btoutputstream.write("\tReceived:".getBytes());
-                        btoutputstream.write("\n  ".getBytes());
-                        //Paid at   should center
-                        btoutputstream.write("  ".getBytes());
-                        btoutputstream.write(paidAt.getBytes());
-                        btoutputstream.write("\n\n".getBytes());
-                        btoutputstream.write("\tPayment Hash:".getBytes());
-                        printNewLine();
-                        if (bitmap != null) {
-                            Bitmap bMapScaled = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
-                            new ByteArrayOutputStream();
-                            PrintPic printPic = PrintPic.getInstance();
-                            printPic.init(bMapScaled);
-                            byte[] bitmapdata = printPic.printDraw();
-                            btoutputstream.write(PrinterCommands.print);
-                            btoutputstream.write(bitmapdata);
-                            btoutputstream.write(PrinterCommands.print);
-                            btoutputstream.write("\n\n".getBytes());
-                        }
-
-                        btoutputstream.write("\n\n".getBytes());
-                        Thread.sleep(1000);
-                        printingProgressBar.dismiss();
-
-
-                    } catch (Exception e) {
-                        Log.e("PrintError", "Exe ", e);
-
-                    }
-
-                });
-                t.start();
-            } else {
-                btoutputstream.write(PrinterCommands.reset);
-                btoutputstream.write(PrinterCommands.INIT);
-                btoutputstream.write(PrinterCommands.FEED_LINE);
-                String paidAt = "Not Data Found";
-                btoutputstream.write(paidAt.getBytes());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("errorhe", "3");
-        }
-    }
 }

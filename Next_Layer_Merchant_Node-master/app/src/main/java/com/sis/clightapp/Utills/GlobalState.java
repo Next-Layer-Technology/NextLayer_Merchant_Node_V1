@@ -35,7 +35,6 @@ import java.util.Set;
 
 public class GlobalState extends Application {
     public static final String TAG = "GlobalState";
-    private int itemCountInCart;
     private String merchant_id;
     Boolean isLogin;
     String sendPylist;
@@ -46,10 +45,6 @@ public class GlobalState extends Application {
     private CurrentAllRate currentAllRate;
     private ServerData serverData;
     private String ServerURL;
-    private ArrayList<Items> mSelectedDataSourceCheckOutInventory;
-    private ArrayList<Items> mDataSourceCheckOutInventory;
-    private ArrayList<Items> mDataScannedForPage1 = new ArrayList();
-    private ArrayList<Items> mDataScanedSourceCheckOutInventory = new ArrayList();
     private ArrayList<Sale> mMerchantSalesListDataSource;
     private ArrayList<Refund> mMerchantRefundsLIstDataSource;
     private ArrayList<Sale> mAdminReceiveablesListDataSource;
@@ -72,7 +67,6 @@ public class GlobalState extends Application {
     private Tax tax;
     private String tcIdUTC;
     private DecodePayBolt11 currentDecodePayBolt11;
-    private ArrayList<Items> mSeletedForPayDataSourceCheckOutInventory;
     //Sale & Refund Merchant Side
     private ArrayList<Sale> mTodaySaleList;
     private ArrayList<Sale> mTotalSaleList;
@@ -96,6 +90,8 @@ public class GlobalState extends Application {
     private MerchantData merchantData;
 
     private boolean isMerchantConfirm = false;
+    public ArrayList<Items> selectedItems = new ArrayList();
+
 
     //This arraylist is set when /UserStorage/inventory/ is called from CheckOutFragment1
     private ArrayList<GetItemImageReloc> currentItemImageRelocArrayList;
@@ -356,44 +352,12 @@ public class GlobalState extends Application {
         this.dellSelectedItemUPC = dellSelectedItemUPC;
     }
 
-    public ArrayList<Items> getmDataScannedForPage1() {
-        return mDataScannedForPage1;
-    }
 
-    public void removeInMDataScannedForPage1(Items item) {
-        if (this.mDataScannedForPage1.size() > 0) {
-            this.mDataScannedForPage1.remove(item);
-        }
-    }
-
-    public void setmDataScannedForPage1(ArrayList<Items> mDataScannedForPage1) {
-        this.mDataScannedForPage1 = mDataScannedForPage1;
-    }
-
-    public void addInmDataScannedForPage1(Items items) {
-        if (this.mDataScannedForPage1 != null) {
-            this.mDataScannedForPage1.add(items);
-        } else {
-            this.mDataScannedForPage1 = new ArrayList<>();
-            this.mDataScannedForPage1.add(items);
-        }
-    }
-
-    public DecodePayBolt11 getCurrentDecodePayBolt11() {
-        return currentDecodePayBolt11;
-    }
 
     public void setCurrentDecodePayBolt11(DecodePayBolt11 currentDecodePayBolt11) {
         this.currentDecodePayBolt11 = currentDecodePayBolt11;
     }
 
-    public String getTcIdUTC() {
-        return tcIdUTC;
-    }
-
-    public void setTcIdUTC(String tcIdUTC) {
-        this.tcIdUTC = tcIdUTC;
-    }
 
     public ArrayList<Refund> getmAdminSendblesListDataSource() {
         return mAdminSendblesListDataSource;
@@ -411,13 +375,6 @@ public class GlobalState extends Application {
         this.mAdminReceiveablesListDataSource = mAdminReceiveablesListDataSource;
     }
 
-    public int getItemCountInCart() {
-        return itemCountInCart;
-    }
-
-    public void setItemCountInCart(int itemCountInCart) {
-        this.itemCountInCart = itemCountInCart;
-    }
 
     public ArrayList<Refund> getmMerchantRefundsLIstDataSource() {
         return mMerchantRefundsLIstDataSource;
@@ -439,17 +396,6 @@ public class GlobalState extends Application {
         return userInfo;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public ArrayList<Items> getmDataScanedSourceCheckOutInventory() {
-        return mDataScanedSourceCheckOutInventory;
-    }
-
-    public void setmDataScanedSourceCheckOutInventory(ArrayList<Items> mDataScanedSourceCheckOutInventory) {
-        this.mDataScanedSourceCheckOutInventory = mDataScanedSourceCheckOutInventory;
-    }
 
     public Tax getTax() {
         return tax;
@@ -555,133 +501,6 @@ public class GlobalState extends Application {
         isCheckoutBtnPress = checkoutBtnPress;
     }
 
-
-    /*
-    These Items appear in Checkout Page 3
-     */
-    public ArrayList<Items> getmSeletedForPayDataSourceCheckOutInventory() {
-        Log.v(TAG, "getmSeletedForPayDataSourceCheckOutInventory: ");
-        return mSeletedForPayDataSourceCheckOutInventory;
-
-    }
-
-    public void addAllmSeletedForPayDataSourceCheckOutInventory(ArrayList<Items> addAllList) {
-        Log.v(TAG, "addAllmSeletedForPayDataSourceCheckOutInventory: " + addAllList.toString());
-        if (this.mSeletedForPayDataSourceCheckOutInventory != null) {
-            this.mSeletedForPayDataSourceCheckOutInventory.addAll(addAllList);
-            Set<Items> s = new HashSet<Items>();
-            s.addAll(this.mSeletedForPayDataSourceCheckOutInventory);
-            this.mSeletedForPayDataSourceCheckOutInventory = new ArrayList<Items>();
-            this.mSeletedForPayDataSourceCheckOutInventory.addAll(s);
-        } else {
-            this.mSeletedForPayDataSourceCheckOutInventory = new ArrayList<>();
-            this.mSeletedForPayDataSourceCheckOutInventory.addAll(addAllList);
-        }
-    }
-
-    public void setmSeletedForPayDataSourceCheckOutInventory(ArrayList<Items> mSeletedForPayDataSourceCheckOutInventory) {
-        Log.v(TAG, "setmSeletedForPayDataSourceCheckOutInventory: " + mSeletedForPayDataSourceCheckOutInventory.toString());
-        this.mSeletedForPayDataSourceCheckOutInventory = mSeletedForPayDataSourceCheckOutInventory;
-    }
-
-    public ArrayList<Items> getmSelectedDataSourceCheckOutInventory() {
-        return mSelectedDataSourceCheckOutInventory;
-    }
-
-    public void setmSelectedDataSourceCheckOutInventory(ArrayList<Items> mSelectedDataSourceCheckOutInventory) {
-        this.mSelectedDataSourceCheckOutInventory = mSelectedDataSourceCheckOutInventory;
-    }
-
-    public ArrayList<Items> getmDataSourceCheckOutInventory() {
-        return mDataSourceCheckOutInventory;
-    }
-
-    public void setmDataSourceCheckOutInventory(ArrayList<Items> mDataSourceCheckOutInventory) {
-        this.mDataSourceCheckOutInventory = mDataSourceCheckOutInventory;
-    }
-
-    public void addInmScannedDataSourceCheckOutInventory(Items item) {
-        if (this.mDataScanedSourceCheckOutInventory != null) {
-            this.mDataScanedSourceCheckOutInventory.add(item);
-        } else {
-            this.mDataScanedSourceCheckOutInventory = new ArrayList<>();
-            this.mDataScanedSourceCheckOutInventory.add(item);
-        }
-    }
-
-    public void removeInmScannedDataSourceCheckOutInventory(Items item) {
-        if (this.mDataScanedSourceCheckOutInventory.size() > 0) {
-            this.mDataScanedSourceCheckOutInventory.remove(item);
-        }
-    }
-
-    public void addInmSelectedDataSourceCheckOutInventory(Items item) {
-        if (this.mSelectedDataSourceCheckOutInventory != null) {
-            this.mSelectedDataSourceCheckOutInventory.add(item);
-        } else {
-            this.mSelectedDataSourceCheckOutInventory = new ArrayList<>();
-            this.mSelectedDataSourceCheckOutInventory.add(item);
-        }
-    }
-
-    public void removeInmSelectedDataSourceCheckOutInventory(Items item) {
-        if (this.mSelectedDataSourceCheckOutInventory.size() > 0) {
-            this.mSelectedDataSourceCheckOutInventory.remove(item);
-        }
-    }
-
-    public void addInmSeletedForPayDataSourceCheckOutInventory(Items item) {
-        Log.v(TAG, "addInmSeletedForPayDataSourceCheckOutInventory: " + item.toString());
-        if (this.mSeletedForPayDataSourceCheckOutInventory != null) {
-            this.mSeletedForPayDataSourceCheckOutInventory.add(item);
-        } else {
-            this.mSeletedForPayDataSourceCheckOutInventory = new ArrayList<>();
-            this.mSeletedForPayDataSourceCheckOutInventory.add(item);
-        }
-    }
-
-    public void removeInmSeletedForPayDataSourceCheckOutInventory(Items item) {
-        Log.v(TAG, "removeInmSeletedForPayDataSourceCheckOutInventory: " + item.toString());
-        if (this.mSeletedForPayDataSourceCheckOutInventory.size() > 0) {
-            this.mSeletedForPayDataSourceCheckOutInventory.remove(item);
-        }
-    }
-
-    public void addInmDataSourceCheckOutInventory(Items invenotryItem) {
-        if (this.mDataSourceCheckOutInventory != null) {
-            this.mDataSourceCheckOutInventory.add(invenotryItem);
-        } else {
-            this.mDataSourceCheckOutInventory = new ArrayList<>();
-            this.mDataSourceCheckOutInventory.add(invenotryItem);
-        }
-    }
-
-    public void removeInmDataSourceCheckOutInventory(Items invenotryItem) {
-        if (this.mDataSourceCheckOutInventory.size() > 0) {
-            this.mDataSourceCheckOutInventory.remove(invenotryItem);
-        }
-    }
-
-    public ServerData getServerData() {
-        return serverData;
-    }
-
-    public void setServerData(ServerData serverData) {
-        this.serverData = serverData;
-    }
-
-    public String getServerURL() {
-        return ServerURL;
-    }
-
-    public boolean isUsersession() {
-        return usersession;
-    }
-
-    public void setUsersession(boolean usersession) {
-        this.usersession = usersession;
-    }
-
     private boolean usersession;
 
     public CurrentAllRate getCurrentAllRate() {
@@ -700,14 +519,6 @@ public class GlobalState extends Application {
         this.currentSpecificRateData = currentSpecificRateData;
     }
 
-    public Data getMerchantDetail() {
-        return merchantDetail;
-    }
-
-    public void setUserDetail(Data merchantDetail) {
-        this.merchantDetail = merchantDetail;
-    }
-
 
     @Override
     public void onCreate() {
@@ -720,9 +531,5 @@ public class GlobalState extends Application {
             mInstance = new GlobalState();
         }
         return mInstance;
-    }
-
-    public void clearData() {
-//mInstance.merchantDetail=null;
     }
 }

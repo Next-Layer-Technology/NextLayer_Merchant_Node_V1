@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -34,21 +33,16 @@ import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
 import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
-import com.sis.clightapp.Utills.Functions2;
 import com.sis.clightapp.Utills.GlobalState;
 import com.sis.clightapp.activity.CheckOutMainActivity;
 import com.sis.clightapp.activity.HomeActivity;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.Items;
-import com.sis.clightapp.model.GsonModel.ListFunds.ListFundChannel;
-import com.sis.clightapp.model.GsonModel.ListFunds.ListFunds;
 import com.sis.clightapp.model.GsonModel.ListPeers.ListPeers;
 import com.sis.clightapp.model.GsonModel.ListPeers.ListPeersChannels;
 import com.sis.clightapp.model.GsonModel.Sendreceiveableresponse;
 import com.sis.clightapp.model.REST.FundingNode;
 import com.sis.clightapp.model.REST.FundingNodeListResp;
-import com.sis.clightapp.model.Tax;
-import com.sis.clightapp.model.currency.CurrentAllRate;
 import com.sis.clightapp.model.currency.CurrentSpecificRateData;
 import com.sis.clightapp.session.MyLogOutService;
 
@@ -80,10 +74,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
     EditText amount, rcieptnum;
     TextView[] btn = new TextView[12];
     TextView btnAddItem, btnCheckOut;
-    double CurrentRateInBTC;
-    ApiPaths fApiPaths;
     private WebSocketClient webSocketClient;
-    Functions2 functions;
     CustomSharedPreferences sharedPreferences;
     Context fContext;
     TextView btcRate;
@@ -202,13 +193,13 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
             amount.getText().clear();
             rcieptnum.getText().clear();
             if (newManualItem != null) {
-                GlobalState.getInstance().addInmSeletedForPayDataSourceCheckOutInventory(newManualItem);
-                ArrayList<Items> after = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-                int count = 0;
-                for (Items items : after) {
-                    count = count + items.getSelectQuatity();
-                }
-                ((CheckOutMainActivity) requireActivity()).updateCartIcon(count);
+//                GlobalState.getInstance().addInmSeletedForPayDataSourceCheckOutInventory(newManualItem);
+//                ArrayList<Items> after = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
+//                int count = 0;
+//                for (Items items : after) {
+//                    count = count + items.getSelectQuatity();
+//                }
+//                ((CheckOutMainActivity) requireActivity()).updateCartIcon(count);
 
             }
             newManualItem = null;
@@ -252,7 +243,6 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         alertTitle_tv.setText(getString(R.string.exit_title));
         alertMessage_tv.setText(getString(R.string.exit_subtitle));
         yesbtn.setOnClickListener(v -> {
-            cleanAllDataSource();
             requireContext().stopService(new Intent(getContext(), MyLogOutService.class));
             Intent ii = new Intent(getContext(), HomeActivity.class);
             startActivity(ii);
@@ -312,9 +302,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
 
     }
 
-    public CheckOutsFragment2() {
-        // Required empty public constructor
-    }
+    public CheckOutsFragment2() {}
 
     public CheckOutsFragment2 getInstance() {
         if (checkOutsFragment2 == null) {
@@ -339,7 +327,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         }
     }
 
-    //Get Funding Node Infor
+    //Get Funding Node Info
     private void getFundingNodeInfo() {
         Call<FundingNodeListResp> call = ApiClient.getRetrofit().create(ApiPaths.class).get_Funding_Node_List();
         call.enqueue(new Callback<FundingNodeListResp>() {
@@ -435,7 +423,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
     }
 
 
-    private ListPeers parseJSONForListPeers(String jsonresponse) {
+    private void parseJSONForListPeers(String jsonresponse) {
         Log.d("ListPeersParsingResponse", jsonresponse);
         ListPeers listFunds = null;
         boolean sta = false;
@@ -509,7 +497,6 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
             Log.e("Error", "Error");
             showToast("Wrong Response!!!");
         }
-        return listFunds;
     }
 
     //Manipulate Receivable Amount
@@ -536,11 +523,10 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         Objects.requireNonNull(clearOutDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         //dialog.getWindow().setLayout(500, 500);
         clearOutDialog.setCancelable(false);
-        TextView receivedVal = (TextView) clearOutDialog.findViewById(R.id.receivedVal);
-        TextView capicityVal = (TextView) clearOutDialog.findViewById(R.id.capicityVal);
-        TextView clearoutVal = (TextView) clearOutDialog.findViewById(R.id.clearoutVal);
+        TextView receivedVal = clearOutDialog.findViewById(R.id.receivedVal);
+        TextView capicityVal = clearOutDialog.findViewById(R.id.capicityVal);
+        TextView clearoutVal = clearOutDialog.findViewById(R.id.clearoutVal);
 
-        boolean isCanClearout = false;
         Log.e("BeforeDialogCap", String.valueOf(usdRemainingCapacity));
         Log.e("BeforeDialogRecv", String.valueOf(usdReceivable));
         if (isFetchData) {
@@ -549,20 +535,17 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
                 receivedVal.setText(":$" + String.format("%.2f", round(usdReceivable, 2)));
                 clearoutVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity - usdReceivable, 2)));
 
-                isCanClearout = true;
             } else {
                 capicityVal.setText("N/A");
                 receivedVal.setText("N/A");
                 clearoutVal.setText("N/A");
 
-                isCanClearout = false;
             }
         } else {
             capicityVal.setText("N/A");
             receivedVal.setText("N/A");
             clearoutVal.setText("N/A");
 
-            isCanClearout = false;
         }
         final ImageView ivBack = clearOutDialog.findViewById(R.id.iv_back_invoice);
         Button noBtn = clearOutDialog.findViewById(R.id.noBtn);
@@ -590,7 +573,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
 
     //Clear Out All Receivable Amount to Destination
     private void sendReceivable() {
-        String routingNodeId = "";
+        String routingNodeId;
         FundingNode fundingNode = GlobalState.getInstance().getFundingNode();
         if (fundingNode != null) {
             if (fundingNode.getNode_id() != null) {

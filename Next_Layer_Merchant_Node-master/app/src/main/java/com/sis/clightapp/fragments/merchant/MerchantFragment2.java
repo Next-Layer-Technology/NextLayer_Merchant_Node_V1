@@ -529,196 +529,8 @@ public class MerchantFragment2 extends MerchantBaseFragment {
 
     }
 
-    public void dialogBoxForUpdateItemMerchant2(String selectedItemName) {
-        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialoglayoutupdateitem2);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
-//        dialog.getWindow().setLayout(500, 500);
-        final EditText edtUpdateName = dialog.findViewById(R.id.edtUpdateName);
-        final CircleImageView imageview = dialog.findViewById(R.id.iv_update);
-//        edtUpdateName.setEnabled(false);
-//        edtUpdateName.setFocusable(false);
-//        edtUpdateName.setFocusableInTouchMode(false);
-        final EditText edtUpdatePrice = dialog.findViewById(R.id.edtUpdatePrice);
-//        edtUpdatePrice.setEnabled(false);
-//        edtUpdatePrice.setFocusable(false);
-//        edtUpdatePrice.setFocusableInTouchMode(false);
-        final EditText edtUpdateQuanity = dialog.findViewById(R.id.edtUpdateQuantity);
-        String itemUpc = "";
-//        final EditText edtUpdateDescription=dialog.findViewById(R.id.edtUpdateAdditionalInfo);
-//        edtUpdateDescription.setEnabled(false);
-//        edtUpdateDescription.setFocusable(false);
-//        edtUpdateDescription.setFocusableInTouchMode(false);
-        final Button btnUpdate = dialog.findViewById(R.id.btnUpdate2);
-        final ImageView ivBack = dialog.findViewById(R.id.iv_back_invoice);
-        String itemName = String.valueOf(selectedItemName);
-        ArrayList<Items> mdSource = GlobalState.getInstance().getmDataSourceCheckOutInventory();
-        if (mdSource != null) {
-            for (int j = 0; j < mdSource.size(); j++) {
-                if (mdSource.get(j).getName().equals(itemName)) {
-                    itemUpc = mdSource.get(j).getUPC();
-                    edtUpdateName.setText(mdSource.get(j).getName());
-                    edtUpdatePrice.setText(mdSource.get(j).getPrice());
-                    edtUpdateQuanity.setText(mdSource.get(j).getQuantity());
-                    file = mdSource.get(j).getQuantity();
-//                    Glide.with(getContext()).load(AppConstants.MERCHANT_ITEM_IMAGE + mdSource.get(j).getImageUrl()).into(imageview);
-//                    imageview.setDrawingCacheEnabled(true);
-//                    btmapimage = imageview.getDrawingCache();
-//                    File file = null;
-//                    try {
-//                        file = savebitmap(selectImgBitMap);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                        isImageGet = false;
-//                    }
-//                    if (file != null) {
-//                        isImageGet = true;
-//                        itemImageFile = file;
-//                        itemImage.setImageBitmap(selectImgBitMap);
-//                    }
-                }
-
-            }
-        }
-        final String finalItemUpc = itemUpc;
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String updateNameValue = edtUpdateName.getText().toString();
-                String updatePriceValue = edtUpdatePrice.getText().toString();
-                String updateQuaitiyValue = edtUpdateQuanity.getText().toString();
-                // String updateDescriptionValue=edtUpdateDescription.getText().toString();
-                if (updatePriceValue.isEmpty() || updateQuaitiyValue.isEmpty()) {
-                    showToast("Not Valid");
-                } else {
-                    ask_UpdateItem(finalItemUpc, updatePriceValue, updateNameValue, updateQuaitiyValue);
-                }
-
-            }
-        });
-
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
 
 
-    }
-
-    /*Creating dialogue for ADD,UPDATE,DELETE Items*/
-    public void dialogBoxForUpdateItemMerchant() {
-        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
-        int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialoglayoutupdateitem);
-        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setLayout((int) (width / 1.1f), (int) (height / 1.3));
-//        dialog.getWindow().setLayout(500, 500);
-        final EditText edtUpdateName = dialog.findViewById(R.id.edtUpdateName);
-        final EditText edtUpdatePrice = dialog.findViewById(R.id.edtUpdatePrice);
-        final EditText edtUpdateQuanity = dialog.findViewById(R.id.edtUpdateQuantity);
-        final EditText edtUpdateDescription = dialog.findViewById(R.id.edtUpdateAdditionalInfo);
-        final Button btnUpdate = dialog.findViewById(R.id.btnUpdate2);
-
-        edtUpdateName.setVisibility(View.GONE);
-        edtUpdatePrice.setVisibility(View.GONE);
-        edtUpdateQuanity.setVisibility(View.GONE);
-        edtUpdateDescription.setVisibility(View.GONE);
-        btnUpdate.setVisibility(View.GONE);
-
-        final ImageView ivBack = dialog.findViewById(R.id.iv_back_invoice);
-        // progressBar = dialog.findViewById(R.id.progress_bar);
-        Spinner dropdown = (Spinner) dialog.findViewById(R.id.spinner1);
-
-        ArrayList<String> itemlist = new ArrayList<>();
-        ArrayList<Items> iteminventoryList = new ArrayList<>();
-        iteminventoryList = GlobalState.getInstance().getmDataSourceCheckOutInventory();
-        itemlist.add("Select Delete item");
-
-        if (iteminventoryList != null) {
-            for (int i = 0; i < iteminventoryList.size(); i++) {
-                itemlist.add(iteminventoryList.get(i).getName());
-            }
-        }
-
-
-        //  ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, itemlist);
-        dropdown.setAdapter(adapter);
-        final ArrayList<Items> finalIteminventoryList = iteminventoryList;
-        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if (i == 0) {
-                    // TODO:do nothing
-                } else {
-                    edtUpdateName.setVisibility(View.VISIBLE);
-                    edtUpdatePrice.setVisibility(View.VISIBLE);
-                    edtUpdateQuanity.setVisibility(View.VISIBLE);
-                    edtUpdateDescription.setVisibility(View.VISIBLE);
-                    btnUpdate.setVisibility(View.VISIBLE);
-                    showToast(String.valueOf(i));
-                    Object objname = adapterView.getSelectedItem();
-                    String itemName = String.valueOf(objname);
-                    ArrayList<Items> mdSource = GlobalState.getInstance().getmDataSourceCheckOutInventory();
-                    if (mdSource != null) {
-                        for (int j = 0; j < mdSource.size(); j++) {
-                            if (mdSource.get(j).getName().equals(itemName)) {
-                                edtUpdateName.setText(mdSource.get(j).getName());
-                                edtUpdatePrice.setText(mdSource.get(j).getPrice());
-                                edtUpdateQuanity.setText(mdSource.get(j).getQuantity());
-                                edtUpdateDescription.setText(mdSource.get(j).getAdditionalInfo());
-                            }
-
-                        }
-                    }
-                    btnUpdate.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                            String updateNameValue = edtUpdateName.getText().toString();
-                            String updatePriceValue = edtUpdatePrice.getText().toString();
-                            String updateQuaitiyValue = edtUpdateQuanity.getText().toString();
-                            String updateDescriptionValue = edtUpdateDescription.getText().toString();
-                            if (updatePriceValue.isEmpty() || updateQuaitiyValue.isEmpty() || updateDescriptionValue.isEmpty()) {
-                                showToast("Not Valid");
-                            } else {
-                                //ask_UpdateItem(updateNameValue,updatePriceValue,updateQuaitiyValue,updateDescriptionValue);
-                            }
-
-                        }
-                    });
-
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-
-
-    }
 
     private void pickItemImage() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -1218,7 +1030,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
 
         ArrayList<String> itemlist = new ArrayList<>();
         ArrayList<Items> iteminventoryList = new ArrayList<>();
-        iteminventoryList = GlobalState.getInstance().getmDataSourceCheckOutInventory();
+//        iteminventoryList = GlobalState.getInstance().getmDataSourceCheckOutInventory();
         itemlist.add("Select Delete item");
         if (iteminventoryList != null) {
             if (iteminventoryList.size() > 0) {
@@ -1243,7 +1055,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
                             String itemSelectedUPC = "";
                             GlobalState.getInstance().setDelteItemPosition(pos);
                             ArrayList<Items> iteminventoryListtest = new ArrayList<>();
-                            iteminventoryListtest = GlobalState.getInstance().getmDataSourceCheckOutInventory();
+//                            iteminventoryListtest = GlobalState.getInstance().getmDataSourceCheckOutInventory();
 
                             for (int ii = 0; ii < iteminventoryListtest.size(); ii++) {
                                 if (iteminventoryListtest.get(ii).getName().equals(itemName)) {
@@ -1326,15 +1138,15 @@ public class MerchantFragment2 extends MerchantBaseFragment {
         }.getType();
         ArrayList<Items> itemsList = new ArrayList<>();
 //        ArrayList<Items> itemsList = gson.fromJson(jsonString, type);
-        if (GlobalState.getInstance().getmDataSourceCheckOutInventory() != null) {
-            GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
-        }
-
-        if (GlobalState.getInstance().getmDataSourceCheckOutInventory() == null) {
-
-        } else {
-            GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
-        }
+//        if (GlobalState.getInstance().getmDataSourceCheckOutInventory() != null) {
+//            GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
+//        }
+//
+//        if (GlobalState.getInstance().getmDataSourceCheckOutInventory() == null) {
+//
+//        } else {
+//            GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
+//        }
         ArrayList<GetItemImageReloc> itemImageRelocArrayList = GlobalState.getInstance().getCurrentItemImageRelocArrayList();
         if (itemsList.isEmpty()) {
             for (int j = 0; j < itemImageRelocArrayList.size(); j++) {
@@ -1377,7 +1189,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
 
         }
 
-        GlobalState.getInstance().setmDataSourceCheckOutInventory(itemsList);
+//        GlobalState.getInstance().setmDataSourceCheckOutInventory(itemsList);
         for (Items items : itemsList) {
             Log.e("ItemsDetails", "Name:" + items.getName() + "-" + "Quantity:" + items.getQuantity() + "-" + "Price:" + items.getPrice() + "-" + "UPC:" + items.getUPC() + "-" + "ImageUrl:" + items.getImageUrl());
         }
@@ -1393,15 +1205,15 @@ public class MerchantFragment2 extends MerchantBaseFragment {
         }.getType();
         ArrayList<Items> itemsList = new ArrayList<>();
 //        ArrayList<Items> itemsList = gson.fromJson(jsonString, type);
-        if (GlobalState.getInstance().getmDataSourceCheckOutInventory() != null) {
-            GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
-        }
-
-        if (GlobalState.getInstance().getmDataSourceCheckOutInventory() == null) {
-
-        } else {
-            GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
-        }
+//        if (GlobalState.getInstance().getmDataSourceCheckOutInventory() != null) {
+//            GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
+//        }
+//
+//        if (GlobalState.getInstance().getmDataSourceCheckOutInventory() == null) {
+//
+//        } else {
+//            GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
+//        }
         ArrayList<GetItemImageReloc> itemImageRelocArrayList = GlobalState.getInstance().getCurrentItemImageRelocArrayList();
         if (itemsList.isEmpty()) {
             for (int j = 0; j < itemImageRelocArrayList.size(); j++) {
@@ -1444,7 +1256,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
 
         }
 
-        GlobalState.getInstance().setmDataSourceCheckOutInventory(itemsList);
+//        GlobalState.getInstance().setmDataSourceCheckOutInventory(itemsList);
         for (Items items : itemsList) {
             Log.e("ItemsDetails", "Name:" + items.getName() + "-" + "Quantity:" + items.getQuantity() + "-" + "Price:" + items.getPrice() + "-" + "UPC:" + items.getUPC() + "-" + "ImageUrl:" + items.getImageUrl());
         }
@@ -1454,7 +1266,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
     }
 
     private void refreshAdapter() {
-        ArrayList<Items> itemsArrayList = GlobalState.getInstance().getmDataSourceCheckOutInventory();
+//        ArrayList<Items> itemsArrayList = GlobalState.getInstance().getmDataSourceCheckOutInventory();
        // merchantItemAdapter = new MerchantItemAdapter(itemsArrayList, getContext(), MerchantFragment2.this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -1534,43 +1346,6 @@ public class MerchantFragment2 extends MerchantBaseFragment {
 
     }
 
-    /*For Reload Adapter after getting Item List*/
-    private void reloadAdapter() {
-        ArrayList<UPCofImages> upCofImagesArrayList = GlobalState.getInstance().getmUPCListOfImagesDataSorce();
-        ArrayList<Items> itemsArrayList = GlobalState.getInstance().getmDataSourceCheckOutInventory();
-        ArrayList<StringImageOfUPCItem> stringImageOfUPCItemArrayList = GlobalState.getInstance().getmStringImageOfUPCItems();
-        Log.e("Tes", "tst1");
-        if (upCofImagesArrayList != null && stringImageOfUPCItemArrayList != null) {
-            Log.e("Tes", "tst1");
-            if (stringImageOfUPCItemArrayList.size() > 0) {
-                if (itemsArrayList != null) {
-                    for (int s = 0; s < itemsArrayList.size(); s++) {
-                        for (int q = 0; q < stringImageOfUPCItemArrayList.size(); q++) {
-                            if (itemsArrayList.get(s).getUPC().equals(stringImageOfUPCItemArrayList.get(q).getUPC())) {
-                                itemsArrayList.get(s).setImageInHex(stringImageOfUPCItemArrayList.get(q).getImage());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-        if (itemsArrayList != null) {
-            mMerchantItemsDataSource = itemsArrayList;
-            if (merchantItemAdapter != null) {
-               // merchantItemAdapter.updateList(mMerchantItemsDataSource);
-                merchantItemAdapter.notifyDataSetChanged();
-            } else {
-
-                //merchantItemAdapter = new MerchantItemAdapter(mMerchantItemsDataSource, getContext(), MerchantFragment2.this);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-                recyclerView.setAdapter(merchantItemAdapter);
-            }
-        }
-
-    }
 
     public static File savebitmap(Bitmap bmp) throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();

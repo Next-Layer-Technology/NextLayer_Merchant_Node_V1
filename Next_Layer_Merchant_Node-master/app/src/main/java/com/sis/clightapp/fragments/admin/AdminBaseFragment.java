@@ -11,13 +11,13 @@ import android.text.SpannableStringBuilder;
 import android.text.format.DateFormat;
 import android.text.style.StyleSpan;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.JsonObject;
@@ -35,14 +35,13 @@ import com.sis.clightapp.Utills.AppConstants;
 import com.sis.clightapp.Utills.CustomSharedPreferences;
 import com.sis.clightapp.Utills.GlobalState;
 import com.sis.clightapp.model.REST.get_session_response;
-import com.sis.clightapp.model.Tax;
 import com.sis.clightapp.model.WebsocketResponse.WebSocketOTPresponse;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -80,34 +79,14 @@ public class AdminBaseFragment extends Fragment {
         textView.setText(sb);
     }
 
-    public long getDayDiffDates(long millis1, long millis2) {
-        // Calculate difference in milliseconds
-        long diff = millis2 - millis1;
-
-        // Calculate difference in seconds
-        long diffSeconds = diff / 1000;
-
-        // Calculate difference in minutes
-        long diffMinutes = diff / (60 * 1000);
-
-        // Calculate difference in hours
-        long diffHours = diff / (60 * 60 * 1000);
-
-        // Calculate difference in days
-        long diffDays = diff / (24 * 60 * 60 * 1000);
-        return diffDays;
-    }
 
     public double getUsdFromBtc(double btc) {
-        double ret = 0.0;
-        // GlobalState.getInstance().setChannel_btcResponseData(channel_btcResponseData)
-        //if(GlobalState.getInstance().getCurrentAllRate()!=null)
+        double ret;
         if (GlobalState.getInstance().getChannel_btcResponseData() != null) {
-            Log.e("btcbefore", String.valueOf(btc));
-            //double btcRate=GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
+            Log.e("btc before", String.valueOf(btc));
             double btcRate = GlobalState.getInstance().getChannel_btcResponseData().getPrice();
             double priceInUSD = btcRate * btc;
-            Log.e("btcaftertousd", String.valueOf(priceInUSD));
+            Log.e("btc after to usd", String.valueOf(priceInUSD));
             ret = priceInUSD;
         } else {
             ret = 0.0;
@@ -116,55 +95,6 @@ public class AdminBaseFragment extends Fragment {
         return ret;
     }
 
-    public double getBtcFromUsd(double usd) {
-        double ret = 0.0;
-        if (GlobalState.getInstance().getCurrentAllRate() != null) {
-            Log.e("usdbefore", String.valueOf(usd));
-            double btcRatePerDollar = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
-            double priceInBTC = btcRatePerDollar * usd;
-            Log.e("usdaftertobtc", String.valueOf(priceInBTC));
-            ret = priceInBTC;
-        } else {
-            ret = 0.0;
-        }
-
-        return ret;
-    }
-
-    public double getTaxOfBTC(double btc) {
-        double taxamount = 0.0;
-
-        if (GlobalState.getInstance().getTax() != null) {
-
-            Tax t = GlobalState.getInstance().getTax();
-
-            double taxprcntBTC = GlobalState.getInstance().getTax().getTaxpercent() / 100;
-            taxprcntBTC = taxprcntBTC * btc;
-//            double taxprcntUSD=GlobalState.getInstance().getTax().getTaxpercent()/100;
-//            taxprcntUSD=1*taxprcntUSD;
-            taxamount = taxprcntBTC;
-        } else {
-            taxamount = 0.0;
-        }
-
-        return taxamount;
-    }
-
-    public double getTaxOfUSD(double usd) {
-        double taxamount = 0.0;
-
-        if (GlobalState.getInstance().getTax() != null) {
-
-
-            double taxprcntUSD = GlobalState.getInstance().getTax().getTaxpercent() / 100;
-            taxprcntUSD = usd * taxprcntUSD;
-            taxamount = taxprcntUSD;
-        } else {
-            taxamount = 0.0;
-        }
-
-        return taxamount;
-    }
 
     public Bitmap getBitMapImg(String hex, int widht, int height) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
@@ -175,30 +105,14 @@ public class AdminBaseFragment extends Fragment {
             e.printStackTrace();
         }
         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-        Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-        return bitmap;
+        return barcodeEncoder.createBitmap(bitMatrix);
 
     }
 
-    public Bitmap getBitMapFromHex(String hex) {
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        BitMatrix bitMatrix = null;
-        try {
-            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, 600, 600);
-        } catch (WriterException e) {
-            e.printStackTrace();
-            Log.e("errorhe", "getBitMapFromHex");
-        }
-        BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-        Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-        return bitmap;
-
-    }
 
     public double mSatoshoToBtc(double msatoshhi) {
         double msatoshiToSatoshi = msatoshhi / AppConstants.satoshiToMSathosi;
-        double satoshiToBtc = msatoshiToSatoshi / AppConstants.btcToSathosi;
-        return satoshiToBtc;
+        return msatoshiToSatoshi / AppConstants.btcToSathosi;
     }
 
     public String excatFigure(double value) {
@@ -206,9 +120,6 @@ public class AdminBaseFragment extends Fragment {
         return d.toPlainString();
     }
 
-    private String getCentralStandardTime(long paid_at) {
-        return String.valueOf(paid_at);
-    }
 
     public String getDateFromUTCTimestamp(long mTimestamp, String mDateFormate) {
         String date = null;
@@ -217,13 +128,13 @@ public class AdminBaseFragment extends Fragment {
             cal.setTimeInMillis(mTimestamp * 1000L);
             date = DateFormat.format(mDateFormate, cal.getTimeInMillis()).toString();
 
-            SimpleDateFormat formatter = new SimpleDateFormat(mDateFormate);
+            SimpleDateFormat formatter = new SimpleDateFormat(mDateFormate, Locale.US);
             formatter.setTimeZone(TimeZone.getTimeZone("CST"));
             Date value = formatter.parse(date);
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat(mDateFormate);
+            SimpleDateFormat dateFormatter = new SimpleDateFormat(mDateFormate, Locale.US);
             dateFormatter.setTimeZone(TimeZone.getDefault());
-            date = dateFormatter.format(value);
+            date = dateFormatter.format(Objects.requireNonNull(value));
             return date;
         } catch (Exception e) {
             e.printStackTrace();
@@ -240,9 +151,8 @@ public class AdminBaseFragment extends Fragment {
     }
 
     public String getUnixTimeStamp() {
-        Long tsLong = System.currentTimeMillis() / 1000;
-        String uNixtimeStamp = tsLong.toString();
-        return uNixtimeStamp;
+        long tsLong = System.currentTimeMillis() / 1000;
+        return Long.toString(tsLong);
     }
 
     public void goTo2FaPasswordDialog() {
@@ -255,39 +165,21 @@ public class AdminBaseFragment extends Fragment {
         final Button btn_confirm = enter2FaPassDialog.findViewById(R.id.btn_confirm);
         final Button btn_cancel = enter2FaPassDialog.findViewById(R.id.btn_cancel);
         final ImageView iv_back = enter2FaPassDialog.findViewById(R.id.iv_back_invoice);
-        iv_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        iv_back.setOnClickListener(v -> enter2FaPassDialog.dismiss());
+        btn_confirm.setOnClickListener(v -> {
+            String twoFaString = String.valueOf(et_2Fa_pass.getText());
+            if (twoFaString.isEmpty()) {
+                showToast("Enter 2FA Password");
+            } else {
                 enter2FaPassDialog.dismiss();
+                confirmingProgressDialog.show();
+                confirmingProgressDialog.setCancelable(false);
+                confirmingProgressDialog.setCanceledOnTouchOutside(false);
+                getSessionToken(twoFaString);
             }
+
         });
-        btn_confirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // closeSoftKeyBoard();
-                String twoFaString = String.valueOf(et_2Fa_pass.getText());
-                if (twoFaString.isEmpty()) {
-                    showToast("Enter 2FA Password");
-                } else {
-                    //Get Session
-
-                    enter2FaPassDialog.dismiss();
-
-                    confirmingProgressDialog.show();
-                    confirmingProgressDialog.setCancelable(false);
-                    confirmingProgressDialog.setCanceledOnTouchOutside(false);
-
-                    getSessionToken(twoFaString);
-                }
-
-            }
-        });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                enter2FaPassDialog.dismiss();
-            }
-        });
+        btn_cancel.setOnClickListener(v -> enter2FaPassDialog.dismiss());
         enter2FaPassDialog.show();
     }
 
@@ -295,11 +187,10 @@ public class AdminBaseFragment extends Fragment {
         Call<get_session_response> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).get_session("merchant", "haiww82uuw92iiwu292isk");
         call.enqueue(new Callback<get_session_response>() {
             @Override
-            public void onResponse(Call<get_session_response> call, Response<get_session_response> response) {
+            public void onResponse(@NonNull Call<get_session_response> call, @NonNull Response<get_session_response> response) {
                 if (response.body() != null) {
                     get_session_response loginresponse = response.body();
                     if (Integer.parseInt(loginresponse.getSession_token()) != -1) {
-                        //callRefresh(accessToken, twoFaCode, loginresponse.getSession_token());
                         new CustomSharedPreferences().setvalueofExpierTime(Integer.parseInt(loginresponse.getSession_token()), fContext);
                         String RefToken = new CustomSharedPreferences().getvalueofRefresh("refreshToken", fContext);
                         getToken(RefToken, twoFaCode);
@@ -309,17 +200,15 @@ public class AdminBaseFragment extends Fragment {
                     }
                 } else {
                     confirmingProgressDialog.dismiss();
-                    try {
-                        showToast(response.errorBody().string());
-                    } catch (IOException e) {
-                        showToast(e.getMessage());
+                    if (response.errorBody() != null) {
+                        showToast(response.errorBody().toString());
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<get_session_response> call, Throwable t) {
-                Log.e("get-funding-nodes:", t.getMessage());
+            public void onFailure(@NonNull Call<get_session_response> call, @NonNull Throwable t) {
+                Log.e("get-funding-nodes:", Objects.requireNonNull(t.getMessage()));
                 confirmingProgressDialog.dismiss();
                 showToast(t.getMessage());
             }
@@ -333,10 +222,10 @@ public class AdminBaseFragment extends Fragment {
         jsonObject1.addProperty("twoFactor", twofactor_key);
         jsonObject1.addProperty("time", time);
 
-        Call<WebSocketOTPresponse> call = (Call<WebSocketOTPresponse>) ApiClient2.getRetrofit().create(ApiPaths2.class).gettoken(jsonObject1);
+        Call<WebSocketOTPresponse> call = ApiClient2.getRetrofit().create(ApiPaths2.class).gettoken(jsonObject1);
         call.enqueue(new Callback<WebSocketOTPresponse>() {
             @Override
-            public void onResponse(Call<WebSocketOTPresponse> call, Response<WebSocketOTPresponse> response) {
+            public void onResponse(@NonNull Call<WebSocketOTPresponse> call, @NonNull Response<WebSocketOTPresponse> response) {
                 confirmingProgressDialog.dismiss();
                 if (response.body() != null) {
                     WebSocketOTPresponse webSocketOTPresponse = response.body();
@@ -374,9 +263,9 @@ public class AdminBaseFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<WebSocketOTPresponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<WebSocketOTPresponse> call, @NonNull Throwable t) {
                 confirmingProgressDialog.dismiss();
-                Log.e("get-funding-nodes:", t.getMessage());
+                Log.e("get-funding-nodes:", Objects.requireNonNull(t.getMessage()));
             }
         });
     }

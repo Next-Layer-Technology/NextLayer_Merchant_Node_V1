@@ -1,5 +1,14 @@
 package com.sis.clightapp.activity;
 
+import android.content.Intent;
+import android.content.res.Resources;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -8,36 +17,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-
 import com.google.android.material.navigation.NavigationView;
-import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
-import com.sis.clightapp.Utills.GlobalState;
-import com.sis.clightapp.Utills.NetworkManager;
 import com.sis.clightapp.ViewPager.CustomViewPager;
 import com.sis.clightapp.ViewPager.FragmentAdapter;
-import com.sis.clightapp.fragments.checkout.CheckOutFragment1;
-import com.sis.clightapp.fragments.checkout.CheckOutsFragment2;
-import com.sis.clightapp.fragments.checkout.CheckOutsFragment3;
 import com.sis.clightapp.fragments.merchant.MerchantFragment1;
 import com.sis.clightapp.fragments.merchant.MerchantFragment2;
 import com.sis.clightapp.fragments.merchant.MerchantFragment3;
@@ -45,7 +28,6 @@ import com.sis.clightapp.session.MyLogOutService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MerchantMainActivity extends BaseActivity {
     private DrawerLayout drawerLayout;

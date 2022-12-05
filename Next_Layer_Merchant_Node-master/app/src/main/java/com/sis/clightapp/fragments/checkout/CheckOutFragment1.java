@@ -115,6 +115,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
     double usdCapacity = 0;
     double usdRemainingCapacity = 0;
     double btcRemainingCapacity = 0;
+    ArrayList<Items> itemsList = new ArrayList<>();
 
     int INTENT_AUTHENTICATE = 1234;
 
@@ -167,7 +168,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
             isScanMode = false;
             cbScan.setChecked(false);
             cbList.setChecked(true);
-            checkOutMainListAdapter = new CheckOutMainListAdapter(requireContext(), GlobalState.getInstance().getmDataSourceCheckOutInventory());
+            checkOutMainListAdapter = new CheckOutMainListAdapter(requireContext(), itemsList);
             if (checkOutListView != null)
                 checkOutListView.setAdapter(checkOutMainListAdapter);
         });
@@ -176,11 +177,7 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
             isListMode = false;
             cbList.setChecked(false);
             cbScan.setChecked(true);
-            ArrayList<Items> dataSource = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
-            if (dataSource == null) {
-                dataSource = new ArrayList<>();
-            }
-            checkOutMainListAdapter = new CheckOutMainListAdapter(requireContext(), dataSource);
+            checkOutMainListAdapter = new CheckOutMainListAdapter(requireContext(), GlobalState.getInstance().selectedItems);
             checkOutListView.setAdapter(checkOutMainListAdapter);
         });
         scanUPCbtn = view.findViewById(R.id.scanUPC);
@@ -189,7 +186,6 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         confirmingProgressDialog.setCancelable(false);
         confirmingProgressDialog.setMessage("Loading ...");
         mScanedDataSourceItemList = new ArrayList<>();
-        GlobalState.getInstance().setmDataScannedForPage1(new ArrayList<>());
         //create scan object
         IntentIntegrator qrScan = new IntentIntegrator(getActivity());
         qrScan.setOrientationLocked(false);
@@ -267,29 +263,21 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                         addItemprogressDialog.setCanceledOnTouchOutside(false);
                         String getUpc = result.getContents();
                         showToast(getUpc);
-                        ArrayList<Items> itemsArrayList;
-                        itemsArrayList = GlobalState.getInstance().getmDataSourceCheckOutInventory();
-                        if (itemsArrayList != null) {
-                            if (itemsArrayList.size() > 0) {
-                                for (int itr = 0; itr < itemsArrayList.size(); itr++) {
-                                    if (itemsArrayList.get(itr).getUPC().equals(getUpc)) {
-                                        if (GlobalState.getInstance().getmDataScannedForPage1().contains(itemsArrayList.get(itr))) {
-                                            new AlertDialog.Builder(getContext())
-                                                    .setMessage("Item Already Add")
-                                                    .setPositiveButton("OK", null)
-                                                    .show();
-                                            showToast("Item Already Add");
-                                        } else {
-                                            itemsArrayList.get(itr).setSelectQuatity(1);
-                                            GlobalState.getInstance().addInmDataScannedForPage1(itemsArrayList.get(itr));
-                                            GlobalState.getInstance().addInmSeletedForPayDataSourceCheckOutInventory(itemsArrayList.get(itr));
-                                            ArrayList<Items> items = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
-                                            items.add(itemsArrayList.get(itr));
-                                            GlobalState.getInstance().setmDataScanedSourceCheckOutInventory(items);
-                                            Log.d(TAG, "onActivityResult: 372");
-                                            setAdapter();
-                                            break;
-                                        }
+                        if (itemsList.size() > 0) {
+                            for (int itr = 0; itr < itemsList.size(); itr++) {
+                                if (itemsList.get(itr).getUPC().equals(getUpc)) {
+                                    if ( GlobalState.getInstance().selectedItems.contains(itemsList.get(itr))) {
+                                        new AlertDialog.Builder(getContext())
+                                                .setMessage("Item Already Add")
+                                                .setPositiveButton("OK", null)
+                                                .show();
+                                        showToast("Item Already Add");
+                                    } else {
+                                        itemsList.get(itr).setSelectQuatity(1);
+                                        GlobalState.getInstance().selectedItems.add(itemsList.get(itr));
+                                        Log.d(TAG, "onActivityResult: 372");
+                                        setAdapter();
+                                        break;
                                     }
                                 }
                             }
@@ -328,7 +316,6 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
         alertTitle_tv.setText(getString(R.string.exit_title));
         alertMessage_tv.setText(getString(R.string.exit_subtitle));
         yesbtn.setOnClickListener(v -> {
-            cleanAllDataSource();
             goAlertDialogwithOneBTnDialog.dismiss();
             requireActivity().stopService(new Intent(getContext(), MyLogOutService.class));
             Intent ii = new Intent(getContext(), HomeActivity.class);
@@ -343,20 +330,17 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
     //Reloaded ALl Adapter
     public void setAdapter() {
         int countItem = 0;
-        ArrayList<Items> ttd = GlobalState.getInstance().getmSeletedForPayDataSourceCheckOutInventory();
-        if (ttd != null) {
-            Log.d(TAG, "setAdapter: ttd != null: " + ttd);
-            for (Items items : ttd) {
-                countItem = countItem + items.getSelectQuatity();
-            }
-            ((CheckOutMainActivity) requireActivity()).updateCartIcon(countItem);
+        for (Items items : GlobalState.getInstance().selectedItems) {
+            countItem = countItem + items.getSelectQuatity();
         }
+        ((CheckOutMainActivity) requireActivity()).updateCartIcon(countItem);
+
         ArrayList<Items> dataSource;
 
         if (isListMode) {
-            dataSource = GlobalState.getInstance().getmDataSourceCheckOutInventory();
+            dataSource = itemsList;
         } else {
-            dataSource = GlobalState.getInstance().getmDataScanedSourceCheckOutInventory();
+            dataSource = GlobalState.getInstance().selectedItems;
         }
 
         if (dataSource != null) {
@@ -365,17 +349,12 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
                 checkOutMainListAdapter = new CheckOutMainListAdapter(requireContext(), dataSource);
                 checkOutListView.setAdapter(checkOutMainListAdapter);
                 checkOutListView.setOnItemLongClickListener((adapterView, view, i, l) -> {
-                    final int position = i;
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     builder.setTitle(getString(R.string.delete_title));
                     builder.setMessage(getString(R.string.delete_subtitle));
                     builder.setCancelable(true);
                     // Action if user selects 'yes'
                     builder.setPositiveButton("Yes", (dialogInterface, i12) -> {
-                        Items item = dataSource.get(position);
-                        GlobalState.getInstance().removeInmSeletedForPayDataSourceCheckOutInventory(item);
-                        GlobalState.getInstance().removeInMDataScannedForPage1(item);
-                        GlobalState.getInstance().removeInmScannedDataSourceCheckOutInventory(item);
                         checkOutMainListAdapter.notifyDataSetChanged();
                     });
                     // Create the alert dialog using alert dialog builder
@@ -398,12 +377,8 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
 
 
     private void parseJSON() {
-        ArrayList<Items> itemsList = new ArrayList<>();
-
-        if (GlobalState.getInstance().getmDataSourceCheckOutInventory() != null) {
-            GlobalState.getInstance().getmDataSourceCheckOutInventory().clear();
-        }
         ArrayList<GetItemImageReloc> itemImageRelocArrayList = GlobalState.getInstance().getCurrentItemImageRelocArrayList();
+        itemsList.clear();
         itemsList.size();
         for (int j = 0; j < itemImageRelocArrayList.size(); j++) {
             Items items = new Items();
@@ -422,7 +397,6 @@ public class CheckOutFragment1 extends CheckOutBaseFragment {
             itemsList.add(j, items);
         }
 
-        GlobalState.getInstance().setmDataSourceCheckOutInventory(itemsList);
         for (Items items : itemsList) {
             Log.e("ItemsDetails", "Name:" + items.getName() + "-" + "Quantity:" + items.getQuantity() + "-" + "Price:" + items.getPrice() + "-" + "UPC:" + items.getUPC() + "-" + "ImageURl:" + items.getImageUrl());
         }
