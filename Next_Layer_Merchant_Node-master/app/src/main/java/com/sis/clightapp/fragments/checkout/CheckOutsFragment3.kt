@@ -55,7 +55,6 @@ import com.sis.clightapp.util.Utils.Companion.btcToUsd
 import com.sis.clightapp.util.Utils.Companion.dateStringUTCTimestamp
 import com.sis.clightapp.util.Utils.Companion.round
 import com.sis.clightapp.util.Utils.Companion.satoshiToBtc
-import io.socket.client.Socket
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -336,10 +335,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     true
                 }
             GlobalState.getInstance().isCheckoutBtnPress = false
-        } else {
-            (requireActivity() as CheckOutMainActivity).updateCartIcon(0)
-        }
-        if (selectedItems.isNotEmpty()) {
             priceInCurrency = 0.0
             priceInBTC = 0.0
             for (q in selectedItems.indices) {
@@ -385,6 +380,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 }
             }
         } else {
+            (requireActivity() as CheckOutMainActivity).updateCartIcon(0)
             //set default rates
             totalpay.text = "Total:" + "0.0 BTC" + " / " + "0.00 $"
             taxpay.text = "Tax:0.0 BTC/0.00 $"
@@ -448,11 +444,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 currentTransactionLabel
             )
         }
-        if (nearbyClients != null) {
-            createInvoice(rMSatoshi, label, "Flashpay")
-        } else {
-            invoiceDialog.show()
-        }
+        createInvoice(rMSatoshi, label, "Flashpay")
     }
 
     private fun getBitMapImg(hex: String?, widht: Int, height: Int): Bitmap {
@@ -531,8 +523,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                             if (list.size > 0) {
                                 //ArrayList<StoreClients> list1=list;
                                 showDialogNearbyClients(list)
-                            } else {
-                                showToast("No client found")
                             }
                         }
                     } else {
@@ -674,6 +664,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         btcService.currentBtc.observe(viewLifecycleOwner) {
             if (it.status == Status.SUCCESS) {
                 setcurrentrate(it.data?.rateinbitcoin.toString())
+                setAdapter()
             }
         }
     }
@@ -727,12 +718,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     confirmingProgressDialog.show()
                 }
             }
-
         }
-        if (!isCreatingInvoice) {
-            isCreatingInvoice = true
-            lightningService.createInvoice(rMSatoshi, label, description)
-        }
+        lightningService.createInvoice(rMSatoshi, label, description)
     }
 
     private fun listInvoices(label: String) {

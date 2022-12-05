@@ -137,6 +137,7 @@ class LightningService(val context: Context) {
                 response: Response?
             ) {
                 _createInvoiceResult.postValue(Resource.error(message = t.message.toString()))
+                Log.e("LightningService", t.message.toString())
             }
         }
         client.newWebSocket(request, webSocketListenerCoinPrice)
