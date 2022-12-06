@@ -90,7 +90,7 @@ public class AdminMainActivity extends BaseActivity {
 
     private List<Fragment> getFragment() {
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new AdminFragment1().getInstance());
+        fragmentList.add(new AdminFragment1());
         return fragmentList;
     }
 

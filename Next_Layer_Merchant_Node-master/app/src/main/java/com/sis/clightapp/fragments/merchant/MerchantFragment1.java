@@ -971,7 +971,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 //        Type type = new TypeToken<CreateInvoice>() {
 //        }.getType();
         CreateInvoice createInvoice = gson.fromJson(jsonString, CreateInvoice.class);
-        GlobalState.getInstance().setCreateInvoice(createInvoice);
         showToast(createInvoice.getBolt11());
 
         CreateInvoice temInvoice = createInvoice;
@@ -1012,7 +1011,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
             e.printStackTrace();
         }
         Invoice invoice = gson.fromJson(json, Invoice.class);
-        GlobalState.getInstance().setInvoice(invoice);
         if (invoice != null) {
             if (invoice.getStatus().equals("paid")) {
                 saveGetPaidTransactionInLog(invoice);
@@ -1610,7 +1608,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
             return;
         }
 
-        mPairedDevicesArrayAdapter = new ArrayAdapter<String>(getContext(), R.layout.device_name);
+        mPairedDevicesArrayAdapter = new ArrayAdapter<>(getContext(), R.layout.device_name);
 
         ListView t_blueDeviceListView = blutoothDevicesDialog.findViewById(R.id.blueDeviceListView);
         t_blueDeviceListView.setAdapter(mPairedDevicesArrayAdapter);

@@ -38,17 +38,18 @@ public class AdminReceiveablesListAdapter extends ArrayAdapter<Sale> {
     private Context mContext;
     private List<Sale> salesList = new ArrayList<>();
 
-    public AdminReceiveablesListAdapter(@NonNull Context context, @LayoutRes ArrayList<Sale> list) {
-        super(context, 0 , list);
+    public AdminReceiveablesListAdapter(@NonNull Context context, @LayoutRes List<Sale> list) {
+        super(context, 0, list);
         mContext = context;
         salesList = list;
     }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View listItem = convertView;
-        if(listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.merchant_sale_list_item_layout,parent,false);
+        if (listItem == null)
+            listItem = LayoutInflater.from(mContext).inflate(R.layout.merchant_sale_list_item_layout, parent, false);
 
         Sale currentSale = salesList.get(position);
 
@@ -58,25 +59,27 @@ public class AdminReceiveablesListAdapter extends ArrayAdapter<Sale> {
 
 
         TextView amountsat = (TextView) listItem.findViewById(R.id.amountsatval);
-        amountsat.setText(excatFigure(mSatoshoToBtc(currentSale.getMsatoshi()))+"BTC");
+        amountsat.setText(excatFigure(mSatoshoToBtc(currentSale.getMsatoshi())) + "BTC");
         TextView paidat = (TextView) listItem.findViewById(R.id.paidatval);
         paidat.setText(getDateFromUTCTimestamp(currentSale.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
 
-        TextView description=(TextView) listItem.findViewById(R.id.descriptionval);
+        TextView description = (TextView) listItem.findViewById(R.id.descriptionval);
         description.setText(currentSale.getDescription());
 
 
         //Invoice id=BOlt11 hex string
-        ImageView bolt11invoiceid=(ImageView)listItem.findViewById(R.id.boltinvoiceidval);
-        bolt11invoiceid.setImageBitmap(getBitMapFromHex(currentSale.getBolt11()));
-
+        ImageView bolt11invoiceid = (ImageView) listItem.findViewById(R.id.boltinvoiceidval);
+        if (currentSale.getBolt11() != null)
+            bolt11invoiceid.setImageBitmap(getBitMapFromHex(currentSale.getBolt11()));
         //payment pre image = payhash
-        ImageView paymentpreimage=(ImageView) listItem.findViewById(R.id.paypreimageval);
-        paymentpreimage.setImageBitmap(getBitMapFromHex(currentSale.getPayment_preimage()));
+        ImageView paymentpreimage = (ImageView) listItem.findViewById(R.id.paypreimageval);
+        if (currentSale.getPayment_preimage() != null)
+            paymentpreimage.setImageBitmap(getBitMapFromHex(currentSale.getPayment_preimage()));
 
 
         return listItem;
     }
+
     public String getDateFromUTCTimestamp(long mTimestamp, String mDateFormate) {
         String date = null;
         try {
@@ -97,6 +100,7 @@ public class AdminReceiveablesListAdapter extends ArrayAdapter<Sale> {
         }
         return date;
     }
+
     public Bitmap getBitMapFromHex(String hex) {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         BitMatrix bitMatrix = null;
@@ -107,9 +111,10 @@ public class AdminReceiveablesListAdapter extends ArrayAdapter<Sale> {
         }
         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
         Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-        return  bitmap;
+        return bitmap;
 
     }
+
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
         long factor = (long) Math.pow(10, places);
@@ -117,9 +122,10 @@ public class AdminReceiveablesListAdapter extends ArrayAdapter<Sale> {
         long tmp = Math.round(value);
         return (double) tmp / factor;
     }
+
     public double mSatoshoToBtc(double msatoshhi) {
-        double msatoshiToSatoshi=msatoshhi/AppConstants.satoshiToMSathosi;
-        double satoshiToBtc=msatoshiToSatoshi/AppConstants.btcToSathosi;
+        double msatoshiToSatoshi = msatoshhi / AppConstants.satoshiToMSathosi;
+        double satoshiToBtc = msatoshiToSatoshi / AppConstants.btcToSathosi;
 
         return satoshiToBtc;
     }
@@ -127,6 +133,6 @@ public class AdminReceiveablesListAdapter extends ArrayAdapter<Sale> {
     public String excatFigure(double value) {
         BigDecimal d = new BigDecimal(String.valueOf(value));
 
-        return  d.toPlainString();
+        return d.toPlainString();
     }
 }

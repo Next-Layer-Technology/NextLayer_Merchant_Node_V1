@@ -496,7 +496,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             })
         }
 
-    //ArrayList<StoreClients> list1=list;
     private val nearbyClients: Unit
         get() {
             val accessToken =
@@ -692,15 +691,13 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                             goTo2FaPasswordDialog()
                         } else if (mws.payment_hash != null) {
                             Log.e(TAG, "Hash: " + mws.payment_hash)
-                            requireActivity().runOnUiThread {
-                                globalInvoice = null
-                                globalInvoice = resp
-                                try {
-                                    dialogBoxQRCodePayment()
-                                    listenToFcmBroadcast()
-                                } catch (e: JSONException) {
-                                    e.printStackTrace()
-                                }
+                            globalInvoice = null
+                            globalInvoice = resp
+                            try {
+                                dialogBoxQRCodePayment()
+                                listenToFcmBroadcast()
+                            } catch (e: JSONException) {
+                                e.printStackTrace()
                             }
                         }
                     }
@@ -780,7 +777,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         }
     }
 
-    fun sendReceivables(nodeId: String, receivable: String) {
+    private fun sendReceivables(nodeId: String, receivable: String) {
         lightningService.sendReceivables(nodeId, receivable).observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -852,22 +849,22 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         )
         distributeGetPaidDialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
         distributeGetPaidDialog.setCancelable(false)
-        val titile = distributeGetPaidDialog.findViewById<TextView>(R.id.tv_title)
-        val btnCreatInvoice = distributeGetPaidDialog.findViewById<Button>(R.id.btn_createinvoice)
-        val et_msatoshi = distributeGetPaidDialog.findViewById<EditText>(R.id.et_msatoshi)
-        val et_label = distributeGetPaidDialog.findViewById<EditText>(R.id.et_lable)
-        val et_description = distributeGetPaidDialog.findViewById<EditText>(R.id.et_description)
+        val title = distributeGetPaidDialog.findViewById<TextView>(R.id.tv_title)
+        val btnCreateInvoice = distributeGetPaidDialog.findViewById<Button>(R.id.btn_createinvoice)
+        val etMsatoshi = distributeGetPaidDialog.findViewById<EditText>(R.id.et_msatoshi)
+        val etLabel = distributeGetPaidDialog.findViewById<EditText>(R.id.et_lable)
+        val etDescription = distributeGetPaidDialog.findViewById<EditText>(R.id.et_description)
         val ivBack = distributeGetPaidDialog.findViewById<ImageView>(R.id.iv_back_invoice)
         qRCodeImage = distributeGetPaidDialog.findViewById(R.id.imgQR)
         confirpaymentbtn = distributeGetPaidDialog.findViewById(R.id.confirpaymentbtn)
-        titile.text = "Get Paid"
-        et_label.inputType = InputType.TYPE_NULL
-        et_label.setText(globalLabel)
-        et_msatoshi.setText(globalRMSatoshi)
-        et_description.setText(globalDescription)
+        title.text = "Get Paid"
+        etLabel.inputType = InputType.TYPE_NULL
+        etLabel.setText(globalLabel)
+        etMsatoshi.setText(globalRMSatoshi)
+        etDescription.setText(globalDescription)
         qRCodeImage.visibility = GONE
         confirpaymentbtn.visibility = GONE
-        btnCreatInvoice.visibility = GONE
+        btnCreateInvoice.visibility = GONE
         confirpaymentbtn.visibility = GONE
         if (globalInvoice != null) {
             if (globalInvoice!!.bolt11 != null) {
@@ -916,7 +913,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                                 confirmingProgressDialog.dismiss()
                                 distributeGetPaidDialog.dismiss()
                                 confirmInvoicePamentProgressDialog.dismiss()
-                                android.app.AlertDialog.Builder(requireContext())
+                                AlertDialog.Builder(requireContext())
                                     .setMessage("Payment Not Received")
                                     .setPositiveButton("Retry", null)
                                     .show()
@@ -925,7 +922,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                             confirmingProgressDialog.dismiss()
                             distributeGetPaidDialog.dismiss()
                             confirmInvoicePamentProgressDialog.dismiss()
-                            android.app.AlertDialog.Builder(requireContext())
+                            AlertDialog.Builder(requireContext())
                                 .setMessage("Payment Not Received")
                                 .setPositiveButton("Retry", null)
                                 .show()
@@ -960,16 +957,15 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         //init dialog views
         val ivBack = distributeGetPaidDialog.findViewById<ImageView>(R.id.iv_back_invoice)
         val amount = distributeGetPaidDialog.findViewById<TextView>(R.id.et_amount)
-        val payment_preImage = distributeGetPaidDialog.findViewById<ImageView>(R.id.et_preimage)
-        val paid_at = distributeGetPaidDialog.findViewById<TextView>(R.id.et_paidat)
-        val purchased_Items =
+        val paymentPreimage = distributeGetPaidDialog.findViewById<ImageView>(R.id.et_preimage)
+        val paidAt = distributeGetPaidDialog.findViewById<TextView>(R.id.et_paidat)
+        val purchasedItems =
             distributeGetPaidDialog.findViewById<TextView>(R.id.et_perchaseditems)
-        //  final TextView tax=distributeGetPaidDialog.findViewById(R.id.et_tax);
         val printInvoice = distributeGetPaidDialog.findViewById<Button>(R.id.btn_printinvoice)
         amount.visibility = GONE
-        payment_preImage.visibility = GONE
-        paid_at.visibility = GONE
-        purchased_Items.visibility = GONE
+        paymentPreimage.visibility = GONE
+        paidAt.visibility = GONE
+        purchasedItems.visibility = GONE
         //   tax.setVisibility(View.GONE);
         printInvoice.visibility = GONE
         if (invoice != null) {
@@ -983,9 +979,9 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 invoiceForPrint.mode = "distributeGetPaid"
                 GlobalState.getInstance().invoiceForPrint = invoiceForPrint
                 amount.visibility = VISIBLE
-                payment_preImage.visibility = VISIBLE
-                paid_at.visibility = VISIBLE
-                purchased_Items.visibility = VISIBLE
+                paymentPreimage.visibility = VISIBLE
+                paidAt.visibility = VISIBLE
+                purchasedItems.visibility = VISIBLE
                 //    tax.setVisibility(View.VISIBLE);
                 printInvoice.visibility = VISIBLE
                 val amounttempusd = round(btcToUsd(satoshiToBtc(invoice.msatoshi)), 2)
@@ -994,10 +990,10 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     ${exactFigure(round(btcToUsd(invoice.msatoshi), 9))}BTC
                     ${"$"}${precision.format(round(amounttempusd, 2))}USD
                     """.trimIndent()
-                payment_preImage.setImageBitmap(getBitMapImg(invoice.payment_preimage, 300, 300))
-                paid_at.text =
+                paymentPreimage.setImageBitmap(getBitMapImg(invoice.payment_preimage, 300, 300))
+                paidAt.text =
                     dateStringUTCTimestamp(invoice.paid_at, AppConstants.OUTPUT_DATE_FORMATE)
-                purchased_Items.text = invoice.description
+                purchasedItems.text = invoice.description
             } else {
                 invoiceForPrint.msatoshi = 0.0
                 invoiceForPrint.payment_preimage = "N/A"
@@ -1005,9 +1001,9 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 invoiceForPrint.mode = "distributeGetPaid"
                 GlobalState.getInstance().invoiceForPrint = invoiceForPrint
                 amount.visibility = VISIBLE
-                payment_preImage.visibility = VISIBLE
-                paid_at.visibility = VISIBLE
-                purchased_Items.visibility = VISIBLE
+                paymentPreimage.visibility = VISIBLE
+                paidAt.visibility = VISIBLE
+                purchasedItems.visibility = VISIBLE
                 //    tax.setVisibility(View.VISIBLE);
                 printInvoice.visibility = VISIBLE
                 val precision = DecimalFormat("0.00")
@@ -1015,10 +1011,10 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     ${exactFigure(round(satoshiToBtc(invoice.msatoshi), 9))}BTC
                     ${"$"}${precision.format(round(btcToUsd(satoshiToBtc(invoice.msatoshi)), 2))}USD
                     """.trimIndent()
-                paid_at.text =
+                paidAt.text =
                     dateStringUTCTimestamp(invoice.paid_at, AppConstants.OUTPUT_DATE_FORMATE)
-                payment_preImage.setImageBitmap(getBitMapImg(invoice.payment_preimage, 300, 300))
-                purchased_Items.text = "N/A"
+                paymentPreimage.setImageBitmap(getBitMapImg(invoice.payment_preimage, 300, 300))
+                purchasedItems.text = "N/A"
             }
         }
         printInvoice.setOnClickListener {

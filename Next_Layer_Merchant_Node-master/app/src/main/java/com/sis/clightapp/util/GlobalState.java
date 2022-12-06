@@ -37,17 +37,14 @@ public class GlobalState extends Application {
     private CurrentAllRate currentAllRate;
     private ArrayList<Sale> mMerchantSalesListDataSource;
     private ArrayList<Refund> mMerchantRefundsLIstDataSource;
-    private ArrayList<Sale> mAdminReceiveablesListDataSource;
-    private ArrayList<Refund> mAdminSendblesListDataSource;
+//    private ArrayList<Sale> mAdminReceiveablesListDataSource;
     private boolean isCheckoutBtnPress = false;
     private String lattitude;
     private String longitude;
     private Items deleteItem;
     private int delteItemPosition;
     private String dellSelectedItemUPC;
-    private Invoice invoice;
     public InvoiceForPrint invoiceForPrint;
-    private CreateInvoice createInvoice;
     private UserInfo userInfo;
     private Tax tax;
     private String tcIdUTC;
@@ -142,21 +139,21 @@ public class GlobalState extends Application {
         this.dellSelectedItemUPC = dellSelectedItemUPC;
     }
 
-    public ArrayList<Refund> getmAdminSendblesListDataSource() {
-        return mAdminSendblesListDataSource;
-    }
+//    public ArrayList<Refund> getmAdminSendblesListDataSource() {
+//        return mAdminSendblesListDataSource;
+//    }
+//
+//    public void setmAdminSendblesListDataSource(ArrayList<Refund> mAdminSendblesListDataSource) {
+//        this.mAdminSendblesListDataSource = mAdminSendblesListDataSource;
+//    }
 
-    public void setmAdminSendblesListDataSource(ArrayList<Refund> mAdminSendblesListDataSource) {
-        this.mAdminSendblesListDataSource = mAdminSendblesListDataSource;
-    }
-
-    public ArrayList<Sale> getmAdminReceiveablesListDataSource() {
-        return mAdminReceiveablesListDataSource;
-    }
-
-    public void setmAdminReceiveablesListDataSource(ArrayList<Sale> mAdminReceiveablesListDataSource) {
-        this.mAdminReceiveablesListDataSource = mAdminReceiveablesListDataSource;
-    }
+//    public ArrayList<Sale> getmAdminReceiveablesListDataSource() {
+//        return mAdminReceiveablesListDataSource;
+//    }
+//
+//    public void setmAdminReceiveablesListDataSource(ArrayList<Sale> mAdminReceiveablesListDataSource) {
+//        this.mAdminReceiveablesListDataSource = mAdminReceiveablesListDataSource;
+//    }
 
 
     public ArrayList<Refund> getmMerchantRefundsLIstDataSource() {
@@ -188,26 +185,10 @@ public class GlobalState extends Application {
         this.tax = tax;
     }
 
-    public CreateInvoice getCreateInvoice() {
-        return createInvoice;
-    }
-
-    public void setCreateInvoice(CreateInvoice createInvoice) {
-        this.createInvoice = createInvoice;
-    }
-
     public InvoiceForPrint getInvoiceForPrint() {
         return invoiceForPrint;
     }
 
-
-    public Invoice getInvoice() {
-        return invoice;
-    }
-
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
-    }
 
 
     public void setDelteItemPosition(int delteItemPosition) {

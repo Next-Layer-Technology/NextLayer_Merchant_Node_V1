@@ -38,7 +38,7 @@ public class AdminSendablesListAdapter extends ArrayAdapter<Refund> {
     private Context mContext;
     private List<Refund> refundsList = new ArrayList<>();
 
-    public AdminSendablesListAdapter(@NonNull Context context, @LayoutRes ArrayList<Refund> list) {
+    public AdminSendablesListAdapter(@NonNull Context context, @LayoutRes List<Refund> list) {
         super(context, 0 , list);
         mContext = context;
         refundsList = list;
