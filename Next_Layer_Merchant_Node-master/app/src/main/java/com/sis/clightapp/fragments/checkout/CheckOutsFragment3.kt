@@ -65,7 +65,6 @@ import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import tech.gusavila92.websocketclient.WebSocketClient
 import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.NumberFormat
@@ -77,7 +76,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     lateinit var paywithclightbtn: Button
     lateinit var btnFlashPay: ImageView
     var totalGrandfinal = 0.0
-    private lateinit var webSocketClient: WebSocketClient
     lateinit var checkoutPayItemslistview: ListView
     private lateinit var dialog: Dialog
     private lateinit var invoiceDialog: Dialog
@@ -137,7 +135,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         lightningService = LightningService(requireContext())
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_check_outs3, container, false)
         Log.d(TAG, "onCreateView: CheckOutsFragment3")
         isFundingInfoGetSuccefully = false
@@ -188,59 +185,58 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         checkoutPayItemslistview = view.findViewById(R.id.checkout2listview)
 
         clearout.setOnClickListener {
-            lightningService.listPeers()
-        }
-        lightningService.peersResult.observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    if (it.data != null && it.data.getChannels().isNotEmpty()) {
-                        isReceivableGet = true
-                        var msat = 0.0
-                        var mcap = 0.0
-                        for (tempListFundChanel in it.data.getChannels()) {
-                            if (it.data.isConnected && tempListFundChanel.state.equals(
-                                    "CHANNELD_NORMAL",
-                                    ignoreCase = true
-                                )
-                            ) {
-                                val tempmsat = tempListFundChanel.getReceivable_msatoshi()
-                                    .toString() + ""
-                                val tempmCap =
-                                    tempListFundChanel.getSpendable_msatoshi()
+            lightningService.listPeers().observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        if (it.data != null && it.data.getChannels().isNotEmpty()) {
+                            isReceivableGet = true
+                            var msat = 0.0
+                            var mcap = 0.0
+                            for (tempListFundChanel in it.data.getChannels()) {
+                                if (it.data.isConnected && tempListFundChanel.state.equals(
+                                        "CHANNELD_NORMAL",
+                                        ignoreCase = true
+                                    )
+                                ) {
+                                    val tempmsat = tempListFundChanel.getReceivable_msatoshi()
                                         .toString() + ""
-                                var tmsat = 0.0
-                                var tmcap = 0.0
-                                try {
-                                    tmsat = tempmsat.toDouble()
-                                    tmcap = tempmCap.toDouble()
-                                    val value = BigDecimal(tempmCap)
-                                    val doubleValue = value.toDouble()
-                                    Log.e("StringToDouble:", doubleValue.toString())
-                                } catch (e: Exception) {
+                                    val tempmCap =
+                                        tempListFundChanel.getSpendable_msatoshi()
+                                            .toString() + ""
+                                    var tmsat = 0.0
+                                    var tmcap = 0.0
+                                    try {
+                                        tmsat = tempmsat.toDouble()
+                                        tmcap = tempmCap.toDouble()
+                                        val value = BigDecimal(tempmCap)
+                                        val doubleValue = value.toDouble()
+                                        Log.e("StringToDouble:", doubleValue.toString())
+                                    } catch (e: Exception) {
+                                    }
+                                    msat += tmsat
+                                    mcap += tmcap
                                 }
-                                msat += tmsat
-                                mcap += tmcap
                             }
+                            setReceivableAndCapacity(
+                                msat.toString(),
+                                (mcap + msat).toString(),
+                                true
+                            )
+                        } else {
+                            setReceivableAndCapacity("0", "0", false)
                         }
-                        setReceivableAndCapacity(
-                            msat.toString(),
-                            (mcap + msat).toString(),
-                            true
-                        )
-                    } else {
-                        setReceivableAndCapacity("0", "0", false)
+                    }
+                    Status.ERROR -> {
+                        confirmingProgressDialog.dismiss()
+                        showToast(it.message.toString())
+                    }
+                    Status.LOADING -> {
+                        confirmingProgressDialog.dismiss()
+                        showToast(it.message.toString())
                     }
                 }
-                Status.ERROR -> {
-                    confirmingProgressDialog.dismiss()
-                    showToast(it.message.toString())
-                }
-                Status.LOADING -> {
-                    confirmingProgressDialog.dismiss()
-                    showToast(it.message.toString())
-
-                }
             }
+
         }
         btnFlashPay = view.findViewById(R.id.btnFlashPay)
         btnFlashPay.setOnClickListener { v: View? ->
@@ -683,7 +679,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         globalLabel = label
         globalDescription = description
 
-        lightningService.createInvoiceResult.observe(viewLifecycleOwner) {
+        lightningService.createInvoice(rMSatoshi, label, description).observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
                     confirmingProgressDialog.dismiss()
@@ -719,7 +715,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 }
             }
         }
-        lightningService.createInvoice(rMSatoshi, label, description)
+
     }
 
     private fun listInvoices(label: String) {
@@ -767,126 +763,53 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         clientCoinPrice.dispatcher.executorService.shutdown()
     }
 
-    private fun getRoute(routingnode_id: String, mstoshiReceivable: String) {
-        val clientCoinPrice = OkHttpClient()
-        val requestCoinPrice: Request = Request.Builder().url(gdaxUrl).build()
-        val webSocketListenerCoinPrice: WebSocketListener = object : WebSocketListener() {
-            override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
-                val token =
-                    sharedPreferences.getvalueofaccestoken("accessToken", requireContext())
-                val json =
-                    "{\"token\" : \"$token\", \"commands\" : [\"lightning-cli getroute $routingnode_id $mstoshiReceivable 1\"] }"
-                try {
-                    val obj = JSONObject(json)
-                    Log.d("My App", obj.toString())
-                    webSocket.send(obj.toString())
-                } catch (t: Throwable) {
-                    Log.e("My App", "Could not parse malformed JSON: \"$json\"")
+    private fun getRoute(noteId: String, receivable: String) {
+        lightningService.getRoute(noteId, receivable).observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    confirmingProgressDialog.dismiss()
+                    sendReceivables(noteId, it.data!!)
                 }
-            }
-
-            override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e("TAG", "MESSAGE: $text")
-                requireActivity().runOnUiThread {
-                    val gson = Gson()
-                    val getRouteResponse = gson.fromJson(text, GetRouteResponse::class.java)
-                    val mstoshiReceivableRemoveFee =
-                        (mstoshiReceivable.toLong() - (getRouteResponse.routes[0].msatoshi - mstoshiReceivable.toLong())).toString()
-                    sendReceivables(routingnode_id, mstoshiReceivableRemoveFee)
+                Status.ERROR -> {
+                    confirmingProgressDialog.dismiss()
+                    showToast(it.message.toString())
                 }
-            }
-
-            override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-                Log.e("TAG", "MESSAGE: " + bytes.hex())
-            }
-
-            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-                webSocket.close(1000, null)
-                webSocket.cancel()
-                Log.e("TAG", "CLOSE: $code $reason")
-            }
-
-            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-                //TODO: stuff
-            }
-
-            override fun onFailure(
-                webSocket: WebSocket,
-                t: Throwable,
-                response: okhttp3.Response?
-            ) {
-                requireActivity().runOnUiThread { showToast(response.toString()) }
+                Status.LOADING -> {
+                    confirmingProgressDialog.show()
+                }
             }
         }
-        clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice)
-        clientCoinPrice.dispatcher.executorService.shutdown()
     }
 
-    fun sendReceivables(routingnode_id: String, mstoshiReceivable: String) {
-        val clientCoinPrice = OkHttpClient()
-        val requestCoinPrice: Request = Request.Builder().url(gdaxUrl).build()
-        val webSocketListenerCoinPrice: WebSocketListener = object : WebSocketListener() {
-            override fun onOpen(webSocket: WebSocket, response: okhttp3.Response) {
-                val token =
-                    sharedPreferences.getvalueofaccestoken("accessToken", requireContext())
-                val json =
-                    "{\"token\" : \"$token\", \"commands\" : [\"lightning-cli keysend $routingnode_id $mstoshiReceivable\"] }"
-                try {
-                    val obj = JSONObject(json)
-                    Log.d("My App", obj.toString())
-                    webSocket.send(obj.toString())
-                } catch (t: Throwable) {
-                    Log.e("My App", "Could not parse malformed JSON: \"$json\"")
+    fun sendReceivables(nodeId: String, receivable: String) {
+        lightningService.sendReceivables(nodeId, receivable).observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    confirmingProgressDialog.dismiss()
+                    showToast(it.data!!.msatoshi.toString())
                 }
-            }
-
-            override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e("TAG", "MESSAGE: $text")
-                requireActivity().runOnUiThread {
-                    val gson = Gson()
-                    val sendreceiveableresponse =
-                        gson.fromJson(text, Sendreceiveableresponse::class.java)
-                    showToast(sendreceiveableresponse.msatoshi.toString())
+                Status.ERROR -> {
+                    confirmingProgressDialog.dismiss()
+                    showToast(it.message.toString())
                 }
-            }
-
-            override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-                Log.e("TAG", "MESSAGE: " + bytes.hex())
-            }
-
-            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-                webSocket.close(1000, null)
-                webSocket.cancel()
-                Log.e("TAG", "CLOSE: $code $reason")
-            }
-
-            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {}
-            override fun onFailure(
-                webSocket: WebSocket,
-                t: Throwable,
-                response: okhttp3.Response?
-            ) {
-                requireActivity().runOnUiThread { showToast(response.toString()) }
+                Status.LOADING -> {
+                    confirmingProgressDialog.show()
+                }
             }
         }
-        clientCoinPrice.newWebSocket(requestCoinPrice, webSocketListenerCoinPrice)
-        clientCoinPrice.dispatcher.executorService.shutdown()
     }
 
     private fun listenToFcmBroadcast() {
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
                 try {
-                    Log.d("MyFirebaseMsgService", "BroadcastReceiver")
-                    Log.d("MyFirebaseMsgService", "intent != null")
                     if (intent.extras != null) {
-                        Log.d("MyFirebaseMsgService", "intent.getExtras() != null")
                         requireActivity().runOnUiThread {
                             val notificationModel = Gson().fromJson(
                                 intent.getStringExtra(AppConstants.PAYMENT_INVOICE),
                                 FirebaseNotificationModel::class.java
                             )
-                            Log.d("MyFirebaseMsgService", notificationModel.invoice_label)
+                            Log.d(TAG, notificationModel.invoice_label)
                             fcmReceived()
                         }
                     }
@@ -981,8 +904,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
 
     private fun confirmPayment() {
         globalLabel?.let { it ->
-            lightningService.confirmPayment(it)
-            lightningService.paymentResult.observe(viewLifecycleOwner) {
+            lightningService.confirmPayment(it).observe(viewLifecycleOwner) {
                 when (it.status) {
                     Status.SUCCESS -> {
                         confirmingProgressDialog.dismiss()

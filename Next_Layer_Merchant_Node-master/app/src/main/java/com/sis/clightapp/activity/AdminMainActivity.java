@@ -2,17 +2,15 @@ package com.sis.clightapp.activity;
 
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+
 
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -26,7 +24,6 @@ import com.sis.clightapp.ViewPager.FragmentAdapter;
 import com.sis.clightapp.fragments.admin.AdminFragment1;
 import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.session.MyLogOutService;
-//import com.sis.clightapp.fragments.admin.AdminFragment2;
 
 
 import java.util.ArrayList;
@@ -39,13 +36,6 @@ public class AdminMainActivity extends BaseActivity {
     private CustomViewPager customViewPager;
     int setwidht, setheight;
     ProgressBar progressBar;
-    public ActionBar actionbar;
-    private boolean staus = true;
-    private Handler handler;
-    Runnable my_runnable;
-    DrawerLayout mDrawerLayout;
-    ImageView navImage;
-    Toolbar side_tab;
 
     @Override
     public void onDestroy() {
@@ -62,40 +52,14 @@ public class AdminMainActivity extends BaseActivity {
         setContentView(R.layout.activity_admin_main11);
         progressBar = findViewById(R.id.pb_home);
         initView();
-        //configureToolbar(R.drawable.ic_menu, "");
         setViewPagerAdapter();
         configureNavigationDrawer();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbaradmin);
         ImageView navImg = (ImageView) toolbar.findViewById(R.id.imageView9);
-        navImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DrawerLayout drawerLayouttemp = (DrawerLayout) findViewById(R.id.admindrawer_layout);
-                NavigationView navView = (NavigationView) findViewById(R.id.adminnavigation);
-                drawerLayouttemp.openDrawer(GravityCompat.START);
-//showToast("Clciked");
-            }
+        navImg.setOnClickListener(view -> {
+            DrawerLayout drawerLayouttemp = (DrawerLayout) findViewById(R.id.admindrawer_layout);
+            drawerLayouttemp.openDrawer(GravityCompat.START);
         });
-
-
-//        final Handler ha=new Handler();
-//        ha.postDelayed(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                //call function
-//
-//                if(CheckNetwork.isInternetAvailable(AdminMain11.this))
-//                {
-//
-//                    // getHeartBeat();
-//                }
-//                else {
-//
-//                }
-//                ha.postDelayed(this, 180000);
-//            }
-//        }, 180000);
 
     }
 
@@ -122,42 +86,11 @@ public class AdminMainActivity extends BaseActivity {
 
         customViewPager.setAdapter(pagerAdapter);
         customViewPager.setOffscreenPageLimit(5);
-
-        customViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                // showToast(String.valueOf(position));
-
-                switch (position) {
-                    case 0:
-                        //do nothing
-                        break;
-                    case 1:
-//                        AdminFragment2 adminFragment2 = (AdminFragment2) getSupportFragmentManager().getFragments().get(1);
-//                        adminFragment2.startPage();
-                        break;
-                    default:
-                        return;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
 
     private List<Fragment> getFragment() {
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(new AdminFragment1().getInstance());
-//        fragmentList.add(new AdminFragment2().getInstance());
         return fragmentList;
     }
 
@@ -170,40 +103,12 @@ public class AdminMainActivity extends BaseActivity {
         setheight = height / 2;
         drawerLayout = (DrawerLayout) findViewById(R.id.admindrawer_layout);
         NavigationView navView = (NavigationView) findViewById(R.id.adminnavigation);
-        View headerView = navView.getHeaderView(0);
-
-        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
-            @Override
-            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-
+        navView.setNavigationItemSelectedListener(menuItem -> {
+            int itemId = menuItem.getItemId();
+            if (itemId == R.id.menu_1) {
+                setFragment();
             }
-
-            @Override
-            public void onDrawerOpened(@NonNull View drawerView) {
-
-                //showToast("drwaer open");
-
-            }
-
-            @Override
-            public void onDrawerClosed(@NonNull View drawerView) {
-
-            }
-
-            @Override
-            public void onDrawerStateChanged(int newState) {
-
-            }
-        });
-        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int itemId = menuItem.getItemId();
-                if (itemId == R.id.menu_1) {
-                    setFragment();
-                }
-                return false;
-            }
+            return false;
         });
     }
 

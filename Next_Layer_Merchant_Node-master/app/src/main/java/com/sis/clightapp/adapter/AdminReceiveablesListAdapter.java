@@ -59,10 +59,6 @@ public class AdminReceiveablesListAdapter extends ArrayAdapter<Sale> {
 
         TextView amountsat = (TextView) listItem.findViewById(R.id.amountsatval);
         amountsat.setText(excatFigure(mSatoshoToBtc(currentSale.getMsatoshi()))+"BTC");
-//        TextView amountusd = (TextView) listItem.findViewById(R.id.amountusdval);
-//        amountusd.setText("convert krna he");
-
-
         TextView paidat = (TextView) listItem.findViewById(R.id.paidatval);
         paidat.setText(getDateFromUTCTimestamp(currentSale.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
 
