@@ -21,7 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.google.gson.JsonObject;
 import com.sis.clightapp.Interface.ApiClient2;
 import com.sis.clightapp.Interface.ApiClientBoost;
-import com.sis.clightapp.Interface.ApiPaths;
+import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
 import com.sis.clightapp.util.CustomSharedPreferences;
@@ -180,7 +180,7 @@ public class CheckOutBaseFragment extends Fragment {
     }
 
     private void getSessionToken(String twoFaCode) {
-        Call<get_session_response> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).get_session("merchant", "haiww82uuw92iiwu292isk");
+        Call<get_session_response> call = ApiClientBoost.getRetrofit().create(Webservice.class).get_session("merchant", "haiww82uuw92iiwu292isk");
         call.enqueue(new Callback<get_session_response>() {
             @Override
             public void onResponse(Call<get_session_response> call, Response<get_session_response> response) {

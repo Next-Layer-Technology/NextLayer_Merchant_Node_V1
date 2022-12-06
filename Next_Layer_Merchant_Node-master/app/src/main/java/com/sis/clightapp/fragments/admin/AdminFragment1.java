@@ -42,7 +42,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.sis.clightapp.Interface.ApiClient;
-import com.sis.clightapp.Interface.ApiPaths;
+import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
 import com.sis.clightapp.util.AppConstants;
@@ -1023,7 +1023,7 @@ public class AdminFragment1 extends AdminBaseFragment {
     }
 
     public void add_alpha_transaction(String transaction_label, String status, String transaction_amountBTC, String transaction_amountUSD, String conversion_rate, String msatoshi, String payment_preimage, String payment_hash, String destination, String merchant_id, String transaction_description) {
-        Call<TransactionResp> call = ApiClient.getRetrofit().create(ApiPaths.class).add_alpha_transction(transaction_label, status, transaction_amountBTC, transaction_amountUSD, payment_preimage, payment_hash, conversion_rate, msatoshi, destination, merchant_id, transaction_description);
+        Call<TransactionResp> call = ApiClient.getRetrofit().create(Webservice.class).add_alpha_transction(transaction_label, status, transaction_amountBTC, transaction_amountUSD, payment_preimage, payment_hash, conversion_rate, msatoshi, destination, merchant_id, transaction_description);
         call.enqueue(new Callback<TransactionResp>() {
             @Override
             public void onResponse(@NonNull Call<TransactionResp> call, @NonNull Response<TransactionResp> response) {

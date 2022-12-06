@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.sis.clightapp.Interface.ApiClientBoost;
-import com.sis.clightapp.Interface.ApiPaths;
+import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.R;
 import com.sis.clightapp.util.GlobalState;
 import com.sis.clightapp.fragments.shared.ExitDialogFragment;
@@ -103,7 +103,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void onLoginClicked(String merchant_id, String name, String password, String type) {
-        Call<Loginresponse> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).merchantsuser_login(merchant_id, name, password, type);
+        Call<Loginresponse> call = ApiClientBoost.getRetrofit().create(Webservice.class).merchantsuser_login(merchant_id, name, password, type);
         call.enqueue(new Callback<Loginresponse>() {
             @Override
             public void onResponse(@NonNull Call<Loginresponse> call, @NonNull Response<Loginresponse> response) {

@@ -28,7 +28,7 @@ import com.google.zxing.integration.android.IntentResult;
 import com.sis.clightapp.Interface.ApiClient2;
 import com.sis.clightapp.Interface.ApiClientBoost;
 import com.sis.clightapp.Interface.ApiFCM;
-import com.sis.clightapp.Interface.ApiPaths;
+import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
 import com.sis.clightapp.util.CustomSharedPreferences;
@@ -594,7 +594,7 @@ public class MainEntryActivityNew extends BaseActivity {
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("user_id", id);
         paramObject.addProperty("password", pass);
-        Call<MerchantLoginResp> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).merchant_Loging(paramObject);
+        Call<MerchantLoginResp> call = ApiClientBoost.getRetrofit().create(Webservice.class).merchant_Loging(paramObject);
         call.enqueue(new Callback<MerchantLoginResp>() {
             @Override
             public void onResponse(@NonNull Call<MerchantLoginResp> call, @NonNull Response<MerchantLoginResp> response) {
@@ -894,7 +894,7 @@ public class MainEntryActivityNew extends BaseActivity {
 
 
     private void getExpireToken() {
-        Call<get_session_response> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).get_session("merchant", "haiww82uuw92iiwu292isk");
+        Call<get_session_response> call = ApiClientBoost.getRetrofit().create(Webservice.class).get_session("merchant", "haiww82uuw92iiwu292isk");
         call.enqueue(new Callback<get_session_response>() {
             @Override
             public void onResponse(@NonNull Call<get_session_response> call, @NonNull Response<get_session_response> response) {
@@ -961,7 +961,7 @@ public class MainEntryActivityNew extends BaseActivity {
     }
 
     private void getSessionToken(String accessToken, String twoFaCode) {
-        Call<get_session_response> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).get_session("merchant", "haiww82uuw92iiwu292isk");
+        Call<get_session_response> call = ApiClientBoost.getRetrofit().create(Webservice.class).get_session("merchant", "haiww82uuw92iiwu292isk");
         call.enqueue(new Callback<get_session_response>() {
             @Override
             public void onResponse(@NonNull Call<get_session_response> call, @NonNull Response<get_session_response> response) {

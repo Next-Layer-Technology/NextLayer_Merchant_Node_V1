@@ -41,14 +41,12 @@ import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
-public interface ApiPaths {
+public interface Webservice {
     @GET("ticker")
     Call<CurrentAllRate> getCurrentAllRate();
 
-    //TODO: Trasacntion Add APi
     @FormUrlEncoded
     @POST("add-alpha-transction")
-    //ok
     Call<TransactionResp> add_alpha_transction(
             @Field("transaction_label") String transaction_label,
             @Field("status") String status,
@@ -95,9 +93,9 @@ public interface ApiPaths {
             @Part("username") RequestBody username,
             @Part MultipartBody.Part key
     );
+
     @Multipart
     @POST("thor.php")
-        //ok
     Call<NodeResp> startThorStopNodeServer3(
             @Part("sshkeypw") RequestBody sshkeypass,
             @Part("type") RequestBody type,
@@ -106,11 +104,9 @@ public interface ApiPaths {
             @Part("username") RequestBody username,
             @Part MultipartBody.Part key
     );
+
     @Multipart
     @POST("lightning.php")
-
-         //Call<NodeResp> startLightningServer0(@Body JsonObject params);
-        //ok
     Call<NodeResp> startLightningServer2(
             @Part("sshkeypw") RequestBody sshkeypass,
             @Part("type") RequestBody type,
@@ -131,6 +127,7 @@ public interface ApiPaths {
             @Part("username") RequestBody username,
             @Part MultipartBody.Part key
     );
+
     @Multipart
     @POST("bitcoin.php")
         //ok
@@ -142,6 +139,7 @@ public interface ApiPaths {
             @Part("username") RequestBody username,
             @Part MultipartBody.Part key
     );
+
     @Multipart
     @POST("bitcoin.php")
         //ok
@@ -181,37 +179,21 @@ public interface ApiPaths {
     );
 
 
-    //TODO: Get  Funding Node List  APi
     @GET("get-funding-nodes")
-    //ok
-    Call<FundingNodeListResp> get_Funding_Node_List(
-    );
-    //@FormUrlEncoded
-    @GET("clients") //ok
+    Call<FundingNodeListResp> get_Funding_Node_List();
+
+    @GET("clients")
     Call<ClientListModel> getInStoreClients(
-            @Header("Authorization")String token
+            @Header("Authorization") String token
     );
-    //TODO: Merchant Login APi
+
     @Headers("Accept: application/json")
-    @POST("merchants_login") //ok
-    Call<MerchantLoginResp> merchant_Loging(
-            @Body JsonObject body
-    );
-    //TODO: Merchant Login APi
-   /* @FormUrlEncoded
     @POST("merchants_login")
-    //ok
-    Call<MerchantLoginResp> merchant_Loging(
-            @Field("merchant_id") String merchant_id,
-            //@Field("merchant_name") String merchant_id,
-            @Field("merchant_password") String merchant_password
-    );*/
+    Call<MerchantLoginResp> merchant_Loging(@Body JsonObject body);
 
     @GET("all_merchant_file/{merchant_id}")
-        //ok
     Call<GetItemImageRSP> getAllItemImageMerchant(@Path("merchant_id") int merchant_id);
 
-    // Update Profile
     @Multipart
     @POST("add_mercahnt_file")
     Call<AddImageResp> addItemImageToMerchant(
@@ -238,21 +220,10 @@ public interface ApiPaths {
             @Part("price") RequestBody price,
             @Part MultipartBody.Part photoid);
 
-    //Download SSk Key File
-
-    //On your api interface
-    @POST("path/to/your/resource")
-    @Streaming
-    Response apiRequest();
-
-    // option 2: using a dynamic URL
-    @GET
-    Call<ResponseBody> downloadFileWithDynamicUrlSync(@Url String fileUrl);
 
 
     @FormUrlEncoded
     @POST("merchantsuser_login")
-        //ok
     Call<Loginresponse> merchantsuser_login(
             @Field("merchant_id") String merchant_id,
             @Field("sign_in_username") String sign_in_username,

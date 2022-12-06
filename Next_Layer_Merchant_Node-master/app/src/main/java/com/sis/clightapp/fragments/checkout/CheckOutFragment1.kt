@@ -391,7 +391,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
     private val fundingNodeInfo: Unit
         get() {
             val call = ApiClient.getRetrofit().create(
-                ApiPaths::class.java
+                Webservice::class.java
             )._Funding_Node_List
             call.enqueue(object : Callback<FundingNodeListResp?> {
                 override fun onResponse(
@@ -593,7 +593,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
         paramObject.addProperty("user_id", id)
         paramObject.addProperty("password", pass)
         val call = ApiClientBoost.getRetrofit().create(
-            ApiPaths::class.java
+            Webservice::class.java
         ).merchant_Loging(paramObject)
         call.enqueue(object : Callback<MerchantLoginResp?> {
             override fun onResponse(

@@ -28,7 +28,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.sis.clightapp.Interface.ApiClient;
-import com.sis.clightapp.Interface.ApiPaths;
+import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
 import com.sis.clightapp.util.AppConstants;
@@ -292,7 +292,7 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
 
     //Get Funding Node Info
     private void getFundingNodeInfo() {
-        Call<FundingNodeListResp> call = ApiClient.getRetrofit().create(ApiPaths.class).get_Funding_Node_List();
+        Call<FundingNodeListResp> call = ApiClient.getRetrofit().create(Webservice.class).get_Funding_Node_List();
         call.enqueue(new Callback<FundingNodeListResp>() {
             @Override
             public void onResponse(@NonNull Call<FundingNodeListResp> call, @NonNull Response<FundingNodeListResp> response) {

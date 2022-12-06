@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sis.clightapp.Interface.ApiClientStartStop;
-import com.sis.clightapp.Interface.ApiPaths;
+import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.R;
 import com.sis.clightapp.util.AppConstants;
 import com.sis.clightapp.util.GlobalState;
@@ -338,7 +338,7 @@ public class HomeActivity extends BaseActivity {
             RequestBody photo_id = RequestBody.create(MediaType.parse(""), yourFile);
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.getPath(), photo_id);
 
-            Call call = ApiClientStartStop.getRetrofit().create(ApiPaths.class).startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
+            Call call = ApiClientStartStop.getRetrofit().create(Webservice.class).startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
             call.enqueue(new Callback<NodeResp>() {
                 @Override
                 public void onResponse(Call<NodeResp> call, Response<NodeResp> response) {
@@ -418,7 +418,7 @@ public class HomeActivity extends BaseActivity {
             RequestBody photo_id = RequestBody.create(MediaType.parse(""), yourFile);
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.getPath(), photo_id);
 
-            Call call = ApiClientStartStop.getRetrofit().create(ApiPaths.class).checkLightningNodeServerStatus2(sshkeypass, host2, port2, sshUsername2, itemImageFileMPBody, rpcUserName2, rpcPassword2);
+            Call call = ApiClientStartStop.getRetrofit().create(Webservice.class).checkLightningNodeServerStatus2(sshkeypass, host2, port2, sshUsername2, itemImageFileMPBody, rpcUserName2, rpcPassword2);
             call.enqueue(new Callback<NodeResp>() {
                 @Override
                 public void onResponse(Call<NodeResp> call, Response<NodeResp> response) {
@@ -487,7 +487,7 @@ public class HomeActivity extends BaseActivity {
             MultipartBody.Part itemImageFileMPBody = null;
             RequestBody photo_id = RequestBody.create(MediaType.parse(""), yourFile);
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.getPath(), photo_id);
-            Call call = ApiClientStartStop.getRetrofit().create(ApiPaths.class).checkBitcoinNodeServerStatus2(sshkeypass, host2, port2, sshUsername2, itemImageFileMPBody, rpcUserName2, rpcPassword2);
+            Call call = ApiClientStartStop.getRetrofit().create(Webservice.class).checkBitcoinNodeServerStatus2(sshkeypass, host2, port2, sshUsername2, itemImageFileMPBody, rpcUserName2, rpcPassword2);
             call.enqueue(new Callback<NodeResp>() {
                 @Override
                 public void onResponse(Call<NodeResp> call, Response<NodeResp> response) {
@@ -596,7 +596,7 @@ public class HomeActivity extends BaseActivity {
             MultipartBody.Part itemImageFileMPBody = null;
             RequestBody photo_id = RequestBody.create(MediaType.parse(""), yourFile);
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.getPath(), photo_id);
-            Call call = ApiClientStartStop.getRetrofit().create(ApiPaths.class).startBitcoinServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
+            Call call = ApiClientStartStop.getRetrofit().create(Webservice.class).startBitcoinServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
             call.enqueue(new Callback<NodeResp>() {
                 @Override
                 public void onResponse(Call<NodeResp> call, Response<NodeResp> response) {
@@ -725,7 +725,7 @@ public class HomeActivity extends BaseActivity {
             MultipartBody.Part itemImageFileMPBody = null;
             RequestBody photo_id = RequestBody.create(MediaType.parse(""), yourFile);
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.getPath(), photo_id);
-            Call call = ApiClientStartStop.getRetrofit().create(ApiPaths.class).startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
+            Call call = ApiClientStartStop.getRetrofit().create(Webservice.class).startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
             call.enqueue(new Callback<NodeResp>() {
                 @Override
                 public void onResponse(Call<NodeResp> call, Response<NodeResp> response) {
@@ -841,7 +841,7 @@ public class HomeActivity extends BaseActivity {
             MultipartBody.Part itemImageFileMPBody = null;
             RequestBody photo_id = RequestBody.create(MediaType.parse(""), yourFile);
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.getPath(), photo_id);
-            Call call = ApiClientStartStop.getRetrofit().create(ApiPaths.class).startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
+            Call call = ApiClientStartStop.getRetrofit().create(Webservice.class).startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
             call.enqueue(new Callback<NodeResp>() {
                 @Override
                 public void onResponse(Call<NodeResp> call, Response<NodeResp> response) {
@@ -958,7 +958,7 @@ public class HomeActivity extends BaseActivity {
             RequestBody photo_id = RequestBody.create(MediaType.parse(""), yourFile);
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.getPath(), photo_id);
 
-            Call call = ApiClientStartStop.getRetrofit().create(ApiPaths.class).checkLightningNodeServerStatus2(sshkeypass, host2, port2, sshUsername2, itemImageFileMPBody, rpcUserName2, rpcPassword2);
+            Call call = ApiClientStartStop.getRetrofit().create(Webservice.class).checkLightningNodeServerStatus2(sshkeypass, host2, port2, sshUsername2, itemImageFileMPBody, rpcUserName2, rpcPassword2);
             call.enqueue(new Callback<NodeResp>() {
                 @Override
                 public void onResponse(Call<NodeResp> call, Response<NodeResp> response) {
@@ -1091,7 +1091,7 @@ public class HomeActivity extends BaseActivity {
             RequestBody photo_id = RequestBody.create(MediaType.parse(""), yourFile);
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.getPath(), photo_id);
 
-            Call call = ApiClientStartStop.getRetrofit().create(ApiPaths.class).startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
+            Call call = ApiClientStartStop.getRetrofit().create(Webservice.class).startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody);
             call.enqueue(new Callback<NodeResp>() {
                 @Override
                 public void onResponse(Call<NodeResp> call, Response<NodeResp> response) {
@@ -1217,7 +1217,7 @@ public class HomeActivity extends BaseActivity {
             RequestBody photo_id = RequestBody.create(MediaType.parse(""), yourFile);
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.getPath(), photo_id);
 
-            Call call = ApiClientStartStop.getRetrofit().create(ApiPaths.class).checkLightningNodeServerStatus2(sshkeypass, host2, port2, sshUsername2, itemImageFileMPBody, rpcUserName2, rpcPassword2);
+            Call call = ApiClientStartStop.getRetrofit().create(Webservice.class).checkLightningNodeServerStatus2(sshkeypass, host2, port2, sshUsername2, itemImageFileMPBody, rpcUserName2, rpcPassword2);
             call.enqueue(new Callback<NodeResp>() {
                 @Override
                 public void onResponse(Call<NodeResp> call, Response<NodeResp> response) {

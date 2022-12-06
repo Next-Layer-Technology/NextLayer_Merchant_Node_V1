@@ -1,6 +1,6 @@
 package com.sis.clightapp.util;
 
-import com.sis.clightapp.Interface.ApiPaths;
+import com.sis.clightapp.Interface.Webservice;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Functions2 {
 
-    public ApiPaths retrofitBuilder() {
+    public Webservice retrofitBuilder() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(2, TimeUnit.MINUTES)
                 .readTimeout(30, TimeUnit.SECONDS)
@@ -23,7 +23,7 @@ public class Functions2 {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        return retrofit.create(ApiPaths.class);
+        return retrofit.create(Webservice.class);
     }
 
 

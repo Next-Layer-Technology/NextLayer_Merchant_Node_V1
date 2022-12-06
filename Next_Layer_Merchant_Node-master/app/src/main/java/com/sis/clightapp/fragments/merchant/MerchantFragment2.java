@@ -43,7 +43,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.sis.clightapp.Interface.ApiClient2;
 import com.sis.clightapp.Interface.ApiClientBoost;
-import com.sis.clightapp.Interface.ApiPaths;
+import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.Network.CheckNetwork;
 import com.sis.clightapp.R;
@@ -114,7 +114,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
 
     int intScreenWidth, intScreenHeight;
     double CurrentRateInBTC;
-    ApiPaths fApiPaths;
+    Webservice fWebservice;
     Functions2 functions;
 
     String upcsl = "";
@@ -288,7 +288,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
     }
 
     private void getAllItemsImageList(MerchantData merchantData) {
-        Call<GetItemImageRSP> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).getAllItemImageMerchant(merchantData.getId());
+        Call<GetItemImageRSP> call = ApiClientBoost.getRetrofit().create(Webservice.class).getAllItemImageMerchant(merchantData.getId());
         call.enqueue(new Callback<GetItemImageRSP>() {
             @Override
             public void onResponse(Call<GetItemImageRSP> call, Response<GetItemImageRSP> response) {
@@ -822,7 +822,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
             RequestBody item_price = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(price));
 
             RequestBody upc = RequestBody.create(MediaType.parse("text/plain"), itemUpc2);
-            Call<AddImageResp> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).addItemImageToMerchant(merchant_id, upc, item_name, item_quantity, item_price, itemImageFileMPBody);
+            Call<AddImageResp> call = ApiClientBoost.getRetrofit().create(Webservice.class).addItemImageToMerchant(merchant_id, upc, item_name, item_quantity, item_price, itemImageFileMPBody);
             call.enqueue(new Callback<AddImageResp>() {
                 @Override
                 public void onResponse(Call<AddImageResp> call, Response<AddImageResp> response) {
@@ -884,7 +884,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
         RequestBody item_price = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(price));
 
         RequestBody upc = RequestBody.create(MediaType.parse("text/plain"), itemUpc2);
-        Call<AddImageResp> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).UpdateItemImageToMerchant(merchant_id, upc, item_name, item_quantity, item_price, itemImageFileMPBody);
+        Call<AddImageResp> call = ApiClientBoost.getRetrofit().create(Webservice.class).UpdateItemImageToMerchant(merchant_id, upc, item_name, item_quantity, item_price, itemImageFileMPBody);
         call.enqueue(new Callback<AddImageResp>() {
             @Override
             public void onResponse(Call<AddImageResp> call, Response<AddImageResp> response) {
@@ -935,7 +935,7 @@ public class MerchantFragment2 extends MerchantBaseFragment {
         int id = GlobalState.getInstance().getMerchantData().getId();
         RequestBody merchant_id = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(id));
         RequestBody upc = RequestBody.create(MediaType.parse("text/plain"), itemUpc2);
-        Call<AddImageResp> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).DeleteItemImageToMerchant(merchant_id, upc);
+        Call<AddImageResp> call = ApiClientBoost.getRetrofit().create(Webservice.class).DeleteItemImageToMerchant(merchant_id, upc);
         call.enqueue(new Callback<AddImageResp>() {
             @Override
             public void onResponse(Call<AddImageResp> call, Response<AddImageResp> response) {
@@ -1272,10 +1272,10 @@ public class MerchantFragment2 extends MerchantBaseFragment {
     }
     private void getcurrentrate() {
         functions = new Functions2();
-        fApiPaths = functions.retrofitBuilder();
+        fWebservice = functions.retrofitBuilder();
 
         if (CheckNetwork.isInternetAvailable(getContext())) {
-            final Call<CurrentAllRate> responseCall = fApiPaths.getCurrentAllRate();
+            final Call<CurrentAllRate> responseCall = fWebservice.getCurrentAllRate();
             responseCall.enqueue(new Callback<CurrentAllRate>() {
                 @Override
                 public void onResponse(@NonNull Call<CurrentAllRate> call, @NonNull Response<CurrentAllRate> response) {

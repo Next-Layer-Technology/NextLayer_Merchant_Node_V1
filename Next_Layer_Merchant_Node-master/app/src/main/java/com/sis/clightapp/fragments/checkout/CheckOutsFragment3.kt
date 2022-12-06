@@ -30,7 +30,7 @@ import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.sis.clightapp.Interface.ApiClient
-import com.sis.clightapp.Interface.ApiPaths
+import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.Network.CheckNetwork
 import com.sis.clightapp.R
 import com.sis.clightapp.activity.CheckOutMainActivity
@@ -40,7 +40,6 @@ import com.sis.clightapp.fragments.printing.PrintDialogFragment
 import com.sis.clightapp.model.GsonModel.*
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData
 import com.sis.clightapp.model.REST.FundingNodeListResp
-import com.sis.clightapp.model.REST.GetRouteResponse
 import com.sis.clightapp.model.REST.nearby_clients.NearbyClientResponse
 import com.sis.clightapp.model.REST.nearby_clients.NearbyClients
 import com.sis.clightapp.model.WebsocketResponse.MWSWebSocketResponse
@@ -473,7 +472,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     private val fundingNodeInfo: Unit
         get() {
             val call = ApiClient.getRetrofit().create(
-                ApiPaths::class.java
+                Webservice::class.java
             )._Funding_Node_List
             call.enqueue(object : Callback<FundingNodeListResp?> {
                 override fun onResponse(
@@ -504,7 +503,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 CustomSharedPreferences().getvalue("accessTokenLogin", requireContext())
             val token = "Bearer $accessToken"
             val call = ApiClient.getRetrofit().create(
-                ApiPaths::class.java
+                Webservice::class.java
             ).getNearbyClients(token)
             call.enqueue(object : Callback<NearbyClientResponse?> {
                 override fun onResponse(

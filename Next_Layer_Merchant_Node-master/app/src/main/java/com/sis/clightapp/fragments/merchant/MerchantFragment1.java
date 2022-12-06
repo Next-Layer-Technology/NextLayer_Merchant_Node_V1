@@ -58,7 +58,7 @@ import com.opencsv.CSVWriter;
 import com.sis.clightapp.EmailSdk.GMailSender;
 import com.sis.clightapp.Interface.ApiClient;
 import com.sis.clightapp.Interface.ApiClientBoost;
-import com.sis.clightapp.Interface.ApiPaths;
+import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.Network.CheckNetwork;
 
 import com.sis.clightapp.R;
@@ -155,7 +155,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     MerchantRefundsListAdapter merchantRefundsListAdapter;
     String TAG = "CLighting App";
     double CurrentRateInBTC;
-    ApiPaths fApiPaths;
+    Webservice fWebservice;
     Functions2 functions;
     ProgressDialog createInvoiceProgressDialog, exitFromServerProgressDialog, getSalesListProgressDialog, getRefundsListProgressDialog, confirmInvoicePamentProgressDialog, payOtherProgressDialog, decodePayBolt11ProgressDialog;
     Dialog invoiceDialog, confirmPaymentDialog, commandeerRefundDialog, commandeerRefundDialogstep2, distributeGetPaidDialog;
@@ -486,10 +486,10 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 
     private void getcurrentrate() {
         functions = new Functions2();
-        fApiPaths = functions.retrofitBuilder();
+        fWebservice = functions.retrofitBuilder();
 
         if (CheckNetwork.isInternetAvailable(getContext())) {
-            final Call<CurrentAllRate> responseCall = fApiPaths.getCurrentAllRate();
+            final Call<CurrentAllRate> responseCall = fWebservice.getCurrentAllRate();
             responseCall.enqueue(new Callback<CurrentAllRate>() {
                 @Override
                 public void onResponse(@NonNull Call<CurrentAllRate> call, @NonNull Response<CurrentAllRate> response) {
@@ -1956,7 +1956,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     }
 
     public void add_alpha_transaction(String transaction_label, String status, String transaction_amountBTC, String transaction_amountUSD, String conversion_rate, String msatoshi, String payment_preimage, String payment_hash, String destination, String merchant_id, String transaction_description) {
-        Call<TransactionResp> call = ApiClient.getRetrofit().create(ApiPaths.class).add_alpha_transction(transaction_label, status, transaction_amountBTC, transaction_amountUSD, payment_preimage, payment_hash, conversion_rate, msatoshi, destination, merchant_id, transaction_description);
+        Call<TransactionResp> call = ApiClient.getRetrofit().create(Webservice.class).add_alpha_transction(transaction_label, status, transaction_amountBTC, transaction_amountUSD, payment_preimage, payment_hash, conversion_rate, msatoshi, destination, merchant_id, transaction_description);
         call.enqueue(new Callback<TransactionResp>() {
             @Override
             public void onResponse(Call<TransactionResp> call, Response<TransactionResp> response) {
@@ -2982,7 +2982,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         JsonObject paramObject = new JsonObject();
         paramObject.addProperty("user_id", id);
         paramObject.addProperty("password", pass);
-        Call<MerchantLoginResp> call = ApiClientBoost.getRetrofit().create(ApiPaths.class).merchant_Loging(paramObject);
+        Call<MerchantLoginResp> call = ApiClientBoost.getRetrofit().create(Webservice.class).merchant_Loging(paramObject);
         call.enqueue(new Callback<MerchantLoginResp>() {
             @Override
             public void onResponse(Call<MerchantLoginResp> call, Response<MerchantLoginResp> response) {
