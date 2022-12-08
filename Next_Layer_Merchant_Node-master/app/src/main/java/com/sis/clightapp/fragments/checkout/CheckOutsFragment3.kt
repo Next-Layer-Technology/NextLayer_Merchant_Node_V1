@@ -61,6 +61,7 @@ import okhttp3.WebSocketListener
 import okio.ByteString
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -70,7 +71,7 @@ import java.text.NumberFormat
 import java.util.*
 
 class CheckOutsFragment3 : CheckOutBaseFragment() {
-    private lateinit var lightningService: LightningService
+    private val lightningService: LightningService by inject()
     private val btcService = BTCService()
     lateinit var paywithclightbtn: Button
     lateinit var btnFlashPay: ImageView
@@ -133,7 +134,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        lightningService = LightningService(requireContext())
         val view = inflater.inflate(R.layout.fragment_check_outs3, container, false)
         Log.d(TAG, "onCreateView: CheckOutsFragment3")
         isFundingInfoGetSuccefully = false

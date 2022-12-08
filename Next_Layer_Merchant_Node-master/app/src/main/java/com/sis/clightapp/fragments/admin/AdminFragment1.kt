@@ -40,6 +40,7 @@ import com.sis.clightapp.util.CustomSharedPreferences
 import com.sis.clightapp.util.GlobalState
 import com.sis.clightapp.util.Status
 import org.json.JSONException
+import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,15 +55,14 @@ import java.util.*
  */
 class AdminFragment1 : AdminBaseFragment() {
 
-    private val btcService = BTCService()
-    lateinit var lightningService: LightningService
+    private val btcService: BTCService by inject()
+    private val lightningService: LightningService by inject()
 
     private var INTENT_AUTHENTICATE = 1234
     private var setwidht = 0
     var setheight = 0
     lateinit var distributebutton: Button
     private lateinit var commandeerbutton: Button
-    private lateinit var confirpaymentbtn: Button
     private lateinit var qRCodeImage: ImageView
     private lateinit var receiveableslistview: ListView
     private lateinit var sendeableslistview: ListView
@@ -74,9 +74,6 @@ class AdminFragment1 : AdminBaseFragment() {
 
 
     var sharedPreferences = CustomSharedPreferences()
-    private lateinit var distributeGetPaidDialog: Dialog
-    lateinit var confirmPaymentDialog: Dialog
-    lateinit var commandeerRefundDialog: Dialog
 
 
     var currentTransactionLabel = ""
@@ -96,6 +93,7 @@ class AdminFragment1 : AdminBaseFragment() {
     private var MSATOSHI = 0.0
     var getPaidLABEL = ""
     private var currentTransactionDescription = ""
+    private var distributeGetPaidDialog: Dialog? = null
 
     private var receivables = arrayListOf<Sale>()
     private var sendables = arrayListOf<Refund>()
@@ -113,7 +111,6 @@ class AdminFragment1 : AdminBaseFragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_admin1, container, false)
         setTextWithSpan = view.findViewById(R.id.poweredbyimage)
-        lightningService = LightningService(requireContext())
         val boldStyle = StyleSpan(Typeface.BOLD)
         setTextWithSpan(
             setTextWithSpan,
@@ -152,7 +149,6 @@ class AdminFragment1 : AdminBaseFragment() {
         lp2.width = setwidht
         sendeableslistview.layoutParams = lp2
         gdaxUrl = CustomSharedPreferences().getvalueofMWSCommand("mws_command", context)
-
         btcService.currentBtc.observe(viewLifecycleOwner) {
 
         }
@@ -315,150 +311,120 @@ class AdminFragment1 : AdminBaseFragment() {
         val width = Resources.getSystem().displayMetrics.widthPixels
         val height = Resources.getSystem().displayMetrics.heightPixels
         distributeGetPaidDialog = Dialog(requireContext())
-        distributeGetPaidDialog.setContentView(R.layout.dialoglayoutgetpaiddistribute)
-        distributeGetPaidDialog.window?.setBackgroundDrawable(
-            ColorDrawable(
-                Color.TRANSPARENT
+        distributeGetPaidDialog?.setContentView(R.layout.dialoglayoutgetpaiddistribute)
+        distributeGetPaidDialog?.apply {
+            window?.setBackgroundDrawable(
+                ColorDrawable(
+                    Color.TRANSPARENT
+                )
             )
-        )
-        distributeGetPaidDialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
-        distributeGetPaidDialog.setCancelable(false)
-        confirpaymentbtn = distributeGetPaidDialog.findViewById(R.id.confirpaymentbtn)
-        val etMsatoshi = distributeGetPaidDialog.findViewById<EditText>(R.id.et_msatoshi)
-        val etLabel = distributeGetPaidDialog.findViewById<EditText>(R.id.et_lable)
-        etLabel.inputType = InputType.TYPE_NULL
-        etLabel.setText("sale$unixTimeStamp")
-        getPaidLABEL = etLabel.text.toString()
-        val etDescription = distributeGetPaidDialog.findViewById<EditText>(R.id.et_description)
-        val ivBack = distributeGetPaidDialog.findViewById<ImageView>(R.id.iv_back_invoice)
-        qRCodeImage = distributeGetPaidDialog.findViewById(R.id.imgQR)
-        val btnCreatInvoice = distributeGetPaidDialog.findViewById<Button>(R.id.btn_createinvoice)
-        qRCodeImage.visibility = View.GONE
-        ivBack.setOnClickListener { distributeGetPaidDialog.dismiss() }
-        btnCreatInvoice.setOnClickListener {
-            val msatoshi = etMsatoshi.text.toString()
-            val label = etLabel.text.toString()
-            val description = etDescription.text.toString()
-            if (msatoshi.isEmpty()) {
-                showToast("Amount" + getString(R.string.empty))
-                return@setOnClickListener
-            }
-            if (label.isEmpty()) {
-                showToast("Label" + getString(R.string.empty))
-                return@setOnClickListener
-            }
-            if (description.isEmpty()) {
-                showToast("Description" + getString(R.string.empty))
-                return@setOnClickListener
-            }
-            currentTransactionLabel = label
-            AMOUNT_USD = msatoshi.toDouble()
-            var priceInBTC = 1 / GlobalState.getInstance().channel_btcResponseData.price
-            priceInBTC *= msatoshi.toDouble()
-            AMOUNT_BTC = priceInBTC
-            var amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi
-            MSATOSHI = amountInMsatoshi
-            amountInMsatoshi *= AppConstants.satoshiToMSathosi
-            CONVERSION_RATE = AMOUNT_USD / AMOUNT_BTC
-            val formatter: NumberFormat = DecimalFormat("#0")
-            val rMSatoshi = formatter.format(amountInMsatoshi)
-            distributeDescription = description
+            window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+            setCancelable(false)
+            val etMsatoshi = findViewById<EditText>(R.id.et_msatoshi)
+            val etLabel = findViewById<EditText>(R.id.et_lable)
+            etLabel.inputType = InputType.TYPE_NULL
+            etLabel.setText("sale$unixTimeStamp")
+            getPaidLABEL = etLabel.text.toString()
+            val etDescription = findViewById<EditText>(R.id.et_description)
+            val ivBack = findViewById<ImageView>(R.id.iv_back_invoice)
+            qRCodeImage = findViewById(R.id.imgQR)
+            val btnCreatInvoice = findViewById<Button>(R.id.btn_createinvoice)
+            qRCodeImage.visibility = View.GONE
+            ivBack.setOnClickListener { dismiss() }
+            btnCreatInvoice.setOnClickListener {
+                if (GlobalState.getInstance().channel_btcResponseData == null) {
+                    showToast("Btc rate not available")
+                    return@setOnClickListener
+                }
+                val msatoshi = etMsatoshi.text.toString()
+                val label = etLabel.text.toString()
+                val description = etDescription.text.toString()
+                if (msatoshi.isEmpty()) {
+                    showToast("Amount" + getString(R.string.empty))
+                    return@setOnClickListener
+                }
+                if (label.isEmpty()) {
+                    showToast("Label" + getString(R.string.empty))
+                    return@setOnClickListener
+                }
+                if (description.isEmpty()) {
+                    showToast("Description" + getString(R.string.empty))
+                    return@setOnClickListener
+                }
+                currentTransactionLabel = label
+                AMOUNT_USD = msatoshi.toDouble()
+                var priceInBTC = 1 / GlobalState.getInstance().channel_btcResponseData.price
+                priceInBTC *= msatoshi.toDouble()
+                AMOUNT_BTC = priceInBTC
+                var amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi
+                MSATOSHI = amountInMsatoshi
+                amountInMsatoshi *= AppConstants.satoshiToMSathosi
+                CONVERSION_RATE = AMOUNT_USD / AMOUNT_BTC
+                val formatter: NumberFormat = DecimalFormat("#0")
+                val rMSatoshi = formatter.format(amountInMsatoshi)
+                distributeDescription = description
 
-            lightningService.createInvoice(rMSatoshi, label, description)
-                .observe(viewLifecycleOwner) {
-                    when (it.status) {
-                        Status.SUCCESS -> {
-                            this.invoiceLabel = label
-                            progressDialog.dismiss()
-                            showToast(it.data?.bolt11)
-                            if (it.data?.bolt11 != null) {
-                                val temHax = it.data.bolt11
-                                val multiFormatWriter = MultiFormatWriter()
-                                try {
-                                    val bitMatrix = multiFormatWriter.encode(
-                                        temHax,
-                                        BarcodeFormat.QR_CODE,
-                                        600,
-                                        600
-                                    )
-                                    val barcodeEncoder = BarcodeEncoder()
-                                    val bitmap = barcodeEncoder.createBitmap(bitMatrix)
-                                    qRCodeImage.setImageBitmap(bitmap)
-                                    qRCodeImage.visibility = View.VISIBLE
-                                    confirpaymentbtn.visibility = View.VISIBLE
-                                } catch (e: WriterException) {
-                                    e.printStackTrace()
+                lightningService.createInvoice(rMSatoshi, label, description)
+                    .observe(viewLifecycleOwner) {
+                        when (it.status) {
+                            Status.SUCCESS -> {
+                                invoiceLabel = label
+                                progressDialog.dismiss()
+                                showToast(it.data?.bolt11)
+                                if (it.data?.bolt11 != null) {
+                                    val temHax = it.data.bolt11
+                                    val multiFormatWriter = MultiFormatWriter()
+                                    try {
+                                        val bitMatrix = multiFormatWriter.encode(
+                                            temHax,
+                                            BarcodeFormat.QR_CODE,
+                                            600,
+                                            600
+                                        )
+                                        val barcodeEncoder = BarcodeEncoder()
+                                        val bitmap = barcodeEncoder.createBitmap(bitMatrix)
+                                        qRCodeImage.setImageBitmap(bitmap)
+                                        qRCodeImage.visibility = View.VISIBLE
+                                        listenToFcmBroadcast()
+                                    } catch (e: WriterException) {
+                                        e.printStackTrace()
+                                    }
                                 }
                             }
-                        }
-                        Status.ERROR -> {
-                            progressDialog.dismiss()
-                            showToast(it.message)
-                        }
-                        Status.LOADING -> {
-                            progressDialog.show()
-                        }
-                    }
-                }
-        }
-        confirpaymentbtn.setOnClickListener {
-            lightningService.confirmPayment(currentTransactionLabel).observe(viewLifecycleOwner) {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        progressDialog.dismiss()
-                        if (it.data != null) {
-                            if (it.data.status == "paid") {
-                                saveGetPaidTransactionInLog(it.data)
-                                distributeGetPaidDialog.dismiss()
-                                dialogBoxForConfirmPaymentInvoice(it.data)
-                            } else {
-                                distributeGetPaidDialog.dismiss()
-                                AlertDialog.Builder(context)
-                                    .setMessage("Payment Not Recieved")
-                                    .setPositiveButton("Retry", null)
-                                    .show()
+                            Status.ERROR -> {
+                                progressDialog.dismiss()
+                                showToast(it.message)
                             }
-                        } else {
-                            distributeGetPaidDialog.dismiss()
-                            AlertDialog.Builder(context)
-                                .setMessage("Payment Not Recieved")
-                                .setPositiveButton("Retry", null)
-                                .show()
+                            Status.LOADING -> {
+                                progressDialog.show()
+                            }
                         }
                     }
-                    Status.ERROR -> {
-                        progressDialog.dismiss()
-                        showToast(it.message)
-                    }
-                    Status.LOADING -> {
-                        progressDialog.show();
-                    }
-                }
             }
+            show()
         }
-        distributeGetPaidDialog.show()
     }
 
     private fun dialogBoxForConfirmPaymentInvoice(invoice: Invoice) {
         val width = Resources.getSystem().displayMetrics.widthPixels
         val height = Resources.getSystem().displayMetrics.heightPixels
-        distributeGetPaidDialog = Dialog(requireContext())
-        distributeGetPaidDialog.setContentView(R.layout.customlayoutofconfirmpaymentdialogformerchantadmin)
-        distributeGetPaidDialog.window?.setBackgroundDrawable(
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.customlayoutofconfirmpaymentdialogformerchantadmin)
+        dialog.window?.setBackgroundDrawable(
             ColorDrawable(
                 Color.TRANSPARENT
             )
         )
-        distributeGetPaidDialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
-        distributeGetPaidDialog.setCancelable(false)
+        dialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+        dialog.setCancelable(false)
         //init dialog views
-        val ivBack = distributeGetPaidDialog.findViewById<ImageView>(R.id.iv_back_invoice)
-        val amount = distributeGetPaidDialog.findViewById<TextView>(R.id.et_amount)
-        val paymentPreImage = distributeGetPaidDialog.findViewById<ImageView>(R.id.et_preimage)
-        val paidAt = distributeGetPaidDialog.findViewById<TextView>(R.id.et_paidat)
+        val ivBack = dialog.findViewById<ImageView>(R.id.iv_back_invoice)
+        val amount = dialog.findViewById<TextView>(R.id.et_amount)
+        val paymentPreImage = dialog.findViewById<ImageView>(R.id.et_preimage)
+        val paidAt = dialog.findViewById<TextView>(R.id.et_paidat)
         val purchasedItems =
-            distributeGetPaidDialog.findViewById<TextView>(R.id.et_perchaseditems)
-        val printInvoice = distributeGetPaidDialog.findViewById<Button>(R.id.btn_printinvoice)
+            dialog.findViewById<TextView>(R.id.et_perchaseditems)
+        val printInvoice = dialog.findViewById<Button>(R.id.btn_printinvoice)
         amount.visibility = View.GONE
         paymentPreImage.visibility = View.GONE
         paidAt.visibility = View.GONE
@@ -518,7 +484,6 @@ class AdminFragment1 : AdminBaseFragment() {
         }
         printInvoice.setOnClickListener {
             loadObservers()
-            confirmPaymentDialog.dismiss()
             if (invoice.status == "paid") {
                 val invoiceForPrint = GlobalState.getInstance().getInvoiceForPrint()
                 if (invoiceForPrint != null) {
@@ -528,16 +493,16 @@ class AdminFragment1 : AdminBaseFragment() {
         }
         ivBack.setOnClickListener {
             loadObservers()
-            distributeGetPaidDialog.dismiss()
+            dialog.dismiss()
         }
-        distributeGetPaidDialog.show()
+        dialog.show()
     }
 
     @SuppressLint("SetTextI18n")
     private fun dialogBoxForRefundCommandeer() {
         val width = Resources.getSystem().displayMetrics.widthPixels
         val height = Resources.getSystem().displayMetrics.heightPixels
-        commandeerRefundDialog = Dialog(requireContext())
+        val commandeerRefundDialog = Dialog(requireContext())
         commandeerRefundDialog.setContentView(R.layout.dialoglayoutrefundcommandeer)
         commandeerRefundDialog.window?.setBackgroundDrawable(
             ColorDrawable(
@@ -584,7 +549,6 @@ class AdminFragment1 : AdminBaseFragment() {
                     if (result.contents == null) {
                         showToast("Result Not Found")
                     } else {
-                        commandeerRefundDialog.dismiss()
                         bolt11fromqr = result.contents
                         refundDecodePay(bolt11fromqr)
                     }
@@ -642,7 +606,7 @@ class AdminFragment1 : AdminBaseFragment() {
 
     }
 
-    fun addAlphaTransaction(
+    private fun addAlphaTransaction(
         transaction_label: String?,
         status: String?,
         transaction_amountBTC: String?,
@@ -719,14 +683,12 @@ class AdminFragment1 : AdminBaseFragment() {
             override fun onReceive(context: Context, intent: Intent) {
                 try {
                     if (intent.extras != null) {
-                        requireActivity().runOnUiThread {
-                            val notificationModel = Gson().fromJson(
-                                intent.getStringExtra(AppConstants.PAYMENT_INVOICE),
-                                FirebaseNotificationModel::class.java
-                            )
-                            Log.d(TAG, notificationModel.invoice_label)
-                            fcmReceived()
-                        }
+                        val notificationModel = Gson().fromJson(
+                            intent.getStringExtra(AppConstants.PAYMENT_INVOICE),
+                            FirebaseNotificationModel::class.java
+                        )
+                        Log.d(TAG, notificationModel.invoice_label)
+                        fcmReceived()
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -740,9 +702,7 @@ class AdminFragment1 : AdminBaseFragment() {
     }
 
     private fun fcmReceived() {
-        if (distributeGetPaidDialog.isShowing) {
-            distributeGetPaidDialog.dismiss()
-        }
+        distributeGetPaidDialog?.dismiss()
         confirmPayment()
         if (fcmBroadcastReceiver != null) {
             requireContext().unregisterReceiver(fcmBroadcastReceiver)
@@ -759,10 +719,8 @@ class AdminFragment1 : AdminBaseFragment() {
                         if (it.data != null) {
                             if (it.data.status == "paid") {
                                 dialogBoxForConfirmPaymentInvoice(it.data)
-                                listenToFcmBroadcast()
                                 confirmingProgressDialog.dismiss()
                             } else {
-                                distributeGetPaidDialog.dismiss()
                                 AlertDialog.Builder(requireContext())
                                     .setMessage("Payment Not Received")
                                     .setPositiveButton("Retry", null)
@@ -770,7 +728,6 @@ class AdminFragment1 : AdminBaseFragment() {
                             }
                         } else {
                             confirmingProgressDialog.dismiss()
-                            distributeGetPaidDialog.dismiss()
                             AlertDialog.Builder(requireContext())
                                 .setMessage("Payment Not Received")
                                 .setPositiveButton("Retry", null)

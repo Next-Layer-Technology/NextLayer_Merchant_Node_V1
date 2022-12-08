@@ -3,7 +3,6 @@ package com.sis.clightapp.services
 import android.content.Context
 import android.preference.PreferenceManager
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.sis.clightapp.model.GsonModel.Invoice
@@ -13,19 +12,15 @@ import com.sis.clightapp.model.Invoices.InvoicesResponse
 import com.sis.clightapp.model.REST.GetRouteResponse
 import com.sis.clightapp.model.RefundsData.RefundResponse
 import com.sis.clightapp.model.WebsocketResponse.MWSWebSocketResponse
-import com.sis.clightapp.util.GlobalState
 import com.sis.clightapp.util.Resource
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
-import kotlin.String as String
 
 class LightningService(val context: Context) {
     private var gdaxUrl: String
     private val gson = Gson()
-
     private var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
     private var client = OkHttpClient()
 
     init {
