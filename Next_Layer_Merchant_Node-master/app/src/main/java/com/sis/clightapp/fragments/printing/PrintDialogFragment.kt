@@ -52,6 +52,7 @@ class PrintDialogFragment : DialogFragment() {
     private val uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     private lateinit var printingProgressBar: ProgressDialog
     private lateinit var btDevicesDialog: Dialog
+    private val permissions: MutableList<String> = ArrayList()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         printingProgressBar = ProgressDialog(requireContext())
@@ -70,7 +71,6 @@ class PrintDialogFragment : DialogFragment() {
         scanDevices.setOnClickListener { initializeBluetooth() }
         ivBack.setOnClickListener { btDevicesDialog.dismiss() }
 
-        val permissions: MutableList<String> = ArrayList()
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
         permissions.add(Manifest.permission.BLUETOOTH)
         permissions.add(Manifest.permission.BLUETOOTH_ADMIN)
@@ -78,6 +78,7 @@ class PrintDialogFragment : DialogFragment() {
             permissions.add(Manifest.permission.BLUETOOTH_CONNECT)
             permissions.add(Manifest.permission.BLUETOOTH_SCAN)
         }
+
         ActivityCompat.requestPermissions(requireActivity(), permissions.toTypedArray(), 1)
         return btDevicesDialog
     }
@@ -95,12 +96,12 @@ class PrintDialogFragment : DialogFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun initializeBluetooth() {
-        if (ActivityCompat.checkSelfPermission(
+        if (Build.VERSION.SDK_INT >=31 && ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.BLUETOOTH_SCAN
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            return
+            ActivityCompat.requestPermissions(requireActivity(), permissions.toTypedArray(), 1)
         }
         val dialog: ProgressBar = btDevicesDialog.findViewById(R.id.printerProgress)
         dialog.visibility = View.VISIBLE
@@ -110,7 +111,6 @@ class PrintDialogFragment : DialogFragment() {
             startActivityForResult(enableBtIntent, requestCode)
             return
         }
-
         bluetoothAdapter.startDiscovery()
         val mPairedDevicesArrayAdapter =
             object : ArrayAdapter<BluetoothDevice>(requireContext(), R.layout.device_name) {
