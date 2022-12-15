@@ -89,10 +89,10 @@ public class MainEntryActivityNew extends BaseActivity {
             dialog_LockCheck();
         }
         register_btn.setOnClickListener(v -> {
-            if (sharedPreferences.getislogin("registered", bContext)) {
+            if (sharedPreferences.getislogin("registered", this)) {
                 showToast("You are registered already");
             } else {
-                if (sharedPreferences.getissavecredential("credential", bContext)) {
+                if (sharedPreferences.getissavecredential("credential", this)) {
                     dialogB();
                 } else {
                     dialogA();
@@ -102,7 +102,7 @@ public class MainEntryActivityNew extends BaseActivity {
             }
         });
         findViewById(R.id.signin_btn).setOnClickListener(v -> {
-            if (sharedPreferences.getislogin("registered", bContext)) {
+            if (sharedPreferences.getislogin("registered", this)) {
                 isLoginMerchant = true;
                 GlobalState.getInstance().setLogin(isLoginMerchant);
                 Intent i = keyguardManager.createConfirmDeviceCredentialIntent("Authentication required", "password");
@@ -190,14 +190,14 @@ public class MainEntryActivityNew extends BaseActivity {
 
                     String ip_Address = et_ipaddress.getText().toString();
                     if (!ip_Address.isEmpty()) {
-                        sharedPreferences.setvalueofipaddress(ip_Address, "ip", bContext);
+                        sharedPreferences.setvalueofipaddress(ip_Address, "ip", this);
                     }
 
 
-                    if (sharedPreferences.getvalueofRefresh("refreshToken", bContext).equals("")) {
+                    if (sharedPreferences.getvalueofRefresh("refreshToken", this).equals("")) {
                         if (memberToken.isEmpty()) {
                             showToast("Enter refresh Token");
-                        } else if (sharedPreferences.getvalueofipaddress("ip", bContext).equals("")) {
+                        } else if (sharedPreferences.getvalueofipaddress("ip", this).equals("")) {
                             showToast("Enter Ip Adress");
                         } else {
                             try {
@@ -209,11 +209,11 @@ public class MainEntryActivityNew extends BaseActivity {
 
                         }
                     } else {
-                        if (sharedPreferences.getvalueofipaddress("ip", bContext).equals("")) {
+                        if (sharedPreferences.getvalueofipaddress("ip", this).equals("")) {
                             showToast("Enter Ip Adress");
                         } else {
                             try {
-                                getOTP(sharedPreferences.getvalueofRefresh("refreshToken", bContext));
+                                getOTP(sharedPreferences.getvalueofRefresh("refreshToken", this));
                                 dialogBBuilder.dismiss();
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -240,15 +240,15 @@ public class MainEntryActivityNew extends BaseActivity {
                     WebSocketResponse webSocketResponse = response.body();
 
                     if (webSocketResponse.getCode() == 700) {
-                        sharedPreferences.setvalueofOtpSecret(webSocketResponse.getToken(), "otpsecret", bContext);
-                        sharedPreferences.setvalueofRefresh(refresh, "refreshToken", bContext);
+                        sharedPreferences.setvalueofOtpSecret(webSocketResponse.getToken(), "otpsecret", MainEntryActivityNew.this);
+                        sharedPreferences.setvalueofRefresh(refresh, "refreshToken", MainEntryActivityNew.this);
                         if (!webSocketResponse.getToken().isEmpty()) {
-                            sharedPreferences.setvalueofRefresh(refresh, "refreshToken", bContext);
+                            sharedPreferences.setvalueofRefresh(refresh, "refreshToken", MainEntryActivityNew.this);
                             dialog_Otp_Code(webSocketResponse.getToken());
                         }
 
                     } else if (webSocketResponse.getCode() == 701) {
-                        sharedPreferences.setvalueofRefresh(refresh, "refreshToken", bContext);
+                        sharedPreferences.setvalueofRefresh(refresh, "refreshToken", MainEntryActivityNew.this);
                         dialogC();
                         showToast(webSocketResponse.getMessage());
                     } else if (webSocketResponse.getCode() == 702) {
@@ -308,11 +308,11 @@ public class MainEntryActivityNew extends BaseActivity {
 
                     if (webSocketOTPresponse.getCode() == 700) {
                         code = 0;
-                        sharedPreferences.setislogin(true, "registered", bContext);
+                        sharedPreferences.setislogin(true, "registered", MainEntryActivityNew.this);
 //                            showToast(webSocketOTPresponse.getToken());
                         if (webSocketOTPresponse.getToken().equals("")) {
                         } else {
-                            sharedPreferences.setvalueofaccestoken(webSocketOTPresponse.getToken(), "accessToken", bContext);
+                            sharedPreferences.setvalueofaccestoken(webSocketOTPresponse.getToken(), "accessToken", MainEntryActivityNew.this);
                             createWebSocketClient();
                             String isTokenSet = new CustomSharedPreferences().getvalue("IsTokenSet", MainEntryActivityNew.this);
                             if (isTokenSet.equals("1")) {
@@ -402,7 +402,7 @@ public class MainEntryActivityNew extends BaseActivity {
         register_action = dialogView.findViewById(R.id.register_action);
         cancel_action.setOnClickListener(v -> dialogBuilder.dismiss());
         register_action.setOnClickListener(v -> {
-            if (sharedPreferences.getissavecredential("credential", bContext)) {
+            if (sharedPreferences.getissavecredential("credential", this)) {
                 dialogB();
             } else {
                 dialogA();
@@ -453,7 +453,7 @@ public class MainEntryActivityNew extends BaseActivity {
         et_ipaddress = dialogView.findViewById(R.id.ip_address);
         dialogBBuilder.setCanceledOnTouchOutside(false);
         et_email.setVisibility(View.VISIBLE);
-        if (sharedPreferences.getvalueofipaddress("ip", bContext).equals("")) {
+        if (sharedPreferences.getvalueofipaddress("ip", this).equals("")) {
             et_ipaddress.setVisibility(View.VISIBLE);
         } else {
             et_ipaddress.setVisibility(View.GONE);
@@ -468,12 +468,12 @@ public class MainEntryActivityNew extends BaseActivity {
             String refresh = et_email.getText().toString();
             String ip_Address = et_ipaddress.getText().toString();
             if (!ip_Address.isEmpty()) {
-                sharedPreferences.setvalueofipaddress(ip_Address, "ip", bContext);
+                sharedPreferences.setvalueofipaddress(ip_Address, "ip", this);
             }
-            if (sharedPreferences.getvalueofRefresh("refreshToken", bContext).equals("")) {
+            if (sharedPreferences.getvalueofRefresh("refreshToken", this).equals("")) {
                 if (refresh.isEmpty()) {
                     showToast("Enter refresh Token");
-                } else if (sharedPreferences.getvalueofipaddress("ip", bContext).equals("")) {
+                } else if (sharedPreferences.getvalueofipaddress("ip", this).equals("")) {
                     showToast("Enter Ip Adress");
                 } else {
                     try {
@@ -484,11 +484,11 @@ public class MainEntryActivityNew extends BaseActivity {
                     }
                 }
             } else {
-                if (sharedPreferences.getvalueofipaddress("ip", bContext).equals("")) {
+                if (sharedPreferences.getvalueofipaddress("ip", this).equals("")) {
                     showToast("Enter Ip Adress");
                 } else {
                     try {
-                        getOTP(sharedPreferences.getvalueofRefresh("refreshToken", bContext));
+                        getOTP(sharedPreferences.getvalueofRefresh("refreshToken", this));
                         dialogBBuilder.dismiss();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -502,7 +502,7 @@ public class MainEntryActivityNew extends BaseActivity {
     }
 
     public void dialogC() {
-        final android.app.AlertDialog dialogBuilder = new android.app.AlertDialog.Builder(bContext, R.style.AlertDialog).create();
+        final android.app.AlertDialog dialogBuilder = new android.app.AlertDialog.Builder(this, R.style.AlertDialog).create();
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.registerpopup_c, null);
         dialogBuilder.setView(dialogView);
@@ -513,7 +513,7 @@ public class MainEntryActivityNew extends BaseActivity {
         Button confirm = dialogView.findViewById(R.id.confirm2fa);
         confirm.setOnClickListener(v -> {
             String code2faConfirm = codef2.getText().toString();
-            getToken(sharedPreferences.getvalueofRefresh("refreshToken", bContext), code2faConfirm);
+            getToken(sharedPreferences.getvalueofRefresh("refreshToken", this), code2faConfirm);
             dialogBuilder.dismiss();
         });
         dialogBuilder.setView(dialogView);
@@ -551,7 +551,7 @@ public class MainEntryActivityNew extends BaseActivity {
 
     @SuppressLint("SetTextI18n")
     public void dialog_GetInfo(final int val, String message) {
-        final AlertDialog dialogBuilder = new AlertDialog.Builder(bContext, R.style.AlertDialog).create();
+        final AlertDialog dialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialog).create();
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.getinfo_popup, null);
         dialogBuilder.setView(dialogView);
@@ -627,18 +627,18 @@ public class MainEntryActivityNew extends BaseActivity {
 
                             String mwsCommad = "ws://" + merchantData.getContainer_address() + ":" + merchantData.getMws_port() + "/SendCommands";
                             new CustomSharedPreferences().setvalueofMWSCommand(mwsCommad, "mws_command", MainEntryActivityNew.this);
-                            sharedPreferences.setvalueofipaddress(merchantData.getContainer_address() + ":" + merchantData.getMws_port(), "ip", bContext);
+                            sharedPreferences.setvalueofipaddress(merchantData.getContainer_address() + ":" + merchantData.getMws_port(), "ip", MainEntryActivityNew.this);
 
                             //private final String gdaxUrl = "ws://73.36.65.41:8095/SendCommands";
 
                             //gotoTestCase(merchantData);
-                            if (sharedPreferences.getislogin("registered", bContext)) {
+                            if (sharedPreferences.getislogin("registered", MainEntryActivityNew.this)) {
 
                             } else {
                                 if (isLoginMerchant) {
-                                    if (sharedPreferences.getvalueofSocketCode("socketcode", bContext) == 724) {
+                                    if (sharedPreferences.getvalueofSocketCode("socketcode", MainEntryActivityNew.this) == 724) {
                                         dialogC();
-                                    } else if (sharedPreferences.getvalueofSocketCode("socketcode", bContext) == 722) {
+                                    } else if (sharedPreferences.getvalueofSocketCode("socketcode", MainEntryActivityNew.this) == 722) {
                                         dialogC();
                                     } else {
                                         createWebSocketClient();
@@ -676,7 +676,7 @@ public class MainEntryActivityNew extends BaseActivity {
     @SuppressLint("SetTextI18n")
     private void goAlertDialogwithOneBTn(final String alertMessage) {
         final Dialog goAlertDialogwithOneBTnDialog;
-        goAlertDialogwithOneBTnDialog = new Dialog(bContext);
+        goAlertDialogwithOneBTnDialog = new Dialog(this);
         goAlertDialogwithOneBTnDialog.setContentView(R.layout.alert_dialog_layout);
         Objects.requireNonNull(goAlertDialogwithOneBTnDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         goAlertDialogwithOneBTnDialog.setCancelable(false);
@@ -693,7 +693,7 @@ public class MainEntryActivityNew extends BaseActivity {
         yesbtn.setOnClickListener(v -> {
             goAlertDialogwithOneBTnDialog.dismiss();
             if (alertMessage.equals("Invalid Merchant ID!")) {
-                if (!sharedPreferences.getissavecredential("credential", bContext)) {
+                if (!sharedPreferences.getissavecredential("credential", this)) {
                     dialogA();
                 }
             }
@@ -708,7 +708,7 @@ public class MainEntryActivityNew extends BaseActivity {
         URI uri;
         try {
             // Connect to local host
-            uri = new URI("ws://" + sharedPreferences.getvalueofipaddress("ip", bContext) + "/SendCommands");
+            uri = new URI("ws://" + sharedPreferences.getvalueofipaddress("ip", this) + "/SendCommands");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
@@ -718,7 +718,7 @@ public class MainEntryActivityNew extends BaseActivity {
         webSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen() {
-                String token = sharedPreferences.getvalueofaccestoken("accessToken", bContext);
+                String token = sharedPreferences.getvalueofaccestoken("accessToken", MainEntryActivityNew.this);
                 String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"ls\", \"ls -l\"] }";
                 try {
                     JSONObject obj = new JSONObject(json);
@@ -733,14 +733,14 @@ public class MainEntryActivityNew extends BaseActivity {
             @Override
             public void onTextReceived(String s) {
                 Log.i("WebSocket", "Message received");
-                sharedPreferences.setvalueofSocketCode(0, "socketcode", bContext);
+                sharedPreferences.setvalueofSocketCode(0, "socketcode", MainEntryActivityNew.this);
 
                 if (s.equals("{\"code\":724,\"message\":\"Access token has expired, please request a new token\"}")) {
                     try {
                         Log.v(TAG, "onTextReceived: " + s);
                         JSONObject jsonObject = new JSONObject(s);
                         code = jsonObject.getInt("code");
-                        sharedPreferences.setvalueofSocketCode(code, "socketcode", bContext);
+                        sharedPreferences.setvalueofSocketCode(code, "socketcode", MainEntryActivityNew.this);
                         if (code == 724) {
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -760,7 +760,7 @@ public class MainEntryActivityNew extends BaseActivity {
 
                 } else if (s.equals("{\"code\":723,\"message\":\"Access token is invalid\"}")) {
                     Log.v(TAG, "onTextReceived: " + s);
-                    runOnUiThread(() -> goTo2FaPasswordDialog(sharedPreferences.getvalueofRefresh("refreshToken", bContext)));
+                    runOnUiThread(() -> goTo2FaPasswordDialog(sharedPreferences.getvalueofRefresh("refreshToken", MainEntryActivityNew.this)));
 
                 } else {
                     if (GlobalState.getInstance().getLogin()) {
@@ -814,7 +814,7 @@ public class MainEntryActivityNew extends BaseActivity {
     private void createWebSocketClient1() {
         URI uri;
         try {
-            uri = new URI("ws://" + sharedPreferences.getvalueofipaddress("ip", bContext) + "/SendCommands");
+            uri = new URI("ws://" + sharedPreferences.getvalueofipaddress("ip", this) + "/SendCommands");
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;
@@ -822,7 +822,7 @@ public class MainEntryActivityNew extends BaseActivity {
         webSocketClient = new WebSocketClient(uri) {
             @Override
             public void onOpen() {
-                String token = sharedPreferences.getvalueofaccestoken("accessToken", bContext);
+                String token = sharedPreferences.getvalueofaccestoken("accessToken", MainEntryActivityNew.this);
                 String json = "{\"token\" : \"" + token + "\", \"commands\" : [\"lightning-cli getinfo\"] }";
                 try {
                     JSONObject obj = new JSONObject(json);
@@ -841,16 +841,16 @@ public class MainEntryActivityNew extends BaseActivity {
                     JSONObject jsonObject = new JSONObject(s);
                     code1 = jsonObject.getString("id");
                     if (code1.equals("")) {
-                        sharedPreferences.setvalueofconnectedSocket("", "socketconnected", bContext);
+                        sharedPreferences.setvalueofconnectedSocket("", "socketconnected", MainEntryActivityNew.this);
                     } else {
-                        sharedPreferences.setvalueofconnectedSocket(code1, "socketconnected", bContext);
+                        sharedPreferences.setvalueofconnectedSocket(code1, "socketconnected", MainEntryActivityNew.this);
                         runOnUiThread(() -> {
                             Intent i = new Intent(MainEntryActivityNew.this, HomeActivity.class);
                             startActivity(i);
                         });
                     }
                     if (code == 724) {
-                        sharedPreferences.setvalueofSocketCode(code, "socketcode", bContext);
+                        sharedPreferences.setvalueofSocketCode(code, "socketcode", MainEntryActivityNew.this);
                         webSocketClient.close();
                     }
 
@@ -925,7 +925,7 @@ public class MainEntryActivityNew extends BaseActivity {
 
     private void goTo2FaPasswordDialog(String accessToken) {
         final Dialog enter2FaPassDialog;
-        enter2FaPassDialog = new Dialog(bContext);
+        enter2FaPassDialog = new Dialog(this);
         enter2FaPassDialog.setContentView(R.layout.merchat_twofa_pass_lay);
         Objects.requireNonNull(enter2FaPassDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         enter2FaPassDialog.setCancelable(false);
@@ -969,7 +969,7 @@ public class MainEntryActivityNew extends BaseActivity {
                     get_session_response loginresponse = response.body();
                     if (Integer.parseInt(loginresponse.getSession_token()) != -1) {
                         new CustomSharedPreferences().setvalueofExpierTime(Integer.parseInt(loginresponse.getSession_token()), MainEntryActivityNew.this);
-                        String RefToken = new CustomSharedPreferences().getvalueofRefresh("refreshToken", bContext);
+                        String RefToken = new CustomSharedPreferences().getvalueofRefresh("refreshToken", MainEntryActivityNew.this);
                         getToken(RefToken, twoFaCode);
                     } else {
                         confirmingProgressDialog.dismiss();

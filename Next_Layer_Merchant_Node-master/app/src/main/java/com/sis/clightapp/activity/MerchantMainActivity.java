@@ -44,7 +44,7 @@ public class MerchantMainActivity extends BaseActivity {
         super.onDestroy();
         Runtime.getRuntime().gc();
         System.gc();
-        stopService(new Intent(bContext, MyLogOutService.class));
+        stopService(new Intent(this, MyLogOutService.class));
     }
 
     @Override

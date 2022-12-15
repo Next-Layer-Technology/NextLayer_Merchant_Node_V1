@@ -1,8 +1,5 @@
 package com.sis.clightapp.Interface;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -23,10 +20,6 @@ public class ApiClient {
     public static Retrofit getRetrofit(){
 
         if(retrofit==null){
-            Gson gson = new GsonBuilder()
-                    .setLenient()
-                    .create();
-
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
             httpLoggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient okHttpClient = new OkHttpClient.Builder()

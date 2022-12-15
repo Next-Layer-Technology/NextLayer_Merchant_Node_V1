@@ -41,6 +41,7 @@ import com.sis.clightapp.util.Utils
 import com.sis.clightapp.model.GsonModel.InvoiceForPrint
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.lang.Exception
 import java.text.DecimalFormat
 import java.util.*
 
@@ -167,7 +168,6 @@ class PrintDialogFragment : DialogFragment() {
                     Log.e("ConnectError", ex.toString())
                 }
             }
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         val mPairedDevices =
             HashSet(bluetoothAdapter.bondedDevices)
         val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
@@ -180,8 +180,8 @@ class PrintDialogFragment : DialogFragment() {
                         .getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
                     if (device != null) {
                         mPairedDevices.add(device)
-                        mPairedDevicesArrayAdapter.clear()
                         if (mPairedDevices.size > 0) {
+                            mPairedDevicesArrayAdapter.clear()
                             for (mDevice in mPairedDevices) {
                                 mPairedDevicesArrayAdapter.add(mDevice)
                             }
@@ -208,8 +208,12 @@ class PrintDialogFragment : DialogFragment() {
         override fun run() {
             bluetoothAdapter.cancelDiscovery()
             mmSocket?.let { socket ->
-                socket.connect()
-                sendData(socket)
+                try {
+                    socket.connect()
+                    sendData(socket)
+                } catch (e: Exception) {
+                    Log.d(TAG, "Socket timeout")
+                }
             }
         }
 

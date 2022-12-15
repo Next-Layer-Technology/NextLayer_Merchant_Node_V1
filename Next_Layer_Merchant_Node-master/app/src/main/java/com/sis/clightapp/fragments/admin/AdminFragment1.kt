@@ -29,7 +29,9 @@ import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.R
 import com.sis.clightapp.adapter.AdminReceiveablesListAdapter
 import com.sis.clightapp.adapter.AdminSendablesListAdapter
+import com.sis.clightapp.fragments.merchant.MerchantBaseFragment
 import com.sis.clightapp.fragments.printing.PrintDialogFragment
+import com.sis.clightapp.fragments.shared.Auth2FaFragment
 import com.sis.clightapp.model.GsonModel.*
 import com.sis.clightapp.model.REST.TransactionResp
 import com.sis.clightapp.services.BTCService
@@ -92,7 +94,6 @@ class AdminFragment1 : AdminBaseFragment() {
     private var CONVERSION_RATE = 0.0
     private var MSATOSHI = 0.0
     var getPaidLABEL = ""
-    private var currentTransactionDescription = ""
     private var distributeGetPaidDialog: Dialog? = null
 
     private var receivables = arrayListOf<Sale>()
@@ -154,6 +155,8 @@ class AdminFragment1 : AdminBaseFragment() {
         }
         distributebutton.setOnClickListener { dialogBoxForGetPaidDistribute() }
         commandeerbutton.setOnClickListener {
+            PrintDialogFragment().show(childFragmentManager,null)
+            return@setOnClickListener
             isInApp = false
             val km = requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
             if (km.isKeyguardSecure) {
@@ -265,7 +268,11 @@ class AdminFragment1 : AdminBaseFragment() {
                     }
                 }
                 Status.ERROR -> {
-                    progressDialog.dismiss()
+                    if (it.message == "2fa") {
+                        Auth2FaFragment().show(childFragmentManager, null)
+                    } else {
+                        showToast(it.message)
+                    }
                     showToast(it.message)
                 }
                 Status.LOADING -> {
@@ -283,7 +290,11 @@ class AdminFragment1 : AdminBaseFragment() {
                     }
                 }
                 Status.ERROR -> {
-                    progressDialog.dismiss()
+                    if (it.message == "2fa") {
+                        Auth2FaFragment().show(childFragmentManager, null)
+                    } else {
+                        showToast(it.message)
+                    }
                     showToast(it.message)
                 }
                 Status.LOADING -> {
@@ -393,7 +404,11 @@ class AdminFragment1 : AdminBaseFragment() {
                             }
                             Status.ERROR -> {
                                 progressDialog.dismiss()
-                                showToast(it.message)
+                                if (it.message == "2fa") {
+                                    Auth2FaFragment().show(childFragmentManager, null)
+                                } else {
+                                    showToast(it.message)
+                                }
                             }
                             Status.LOADING -> {
                                 progressDialog.show()
@@ -499,6 +514,54 @@ class AdminFragment1 : AdminBaseFragment() {
     }
 
     @SuppressLint("SetTextI18n")
+    private fun showPayCompleteDialog(payresponse: Pay) {
+        Log.e("errorhe", "showCofirmationDialog me agya")
+        val invoiceForPrint = InvoiceForPrint()
+        invoiceForPrint.destination = payresponse.destination
+        invoiceForPrint.msatoshi = payresponse.msatoshi
+        invoiceForPrint.payment_preimage = payresponse.payment_preimage
+        invoiceForPrint.created_at = payresponse.created_at
+        GlobalState.getInstance().invoiceForPrint = invoiceForPrint
+        val width = Resources.getSystem().displayMetrics.widthPixels
+        val height = Resources.getSystem().displayMetrics.heightPixels
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.dialoglayoutrefundcommandeerlaststepconfirmedpay)
+        dialog.window?.setBackgroundDrawable(
+            ColorDrawable(
+                Color.TRANSPARENT
+            )
+        )
+        val ivBack: ImageView =
+            dialog.findViewById(R.id.iv_back_invoice)
+        val textView: TextView = dialog.findViewById(R.id.textView2)
+        val ok: Button = dialog.findViewById(R.id.btn_ok)
+        dialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+        dialog.setCancelable(false)
+        textView.text = "Payment Status:" + payresponse.status
+        if (payresponse.status == "complete") {
+            ok.text = "Print"
+        }
+        ok.setOnClickListener {
+            loadObservers()
+            val invoiceForPrint = GlobalState.getInstance().getInvoiceForPrint()
+            if (payresponse.status == "complete") {
+                if (invoiceForPrint != null) {
+                    PrintDialogFragment().show(childFragmentManager, null)
+                } else {
+                    dialog.dismiss()
+                }
+            } else {
+                dialog.dismiss()
+            }
+        }
+        ivBack.setOnClickListener {
+            dialog.dismiss()
+            loadObservers()
+        }
+        dialog.show()
+    }
+
+    @SuppressLint("SetTextI18n")
     private fun dialogBoxForRefundCommandeer() {
         val width = Resources.getSystem().displayMetrics.widthPixels
         val height = Resources.getSystem().displayMetrics.heightPixels
@@ -525,7 +588,7 @@ class AdminFragment1 : AdminBaseFragment() {
             } else {
                 commandeerRefundDialog.dismiss()
                 bolt11fromqr = bolt11value
-                refundDecodePay(bolt11value)
+                decodeInvoice(bolt11value)
             }
         }
         btnscanQr.setOnClickListener {
@@ -550,7 +613,7 @@ class AdminFragment1 : AdminBaseFragment() {
                         showToast("Result Not Found")
                     } else {
                         bolt11fromqr = result.contents
-                        refundDecodePay(bolt11fromqr)
+                        decodeInvoice(bolt11fromqr)
                     }
                 } else {
                     super.onActivityResult(requestCode, resultCode, data)
@@ -575,38 +638,154 @@ class AdminFragment1 : AdminBaseFragment() {
         return date
     }
 
-    private fun saveGetPaidTransactionInLog(invoice: Invoice) {
+    private fun decodeInvoice(bolt11: String) {
+        lightningService.decodeInvoice(bolt11).observe(viewLifecycleOwner) {
+            when (it.status) {
+                Status.SUCCESS -> {
+                    progressDialog.dismiss()
+                    try {
+                        showToast(it.data.toString())
+                        showConfirmPayDialog(bolt11, it.data?.msatoshi ?: 0.0)
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                }
+                Status.ERROR -> {
+                    if (it.message == "2fa") {
+                        Auth2FaFragment().show(childFragmentManager, null)
+                    } else {
+                        showToast(it.message)
+                    }
+                }
+                Status.LOADING -> {
+                    progressDialog.show()
+                }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun showConfirmPayDialog(bolt11value: String, msatoshi: Double) {
+        val width = Resources.getSystem().displayMetrics.widthPixels
+        val height = Resources.getSystem().displayMetrics.heightPixels
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.dialoglayoutrefundcommandeerstep2)
+        dialog.window?.setBackgroundDrawable(
+            ColorDrawable(
+                Color.TRANSPARENT
+            )
+        )
+        dialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+        dialog.setCancelable(false)
+        MSATOSHI = msatoshi
+        val btc = mSatoshoToBtc(java.lang.Double.valueOf(msatoshi))
+        val priceInBTC = GlobalState.getInstance().channel_btcResponseData.price
+        var usd = priceInBTC * btc
+        AMOUNT_USD = usd
+        AMOUNT_BTC = btc
+        CONVERSION_RATE = AMOUNT_USD / AMOUNT_BTC
+        usd = MerchantBaseFragment.round(usd, 2)
+        val mst = usd.toString()
+        val bolt11: TextView = dialog.findViewById(R.id.bolt11valtxt)
+        val label: TextView = dialog.findViewById(R.id.labelvaltxt)
+        val amount: EditText = dialog.findViewById(R.id.amountval)
+        amount.setText(mst)
+        amount.inputType = InputType.TYPE_NULL
+        val ivBack: ImageView =
+            dialog.findViewById(R.id.iv_back_invoice)
+        val excecute: Button = dialog.findViewById(R.id.btn_next)
+        bolt11.text = bolt11value
+        label.text = "outgoing$unixTimeStamp"
+        if (msatoshi == 0.0) {
+            excecute.visibility = View.INVISIBLE
+        }
+        ivBack.setOnClickListener { dialog.dismiss() }
+        excecute.setOnClickListener {
+            val bolt11val = bolt11.text.toString()
+            val labelval = label.text.toString()
+            val amountval = amount.text.toString()
+            if (bolt11val.isEmpty()) {
+                showToast("Bolt11 " + getString(R.string.empty))
+                return@setOnClickListener
+            }
+            if (labelval.isEmpty()) {
+                showToast("Label " + getString(R.string.empty))
+                return@setOnClickListener
+            }
+            executeCommandeerRefundApi(bolt11val, labelval, amountval)
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun executeCommandeerRefundApi(
+        bolt11value: String,
+        label: String,
+        usd: String
+    ) {
+        var priceInBTC = 1 / GlobalState.getInstance().channel_btcResponseData.price
+        priceInBTC *= usd.toDouble()
+        var amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi
+        amountInMsatoshi *= AppConstants.satoshiToMSathosi
+        val formatter: NumberFormat = DecimalFormat("#0")
+        val rMSatoshi = formatter.format(amountInMsatoshi)
+        lightningService.payRequestToOther(bolt11value, rMSatoshi, label)
+            .observe(viewLifecycleOwner) {
+                when (it.status) {
+                    Status.SUCCESS -> {
+                        progressDialog.dismiss()
+                        if (it.data?.status == "complete") {
+                            saveGetRefundTransactionInLog(it.data, label)
+                            showPayCompleteDialog(it.data)
+                        } else {
+                            val pay = Pay()
+                            pay.status = "Not complete"
+                            showPayCompleteDialog(pay)
+                        }
+                    }
+                    Status.ERROR -> {
+                        progressDialog.dismiss()
+                        if (it.message == "2fa") {
+                            Auth2FaFragment().show(childFragmentManager, null)
+                        } else {
+                            showToast(it.message)
+                        }
+                    }
+                    Status.LOADING -> {
+                        progressDialog.show()
+                    }
+                }
+            }
+    }
+
+    private fun saveGetRefundTransactionInLog(pay: Pay, label: String) {
         val precision = DecimalFormat("0.00")
-        val label = if (invoice.label != null) invoice.label else getPaidLABEL
-        val status = if (invoice.status != null) invoice.status else "paid"
-        val transactionAmountBtc = excatFigure(round(AMOUNT_BTC, 9))
-        val transactionAmountUsd = precision.format(AMOUNT_USD)
+        val status = pay.status
+        val transactionAmountbtc = excatFigure(round(AMOUNT_BTC, 9))
+        val transactionAmountusd = precision.format(AMOUNT_USD)
         val conversionRate = precision.format(CONVERSION_RATE)
-        val msatoshi = MSATOSHI.toString()
-        val paymentPreimage =
-            if (invoice.payment_preimage != null) invoice.payment_preimage else "test123"
-        val paymentHash = if (invoice.payment_hash != null) invoice.payment_hash else "test123"
-        val destination = if (invoice.bolt11 != null) invoice.bolt11 else "123"
-        val merchantId =
-            if (GlobalState.getInstance().merchant_id != null) GlobalState.getInstance().merchant_id else "mg123"
-        val transactionDescription = currentTransactionDescription
-        addAlphaTransaction(
+        val msatoshi = excatFigure(MSATOSHI)
+        val paymentPreimage = pay.payment_preimage
+        val paymentHash = pay.payment_hash
+        val destination = pay.destination
+        val merchantId = GlobalState.getInstance().merchant_id
+        val transactionDescription1 = ""
+        add_alpha_transaction(
             label,
             status,
-            transactionAmountBtc,
-            transactionAmountUsd,
+            transactionAmountbtc,
+            transactionAmountusd,
             conversionRate,
             msatoshi,
             paymentPreimage,
             paymentHash,
             destination,
             merchantId,
-            transactionDescription
+            transactionDescription1
         )
-
     }
 
-    private fun addAlphaTransaction(
+    fun add_alpha_transaction(
         transaction_label: String?,
         status: String?,
         transaction_amountBTC: String?,
@@ -619,30 +798,29 @@ class AdminFragment1 : AdminBaseFragment() {
         merchant_id: String?,
         transaction_description: String?
     ) {
-        val call = ApiClient.getRetrofit().create(
-            Webservice::class.java
-        ).add_alpha_transction(
-            transaction_label,
-            status,
-            transaction_amountBTC,
-            transaction_amountUSD,
-            payment_preimage,
-            payment_hash,
-            conversion_rate,
-            msatoshi,
-            destination,
-            merchant_id,
-            transaction_description
-        )
+        val call: Call<TransactionResp> = ApiClient.getRetrofit().create(Webservice::class.java)
+            .add_alpha_transction(
+                transaction_label,
+                status,
+                transaction_amountBTC,
+                transaction_amountUSD,
+                payment_preimage,
+                payment_hash,
+                conversion_rate,
+                msatoshi,
+                destination,
+                merchant_id,
+                transaction_description
+            )
         call.enqueue(object : Callback<TransactionResp?> {
             override fun onResponse(
                 call: Call<TransactionResp?>,
                 response: Response<TransactionResp?>
             ) {
                 if (response.body() != null) {
-                    val transactionResp = response.body()
-                    if (transactionResp?.message != "successfully done" || transactionResp.transactionInfo == null) {
-                        showToast("Not Done")
+                    val resp = response.body()
+                    if (resp?.message != "successfully done" && resp?.transactionInfo == null) {
+                        showToast("Not Done!!")
                     }
                     Log.e("Test", "Test")
                 }
@@ -653,29 +831,6 @@ class AdminFragment1 : AdminBaseFragment() {
                 Log.e("AddTransactionLog", t.message.toString())
             }
         })
-    }
-
-    private fun refundDecodePay(bolt11: String) {
-        lightningService.refundDecodePay(bolt11).observe(viewLifecycleOwner) {
-            when (it.status) {
-                Status.SUCCESS -> {
-                    progressDialog.dismiss()
-                    try {
-                        showToast(it.data.toString())
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-
-                    }
-                }
-                Status.ERROR -> {
-                    progressDialog.dismiss()
-                    showToast(it.message)
-                }
-                Status.LOADING -> {
-                    progressDialog.show()
-                }
-            }
-        }
     }
 
     private fun listenToFcmBroadcast() {
@@ -735,7 +890,11 @@ class AdminFragment1 : AdminBaseFragment() {
                         }
                     }
                     Status.ERROR -> {
-                        confirmingProgressDialog.dismiss()
+                        if (it.message == "2fa") {
+                            Auth2FaFragment().show(childFragmentManager, null)
+                        } else {
+                            showToast(it.message)
+                        }
                         showToast(it.message.toString())
                     }
                     Status.LOADING -> {

@@ -78,7 +78,7 @@ public class HomeActivity extends BaseActivity {
 
     private void ask_exit() {
         final Dialog goAlertDialogwithOneBTnDialog;
-        goAlertDialogwithOneBTnDialog = new Dialog(bContext);
+        goAlertDialogwithOneBTnDialog = new Dialog(this);
         goAlertDialogwithOneBTnDialog.setContentView(R.layout.alert_dialog_layout);
         Objects.requireNonNull(goAlertDialogwithOneBTnDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         goAlertDialogwithOneBTnDialog.setCancelable(false);
@@ -104,16 +104,16 @@ public class HomeActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recallTime = 0;
-        checkStatusPD = new ProgressDialog(bContext);
+        checkStatusPD = new ProgressDialog(this);
         checkStatusPD.setMessage("Loading...");
         checkStatusPD.setCancelable(false);
-        startServerPD = new ProgressDialog(bContext);
+        startServerPD = new ProgressDialog(this);
         startServerPD.setMessage("Loading...");
         startServerPD.setCancelable(false);
-        stopServerPD = new ProgressDialog(bContext);
+        stopServerPD = new ProgressDialog(this);
         stopServerPD.setMessage("Loading...");
         stopServerPD.setCancelable(false);
-        wait20SecPD = new ProgressDialog(bContext);
+        wait20SecPD = new ProgressDialog(this);
         wait20SecPD.setMessage("Loading...");
         wait20SecPD.setCancelable(false);
         currentMerchantData = GlobalState.getInstance().getMerchantData();
@@ -124,7 +124,7 @@ public class HomeActivity extends BaseActivity {
             isThorConfirmed = false;
             isConfirmMerchant = false;
         }
-        dialog = new ProgressDialog(bContext);
+        dialog = new ProgressDialog(this);
         dialog.setMessage("Connecting...");
         setTextWithSpan = findViewById(R.id.imageView3);
 
@@ -321,7 +321,7 @@ public class HomeActivity extends BaseActivity {
         }
         if (yourFile.exists()) {
             startServerPD.show();
-            String sshkeypasval = sharedPreferences.getString("sshkeypass", bContext);
+            String sshkeypasval = sharedPreferences.getString("sshkeypass", this);
             if (sshkeypasval == null) {
                 sshkeypasval = "";
             }
@@ -402,7 +402,7 @@ public class HomeActivity extends BaseActivity {
             showToast("File Not Found");
         }
         if (yourFile.exists()) {
-            String sshkeypasval = sharedPreferences.getString("sshkeypass", bContext);
+            String sshkeypasval = sharedPreferences.getString("sshkeypass", this);
             if (sshkeypasval == null) {
                 sshkeypasval = "";
             }
@@ -472,7 +472,7 @@ public class HomeActivity extends BaseActivity {
             showToast("File Not Found");
         }
         if (yourFile.exists()) {
-            String sshkeypasval = sharedPreferences.getString("sshkeypass", bContext);
+            String sshkeypasval = sharedPreferences.getString("sshkeypass", this);
             if (sshkeypasval == null) {
                 sshkeypasval = "";
             }
@@ -583,7 +583,7 @@ public class HomeActivity extends BaseActivity {
             showToast("File Not Found");
         }
         if (yourFile.exists()) {
-            String sshkeypasval = sharedPreferences.getString("sshkeypass", bContext);
+            String sshkeypasval = sharedPreferences.getString("sshkeypass", this);
             if (sshkeypasval == null) {
                 sshkeypasval = "";
             }
@@ -712,7 +712,7 @@ public class HomeActivity extends BaseActivity {
             showToast("File Not Found");
         }
         if (yourFile.exists()) {
-            String sshkeypasval = sharedPreferences.getString("sshkeypass", bContext);
+            String sshkeypasval = sharedPreferences.getString("sshkeypass", this);
             if (sshkeypasval == null) {
                 sshkeypasval = "";
             }
@@ -828,7 +828,7 @@ public class HomeActivity extends BaseActivity {
         }
         if (yourFile.exists()) {
             startServerPD.show();
-            String sshkeypasval = sharedPreferences.getString("sshkeypass", bContext);
+            String sshkeypasval = sharedPreferences.getString("sshkeypass", this);
             if (sshkeypasval == null) {
                 sshkeypasval = "";
             }
@@ -942,7 +942,7 @@ public class HomeActivity extends BaseActivity {
             showToast("File Not Found");
         }
         if (yourFile.exists()) {
-            String sshkeypasval = sharedPreferences.getString("sshkeypass", bContext);
+            String sshkeypasval = sharedPreferences.getString("sshkeypass", this);
             if (sshkeypasval == null) {
                 sshkeypasval = "";
             }
@@ -1077,7 +1077,7 @@ public class HomeActivity extends BaseActivity {
             showToast("File Not Found");
         }
         if (yourFile.exists()) {
-            String sshkeypasval = sharedPreferences.getString("sshkeypass", bContext);
+            String sshkeypasval = sharedPreferences.getString("sshkeypass", this);
             if (sshkeypasval == null) {
                 sshkeypasval = "";
             }
@@ -1201,7 +1201,7 @@ public class HomeActivity extends BaseActivity {
             showToast("File Not Found");
         }
         if (yourFile.exists()) {
-            String sshkeypasval = sharedPreferences.getString("sshkeypass", bContext);
+            String sshkeypasval = sharedPreferences.getString("sshkeypass", this);
             if (sshkeypasval == null) {
                 sshkeypasval = "";
             }
@@ -1304,7 +1304,7 @@ public class HomeActivity extends BaseActivity {
 //                break;
 //        }
 
-        if (sharedPreferences.getvalueofconnectedSocket("socketconnected", bContext).equals("")) {
+        if (sharedPreferences.getvalueofconnectedSocket("socketconnected", this).equals("")) {
             thorNodeStatusImg.setImageDrawable(getDrawable(R.drawable.redstatus));
 
         } else {
@@ -1315,7 +1315,7 @@ public class HomeActivity extends BaseActivity {
 
     private void goAlertDialogwithOneBTn(int i, String alertTitleMessage, String alertMessage, String alertBtn1Message, String alertBtn2Message) {
         final Dialog goAlertDialogwithOneBTnDialog;
-        goAlertDialogwithOneBTnDialog = new Dialog(bContext);
+        goAlertDialogwithOneBTnDialog = new Dialog(this);
         goAlertDialogwithOneBTnDialog.setContentView(R.layout.alert_dialog_layout);
         Objects.requireNonNull(goAlertDialogwithOneBTnDialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         goAlertDialogwithOneBTnDialog.setCancelable(false);

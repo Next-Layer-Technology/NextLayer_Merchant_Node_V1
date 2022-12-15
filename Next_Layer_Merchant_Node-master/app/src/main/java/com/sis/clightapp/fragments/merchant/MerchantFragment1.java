@@ -323,7 +323,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 isInAppMerchant1 = false;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                     KeyguardManager km = (KeyguardManager) getActivity().getSystemService(KEYGUARD_SERVICE);
-
                     if (km.isKeyguardSecure()) {
                         Intent authIntent = km.createConfirmDeviceCredentialIntent("Authorize Payment", "");
                         startActivityForResult(authIntent, INTENT_AUTHENTICATE);
@@ -1317,8 +1316,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     }
 
     private Pay parseJSONForPayOthers(String jsonString) {
-
-
         Pay pay = null;
         JSONArray jsonArr = null;
         try {
@@ -1364,21 +1361,13 @@ public class MerchantFragment1 extends MerchantBaseFragment {
             }
             if (decodePayBolt11.getMsatoshi() != 0) {
 
-                if (decodePayBolt11 != null) {
-                    decodePayBolt11ProgressDialog.dismiss();
-                    if (decodePayBolt11.getDescription() != null) {
-                        current_transaction_description = decodePayBolt11.getDescription();
-                    } else {
-                        current_transaction_description = "receipt now";
-                    }
-                    dialogBoxForRefundCommandeerStep2(bolt11fromqr, String.valueOf(decodePayBolt11.getMsatoshi()));
+                decodePayBolt11ProgressDialog.dismiss();
+                if (decodePayBolt11.getDescription() != null) {
+                    current_transaction_description = decodePayBolt11.getDescription();
                 } else {
-                    DecodePayBolt11 decode2PayBolt11 = new DecodePayBolt11();
-                    decode2PayBolt11.setMsatoshi(0);
-                    decodePayBolt11ProgressDialog.dismiss();
-                    dialogBoxForRefundCommandeerStep2(bolt11fromqr, String.valueOf(decode2PayBolt11.getMsatoshi()));
+                    current_transaction_description = "receipt now";
                 }
-
+                dialogBoxForRefundCommandeerStep2(bolt11fromqr, String.valueOf(decodePayBolt11.getMsatoshi()));
             } else {
                 decodePayBolt11 = new DecodePayBolt11();
                 decodePayBolt11.setMsatoshi(0);

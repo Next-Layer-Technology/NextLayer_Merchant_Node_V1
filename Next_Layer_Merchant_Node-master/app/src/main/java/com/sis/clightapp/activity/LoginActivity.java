@@ -64,7 +64,7 @@ public class LoginActivity extends BaseActivity {
         loginLodingProgressDialog.setMessage("Logging In");
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
-        etEmail.setText("checkout");
+        etEmail.setText("admin");
         etPassword.setText("abc123");
         loginbtn = findViewById(R.id.btn_login);
         merchant_id = GlobalState.getInstance().getMerchantData().getMerchant_data_id();
@@ -74,7 +74,6 @@ public class LoginActivity extends BaseActivity {
             role = (String) b.get("role");
         }
         loginbtn.setOnClickListener(view -> {
-            clodeSoftKeyBoard();
             String strEmail = etEmail.getText().toString();
             String strPassword = etPassword.getText().toString();
             if (strEmail.isEmpty()) {
