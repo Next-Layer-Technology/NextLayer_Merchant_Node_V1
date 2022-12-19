@@ -151,7 +151,6 @@ class PrintDialogFragment : DialogFragment() {
                             created_at = 12312312312312.0
                             destination = "Destination"
                             payment_hash = "Hash"
-
                         }
                         ConnectThread(device).start()
                         printingProgressBar.show()
