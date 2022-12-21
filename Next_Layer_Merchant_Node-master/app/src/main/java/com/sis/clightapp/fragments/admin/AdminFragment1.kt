@@ -27,7 +27,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.sis.clightapp.Interface.ApiClient
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.R
-import com.sis.clightapp.adapter.AdminReceiveablesListAdapter
+import com.sis.clightapp.adapter.AdminReceivableListAdapter
 import com.sis.clightapp.adapter.AdminSendablesListAdapter
 import com.sis.clightapp.fragments.merchant.MerchantBaseFragment
 import com.sis.clightapp.fragments.printing.PrintDialogFragment
@@ -68,7 +68,7 @@ class AdminFragment1 : AdminBaseFragment() {
     private lateinit var qRCodeImage: ImageView
     private lateinit var receiveableslistview: ListView
     private lateinit var sendeableslistview: ListView
-    var adminReceiveablesListAdapter: AdminReceiveablesListAdapter? = null
+    var adminReceiveablesListAdapter: AdminReceivableListAdapter? = null
     var adminSendablesListAdapter: AdminSendablesListAdapter? = null
     private var fcmBroadcastReceiver: BroadcastReceiver? = null
 
@@ -96,7 +96,7 @@ class AdminFragment1 : AdminBaseFragment() {
     var getPaidLABEL = ""
     private var distributeGetPaidDialog: Dialog? = null
 
-    private var receivables = arrayListOf<Sale>()
+    private var receivables = arrayListOf<Invoice>()
     private var sendables = arrayListOf<Refund>()
 
     private var invoiceLabel: String? = null
@@ -155,8 +155,6 @@ class AdminFragment1 : AdminBaseFragment() {
         }
         distributebutton.setOnClickListener { dialogBoxForGetPaidDistribute() }
         commandeerbutton.setOnClickListener {
-            PrintDialogFragment().show(childFragmentManager,null)
-            return@setOnClickListener
             isInApp = false
             val km = requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
             if (km.isKeyguardSecure) {
@@ -306,7 +304,7 @@ class AdminFragment1 : AdminBaseFragment() {
 
     private fun setReceiveablesAdapter() {
         adminReceiveablesListAdapter =
-            AdminReceiveablesListAdapter(requireContext(), this.receivables)
+            AdminReceivableListAdapter(requireActivity(), this.receivables)
         receiveableslistview.adapter = adminReceiveablesListAdapter
 
     }
@@ -446,14 +444,6 @@ class AdminFragment1 : AdminBaseFragment() {
         purchasedItems.visibility = View.GONE
         printInvoice.visibility = View.GONE
         if (invoice.status == "paid") {
-            val invoiceForPrint = InvoiceForPrint()
-            invoiceForPrint.msatoshi = invoice.msatoshi
-            invoiceForPrint.payment_preimage = invoice.payment_preimage
-            invoiceForPrint.paid_at = invoice.paid_at
-            invoiceForPrint.purchasedItems = distributeDescription
-            invoiceForPrint.desscription = distributeDescription
-            invoiceForPrint.mode = "distributeGetPaid"
-            GlobalState.getInstance().invoiceForPrint = invoiceForPrint
             amount.visibility = View.VISIBLE
             paymentPreImage.visibility = View.VISIBLE
             paidAt.visibility = View.VISIBLE
@@ -470,12 +460,6 @@ class AdminFragment1 : AdminBaseFragment() {
                 getDateFromUTCTimestamp(invoice.paid_at, AppConstants.OUTPUT_DATE_FORMATE)
             purchasedItems.text = distributeDescription
         } else {
-            val invoiceForPrint = InvoiceForPrint()
-            invoiceForPrint.msatoshi = 0.0
-            invoiceForPrint.payment_preimage = "N/A"
-            invoiceForPrint.paid_at = 0
-            invoiceForPrint.mode = "distributeGetPaid"
-            GlobalState.getInstance().invoiceForPrint = invoiceForPrint
             amount.visibility = View.VISIBLE
             paymentPreImage.visibility = View.VISIBLE
             paidAt.visibility = View.VISIBLE
@@ -500,10 +484,10 @@ class AdminFragment1 : AdminBaseFragment() {
         printInvoice.setOnClickListener {
             loadObservers()
             if (invoice.status == "paid") {
-                val invoiceForPrint = GlobalState.getInstance().getInvoiceForPrint()
-                if (invoiceForPrint != null) {
-                    PrintDialogFragment().show(childFragmentManager, null)
-                }
+                PrintDialogFragment(
+                    invoice,
+                    items = GlobalState.getInstance().selectedItems.toList()
+                ).show(childFragmentManager, null)
             }
         }
         ivBack.setOnClickListener {
@@ -514,14 +498,7 @@ class AdminFragment1 : AdminBaseFragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showPayCompleteDialog(payresponse: Pay) {
-        Log.e("errorhe", "showCofirmationDialog me agya")
-        val invoiceForPrint = InvoiceForPrint()
-        invoiceForPrint.destination = payresponse.destination
-        invoiceForPrint.msatoshi = payresponse.msatoshi
-        invoiceForPrint.payment_preimage = payresponse.payment_preimage
-        invoiceForPrint.created_at = payresponse.created_at
-        GlobalState.getInstance().invoiceForPrint = invoiceForPrint
+    private fun showPayCompleteDialog(pay: Pay) {
         val width = Resources.getSystem().displayMetrics.widthPixels
         val height = Resources.getSystem().displayMetrics.heightPixels
         val dialog = Dialog(requireContext())
@@ -537,19 +514,17 @@ class AdminFragment1 : AdminBaseFragment() {
         val ok: Button = dialog.findViewById(R.id.btn_ok)
         dialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
         dialog.setCancelable(false)
-        textView.text = "Payment Status:" + payresponse.status
-        if (payresponse.status == "complete") {
+        textView.text = "Payment Status:" + pay.status
+        if (pay.status == "complete") {
             ok.text = "Print"
         }
         ok.setOnClickListener {
             loadObservers()
-            val invoiceForPrint = GlobalState.getInstance().getInvoiceForPrint()
-            if (payresponse.status == "complete") {
-                if (invoiceForPrint != null) {
-                    PrintDialogFragment().show(childFragmentManager, null)
-                } else {
-                    dialog.dismiss()
-                }
+            if (pay.status == "complete") {
+                PrintDialogFragment(
+                    payment = pay,
+                    items = GlobalState.getInstance().selectedItems.toList()
+                ).show(childFragmentManager, null)
             } else {
                 dialog.dismiss()
             }

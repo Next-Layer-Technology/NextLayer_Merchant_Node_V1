@@ -525,7 +525,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 }
 
                 override fun onFailure(call: Call<NearbyClientResponse?>, t: Throwable) {
-                    Log.e("merchant_nearby_clients:", t.message.toString())
                     requireActivity().runOnUiThread { confirmingProgressDialog.dismiss() }
                     showToast(t.message)
                 }
@@ -969,15 +968,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         //   tax.setVisibility(View.GONE);
         printInvoice.visibility = GONE
         if (invoice != null) {
-            val invoiceForPrint = InvoiceForPrint()
             if (invoice.status == "paid") {
-                invoiceForPrint.msatoshi = invoice.msatoshi
-                invoiceForPrint.payment_preimage = invoice.payment_preimage
-                invoiceForPrint.paid_at = invoice.paid_at
-                invoiceForPrint.purchasedItems = invoice.description
-                invoiceForPrint.desscription = invoice.description
-                invoiceForPrint.mode = "distributeGetPaid"
-                GlobalState.getInstance().invoiceForPrint = invoiceForPrint
                 amount.visibility = VISIBLE
                 paymentPreimage.visibility = VISIBLE
                 paidAt.visibility = VISIBLE
@@ -995,11 +986,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     dateStringUTCTimestamp(invoice.paid_at, AppConstants.OUTPUT_DATE_FORMATE)
                 purchasedItems.text = invoice.description
             } else {
-                invoiceForPrint.msatoshi = 0.0
-                invoiceForPrint.payment_preimage = "N/A"
-                invoiceForPrint.paid_at = 0
-                invoiceForPrint.mode = "distributeGetPaid"
-                GlobalState.getInstance().invoiceForPrint = invoiceForPrint
                 amount.visibility = VISIBLE
                 paymentPreimage.visibility = VISIBLE
                 paidAt.visibility = VISIBLE
@@ -1018,11 +1004,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             }
         }
         printInvoice.setOnClickListener {
-            val invoiceForPrint = GlobalState.getInstance().getInvoiceForPrint()
             if (invoice != null && invoice.status == "paid") {
-                if (invoiceForPrint != null) {
-                    PrintDialogFragment().show(childFragmentManager, null)
-                }
+                PrintDialogFragment(invoice, null, selectedItems).show(childFragmentManager, null)
             }
         }
         ivBack.setOnClickListener { v: View? -> distributeGetPaidDialog.dismiss() }

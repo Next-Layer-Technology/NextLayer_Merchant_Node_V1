@@ -20,8 +20,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.sis.clightapp.R;
+import com.sis.clightapp.model.GsonModel.Invoice;
 import com.sis.clightapp.util.AppConstants;
-import com.sis.clightapp.model.GsonModel.Sale;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -32,12 +32,12 @@ import java.util.List;
 import java.util.TimeZone;
 
 //TODO: Same as AdminReceiveablesListAdapter
-public class MerchantSalesListAdapter  extends ArrayAdapter<Sale> {
+public class MerchantSalesListAdapter  extends ArrayAdapter<Invoice> {
 
     private Context mContext;
-    private List<Sale> salesList = new ArrayList<>();
+    private List<Invoice> salesList;
 
-    public MerchantSalesListAdapter(@NonNull Context context, @LayoutRes ArrayList<Sale> list) {
+    public MerchantSalesListAdapter(@NonNull Context context, ArrayList<Invoice> list) {
         super(context, 0 , list);
         mContext = context;
         salesList = list;
@@ -50,7 +50,7 @@ public class MerchantSalesListAdapter  extends ArrayAdapter<Sale> {
         if(listItem == null)
             listItem = LayoutInflater.from(mContext).inflate(R.layout.merchant_sale_list_item_layout,parent,false);
 
-        Sale currentSale = salesList.get(position);
+        Invoice currentSale = salesList.get(position);
 
 
         TextView salelabel = (TextView) listItem.findViewById(R.id.labelval);

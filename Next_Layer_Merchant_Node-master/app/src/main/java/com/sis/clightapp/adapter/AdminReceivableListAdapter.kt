@@ -1,138 +1,119 @@
-package com.sis.clightapp.adapter;
+package com.sis.clightapp.adapter
+
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.text.format.DateFormat
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
+import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.sis.clightapp.R
+import com.sis.clightapp.fragments.printing.PrintDialogFragment
+import com.sis.clightapp.model.GsonModel.Invoice
+import com.sis.clightapp.util.AppConstants
+import java.math.BigDecimal
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.text.format.DateFormat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+class AdminReceivableListAdapter(
+    private val activity: FragmentActivity,
+    private val salesList: List<Invoice>
+) : ArrayAdapter<Invoice?>(
+    activity, 0, salesList
+) {
+    @SuppressLint("SetTextI18n")
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        var view = convertView
+        if (view == null)
+            view = LayoutInflater.from(activity)
+                .inflate(R.layout.merchant_sale_list_item_layout, parent, false)
+        view?.apply {
+            val currentSale = salesList[position]
+            val salelabel = findViewById<TextView>(R.id.labelval)
+            salelabel.text = currentSale.label.toString()
+            val amountsat = findViewById<TextView>(R.id.amountsatval)
+            amountsat.text = excatFigure(satoshiToBtc(currentSale.msatoshi)) + "BTC"
+            val paidat = findViewById<TextView>(R.id.paidatval)
+            paidat.text =
+                getDateFromUTCTimestamp(currentSale.paid_at, AppConstants.OUTPUT_DATE_FORMATE)
+            val description = findViewById<TextView>(R.id.descriptionval)
+            description.text = currentSale.description
 
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
-import com.sis.clightapp.R;
-import com.sis.clightapp.util.AppConstants;
-import com.sis.clightapp.model.GsonModel.Sale;
-
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-
-//TODO: Same as the MerchantSalesListAdapter
-public class AdminReceiveablesListAdapter extends ArrayAdapter<Sale> {
-
-    private Context mContext;
-    private List<Sale> salesList = new ArrayList<>();
-
-    public AdminReceiveablesListAdapter(@NonNull Context context, @LayoutRes List<Sale> list) {
-        super(context, 0, list);
-        mContext = context;
-        salesList = list;
-    }
-
-    @NonNull
-    @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View listItem = convertView;
-        if (listItem == null)
-            listItem = LayoutInflater.from(mContext).inflate(R.layout.merchant_sale_list_item_layout, parent, false);
-
-        Sale currentSale = salesList.get(position);
-
-
-        TextView salelabel = (TextView) listItem.findViewById(R.id.labelval);
-        salelabel.setText(String.valueOf(currentSale.getLabel()));
-
-
-        TextView amountsat = (TextView) listItem.findViewById(R.id.amountsatval);
-        amountsat.setText(excatFigure(mSatoshoToBtc(currentSale.getMsatoshi())) + "BTC");
-        TextView paidat = (TextView) listItem.findViewById(R.id.paidatval);
-        paidat.setText(getDateFromUTCTimestamp(currentSale.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
-
-        TextView description = (TextView) listItem.findViewById(R.id.descriptionval);
-        description.setText(currentSale.getDescription());
-
-
-        //Invoice id=BOlt11 hex string
-        ImageView bolt11invoiceid = (ImageView) listItem.findViewById(R.id.boltinvoiceidval);
-        if (currentSale.getBolt11() != null)
-            bolt11invoiceid.setImageBitmap(getBitMapFromHex(currentSale.getBolt11()));
-        //payment pre image = payhash
-        ImageView paymentpreimage = (ImageView) listItem.findViewById(R.id.paypreimageval);
-        if (currentSale.getPayment_preimage() != null)
-            paymentpreimage.setImageBitmap(getBitMapFromHex(currentSale.getPayment_preimage()));
-
-
-        return listItem;
-    }
-
-    public String getDateFromUTCTimestamp(long mTimestamp, String mDateFormate) {
-        String date = null;
-        try {
-            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("CST"));
-            cal.setTimeInMillis(mTimestamp * 1000L);
-            date = DateFormat.format(mDateFormate, cal.getTimeInMillis()).toString();
-
-            SimpleDateFormat formatter = new SimpleDateFormat(mDateFormate);
-            formatter.setTimeZone(TimeZone.getTimeZone("CST"));
-            Date value = formatter.parse(date);
-
-//            SimpleDateFormat dateFormatter = new SimpleDateFormat(mDateFormate);
-//            dateFormatter.setTimeZone(TimeZone.getDefault());
-//            date = dateFormatter.format(value);
-            return date;
-        } catch (Exception e) {
-            e.printStackTrace();
+            //Invoice id=BOlt11 hex string
+            val bolt11invoiceid = findViewById<ImageView>(R.id.boltinvoiceidval)
+            if (currentSale.bolt11 != null) bolt11invoiceid.setImageBitmap(
+                getBitMapFromHex(
+                    currentSale.bolt11
+                )
+            )
+            //payment pre image = payhash
+            val paymentpreimage = findViewById<ImageView>(R.id.paypreimageval)
+            if (currentSale.payment_preimage != null) paymentpreimage.setImageBitmap(
+                getBitMapFromHex(
+                    currentSale.payment_preimage
+                )
+            )
         }
-        return date;
+        return view!!
     }
 
-    public Bitmap getBitMapFromHex(String hex) {
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        BitMatrix bitMatrix = null;
+    private fun getDateFromUTCTimestamp(mTimestamp: Long, format: String?): String? {
+        var date: String? = null
         try {
-            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, 600, 600);
-        } catch (WriterException e) {
-            e.printStackTrace();
+            val cal = Calendar.getInstance(TimeZone.getTimeZone("CST"))
+            cal.timeInMillis = mTimestamp * 1000L
+            date = DateFormat.format(format, cal.timeInMillis).toString()
+            val formatter = SimpleDateFormat(format, Locale.US)
+            formatter.timeZone = TimeZone.getTimeZone("CST")
+            return date
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
-        BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-        Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-        return bitmap;
-
+        return date
     }
 
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
+    private fun getBitMapFromHex(hex: String?): Bitmap {
+        val multiFormatWriter = MultiFormatWriter()
+        var bitMatrix: BitMatrix? = null
+        try {
+            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, 600, 600)
+        } catch (e: WriterException) {
+            e.printStackTrace()
+        }
+        val barcodeEncoder = BarcodeEncoder()
+        return barcodeEncoder.createBitmap(bitMatrix)
     }
 
-    public double mSatoshoToBtc(double msatoshhi) {
-        double msatoshiToSatoshi = msatoshhi / AppConstants.satoshiToMSathosi;
-        double satoshiToBtc = msatoshiToSatoshi / AppConstants.btcToSathosi;
-
-        return satoshiToBtc;
+    private fun satoshiToBtc(msatoshhi: Double): Double {
+        val msatoshiToSatoshi = msatoshhi / AppConstants.satoshiToMSathosi
+        return msatoshiToSatoshi / AppConstants.btcToSathosi
     }
 
-    public String excatFigure(double value) {
-        BigDecimal d = new BigDecimal(String.valueOf(value));
+    fun excatFigure(value: Double): String {
+        val d = BigDecimal(value.toString())
+        return d.toPlainString()
+    }
 
-        return d.toPlainString();
+    companion object {
+        fun round(value: Double, places: Int): Double {
+            var rounded = value
+            require(places >= 0)
+            val factor = 10.0.pow(places.toDouble()).toLong()
+            rounded *= factor
+            val tmp = value.roundToInt()
+            return tmp.toDouble() / factor
+        }
     }
 }

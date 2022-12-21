@@ -7,7 +7,7 @@ public class Items {
     // Store the uc code of item
     private String UPC;
 
-    private  String Name;
+    private String Name;
     //Store the quatity of item
     private String Quantity;
     // Store the Price of item
@@ -15,10 +15,10 @@ public class Items {
     //Store the Extra info of items
     private String AdditionalInfo;
 
-    private  int selectQuatity;
+    private int selectQuatity;
 
     private double totalPrice;
-    private  String imageInHex;
+    private String imageInHex;
     private String imageUrl;
 
     public String getImageUrl() {
@@ -36,7 +36,6 @@ public class Items {
     public void setImageInHex(String imageInHex) {
         this.imageInHex = imageInHex;
     }
-
 
 
     public String getIsManual() {
@@ -67,7 +66,6 @@ public class Items {
     }
 
 
-
     public int getSelectQuatity() {
         return selectQuatity;
     }
@@ -75,7 +73,6 @@ public class Items {
     public void setSelectQuatity(int selectQuatity) {
         this.selectQuatity = selectQuatity;
     }
-
 
 
     public String getID() {
@@ -121,15 +118,15 @@ public class Items {
     @Override
     public boolean equals(Object obj) {
         // TODO Auto-generated method stub
-        if(obj instanceof Items)
-        {
+        if (obj instanceof Items) {
             Items temp = (Items) obj;
-            if(this.getUPC() == temp.getUPC())
+            if (this.getUPC() == temp.getUPC())
                 return true;
         }
         return false;
 
     }
+
     @Override
     public int hashCode() {
         // TODO Auto-generated method stub

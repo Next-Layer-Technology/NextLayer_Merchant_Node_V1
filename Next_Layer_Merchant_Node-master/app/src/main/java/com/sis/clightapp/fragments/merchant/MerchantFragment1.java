@@ -1,6 +1,7 @@
 package com.sis.clightapp.fragments.merchant;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -62,6 +63,7 @@ import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.Network.CheckNetwork;
 
 import com.sis.clightapp.R;
+import com.sis.clightapp.fragments.printing.PrintDialogFragment;
 import com.sis.clightapp.util.AppConstants;
 import com.sis.clightapp.util.CustomSharedPreferences;
 import com.sis.clightapp.util.Functions2;
@@ -78,12 +80,10 @@ import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.CreateInvoice;
 import com.sis.clightapp.model.GsonModel.DecodePayBolt11;
 import com.sis.clightapp.model.GsonModel.Invoice;
-import com.sis.clightapp.model.GsonModel.InvoiceForPrint;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantLoginResp;
 import com.sis.clightapp.model.GsonModel.Pay;
 import com.sis.clightapp.model.GsonModel.Refund;
-import com.sis.clightapp.model.GsonModel.Sale;
 
 import com.sis.clightapp.model.Invoices.InvoicesResponse;
 import com.sis.clightapp.model.REST.TransactionInfo;
@@ -188,7 +188,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     static String senderEmail = null;
     public static final int REQUEST_WRITE_PERMISSION = 786;
     static File folderpath = null;
-    ArrayList<Sale> mSaleDataSource;
+    ArrayList<Invoice> mSaleDataSource;
     ArrayList<Refund> mRefundDataSource;
     TextView setTextWithSpan;
     String getPaidLABEL = "";
@@ -615,9 +615,9 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     private void setAdapterToDateSale(String toString) {
         String dateval = toString;
         if (GlobalState.getInstance().getmMerchantSalesListDataSource() != null) {
-            ArrayList<Sale> merchantSaleList = GlobalState.getInstance().getmMerchantSalesListDataSource();
-            ArrayList<Sale> fromDateSaleList = new ArrayList<>();
-            for (Sale sale : merchantSaleList) {
+            ArrayList<Invoice> merchantSaleList = GlobalState.getInstance().getmMerchantSalesListDataSource();
+            ArrayList<Invoice> fromDateSaleList = new ArrayList<>();
+            for (Invoice sale : merchantSaleList) {
                 if (sale.getPayment_preimage() != null) {
                     String[] sourceSplit = dateval.split("-");
                     int month = Integer.parseInt(sourceSplit[0]);
@@ -651,9 +651,9 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     private void setAdapterFromDateSale(String fromDateSale) {
         String dateval = fromDateSale;
         if (GlobalState.getInstance().getmMerchantSalesListDataSource() != null) {
-            ArrayList<Sale> merchantSaleList = GlobalState.getInstance().getmMerchantSalesListDataSource();
-            ArrayList<Sale> fromDateSaleList = new ArrayList<>();
-            for (Sale sale : merchantSaleList) {
+            ArrayList<Invoice> merchantSaleList = GlobalState.getInstance().getmMerchantSalesListDataSource();
+            ArrayList<Invoice> fromDateSaleList = new ArrayList<>();
+            for (Invoice sale : merchantSaleList) {
                 if (sale.getPayment_preimage() != null) {
                     String[] sourceSplit = dateval.split("-");
                     int month = Integer.parseInt(sourceSplit[0]);
@@ -725,7 +725,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 //        Type type = new TypeToken<ArrayList<Sale>>() {
 //        }.getType();
 //        ArrayList<Sale> saleArrayList = new ArrayList<>();
-        ArrayList<Sale> saleArrayList = new ArrayList<>();
+        ArrayList<Invoice> saleArrayList = new ArrayList<>();
         InvoicesResponse invoicesResponse;
         try {
             invoicesResponse = gson.fromJson(jsonString, InvoicesResponse.class);
@@ -776,12 +776,12 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     private void setSalesAdapter() {
 
         if (GlobalState.getInstance().getmMerchantSalesListDataSource() != null) {
-            ArrayList<Sale> merchantSaleList = GlobalState.getInstance().getmMerchantSalesListDataSource();
-            ArrayList<Sale> todaySaleList = new ArrayList<>();
-            ArrayList<Sale> totalPaidSaleList = new ArrayList<>();
-            ArrayList<Sale> totalUnPaidSaleList = new ArrayList<>();
-            ArrayList<Sale> totalSaleList = new ArrayList<>();
-            for (Sale sale : merchantSaleList) {
+            ArrayList<Invoice> merchantSaleList = GlobalState.getInstance().getmMerchantSalesListDataSource();
+            ArrayList<Invoice> todaySaleList = new ArrayList<>();
+            ArrayList<Invoice> totalPaidSaleList = new ArrayList<>();
+            ArrayList<Invoice> totalUnPaidSaleList = new ArrayList<>();
+            ArrayList<Invoice> totalSaleList = new ArrayList<>();
+            for (Invoice sale : merchantSaleList) {
                 //   luqman comment     if (sale.getPayment_preimage() != null) {
                 if (sale.getLabel() != null) {
                     totalPaidSaleList.add(sale);
@@ -1038,6 +1038,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         return invoice;
     }
 
+    @SuppressLint("SetTextI18n")
     private void dialogBoxForConfirmPaymentInvoice(final Invoice invoice) {
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
         int height = Resources.getSystem().getDisplayMetrics().heightPixels;
@@ -1065,15 +1066,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
 
         if (invoice != null) {
             if (invoice.getStatus().equals("paid")) {
-                InvoiceForPrint invoiceForPrint = new InvoiceForPrint();
-                //before // invoiceForPrint.setMsatoshi(invoice.getMsatoshi()/1000);
-                //After
-                invoiceForPrint.setMsatoshi(invoice.getMsatoshi());
-                invoiceForPrint.setPayment_preimage(invoice.getPayment_preimage());
-                invoiceForPrint.setPaid_at(invoice.getPaid_at());
-                invoiceForPrint.setPurchasedItems(getPaidDescrition);
-                invoiceForPrint.setTax(excatFigure(round((mSatoshoToBtc(invoice.getMsatoshi())), 9)) + "BTC\n$" + round(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi())), 2) + "USD");
-                GlobalState.getInstance().invoiceForPrint =(invoiceForPrint);
                 amount.setVisibility(View.VISIBLE);
                 payment_preImage.setVisibility(View.VISIBLE);
                 paid_at.setVisibility(View.VISIBLE);
@@ -1092,14 +1084,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 //   tax.setText(excatFigure(round(getTaxOfBTC(mSatoshoToBtc(invoice.getMsatoshi())),9))+" BTC\n"+round(getTaxOfUSD(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi()))),2)+"$");
 
             } else {
-                InvoiceForPrint invoiceForPrint = new InvoiceForPrint();
-                invoiceForPrint.setMsatoshi(0.0);
-                invoiceForPrint.setPayment_preimage("N/A");
-                invoiceForPrint.setPaid_at(0000);
-                invoiceForPrint.setPurchasedItems(getPaidDescrition);
-                invoiceForPrint.setDesscription(getPaidDescrition);
-                invoiceForPrint.setTax(excatFigure(round((mSatoshoToBtc(invoice.getMsatoshi())), 9)) + "BTC\n$" + round(getUsdFromBtc(mSatoshoToBtc(invoice.getMsatoshi())), 2) + "USD");
-                GlobalState.getInstance().invoiceForPrint=(invoiceForPrint);
                 amount.setVisibility(View.VISIBLE);
                 payment_preImage.setVisibility(View.VISIBLE);
                 paid_at.setVisibility(View.VISIBLE);
@@ -1110,74 +1094,24 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 paid_at.setText("N/A");
                 purchased_Items.setText(getPaidDescrition);
                 payment_preImage.setImageBitmap(getBitMapImg(invoice.getPayment_preimage(), 300, 300));
-                double temmsat = invoice.getMsatoshi();
-                temmsat = 240000000;
-                // tax.setText("tem"+excatFigure(getTaxOfBTC(mSatoshoToBtc(temmsat)))+"BTC");
-                //TODO: if payment not recived
             }
         }
 
-        printInvoice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InvoiceForPrint invoiceForPrint = GlobalState.getInstance().getInvoiceForPrint();
-
-                if (invoice.getStatus().equals("paid")) {
-
-                    getSalesListFromMerchantServer();
-                    getRefundsListFromMerchantServer();
-                    if (invoiceForPrint != null) {
-
-
-                        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                        if (!mBluetoothAdapter.isEnabled()) {
-                            dialogBoxForConnecctingBTPrinter();
-                        } else {
-                            if (mBluetoothSocket != null) {
-                                Toast.makeText(getContext(), "Already Connected", Toast.LENGTH_LONG).show();
-                                try {
-
-                                    sendData("getPaidDistribute");
-                                } catch (IOException e) {
-                                    Log.e("SendDataError", e.toString());
-                                    e.printStackTrace();
-                                }
-
-
-                            } else {
-                                dialogBoxForConnecctingBTPrinter();
-                            }
-                        }
-
-
-                        //:TODO : do what need to make print..
-                    } else {
-                        confirmPaymentDialog.dismiss();
-
-                        //TODO: do when nothin to print
-                    }
-
-                } else {
-                    getSalesListFromMerchantServer();
-                    getRefundsListFromMerchantServer();
-                    //TODO:When Unpaid
-                    if (invoiceForPrint != null) {
-                        //:TODO : do what need to make print..
-                        confirmPaymentDialog.dismiss();
-                    } else {
-                        confirmPaymentDialog.dismiss();
-                        //TODO: do when nothin to print
-                    }
-                }
-            }
-        });
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        printInvoice.setOnClickListener(view -> {
+            if (invoice.getStatus().equals("paid")) {
+                getSalesListFromMerchantServer();
+                getRefundsListFromMerchantServer();
+                new PrintDialogFragment(invoice, null,new ArrayList()).show(getChildFragmentManager(), null);
+            } else {
                 getSalesListFromMerchantServer();
                 getRefundsListFromMerchantServer();
                 confirmPaymentDialog.dismiss();
             }
+        });
+        ivBack.setOnClickListener(v -> {
+            getSalesListFromMerchantServer();
+            getRefundsListFromMerchantServer();
+            confirmPaymentDialog.dismiss();
         });
         confirmPaymentDialog.show();
     }
@@ -1254,7 +1188,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         String mst = msatoshi;
         MSATOSHI = (Double.valueOf(msatoshi));
         double btc = mSatoshoToBtc(Double.valueOf(msatoshi));
-        // double priceInBTC = GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
         double priceInBTC = GlobalState.getInstance().getChannel_btcResponseData().getPrice();
         double usd = priceInBTC * btc;
         AMOUNT_USD = usd;
@@ -1337,7 +1270,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 Type type = new TypeToken<Pay>() {
                 }.getType();
                 pay = gson.fromJson(jsonObj.toString(), type);
-                // GlobalState.getInstance().setInvoice(pay);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
             }
@@ -1379,7 +1311,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     }
 
     private void executeCommandeerRefundApi(String bolt11value, String labelval, String amountusd) {
-        //double priceInBTC = 1 / GlobalState.getInstance().getCurrentAllRate().getUSD().getLast();
         double priceInBTC = 1 / GlobalState.getInstance().getChannel_btcResponseData().getPrice();
         priceInBTC = priceInBTC * Double.parseDouble(amountusd);
         double amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi;
@@ -1434,16 +1365,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     }
 
     private void showCofirmationDialog(final Pay payresponse) {
-        Log.e("errorhe", "showCofirmationDialog me agya");
-        InvoiceForPrint invoiceForPrint = new InvoiceForPrint();
-        invoiceForPrint.setDestination(payresponse.getDestination());
-        invoiceForPrint.setMsatoshi(payresponse.getMsatoshi());
-        invoiceForPrint.setPayment_preimage(payresponse.getPayment_preimage());
-        invoiceForPrint.setCreated_at(payresponse.getCreated_at());
-        // invoiceForPrint.setPayment_hash(payresponse.getPayment_hash());
-        invoiceForPrint.setPurchasedItems(current_transaction_description);
-        invoiceForPrint.setDesscription(current_transaction_description);
-        GlobalState.getInstance().invoiceForPrint =(invoiceForPrint);
         int width = Resources.getSystem().getDisplayMetrics().widthPixels;
         int height = Resources.getSystem().getDisplayMetrics().heightPixels;
         commandeerRefundDialogstep2 = new Dialog(getContext());
@@ -1460,55 +1381,23 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         if (payresponse.getStatus().equals("complete")) {
             ok.setText("Print");
         }
-        ok.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                InvoiceForPrint invoiceForPrint = GlobalState.getInstance().getInvoiceForPrint();
-                if (payresponse.getStatus().equals("complete")) {
-                    getRefundsListFromMerchantServer();
-                    getSalesListFromMerchantServer();
-                    if (invoiceForPrint != null) {
-                        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                        if (!mBluetoothAdapter.isEnabled()) {
-                            dialogBoxForConnecctingBTPrinter();
-                        } else {
-                            if (mBluetoothSocket != null) {
-                                Toast.makeText(getContext(), "Already Connected", Toast.LENGTH_LONG).show();
-                                try {
-                                    sendData("commandeerRefund");
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-
-                                }
-                                commandeerRefundDialogstep2.dismiss();
-                            } else {
-                                dialogBoxForConnecctingBTPrinter();
-                            }
-                        }
-                        //:TODO : do what need to make print..
-                    } else {
-                        confirmPaymentDialog.dismiss();
-                        //TODO: do when nothin to print
-                    }
-
-                } else {
-                    getRefundsListFromMerchantServer();
-                    getSalesListFromMerchantServer();
-                    commandeerRefundDialogstep2.dismiss();
-                }
-
-            }
-        });
-
-        // progressBar = dialog.findViewById(R.id.progress_bar);
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                commandeerRefundDialogstep2.dismiss();
+        ok.setOnClickListener(view -> {
+            if (payresponse.getStatus().equals("complete")) {
                 getRefundsListFromMerchantServer();
                 getSalesListFromMerchantServer();
-
+                new PrintDialogFragment(null, payresponse,new ArrayList()).show(getChildFragmentManager(), null);
+            } else {
+                getRefundsListFromMerchantServer();
+                getSalesListFromMerchantServer();
+                commandeerRefundDialogstep2.dismiss();
             }
+
+        });
+        ivBack.setOnClickListener(v -> {
+            commandeerRefundDialogstep2.dismiss();
+            getRefundsListFromMerchantServer();
+            getSalesListFromMerchantServer();
+
         });
         commandeerRefundDialogstep2.show();
 
@@ -1522,22 +1411,18 @@ public class MerchantFragment1 extends MerchantBaseFragment {
             permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        switch (requestCode) {
-            case REQUEST_WRITE_PERMISSION:
-                if (grantResults.length > 0 && permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    // check whether storage permission granted or not.
-                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                        // do what you want;
-                        try {
-                            getCSV();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
+        if (requestCode == REQUEST_WRITE_PERMISSION) {
+            if (grantResults.length > 0 && permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                // check whether storage permission granted or not.
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // do what you want;
+                    try {
+                        getCSV();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
                 }
-                break;
-            default:
-                break;
+            }
         }
     }
 
@@ -1672,25 +1557,10 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         //init dialog views
         final ImageView ivBack = blutoothDevicesDialog.findViewById(R.id.iv_back_invoice);
         final Button scanDevices = blutoothDevicesDialog.findViewById(R.id.btn_scanDevices);
-        TextView tv_status = blutoothDevicesDialog.findViewById(R.id.tv_status);
-        ListView blueDeviceListView = blutoothDevicesDialog.findViewById(R.id.blueDeviceListView);
         initials();
-        scanDevices.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                initials();
-
-            }
-        });
-        ivBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                blutoothDevicesDialog.dismiss();
-            }
-        });
-
+        scanDevices.setOnClickListener(view -> initials());
+        ivBack.setOnClickListener(v -> blutoothDevicesDialog.dismiss());
         blutoothDevicesDialog.show();
-
     }
 
     private void closeSocket(BluetoothSocket nOpenSocket) {
@@ -1710,191 +1580,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 Log.v("", "PairedDevices: " + mDevice.getName() + "  "
                         + mDevice.getAddress());
             }
-        }
-    }
-
-    void sendData(String getPaidDistribute) throws IOException {
-
-        try {
-            switch (getPaidDistribute) {
-                case "getPaidDistribute":
-                    btoutputstream = mBluetoothSocket.getOutputStream();
-                    // the text typed by the user
-                    InvoiceForPrint recInvoiceForPrint = GlobalState.getInstance().getInvoiceForPrint();
-                    DecimalFormat precision = new DecimalFormat("0.00");
-                    if (recInvoiceForPrint != null) {
-                        final String paidAt = getDateFromUTCTimestamp(recInvoiceForPrint.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE);
-                        final String amount = excatFigure(round((mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 9)) + "BTC/$" + precision.format(round(getUsdFromBtc(mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 2)) + "USD";
-                        final String amountInBtc = excatFigure(round((mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 9)) + " BTC";
-                        final String amountInUsd = precision.format(round(getUsdFromBtc(mSatoshoToBtc(recInvoiceForPrint.getMsatoshi())), 2)) + " USD";
-                        final String des = recInvoiceForPrint.getPurchasedItems();
-                        final Bitmap bitmap = getBitMapFromHex(recInvoiceForPrint.getPayment_preimage());
-                        printingProgressBar.show();
-                        printingProgressBar.setCancelable(false);
-                        printingProgressBar.setCanceledOnTouchOutside(false);
-                        Thread t = new Thread() {
-                            public void run() {
-                                try {
-                                    // This is printer specific code you can comment ==== > Start
-                                    btoutputstream.write(PrinterCommands.reset);
-                                    btoutputstream.write(PrinterCommands.INIT);
-                                    btoutputstream.write("\n\n".getBytes());
-                                    btoutputstream.write("    Sale / Incoming Funds".getBytes());
-                                    btoutputstream.write("\n".getBytes());
-                                    btoutputstream.write("    ---------------------".getBytes());
-                                    btoutputstream.write("\n".getBytes());
-                                    btoutputstream.write(des.getBytes());
-                                    btoutputstream.write("\n\n".getBytes());
-                                    btoutputstream.write("\tAmount: ".getBytes());
-                                    btoutputstream.write("\n\t".getBytes());
-                                    //amountInBTC should right
-                                    btoutputstream.write(amountInBtc.getBytes());
-                                    btoutputstream.write("\n\t".getBytes());
-                                    //amountInBTC should right
-                                    btoutputstream.write(amountInUsd.getBytes());
-                                    btoutputstream.write("\n".getBytes());
-                                    btoutputstream.write("\n".getBytes());
-                                    //Paid at title should center
-                                    btoutputstream.write("\tReceived:".getBytes());
-                                    btoutputstream.write("\n  ".getBytes());
-                                    //Paid at   should center
-                                    btoutputstream.write("  ".getBytes());
-                                    btoutputstream.write(paidAt.getBytes());
-                                    btoutputstream.write("\n\n".getBytes());
-
-                                    btoutputstream.write("\tPayment Hash:".getBytes());
-                                    printNewLine();
-                                    if (bitmap != null) {
-                                        Bitmap bMapScaled = Bitmap.createScaledBitmap(bitmap, 250, 250, true);
-                                        new ByteArrayOutputStream();
-                                        PrintPic printPic = PrintPic.getInstance();
-                                        printPic.init(bMapScaled);
-                                        byte[] bitmapdata = printPic.printDraw();
-                                        btoutputstream.write(PrinterCommands.print);
-                                        btoutputstream.write(bitmapdata);
-                                        btoutputstream.write(PrinterCommands.print);
-                                    }
-                                    btoutputstream.write("\n\n".getBytes());
-                                    Thread.sleep(1000);
-                                    printingProgressBar.dismiss();
-
-
-                                } catch (Exception e) {
-                                    Log.e("PrintError", "Exe ", e);
-
-                                }
-
-                            }
-                        };
-                        t.start();
-                    } else {
-                        btoutputstream.write(PrinterCommands.reset);
-                        btoutputstream.write(PrinterCommands.INIT);
-                        btoutputstream.write(PrinterCommands.FEED_LINE);
-                        String paidAt = "\n\n\n\n\n\n\nNot Data Found\n\n\n\n\n\n\n";
-                        btoutputstream.write(paidAt.getBytes());
-                    }
-                    break;
-                case "commandeerRefund":
-                    Log.e("errorhe", "commandeerRefund Case me");
-                    btoutputstream = mBluetoothSocket.getOutputStream();
-                    InvoiceForPrint recInvoiceForPrint2 = GlobalState.getInstance().getInvoiceForPrint();
-                    DecimalFormat precision2 = new DecimalFormat("0.00");
-                    if (recInvoiceForPrint2 != null) {
-                        Log.e("errorhe", " recInvoiceForPrint2 not Null");
-                        final String paidAt2 = getDateFromUTCTimestamp(recInvoiceForPrint2.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE);
-                        final String amount2 = excatFigure(round((mSatoshoToBtc(recInvoiceForPrint2.getMsatoshi())), 9)) + "BTC/$" + precision2.format(round(getUsdFromBtc(mSatoshoToBtc(recInvoiceForPrint2.getMsatoshi())), 2)) + "USD";
-                        final String amountInBtc2 = excatFigure(round((mSatoshoToBtc(recInvoiceForPrint2.getMsatoshi())), 9)) + " BTC";
-                        final String amountInUsd2 = precision2.format(round(getUsdFromBtc(mSatoshoToBtc(recInvoiceForPrint2.getMsatoshi())), 2)) + " USD";
-                        final String des2 = recInvoiceForPrint2.getPurchasedItems();
-                        final Bitmap paymentHashBitmap = getBitMapFromHex(recInvoiceForPrint2.getPayment_preimage());
-                        final Bitmap destinationBitmap = getBitMapFromHex(recInvoiceForPrint2.getDestination());
-                        printingProgressBar.show();
-                        printingProgressBar.setCancelable(false);
-                        printingProgressBar.setCanceledOnTouchOutside(false);
-                        Thread t2 = new Thread() {
-                            public void run() {
-                                try {
-                                    // This is printer specific code you can comment ==== > Start
-                                    btoutputstream.write(PrinterCommands.reset);
-                                    btoutputstream.write(PrinterCommands.INIT);
-                                    btoutputstream.write("\n\n".getBytes());
-                                    btoutputstream.write("    Refund / Payout".getBytes());
-                                    btoutputstream.write("\n".getBytes());
-                                    btoutputstream.write("    ---------------".getBytes());
-                                    btoutputstream.write("\n".getBytes());
-                                    btoutputstream.write(des2.getBytes());
-                                    btoutputstream.write("\n\n".getBytes());
-                                    btoutputstream.write("\tAmount: ".getBytes());
-                                    btoutputstream.write("\n\t".getBytes());
-                                    //amountInBTC should right
-                                    btoutputstream.write(amountInBtc2.getBytes());
-                                    btoutputstream.write("\n\t".getBytes());
-                                    //amountInBTC should right
-                                    btoutputstream.write(amountInUsd2.getBytes());
-                                    btoutputstream.write("\n".getBytes());
-                                    btoutputstream.write("\n".getBytes());
-                                    //Paid at title should center
-                                    btoutputstream.write("\tReceived:".getBytes());
-                                    btoutputstream.write("\n  ".getBytes());
-                                    //Paid at   should center
-                                    btoutputstream.write("  ".getBytes());
-                                    btoutputstream.write(paidAt2.getBytes());
-                                    btoutputstream.write("\n\n".getBytes());
-                                    btoutputstream.write("\n".getBytes());
-                                    btoutputstream.write("\tBolt 11:".getBytes());
-                                    if (destinationBitmap != null) {
-                                        Bitmap bMapScaled = Bitmap.createScaledBitmap(destinationBitmap, 250, 250, true);
-                                        new ByteArrayOutputStream();
-                                        PrintPic printPic = PrintPic.getInstance();
-                                        printPic.init(bMapScaled);
-                                        byte[] bitmapdata = printPic.printDraw();
-                                        btoutputstream.write(PrinterCommands.print);
-                                        btoutputstream.write(bitmapdata);
-                                        btoutputstream.write(PrinterCommands.print);
-                                    }
-                                    btoutputstream.write("\n".getBytes());
-                                    btoutputstream.write("\tPayment Hash:".getBytes());
-                                    printNewLine();
-                                    if (paymentHashBitmap != null) {
-                                        Bitmap bMapScaled = Bitmap.createScaledBitmap(paymentHashBitmap, 250, 250, true);
-                                        new ByteArrayOutputStream();
-                                        PrintPic printPic = PrintPic.getInstance();
-                                        printPic.init(bMapScaled);
-                                        byte[] bitmapdata = printPic.printDraw();
-                                        btoutputstream.write(PrinterCommands.print);
-                                        btoutputstream.write(bitmapdata);
-                                        btoutputstream.write(PrinterCommands.print);
-                                    }
-                                    btoutputstream.write("\n\n".getBytes());
-                                    Thread.sleep(1000);
-                                    printingProgressBar.dismiss();
-                                } catch (Exception e) {
-                                    Log.e("PrintError", "Exe ", e);
-                                    Log.e("errorhe", "0");
-                                }
-
-                            }
-                        };
-                        t2.start();
-                    } else {
-                        Log.e("errorhe", "recInvoiceForPrint2 Is Null");
-                        Log.e("errorhe", "1");
-                        btoutputstream.write(PrinterCommands.reset);
-                        btoutputstream.write(PrinterCommands.INIT);
-                        btoutputstream.write(PrinterCommands.FEED_LINE);
-                        String paidAt = "\n\n\n\n\n\n\nNot Data Found\n\n\n\n\n\n\n";
-                        btoutputstream.write(paidAt.getBytes());
-                    }
-                    break;
-            }
-
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            Log.e("errorhe", "3");
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("errorhe", "3");
         }
     }
 
@@ -2015,11 +1700,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
             Calendar cal2 = Calendar.getInstance();
             cal1.setTime(currentDate);
             cal2.setTime(paidDate);
-            boolean sameMonth = cal1.get(Calendar.MONTH) == cal2.get(Calendar.MONTH) &&
-                    cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
-//            if(sameMonth){
             todayList.add(refund);
-//            }
         }
         if (todayList.size() > 0) {
             Date date = null;
@@ -2293,9 +1974,9 @@ public class MerchantFragment1 extends MerchantBaseFragment {
     }
 
     //TODO:Sales Emailing
-    private void monthlyReportSendingEmailSale(ArrayList<Sale> saleList) {
-        ArrayList<Sale> todayList = new ArrayList<>();
-        for (Sale sale : saleList) {
+    private void monthlyReportSendingEmailSale(ArrayList<Invoice> saleList) {
+        ArrayList<Invoice> todayList = new ArrayList<>();
+        for (Invoice sale : saleList) {
             long curentTime = new Date().getTime();
             long paidTime = sale.getPaid_at() * 1000;
             long dayDiff = getDayDiffDates(paidTime, curentTime);
@@ -2343,7 +2024,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         }
     }
 
-    private void sendEmailMonthly(ArrayList<Sale> todayList) {
+    private void sendEmailMonthly(ArrayList<Invoice> todayList) {
         String merchantId = "merchant";
         UserInfo userInfo = GlobalState.getInstance().getUserInfo();
         if (userInfo != null) {
@@ -2376,7 +2057,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                 writer.writeAll(data2);
                 // closing writer connection
                 writer.close();
-                GlobalState.getInstance().setSaleFile(file);
+                GlobalState.setSaleFile(file);
                 sendSaleEmail("Monthly");
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -2389,10 +2070,10 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         }
     }
 
-    private void weeklyReportSendingEmailSale(ArrayList<Sale> saleList) {
+    private void weeklyReportSendingEmailSale(ArrayList<Invoice> saleList) {
 
-        ArrayList<Sale> todayList = new ArrayList<>();
-        for (Sale sale : saleList) {
+        ArrayList<Invoice> todayList = new ArrayList<>();
+        for (Invoice sale : saleList) {
             long curentTime = new Date().getTime();
             long paidTime = sale.getPaid_at() * 1000;
             long dayDiff = getDayDiffDates(paidTime, curentTime);
@@ -2442,7 +2123,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         }
     }
 
-    private void sendEmailWeekly(ArrayList<Sale> todayList) {
+    private void sendEmailWeekly(ArrayList<Invoice> todayList) {
         String merchantId = "merchant";
         UserInfo userInfo = GlobalState.getInstance().getUserInfo();
         if (userInfo != null) {
@@ -2488,10 +2169,10 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         }
     }
 
-    private void dailyReportSendingEmailSale(ArrayList<Sale> saleList) {
+    private void dailyReportSendingEmailSale(ArrayList<Invoice> saleList) {
 
-        ArrayList<Sale> todayList = new ArrayList<>();
-        for (Sale sale : saleList) {
+        ArrayList<Invoice> todayList = new ArrayList<>();
+        for (Invoice sale : saleList) {
             long curentTime = new Date().getTime();
             long paidTime = sale.getPaid_at() * 1000;
             long dayDiff = getDayDiffDates(paidTime, curentTime);
@@ -2540,7 +2221,7 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         }
     }
 
-    private void sendEmailDaily(ArrayList<Sale> todayList) {
+    private void sendEmailDaily(ArrayList<Invoice> todayList) {
         long curentTime = new Date().getTime();
         Date currentDate = new Date(curentTime);
         SimpleDateFormat sdf = new SimpleDateFormat(AppConstants.OUTPUT_DATE_FORMATE, Locale.US);
@@ -2587,14 +2268,14 @@ public class MerchantFragment1 extends MerchantBaseFragment {
         }
     }
 
-    private static List<String[]> toStringArrayFromSale(List<Sale> emps) {
+    private static List<String[]> toStringArrayFromSale(List<Invoice> emps) {
         List<String[]> records = new ArrayList<String[]>();
 
         // adding header record
         records.add(new String[]{"label", "msatoshi", "status", "paid_at", "payment_preimage", "description"});
-        Iterator<Sale> it = emps.iterator();
+        Iterator<Invoice> it = emps.iterator();
         while (it.hasNext()) {
-            Sale emp = it.next();
+            Invoice emp = it.next();
             records.add(new String[]{emp.getLabel(), excatFigure2(emp.getMsatoshi()), emp.getStatus(), getDateFromUTCTimestamp2(emp.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE), emp.getPayment_preimage(), emp.getDescription()});
         }
         return records;
@@ -3520,7 +3201,6 @@ public class MerchantFragment1 extends MerchantBaseFragment {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
 
 
                     }

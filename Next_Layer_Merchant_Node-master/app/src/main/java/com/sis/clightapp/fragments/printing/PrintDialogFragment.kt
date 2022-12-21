@@ -24,7 +24,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.AdapterView.OnItemClickListener
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.DialogFragment
 import com.google.zxing.BarcodeFormat
@@ -33,19 +32,25 @@ import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.sis.clightapp.R
+import com.sis.clightapp.model.GsonModel.Invoice
+import com.sis.clightapp.model.GsonModel.Items
+import com.sis.clightapp.model.GsonModel.Pay
 import com.sis.clightapp.util.AppConstants
-import com.sis.clightapp.util.GlobalState
+import com.sis.clightapp.util.Utils
 import com.sis.clightapp.util.print.PrintPic
 import com.sis.clightapp.util.print.PrinterCommands
-import com.sis.clightapp.util.Utils
-import com.sis.clightapp.model.GsonModel.InvoiceForPrint
 import java.io.ByteArrayOutputStream
 import java.io.IOException
-import java.lang.Exception
 import java.text.DecimalFormat
 import java.util.*
 
-class PrintDialogFragment : DialogFragment() {
+
+class PrintDialogFragment(
+    private val invoice: Invoice? = null,
+    private val payment: Pay? = null,
+    private val items: List<Items> = listOf(),
+) : DialogFragment() {
+
     private val requestCode = 2
     private lateinit var bluetoothAdapter: BluetoothAdapter
     var btReceiver: BroadcastReceiver? = null
@@ -68,7 +73,11 @@ class PrintDialogFragment : DialogFragment() {
         val ivBack: ImageView = btDevicesDialog.findViewById(R.id.iv_back_invoice)
         val scanDevices: Button = btDevicesDialog.findViewById(R.id.btn_scanDevices)
         initializeBluetooth()
-        scanDevices.setOnClickListener { initializeBluetooth() }
+        scanDevices.setOnClickListener {
+            val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
+            requireActivity().registerReceiver(btReceiver, filter)
+            bluetoothAdapter.startDiscovery()
+        }
         ivBack.setOnClickListener { btDevicesDialog.dismiss() }
 
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -96,7 +105,7 @@ class PrintDialogFragment : DialogFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun initializeBluetooth() {
-        if (Build.VERSION.SDK_INT >=31 && ActivityCompat.checkSelfPermission(
+        if (Build.VERSION.SDK_INT >= 31 && ActivityCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.BLUETOOTH_SCAN
             ) != PackageManager.PERMISSION_GRANTED
@@ -111,7 +120,6 @@ class PrintDialogFragment : DialogFragment() {
             startActivityForResult(enableBtIntent, requestCode)
             return
         }
-        bluetoothAdapter.startDiscovery()
         val mPairedDevicesArrayAdapter =
             object : ArrayAdapter<BluetoothDevice>(requireContext(), R.layout.device_name) {
                 @SuppressLint("MissingPermission")
@@ -125,51 +133,35 @@ class PrintDialogFragment : DialogFragment() {
                     (currentItemView as TextView?)?.let {
                         it.text = item.name.toString() + " - " + item.address
                     }
+                    currentItemView?.setOnClickListener {
+                        val tvStatus: TextView = btDevicesDialog.findViewById(R.id.tv_status)
+                        try {
+                            dialog.visibility = View.VISIBLE
+                            tvStatus.text = "Device Status:Connecting...."
+                            bluetoothAdapter.cancelDiscovery()
+                            val device = bluetoothAdapter.getRemoteDevice(item.address)
+                            try {
+                                ConnectThread(device).start()
+                                printingProgressBar.show()
+                                tvStatus.text = "Status: Connecting"
+                                dialog.visibility = View.GONE
+                            } catch (eConnectException: IOException) {
+                                tvStatus.text = "Status: Try Again"
+                                dialog.visibility = View.GONE
+                                Log.e("ConnectError", eConnectException.toString())
+                            }
+                        } catch (ex: java.lang.Exception) {
+                            Log.e("ConnectError", ex.toString())
+                        }
+                    }
                     return currentItemView!!
                 }
             }
         val blueDeviceListView: ListView =
             btDevicesDialog.findViewById(R.id.blueDeviceListView)
         blueDeviceListView.adapter = mPairedDevicesArrayAdapter
-        blueDeviceListView.onItemClickListener =
-            OnItemClickListener { _: AdapterView<*>?, _: View?, mPosition: Int, _: Long ->
-                val tvStatus: TextView = btDevicesDialog.findViewById(R.id.tv_status)
-                try {
-                    dialog.visibility = View.VISIBLE
-                    tvStatus.text = "Device Status:Connecting...."
-                    bluetoothAdapter.cancelDiscovery()
-                    val device = bluetoothAdapter.getRemoteDevice(
-                        mPairedDevicesArrayAdapter.getItem(mPosition)!!.address
-                    )
-                    try {
-                        GlobalState.getInstance().invoiceForPrint = InvoiceForPrint().apply {
-                            msatoshi = 1.0
-                            paid_at = 12312312312312
-                            purchasedItems = "Items"
-                            tax = "1.0"
-                            desscription = "Description"
-                            created_at = 12312312312312.0
-                            destination = "Destination"
-                            payment_hash = "Hash"
-                        }
-                        ConnectThread(device).start()
-                        printingProgressBar.show()
-                        printingProgressBar.setCancelable(false)
-                        printingProgressBar.setCanceledOnTouchOutside(false)
-                        tvStatus.text = "Status: Connecting"
-                        dialog.visibility = View.GONE
-                    } catch (eConnectException: IOException) {
-                        tvStatus.text = "Status: Try Again"
-                        dialog.visibility = View.GONE
-                        Log.e("ConnectError", eConnectException.toString())
-                    }
-                } catch (ex: java.lang.Exception) {
-                    Log.e("ConnectError", ex.toString())
-                }
-            }
         val mPairedDevices =
             HashSet(bluetoothAdapter.bondedDevices)
-        val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
         mPairedDevicesArrayAdapter.addAll(mPairedDevices)
         btReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
@@ -190,7 +182,6 @@ class PrintDialogFragment : DialogFragment() {
                 }
             }
         }
-        requireActivity().registerReceiver(btReceiver, filter)
         dialog.visibility = View.GONE
     }
 
@@ -209,7 +200,11 @@ class PrintDialogFragment : DialogFragment() {
             mmSocket?.let { socket ->
                 try {
                     socket.connect()
-                    sendData(socket)
+                    if (invoice != null) {
+                        sendInvoice(socket)
+                    } else {
+                        sendPayment(socket)
+                    }
                 } catch (e: Exception) {
                     Log.d(TAG, "Socket timeout")
                 }
@@ -242,108 +237,215 @@ class PrintDialogFragment : DialogFragment() {
         }
     }
 
-    private fun sendData(socket: BluetoothSocket) {
+    private fun sendInvoice(socket: BluetoothSocket) {
         Thread {
             try {
+
                 val outputStream = socket.outputStream
+                var bytes = byteArrayOf()
+                bytes += PrinterCommands.reset
+
                 // the text typed by the user
-                val recInvoiceForPrint = GlobalState.getInstance().invoiceForPrint
                 val precision = DecimalFormat("0.00")
-                if (recInvoiceForPrint != null) {
+                if (invoice != null) {
                     val paidAt: String = Utils.dateStringUTCTimestamp(
-                        recInvoiceForPrint.paid_at,
+                        invoice.paid_at,
                         AppConstants.OUTPUT_DATE_FORMATE
                     )
-                    val amountInBtc: String = Utils.round(
-                        Utils.satoshiToBtc(recInvoiceForPrint.msatoshi),
+                    val btc: String = Utils.round(
+                        Utils.satoshiToBtc(invoice.msatoshi),
                         9
                     ).toString() + " BTC"
-                    val amountInUsd = precision.format(
+                    val usd = precision.format(
                         Utils.round(
                             Utils.btcToUsd(
-                                Utils.satoshiToBtc(recInvoiceForPrint.msatoshi)
+                                Utils.satoshiToBtc(invoice.msatoshi)
                             ), 2
                         )
                     ) + " USD"
-                    val des = recInvoiceForPrint.purchasedItems
-                    val bitmap: Bitmap? = getBitMapFromHex(recInvoiceForPrint.payment_preimage)
                     try {
                         // This is printer specific code you can comment ==== > Start
-                        outputStream.write(PrinterCommands.reset)
-                        outputStream.write(PrinterCommands.INIT)
-                        outputStream.write("\n\n".toByteArray())
-                        outputStream.write("    Sale / Incoming Funds".toByteArray())
-                        outputStream.write("\n".toByteArray())
-                        outputStream.write("    ---------------------".toByteArray())
-                        outputStream.write("\n".toByteArray())
-                        outputStream.write(des.toByteArray())
-                        outputStream.write("\n\n".toByteArray())
-                        outputStream.write("\tAmount: ".toByteArray())
-                        outputStream.write("\n\t".toByteArray())
-                        //amountInBTC should right
-                        outputStream.write(amountInBtc.toByteArray())
-                        outputStream.write("\n\t".toByteArray())
-                        //amountInBTC should right
-                        outputStream.write(amountInUsd.toByteArray())
-                        outputStream.write("\n".toByteArray())
-                        outputStream.write("\n".toByteArray())
-                        //Paid at title should center
-                        outputStream.write("\tReceived:".toByteArray())
-                        outputStream.write("\n  ".toByteArray())
-                        //Paid at   should center
-                        outputStream.write("  ".toByteArray())
-                        outputStream.write(paidAt.toByteArray())
-                        outputStream.write("\n\n".toByteArray())
-                        outputStream.write("\tPayment Hash:".toByteArray())
-                        outputStream.write(PrinterCommands.FEED_LINE);
-                        if (bitmap != null) {
-                            val bMapScaled = Bitmap.createScaledBitmap(bitmap, 250, 250, true)
-                            ByteArrayOutputStream()
-                            val printPic = PrintPic.getInstance()
-                            printPic.init(bMapScaled)
-                            val bitmapdata = printPic.printDraw()
-                            outputStream.write(PrinterCommands.print)
-                            outputStream.write(bitmapdata)
-                            outputStream.write(PrinterCommands.print)
-                            outputStream.write("\n\n".toByteArray())
+                        bytes += PrinterCommands.ESC_ALIGN_CENTER
+                        bytes += "Sale/Incoming Funds".toByteArray()
+                        bytes += feed(1)
+                        bytes += PrinterCommands.ESC_ALIGN_CENTER
+                        bytes += "---------------------".toByteArray()
+                        bytes += feed()
+                        bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += invoice.description.toByteArray()
+                        bytes += feed(1)
+                        if (items.isNotEmpty()) {
+                            bytes += PrinterCommands.ESC_ALIGN_CENTER
+                            bytes += "Items:".toByteArray()
+                            bytes += feed();
+                            items.forEach {
+                                bytes += PrinterCommands.ESC_ALIGN_RIGHT
+                                bytes += it.name.toByteArray()
+                                bytes += feed()
+                            }
                         }
-                        outputStream.write(PrinterCommands.FEED_PAPER_AND_CUT)
-                        Thread.sleep(1000)
-                    } catch (e: java.lang.Exception) {
+                        bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += "Amount:".toByteArray()
+                        //amountInBTC should right
+                        bytes += PrinterCommands.ESC_ALIGN_RIGHT
+                        bytes += btc.toByteArray()
+                        //amountInBTC should right
+                        bytes += usd.toByteArray()
+                        bytes += feed(1)
+                        //Paid at title should center
+                        bytes += PrinterCommands.ESC_ALIGN_CENTER
+                        bytes += "Received:".toByteArray()
+                        bytes += PrinterCommands.ESC_ALIGN_RIGHT
+                        bytes += paidAt.toByteArray()
+                        bytes += feed(1)
+                        bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += "Bolt 11 Invoice:".toByteArray()
+                        bytes += feed()
+                        bytes += PrinterCommands.ESC_ALIGN_RIGHT
+                        bytes += qr(invoice.bolt11)
+                        bytes += feed(1)
+                        bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += "Payment Hash:".toByteArray()
+                        bytes += feed()
+                        bytes += PrinterCommands.ESC_ALIGN_RIGHT
+                        bytes += qr(invoice.payment_hash)
+                        bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += feed(1)
+                    } catch (e: Exception) {
                         Log.e("PrintError", "Exe ", e)
                     }
                 } else {
-                    outputStream.write(PrinterCommands.reset)
-                    outputStream.write(PrinterCommands.INIT)
-                    outputStream.write(PrinterCommands.FEED_LINE)
+                    bytes += feed()
                     val paidAt = "Not Data Found"
-                    outputStream.write(paidAt.toByteArray())
+                    bytes += paidAt.toByteArray()
                 }
+                bytes += feed(1)
+                bytes += PrinterCommands.FEED_PAPER_AND_CUT
+                val bigNum = 2048
+                var i = 0
+                while (i < bytes.size) {
+                    val b = if (i + bigNum < bytes.size) bigNum else bytes.size - i
+                    outputStream.write(bytes, i, b)
+                    outputStream.flush()
+                    i += bigNum
+                    Thread.sleep(250)
+                }
+
                 socket.close()
                 requireActivity().runOnUiThread {
                     printingProgressBar.dismiss()
                 }
-            } catch (e: java.lang.Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
                 Log.e(TAG, "Error printing")
             }
-
         }.start()
     }
 
+    private fun sendPayment(socket: BluetoothSocket) {
+        Thread {
+            try {
+                val outputStream = socket.outputStream
+                var bytes = byteArrayOf()
+                // the text typed by the user
+                val precision = DecimalFormat("0.00")
+                if (payment != null) {
+                    val paidAt: String = Utils.dateStringUTCTimestamp(
+                        payment.created_at.toLong(),
+                        AppConstants.OUTPUT_DATE_FORMATE
+                    )
+                    val btc: String = Utils.round(
+                        Utils.satoshiToBtc(payment.msatoshi),
+                        9
+                    ).toString() + " BTC"
+                    val usd = precision.format(
+                        Utils.round(
+                            Utils.btcToUsd(
+                                Utils.satoshiToBtc(payment.msatoshi)
+                            ), 2
+                        )
+                    ) + " USD"
+                    val des = payment.message
+                    val bitmap: Bitmap? = getBitMapFromHex(payment.payment_preimage)
+                    try {
+                        // This is printer specific code you can comment ==== > Start
+                        bytes += PrinterCommands.reset
+                        bytes += PrinterCommands.INIT
+                        bytes += feed(2)
+                        bytes += "Refund / Outgoing".toByteArray()
+                        bytes += feed(1)
+                        bytes += "---------------------".toByteArray()
+                        bytes += feed()
+                        bytes += des.toByteArray()
+                        bytes += feed(2)
+                        bytes += "Amount: ".toByteArray()
+                        bytes += feed()
+                        //amountInBTC should right
+                        bytes += btc.toByteArray()
+                        bytes += feed()
+                        //amountInBTC should right
+                        bytes += usd.toByteArray()
+                        bytes += feed(2)
+                        //Paid at title should center
+                        bytes += "Sent: ".toByteArray()
+                        bytes += feed()
+                        //Paid at   should center
+                        bytes += paidAt.toByteArray()
+                        bytes += feed(1)
+                        bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += "Payment Hash:".toByteArray()
+                        bytes += feed()
+                        bytes += PrinterCommands.FEED_PAPER_AND_CUT
+                    } catch (e: Exception) {
+                        Log.e("PrintError", "Exe ", e)
+                    }
+                } else {
+                    bytes += PrinterCommands.reset
+                    bytes += PrinterCommands.INIT
+                    bytes += PrinterCommands.FEED_LINE
+                    val paidAt = "Not Data Found"
+                    bytes += paidAt.toByteArray()
+                }
+                bytes += PrinterCommands.FEED_PAPER_AND_CUT
+                outputStream.write(bytes)
+                socket.close()
+                requireActivity().runOnUiThread {
+                    printingProgressBar.dismiss()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e(TAG, "Error printing")
+            }
+        }.start()
 
-    private fun getBitMapFromHex(hex: String?): Bitmap? {
+    }
+
+    private fun qr(text: String): ByteArray {
+        val bitmap: Bitmap = getBitMapFromHex(text) ?: return byteArrayOf()
+        val printPic = PrintPic.getInstance()
+        printPic.init(bitmap)
+        return printPic.printDraw()
+    }
+
+    private fun feed(lines: Int = 1): ByteArray {
+        var bytes = byteArrayOf()
+        for (i in 0..lines) {
+            bytes += PrinterCommands.FEED_LINE
+        }
+        return bytes;
+    }
+
+    private fun getBitMapFromHex(hex: String?, width: Int = 500, height: Int = 500): Bitmap? {
         if (hex == null)
             return null
         val multiFormatWriter = MultiFormatWriter()
         var bitMatrix: BitMatrix? = null
         try {
-            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, 600, 600)
+            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, width, height)
         } catch (e: WriterException) {
             e.printStackTrace()
         }
         val barcodeEncoder = BarcodeEncoder()
         return barcodeEncoder.createBitmap(bitMatrix)
     }
-
 }

@@ -3,28 +3,20 @@ package com.sis.clightapp.util;
 import android.app.Application;
 
 import com.sis.clightapp.model.Channel_BTCResponseData;
-import com.sis.clightapp.model.Data;
-import com.sis.clightapp.model.GsonModel.CreateInvoice;
 import com.sis.clightapp.model.GsonModel.Invoice;
-import com.sis.clightapp.model.GsonModel.InvoiceForPrint;
 import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
 import com.sis.clightapp.model.GsonModel.Refund;
-import com.sis.clightapp.model.GsonModel.Sale;
-import com.sis.clightapp.model.GsonModel.StringImageOfUPCItem;
-import com.sis.clightapp.model.GsonModel.UPCofImages;
 import com.sis.clightapp.model.ImageRelocation.GetItemImageReloc;
 import com.sis.clightapp.model.REST.FundingNode;
 import com.sis.clightapp.model.Tax;
 import com.sis.clightapp.model.UserInfo;
 import com.sis.clightapp.model.currency.CurrentAllRate;
 import com.sis.clightapp.model.currency.CurrentSpecificRateData;
-import com.sis.clightapp.model.server.ServerData;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
 
 
 public class GlobalState extends Application {
@@ -35,16 +27,14 @@ public class GlobalState extends Application {
     private Channel_BTCResponseData channel_btcResponseData;
     private CurrentSpecificRateData currentSpecificRateData;
     private CurrentAllRate currentAllRate;
-    private ArrayList<Sale> mMerchantSalesListDataSource;
+    private ArrayList<Invoice> mMerchantSalesListDataSource;
     private ArrayList<Refund> mMerchantRefundsLIstDataSource;
-//    private ArrayList<Sale> mAdminReceiveablesListDataSource;
     private boolean isCheckoutBtnPress = false;
     private String lattitude;
     private String longitude;
     private Items deleteItem;
     private int delteItemPosition;
     private String dellSelectedItemUPC;
-    public InvoiceForPrint invoiceForPrint;
     private UserInfo userInfo;
     private Tax tax;
     private String tcIdUTC;
@@ -121,7 +111,6 @@ public class GlobalState extends Application {
         GlobalState.refundFile = refundFile;
     }
 
-    ArrayList<Sale> mSaleDataSource;
 
     public static File getSaleFile() {
         return saleFile;
@@ -164,11 +153,11 @@ public class GlobalState extends Application {
         this.mMerchantRefundsLIstDataSource = mMerchantRefundsLIstDataSource;
     }
 
-    public ArrayList<Sale> getmMerchantSalesListDataSource() {
+    public ArrayList<Invoice> getmMerchantSalesListDataSource() {
         return mMerchantSalesListDataSource;
     }
 
-    public void setmMerchantSalesListDataSource(ArrayList<Sale> mMerchantSalesListDataSource) {
+    public void setmMerchantSalesListDataSource(ArrayList<Invoice> mMerchantSalesListDataSource) {
         this.mMerchantSalesListDataSource = mMerchantSalesListDataSource;
     }
 
@@ -184,11 +173,6 @@ public class GlobalState extends Application {
     public void setTax(Tax tax) {
         this.tax = tax;
     }
-
-    public InvoiceForPrint getInvoiceForPrint() {
-        return invoiceForPrint;
-    }
-
 
 
     public void setDelteItemPosition(int delteItemPosition) {

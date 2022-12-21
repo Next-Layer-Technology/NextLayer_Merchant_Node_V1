@@ -31,6 +31,8 @@ import com.sis.clightapp.Interface.ApiFCM;
 import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
+import com.sis.clightapp.fragments.printing.PrintDialogFragment;
+import com.sis.clightapp.model.GsonModel.Invoice;
 import com.sis.clightapp.util.CustomSharedPreferences;
 import com.sis.clightapp.util.GlobalState;
 import com.sis.clightapp.model.FCMResponse;
@@ -46,6 +48,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -80,6 +83,26 @@ public class MainEntryActivityNew extends BaseActivity {
         confirmingProgressDialog.setCancelable(false);
         confirmingProgressDialog.setCanceledOnTouchOutside(false);
         register_btn = findViewById(R.id.register_btn);
+//        Button button = findViewById(R.id.print);
+//        button.setVisibility(View.VISIBLE);
+//        button.setOnClickListener(v -> {
+//            Invoice invoice = new Invoice();
+//            invoice.setLabel("Label");
+//            invoice.setAmount_msat("0.00001");
+//            invoice.setAmount_received_msat("0.00001");
+//            invoice.setDescription("description");
+//            invoice.setBolt11("lnbc662n1p3cd6m2sp5r6ulc2tgry7c9smm9ndrmxptg0mwmkyhk3sa6em2c8yqq4s8ntlqpp5juxqr05v30l4vuqf6g067xwl4q8xw69nwsttrncwx49lp8f9ve2sdq8v3jhxccxqzfvcqpjrzjqflfuth6uaxmx7pvaj304s4p9qzkm2gj0qhhg34k2h8w882fdsupgzadygqqvxqqqyqqqqqqqqqqqqqqyg9qyysgq8cpttudvl6z7zgclccfl36kqdsjcjsz60qg5zrhsdlz0y5w3l7xj0pystnuyu6s927da0hwqq5vycsuwys400qe3dungn9q5pn0gxyqqsz45sd");
+//            invoice.setPayment_hash("970c01be8c8bff567009d21faf19dfa80e6768b37416b1cf0e354bf09d256655");
+//            invoice.setExpires_at(System.currentTimeMillis());
+//            invoice.setMsatoshi(0.00001);
+//            invoice.setPaid_at(System.currentTimeMillis());
+//            invoice.setPay_index(1);
+//            invoice.setStatus("complete");
+//            ArrayList<Items> items = new ArrayList<Items>();
+//            items.add(new Items("Item 1","Extra","0.1"));
+//            items.add(new Items("Item 2","Extra","0.2"));
+//            new PrintDialogFragment(invoice, null, new ArrayList()).show(getSupportFragmentManager(), null);
+//        });
         keyguardManager = (KeyguardManager) getSystemService(KEYGUARD_SERVICE);
         getExpireToken();
         if (new CustomSharedPreferences().getvalueofMerchantId("merchant_id", this) != 0) {
@@ -920,7 +943,6 @@ public class MainEntryActivityNew extends BaseActivity {
 
 
     }
-
 
 
     private void goTo2FaPasswordDialog(String accessToken) {

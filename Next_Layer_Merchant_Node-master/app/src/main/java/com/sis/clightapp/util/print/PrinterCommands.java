@@ -14,7 +14,7 @@ public class PrinterCommands {
     public static final byte EOT = 0x04;
 
     public static final byte[] reset = new byte[]{0x1b, 0x40};//Reset printer
-    public static final byte[] print = new byte[]{0x0a};//Print and wrap
+    public static final byte[] print = new byte[]{0x0a}; //Print and wrap
 
     public static final byte[] INIT = {27, 64};
     public static byte[] FEED_LINE = {10};
