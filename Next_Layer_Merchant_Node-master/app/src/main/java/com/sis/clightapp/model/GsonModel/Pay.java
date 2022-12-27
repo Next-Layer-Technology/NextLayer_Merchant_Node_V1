@@ -1,5 +1,7 @@
 package com.sis.clightapp.model.GsonModel;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Pay {
 
       /*  resp,status,rpc-cmd,cli-node,[ {
@@ -29,18 +31,21 @@ public class Pay {
             payment_preimage": "881d6ee425fcb0b670191b140742364d35a4fc51a831197709756886aed8e7d7",
             "status": "complete"} */
 
-      private  String  destination;
-      private  String payment_hash;
-      private  double created_at;
-      private  double parts;
-      private  double msatoshi;
-      private  String amount_msat;
-      private  double msatoshi_sent;
-      private  String amount_sent_msat;
-      private  String payment_preimage;
-      private  String status;
-      private  double code;
-      private  String message;
+    private String destination;
+    private String payment_hash;
+    private double created_at;
+    private double parts;
+    private double msatoshi;
+    private String amount_msat;
+    private double msatoshi_sent;
+    private String amount_sent_msat;
+    private String payment_preimage;
+    private String status;
+    private double code;
+    private String message;
+    //not coming from json
+    @NotNull
+    public String bolt11;
 
 
     public String getDestination() {

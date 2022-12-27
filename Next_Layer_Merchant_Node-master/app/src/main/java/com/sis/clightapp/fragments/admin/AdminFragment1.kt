@@ -527,7 +527,7 @@ class AdminFragment1 : AdminBaseFragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showPayCompleteDialog(pay: Pay) {
+    private fun showPayCompleteDialog(pay: Pay, bolt11value: String) {
         val width = Resources.getSystem().displayMetrics.widthPixels
         val height = Resources.getSystem().displayMetrics.heightPixels
         val dialog = Dialog(requireContext())
@@ -547,6 +547,7 @@ class AdminFragment1 : AdminBaseFragment() {
         if (pay.status == "complete") {
             ok.text = "Print"
         }
+        pay.bolt11 = bolt11value
         ok.setOnClickListener {
             loadObservers()
             if (pay.status == "complete") {
@@ -733,11 +734,11 @@ class AdminFragment1 : AdminBaseFragment() {
                         progressDialog.dismiss()
                         if (it.data?.status == "complete") {
                             saveGetRefundTransactionInLog(it.data, label)
-                            showPayCompleteDialog(it.data)
+                            showPayCompleteDialog(it.data,bolt11value)
                         } else {
                             val pay = Pay()
                             pay.status = "Not complete"
-                            showPayCompleteDialog(pay)
+                            showPayCompleteDialog(pay, bolt11value)
                         }
                     }
                     Status.ERROR -> {

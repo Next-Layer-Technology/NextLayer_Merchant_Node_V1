@@ -376,11 +376,19 @@ class PrintDialogFragment(
                         bytes += paidAt.toByteArray()
                         bytes += feed(1)
                         bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += "Bolt 11 Invoice:".toByteArray()
+                        bytes += feed()
+                        bytes += PrinterCommands.ESC_ALIGN_RIGHT
+                        bytes += qr(payment.bolt11)
+                        bytes += feed()
                         bytes += "Payment Hash:".toByteArray()
+                        bytes += feed()
+                        bytes += PrinterCommands.ESC_ALIGN_RIGHT
+                        bytes += qr(payment.payment_hash)
                         bytes += feed()
                         bytes += PrinterCommands.FEED_PAPER_AND_CUT
                     } catch (e: Exception) {
-                        Log.e("PrintError", "Exe ", e)
+                        Log.e("PrintError", e.message.toString())
                     }
                 } else {
                     bytes += PrinterCommands.reset
