@@ -70,12 +70,12 @@ class Auth2FaFragment : DialogFragment() {
                     if (resp != null && resp.session_token.toInt() != -1) {
                         sharedPreferences.setvalueofExpierTime(
                             resp.session_token.toInt(),
-                            requireContext()
+                            activity
                         )
                         val token =
                             sharedPreferences.getvalueofRefresh(
                                 "refreshToken",
-                                requireContext()
+                                activity
                             )
                         getToken(token, twoFaCode)
                     } else {
@@ -85,7 +85,7 @@ class Auth2FaFragment : DialogFragment() {
                     progressDialog.dismiss()
                     try {
                         Toast.makeText(
-                            requireContext(),
+                            activity,
                             response.errorBody()!!.string(),
                             Toast.LENGTH_LONG
                         ).show()
@@ -105,7 +105,7 @@ class Auth2FaFragment : DialogFragment() {
     }
 
     private fun getToken(refresh: String, key: String) {
-        val time = CustomSharedPreferences().getvalueofExpierTime(requireContext())
+        val time = CustomSharedPreferences().getvalueofExpierTime(activity)
         val jsonObject1 = JsonObject()
         jsonObject1.addProperty("refresh", refresh)
         jsonObject1.addProperty("twoFactor", key)
@@ -122,12 +122,12 @@ class Auth2FaFragment : DialogFragment() {
                 if (response.body() != null) {
                     val webSocketOTPresponse = response.body()
                     if (webSocketOTPresponse!!.code == 700) {
-                        sharedPreferences.setislogin(true, "registered", requireContext())
+                        sharedPreferences.setislogin(true, "registered", activity)
                         if (webSocketOTPresponse.token != "") {
                             sharedPreferences.setvalueofaccestoken(
                                 webSocketOTPresponse.token,
                                 "accessToken",
-                                requireContext()
+                                activity
                             )
                         }
                         showToast("Access token successfully registered")
@@ -167,5 +167,5 @@ class Auth2FaFragment : DialogFragment() {
     }
 
     fun showToast(message: String?) =
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
 }

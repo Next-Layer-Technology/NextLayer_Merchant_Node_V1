@@ -35,14 +35,14 @@ import com.sis.clightapp.R
 import com.sis.clightapp.model.GsonModel.Invoice
 import com.sis.clightapp.model.GsonModel.Items
 import com.sis.clightapp.model.GsonModel.Pay
-import com.sis.clightapp.util.AppConstants
-import com.sis.clightapp.util.Utils
+import com.sis.clightapp.util.*
 import com.sis.clightapp.util.print.PrintPic
 import com.sis.clightapp.util.print.PrinterCommands
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.text.DecimalFormat
 import java.util.*
+import kotlin.math.round
 
 
 class PrintDialogFragment(
@@ -68,7 +68,6 @@ class PrintDialogFragment(
         btDevicesDialog.setContentView(R.layout.blutoothdevicelistdialoglayout)
         btDevicesDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         btDevicesDialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
-        btDevicesDialog.setCancelable(false)
         //init dialog views
         val ivBack: ImageView = btDevicesDialog.findViewById(R.id.iv_back_invoice)
         val scanDevices: Button = btDevicesDialog.findViewById(R.id.btn_scanDevices)
@@ -248,21 +247,14 @@ class PrintDialogFragment(
                 // the text typed by the user
                 val precision = DecimalFormat("0.00")
                 if (invoice != null) {
-                    val paidAt: String = Utils.dateStringUTCTimestamp(
+                    val paidAt: String = dateStringUTCTimestamp(
                         invoice.paid_at,
                         AppConstants.OUTPUT_DATE_FORMATE
                     )
-                    val btc: String = Utils.round(
-                        Utils.satoshiToBtc(invoice.msatoshi),
-                        9
-                    ).toString() + " BTC"
-                    val usd = precision.format(
-                        Utils.round(
-                            Utils.btcToUsd(
-                                Utils.satoshiToBtc(invoice.msatoshi)
-                            ), 2
-                        )
-                    ) + " USD"
+                    val btc =
+                        String.format("%.9f", satoshiToBtc(invoice.msatoshi)) + " BTC"
+                    val usd =
+                        String.format("%.9f", btcToUsd(satoshiToBtc(invoice.msatoshi))) + " USD"
                     try {
                         // This is printer specific code you can comment ==== > Start
                         bytes += PrinterCommands.ESC_ALIGN_CENTER
@@ -290,6 +282,7 @@ class PrintDialogFragment(
                         bytes += PrinterCommands.ESC_ALIGN_RIGHT
                         bytes += btc.toByteArray()
                         //amountInBTC should right
+                        bytes += "\t".toByteArray()
                         bytes += usd.toByteArray()
                         bytes += feed(1)
                         //Paid at title should center
@@ -298,13 +291,13 @@ class PrintDialogFragment(
                         bytes += PrinterCommands.ESC_ALIGN_RIGHT
                         bytes += paidAt.toByteArray()
                         bytes += feed(1)
-                        bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += PrinterCommands.ESC_ALIGN_CENTER
                         bytes += "Bolt 11 Invoice:".toByteArray()
                         bytes += feed()
                         bytes += PrinterCommands.ESC_ALIGN_RIGHT
                         bytes += qr(invoice.bolt11)
                         bytes += feed(1)
-                        bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += PrinterCommands.ESC_ALIGN_CENTER
                         bytes += "Payment Hash:".toByteArray()
                         bytes += feed()
                         bytes += PrinterCommands.ESC_ALIGN_RIGHT
@@ -350,23 +343,15 @@ class PrintDialogFragment(
                 // the text typed by the user
                 val precision = DecimalFormat("0.00")
                 if (payment != null) {
-                    val paidAt: String = Utils.dateStringUTCTimestamp(
+                    val paidAt: String = dateStringUTCTimestamp(
                         payment.created_at.toLong(),
                         AppConstants.OUTPUT_DATE_FORMATE
                     )
-                    val btc: String = Utils.round(
-                        Utils.satoshiToBtc(payment.msatoshi),
-                        9
-                    ).toString() + " BTC"
-                    val usd = precision.format(
-                        Utils.round(
-                            Utils.btcToUsd(
-                                Utils.satoshiToBtc(payment.msatoshi)
-                            ), 2
-                        )
-                    ) + " USD"
-                    val des = payment.message
-                    val bitmap: Bitmap? = getBitMapFromHex(payment.payment_preimage)
+                    val btc =
+                        String.format("%.9f", satoshiToBtc(payment.msatoshi)) + " BTC"
+                    val usd =
+                        String.format("%.9f", btcToUsd(satoshiToBtc(payment.msatoshi))) + " USD"
+                    val des = payment.message ?: ""
                     try {
                         // This is printer specific code you can comment ==== > Start
                         bytes += PrinterCommands.reset
@@ -380,10 +365,8 @@ class PrintDialogFragment(
                         bytes += feed(2)
                         bytes += "Amount: ".toByteArray()
                         bytes += feed()
-                        //amountInBTC should right
                         bytes += btc.toByteArray()
                         bytes += feed()
-                        //amountInBTC should right
                         bytes += usd.toByteArray()
                         bytes += feed(2)
                         //Paid at title should center
@@ -435,7 +418,7 @@ class PrintDialogFragment(
         return bytes;
     }
 
-    private fun getBitMapFromHex(hex: String?, width: Int = 500, height: Int = 500): Bitmap? {
+    private fun getBitMapFromHex(hex: String?, width: Int = 200, height: Int = 200): Bitmap? {
         if (hex == null)
             return null
         val multiFormatWriter = MultiFormatWriter()

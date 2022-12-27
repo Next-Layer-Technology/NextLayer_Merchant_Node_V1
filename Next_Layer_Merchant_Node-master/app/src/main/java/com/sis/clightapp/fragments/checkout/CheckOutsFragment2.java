@@ -34,7 +34,6 @@ import com.sis.clightapp.R;
 import com.sis.clightapp.util.AppConstants;
 import com.sis.clightapp.util.CustomSharedPreferences;
 import com.sis.clightapp.util.GlobalState;
-import com.sis.clightapp.util.Utils;
 import com.sis.clightapp.activity.CheckOutMainActivity;
 import com.sis.clightapp.model.Channel_BTCResponseData;
 import com.sis.clightapp.model.GsonModel.Items;
@@ -67,6 +66,8 @@ import tech.gusavila92.websocketclient.WebSocketClient;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.KEYGUARD_SERVICE;
+import static com.sis.clightapp.util.UtilsKt.btcToUsd;
+import static com.sis.clightapp.util.UtilsKt.round;
 
 public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnClickListener {
     EditText amount, rcieptnum;
@@ -387,7 +388,6 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
 
 
     private void parseJSONForListPeers(String jsonresponse) {
-        Log.d("ListPeersParsingResponse", jsonresponse);
         ListPeers listFunds = null;
         boolean sta = false;
         JSONArray jsonArr = null;
@@ -463,11 +463,11 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         mSatoshiReceivable = Double.parseDouble(receivableMSat);
         btcReceivable = mSatoshiReceivable / AppConstants.satoshiToMSathosi;
         btcReceivable = btcReceivable / AppConstants.btcToSathosi;
-        usdReceivable = Utils.Companion.btcToUsd(btcReceivable);
+        usdReceivable = btcToUsd(btcReceivable);
         mSatoshiCapacity = Double.parseDouble(capcaityMSat);
         btcCapacity = mSatoshiCapacity / AppConstants.satoshiToMSathosi;
         btcCapacity = btcCapacity / AppConstants.btcToSathosi;
-        usdCapacity = Utils.Companion.btcToUsd(btcCapacity);
+        usdCapacity = btcToUsd(btcCapacity);
         btcRemainingCapacity = btcCapacity /*- btcReceivable*/;
         usdRemainingCapacity = usdCapacity /*- usdReceivable*/;
         goToClearOutDialog(sta);
@@ -490,9 +490,9 @@ public class CheckOutsFragment2 extends CheckOutBaseFragment implements View.OnC
         Log.e("BeforeDialogRecv", String.valueOf(usdReceivable));
         if (isFetchData) {
             if (isReceivableGet) {
-                capicityVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdRemainingCapacity, 2)));
-                receivedVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdReceivable, 2)));
-                clearoutVal.setText(":$" + String.format("%.2f", Utils.Companion.round(usdRemainingCapacity - usdReceivable, 2)));
+                capicityVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity, 2)));
+                receivedVal.setText(":$" + String.format("%.2f", round(usdReceivable, 2)));
+                clearoutVal.setText(":$" + String.format("%.2f", round(usdRemainingCapacity - usdReceivable, 2)));
 
             } else {
                 capicityVal.setText("N/A");

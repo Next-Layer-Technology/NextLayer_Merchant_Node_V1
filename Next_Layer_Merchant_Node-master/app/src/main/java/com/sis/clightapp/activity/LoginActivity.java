@@ -67,7 +67,8 @@ public class LoginActivity extends BaseActivity {
         etEmail.setText("admin");
         etPassword.setText("abc123");
         loginbtn = findViewById(R.id.btn_login);
-        merchant_id = GlobalState.getInstance().getMerchantData().getMerchant_data_id();
+        if (GlobalState.getInstance().getMerchantData() != null)
+            merchant_id = GlobalState.getInstance().getMerchantData().getMerchant_data_id();
         Intent iin = getIntent();
         Bundle b = iin.getExtras();
         if (b != null) {

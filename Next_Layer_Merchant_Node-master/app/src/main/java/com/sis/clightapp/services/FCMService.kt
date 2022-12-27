@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.RingtoneManager
+import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -21,6 +22,7 @@ import java.lang.Exception
 
 class FCMService : FirebaseMessagingService() {
     private val prefs = CustomSharedPreferences()
+
     /**
      * Called when message is received.
      *
@@ -101,13 +103,17 @@ class FCMService : FirebaseMessagingService() {
             .setContentIntent(pendingIntent)
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        val channel = NotificationChannel(
-            channelId,
-            "Channel human readable title",
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(channel)
-        notificationManager.notify(0, notificationBuilder.build())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            notificationManager.createNotificationChannel(
+                NotificationChannel(
+                    channelId,
+                    "Channel human readable title",
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
+            )
+            notificationManager.notify(0, notificationBuilder.build())
+        }
     }
 
     private fun sendIncomingPaymentNotification(
@@ -117,11 +123,18 @@ class FCMService : FirebaseMessagingService() {
     ) {
         val intent = Intent(this, MainEntryActivityNew::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(
-            this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-        val largeIcon = BitmapFactory.decodeResource(resources, R.drawable.ic_notification_regular)
+        val pendingIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.getActivity(
+                this, 0 /* Request code */, intent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getActivity(
+                this, 0 /* Request code */, intent, 0
+            )
+        }
+        val largeIcon =
+            BitmapFactory.decodeResource(resources, R.drawable.ic_notification_regular)
         val channelId = getString(R.string.payment_notification_channel_id)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
@@ -138,12 +151,14 @@ class FCMService : FirebaseMessagingService() {
             .setContentIntent(pendingIntent)
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
 
-        val channel = NotificationChannel(
-            channelId,
-            "Channel human readable title",
-            NotificationManager.IMPORTANCE_DEFAULT
-        )
-        notificationManager.createNotificationChannel(channel)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
         notificationManager.notify(0, notificationBuilder.build())
     }
 

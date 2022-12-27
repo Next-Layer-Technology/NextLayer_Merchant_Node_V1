@@ -22,8 +22,11 @@ import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
-import com.google.zxing.integration.android.IntentIntegrator
+import com.google.zxing.client.android.Intents
 import com.journeyapps.barcodescanner.BarcodeEncoder
+import com.journeyapps.barcodescanner.ScanContract
+import com.journeyapps.barcodescanner.ScanIntentResult
+import com.journeyapps.barcodescanner.ScanOptions
 import com.sis.clightapp.Interface.ApiClient
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.R
@@ -37,10 +40,7 @@ import com.sis.clightapp.model.REST.TransactionResp
 import com.sis.clightapp.services.BTCService
 import com.sis.clightapp.services.LightningService
 import com.sis.clightapp.session.MyLogOutService
-import com.sis.clightapp.util.AppConstants
-import com.sis.clightapp.util.CustomSharedPreferences
-import com.sis.clightapp.util.GlobalState
-import com.sis.clightapp.util.Status
+import com.sis.clightapp.util.*
 import org.json.JSONException
 import org.koin.android.ext.android.inject
 import retrofit2.Call
@@ -49,6 +49,7 @@ import retrofit2.Response
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
+
 
 /**
  * By
@@ -100,6 +101,39 @@ class AdminFragment1 : AdminBaseFragment() {
     private var sendables = arrayListOf<Refund>()
 
     private var invoiceLabel: String? = null
+    private val barcodeLauncher = registerForActivityResult(
+        ScanContract()
+    ) { result: ScanIntentResult ->
+        if (result.contents == null) {
+            val originalIntent = result.originalIntent
+            if (originalIntent == null) {
+                Toast.makeText(
+                    requireContext(),
+                    "Cancelled",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else if (originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
+                    Log.d(
+                        "MainActivity",
+                        "Cancelled scan due to missing camera permission"
+                    )
+                    Toast.makeText(
+                        requireContext(),
+                        "Cancelled due to missing camera permission",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+        } else {
+            if (result.contents != null) {
+                if (result.contents == null) {
+                    showToast("Result Not Found")
+                } else {
+                    bolt11fromqr = result.contents
+                    decodeInvoice(bolt11fromqr)
+                }
+            }
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -125,11 +159,6 @@ class AdminFragment1 : AdminBaseFragment() {
         toDateSendables = view.findViewById(R.id.et_to_date_refund)
         distributebutton = view.findViewById(R.id.distributebutton)
         commandeerbutton = view.findViewById(R.id.commandeerbutton)
-        val qrScan = IntentIntegrator(activity)
-        qrScan.setOrientationLocked(false)
-        val prompt = resources.getString(R.string.scanqrforbolt11)
-        qrScan.setPrompt(prompt)
-
         progressDialog = ProgressDialog(context)
         progressDialog.setCancelable(false)
         progressDialog.setMessage("Loading ...")
@@ -567,7 +596,13 @@ class AdminFragment1 : AdminBaseFragment() {
             }
         }
         btnscanQr.setOnClickListener {
-            IntentIntegrator.forSupportFragment(this@AdminFragment1).initiateScan()
+            val options = ScanOptions()
+            options.setDesiredBarcodeFormats(ScanOptions.QR_CODE)
+            options.setPrompt(resources.getString(R.string.scanqrforbolt11))
+            options.setCameraId(0) // Use a specific camera of the device
+            options.setBeepEnabled(false)
+            options.setBarcodeImageEnabled(true)
+            barcodeLauncher.launch(options)
         }
         commandeerRefundDialog.show()
     }
@@ -581,25 +616,12 @@ class AdminFragment1 : AdminBaseFragment() {
                     dialogBoxForRefundCommandeer()
                 }
             }
-            49374 -> {
-                val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
-                if (result != null) {
-                    if (result.contents == null) {
-                        showToast("Result Not Found")
-                    } else {
-                        bolt11fromqr = result.contents
-                        decodeInvoice(bolt11fromqr)
-                    }
-                } else {
-                    super.onActivityResult(requestCode, resultCode, data)
-                }
-            }
         }
     }
 
     private fun getDateInCorrectFormat(year: Int, monthOfYear: Int, dayOfMonth: Int): String {
         val date: String
-        val formatedMonth: String = if (monthOfYear < 9) {
+        val formattedMonth: String = if (monthOfYear < 9) {
             "0" + (monthOfYear + 1)
         } else {
             (monthOfYear + 1).toString()
@@ -609,7 +631,7 @@ class AdminFragment1 : AdminBaseFragment() {
         } else {
             dayOfMonth.toString()
         }
-        date = "$formatedMonth-$formatedDay-$year"
+        date = "$formattedMonth-$formatedDay-$year"
         return date
     }
 
@@ -687,8 +709,8 @@ class AdminFragment1 : AdminBaseFragment() {
                 showToast("Label " + getString(R.string.empty))
                 return@setOnClickListener
             }
-            executeCommandeerRefundApi(bolt11val, labelval, amountval)
             dialog.dismiss()
+            executeCommandeerRefundApi(bolt11val, labelval, amountval)
         }
         dialog.show()
     }
@@ -745,7 +767,7 @@ class AdminFragment1 : AdminBaseFragment() {
         val destination = pay.destination
         val merchantId = GlobalState.getInstance().merchant_id
         val transactionDescription1 = ""
-        add_alpha_transaction(
+        addAlphaTransaction(
             label,
             status,
             transactionAmountbtc,
@@ -760,7 +782,7 @@ class AdminFragment1 : AdminBaseFragment() {
         )
     }
 
-    fun add_alpha_transaction(
+    private fun addAlphaTransaction(
         transaction_label: String?,
         status: String?,
         transaction_amountBTC: String?,
@@ -842,13 +864,28 @@ class AdminFragment1 : AdminBaseFragment() {
 
     private fun confirmPayment() {
         invoiceLabel?.let { it ->
-            lightningService.confirmPayment(it).observe(viewLifecycleOwner) {
-                when (it.status) {
+            lightningService.confirmPayment(it).observe(viewLifecycleOwner) { response ->
+                when (response.status) {
                     Status.SUCCESS -> {
                         confirmingProgressDialog.dismiss()
-                        if (it.data != null) {
-                            if (it.data.status == "paid") {
-                                dialogBoxForConfirmPaymentInvoice(it.data)
+                        if (response.data != null) {
+                            if (response.data.status == "paid") {
+                                dialogBoxForConfirmPaymentInvoice(response.data)
+                                response.data.let {
+                                    addAlphaTransaction(
+                                        invoiceLabel,
+                                        it.status,
+                                        String.format("%.9f", satoshiToBtc(it.msatoshi)),
+                                        String.format("%.9f", btcToUsd(satoshiToBtc(it.msatoshi))),
+                                        CONVERSION_RATE.toString(),
+                                        excatFigure(MSATOSHI),
+                                        it.payment_preimage,
+                                        it.payment_hash,
+                                        it.description,
+                                        GlobalState.getInstance().merchant_id,
+                                        it.description
+                                    )
+                                }
                                 confirmingProgressDialog.dismiss()
                             } else {
                                 AlertDialog.Builder(requireContext())
@@ -865,12 +902,12 @@ class AdminFragment1 : AdminBaseFragment() {
                         }
                     }
                     Status.ERROR -> {
-                        if (it.message == "2fa") {
+                        if (response.message == "2fa") {
                             Auth2FaFragment().show(childFragmentManager, null)
                         } else {
-                            showToast(it.message)
+                            showToast(response.message)
                         }
-                        showToast(it.message.toString())
+                        showToast(response.message.toString())
                     }
                     Status.LOADING -> {
                         confirmingProgressDialog.show()

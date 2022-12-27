@@ -50,10 +50,10 @@ import com.sis.clightapp.util.AppConstants
 import com.sis.clightapp.util.CustomSharedPreferences
 import com.sis.clightapp.util.GlobalState
 import com.sis.clightapp.util.Status
-import com.sis.clightapp.util.Utils.Companion.btcToUsd
-import com.sis.clightapp.util.Utils.Companion.dateStringUTCTimestamp
-import com.sis.clightapp.util.Utils.Companion.round
-import com.sis.clightapp.util.Utils.Companion.satoshiToBtc
+import com.sis.clightapp.util.btcToUsd
+import com.sis.clightapp.util.dateStringUTCTimestamp
+import com.sis.clightapp.util.round
+import com.sis.clightapp.util.satoshiToBtc
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket

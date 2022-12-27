@@ -29,6 +29,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_50sdp">
 
+            <Button
+                android:id="@+id/print"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Print"
+                android:src="@drawable/sign_in" />
+
             <ImageView
                 android:id="@+id/signin_btn"
                 android:layout_width="@dimen/_180sdp"

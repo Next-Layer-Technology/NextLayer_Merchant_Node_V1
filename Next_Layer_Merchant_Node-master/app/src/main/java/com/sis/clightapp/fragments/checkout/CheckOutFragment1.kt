@@ -28,11 +28,6 @@ import com.google.zxing.integration.android.IntentIntegrator
 import com.sis.clightapp.Interface.*
 import com.sis.clightapp.Network.CheckNetwork
 import com.sis.clightapp.R
-import com.sis.clightapp.util.AppConstants
-import com.sis.clightapp.util.CustomSharedPreferences
-import com.sis.clightapp.util.GlobalState
-import com.sis.clightapp.util.Utils.Companion.btcToUsd
-import com.sis.clightapp.util.Utils.Companion.round
 import com.sis.clightapp.activity.CheckOutMainActivity
 import com.sis.clightapp.adapter.CheckOutMainListAdapter
 import com.sis.clightapp.model.Channel_BTCResponseData
@@ -46,6 +41,7 @@ import com.sis.clightapp.model.REST.FundingNodeListResp
 import com.sis.clightapp.model.Tax
 import com.sis.clightapp.model.currency.CurrentSpecificRateData
 import com.sis.clightapp.session.MyLogOutService
+import com.sis.clightapp.util.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket

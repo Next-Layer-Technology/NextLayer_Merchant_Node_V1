@@ -561,7 +561,7 @@ class LightningService(val context: Context) {
                             )
                         )
                     } else {
-                        if (text.contains("error")) {
+                            if (text.contains("error")) {
                             liveData.postValue(
                                 Resource.error(
                                     message = "Error paying invoice."
