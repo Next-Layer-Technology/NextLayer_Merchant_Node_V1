@@ -32,6 +32,7 @@ import com.sis.clightapp.Interface.Webservice;
 import com.sis.clightapp.Interface.ApiPaths2;
 import com.sis.clightapp.R;
 import com.sis.clightapp.fragments.printing.PrintDialogFragment;
+import com.sis.clightapp.fragments.shared.Auth2FaFragment;
 import com.sis.clightapp.model.GsonModel.Invoice;
 import com.sis.clightapp.util.CustomSharedPreferences;
 import com.sis.clightapp.util.GlobalState;
@@ -329,7 +330,6 @@ public class MainEntryActivityNew extends BaseActivity {
                     if (webSocketOTPresponse.getCode() == 700) {
                         code = 0;
                         sharedPreferences.setislogin(true, "registered", MainEntryActivityNew.this);
-//                            showToast(webSocketOTPresponse.getToken());
                         if (webSocketOTPresponse.getToken().equals("")) {
                         } else {
                             sharedPreferences.setvalueofaccestoken(webSocketOTPresponse.getToken(), "accessToken", MainEntryActivityNew.this);

@@ -90,34 +90,6 @@ public class CheckOutMainActivity extends BaseActivity {
         FragmentAdapter pagerAdapter = new FragmentAdapter(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,getFragment());
         customViewPager.setAdapter(pagerAdapter);
         customViewPager.setOffscreenPageLimit(5);
-        customViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
-                    case 0:
-                        CheckOutFragment1 firstFragment = (CheckOutFragment1) getSupportFragmentManager().getFragments().get(0);
-                        firstFragment.setAdapter();
-                        break;
-                    case 1:
-                        CheckOutsFragment2 secondFragment = (CheckOutsFragment2) getSupportFragmentManager().getFragments().get(1);
-                        secondFragment.refreshList();
-                        break;
-                    case 2:
-                        CheckOutsFragment3 thirdFragment = (CheckOutsFragment3) getSupportFragmentManager().getFragments().get(2);
-                        thirdFragment.refreshAdapter();
-                        break;
-                    default:
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
     }
 
     private List<Fragment> getFragment() {

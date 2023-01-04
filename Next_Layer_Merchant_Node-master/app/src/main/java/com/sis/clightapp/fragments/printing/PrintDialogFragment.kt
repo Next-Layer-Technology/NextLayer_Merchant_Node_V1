@@ -71,6 +71,10 @@ class PrintDialogFragment(
         //init dialog views
         val ivBack: ImageView = btDevicesDialog.findViewById(R.id.iv_back_invoice)
         val scanDevices: Button = btDevicesDialog.findViewById(R.id.btn_scanDevices)
+        val btnClose: ImageView = btDevicesDialog.findViewById(R.id.btn_close)
+        btnClose.setOnClickListener {
+            dismiss();
+        }
         initializeBluetooth()
         scanDevices.setOnClickListener {
             val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)

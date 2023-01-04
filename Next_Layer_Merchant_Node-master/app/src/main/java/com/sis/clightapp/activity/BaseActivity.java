@@ -22,15 +22,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.sis.clightapp.fragments.shared.Auth2FaFragment;
+import com.sis.clightapp.services.SessionService;
 import com.sis.clightapp.session.MyLogOutService;
 import com.sis.clightapp.util.CustomSharedPreferences;
 import com.sis.clightapp.util.GlobalState;
 
 public class BaseActivity extends AppCompatActivity {
+    SessionService sessionService;
     final String IS_USER_LOGIN = "isuserlogin";
     final String LASTDATE = "lastdate";
     final String THORSTATUS = "thorstatus";
@@ -51,6 +56,15 @@ public class BaseActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         startService(new Intent(this, MyLogOutService.class));
+        sessionService = new SessionService(this);
+        sessionService.isExpired().observeForever((expired -> {
+            if (expired) {
+                Fragment prev = getSupportFragmentManager().findFragmentByTag("2fa_fragment");
+                if (prev == null) {
+                    new Auth2FaFragment().show(getSupportFragmentManager(), "2fa_fragment");
+                }
+            }
+        }));
     }
 
     @Override
@@ -62,6 +76,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initView();
     }
 

@@ -130,6 +130,8 @@ dependencies {
     // Koin for Android
     implementation "io.insert-koin:koin-android:3.2.2"
 
+    implementation 'com.auth0:java-jwt:4.2.1'
+    implementation 'androidx.preference:preference:1.2.0'
 }
 
 static def buildTime() {

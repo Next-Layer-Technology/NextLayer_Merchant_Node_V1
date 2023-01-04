@@ -2,6 +2,7 @@ package com.sis.clightapp.fragments.shared
 
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -26,11 +27,13 @@ import retrofit2.Response
 import java.io.IOException
 
 class Auth2FaFragment : DialogFragment() {
+    private lateinit var context: Context
     lateinit var progressDialog: ProgressDialog
     val sharedPreferences = CustomSharedPreferences()
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         progressDialog = ProgressDialog(requireContext())
-        val dialog = Dialog(requireContext())
+        context = requireContext()
+        val dialog = Dialog(context)
         dialog.setContentView(R.layout.dialog_authenticate_session)
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCancelable(false)
@@ -70,12 +73,12 @@ class Auth2FaFragment : DialogFragment() {
                     if (resp != null && resp.session_token.toInt() != -1) {
                         sharedPreferences.setvalueofExpierTime(
                             resp.session_token.toInt(),
-                            activity
+                            context
                         )
                         val token =
                             sharedPreferences.getvalueofRefresh(
                                 "refreshToken",
-                                activity
+                                context
                             )
                         getToken(token, twoFaCode)
                     } else {
@@ -105,7 +108,7 @@ class Auth2FaFragment : DialogFragment() {
     }
 
     private fun getToken(refresh: String, key: String) {
-        val time = CustomSharedPreferences().getvalueofExpierTime(activity)
+        val time = CustomSharedPreferences().getvalueofExpierTime(context)
         val jsonObject1 = JsonObject()
         jsonObject1.addProperty("refresh", refresh)
         jsonObject1.addProperty("twoFactor", key)
@@ -122,12 +125,12 @@ class Auth2FaFragment : DialogFragment() {
                 if (response.body() != null) {
                     val webSocketOTPresponse = response.body()
                     if (webSocketOTPresponse!!.code == 700) {
-                        sharedPreferences.setislogin(true, "registered", activity)
+                        sharedPreferences.setislogin(true, "registered", context)
                         if (webSocketOTPresponse.token != "") {
                             sharedPreferences.setvalueofaccestoken(
                                 webSocketOTPresponse.token,
                                 "accessToken",
-                                activity
+                                context
                             )
                         }
                         showToast("Access token successfully registered")
@@ -167,5 +170,5 @@ class Auth2FaFragment : DialogFragment() {
     }
 
     fun showToast(message: String?) =
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
 }
