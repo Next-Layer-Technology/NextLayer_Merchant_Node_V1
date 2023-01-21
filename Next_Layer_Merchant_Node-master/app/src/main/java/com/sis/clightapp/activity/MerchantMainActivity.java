@@ -24,6 +24,7 @@ import com.sis.clightapp.ViewPager.FragmentAdapter;
 import com.sis.clightapp.fragments.merchant.MerchantFragment1;
 import com.sis.clightapp.fragments.merchant.MerchantFragment2;
 import com.sis.clightapp.fragments.merchant.MerchantFragment3;
+import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.session.MyLogOutService;
 
 import java.util.ArrayList;
@@ -32,12 +33,13 @@ import java.util.List;
 public class MerchantMainActivity extends BaseActivity {
     private DrawerLayout drawerLayout;
     private CustomViewPager customViewPager;
-    int setwidht,setheight;
+    int setwidht, setheight;
     ProgressBar progressBar;
     public ActionBar actionbar;
-    private  boolean staus=true;
+    private boolean staus = true;
     private Handler handler;
     Runnable my_runnable;
+
     @Override
     public void onDestroy() {
         finish();
@@ -51,13 +53,13 @@ public class MerchantMainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_merchnat_main11);
-        progressBar=findViewById(R.id.pb_home);
+        progressBar = findViewById(R.id.pb_home);
         initView();
-       // configureToolbar(R.drawable.ic_menu, "");
+        // configureToolbar(R.drawable.ic_menu, "");
         setViewPagerAdapter();
         configureNavigationDrawer();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarmerchant);
-        ImageView navImg=(ImageView) toolbar.findViewById(R.id.imageView9);
+        ImageView navImg = (ImageView) toolbar.findViewById(R.id.imageView9);
         navImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +91,7 @@ public class MerchantMainActivity extends BaseActivity {
 //        }, 180000);
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
@@ -98,11 +101,13 @@ public class MerchantMainActivity extends BaseActivity {
         }
         return true;
     }
+
     private void initView() {
 
         customViewPager = findViewById(R.id.custom_view_pager);
         drawerLayout = (DrawerLayout) findViewById(R.id.merchantdrawer_layout);
     }
+
     private void setViewPagerAdapter() {
 
         customViewPager.setPagingEnabled(false);
@@ -110,59 +115,23 @@ public class MerchantMainActivity extends BaseActivity {
 
         customViewPager.setAdapter(pagerAdapter);
         customViewPager.setOffscreenPageLimit(5);
-
-        customViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                // showToast(String.valueOf(position));
-
-                switch (position) {
-                    case 0:
-                        //do nothing
-                        MerchantFragment1 merchantFragment11 = (MerchantFragment1) getSupportFragmentManager().getFragments().get(0);
-                        merchantFragment11.isInAppMerchant1=true;
-                        break;
-                    case 1:
-                        MerchantFragment1 merchantFragment1 = (MerchantFragment1) getSupportFragmentManager().getFragments().get(0);
-                        merchantFragment1.isInAppMerchant1=false;
-                        MerchantFragment2 merchantFragment2 = (MerchantFragment2) getSupportFragmentManager().getFragments().get(1);
-                        merchantFragment2.reLoadItemsInList();
-                        break;
-                    case 2:
-                        //do nothing
-                        MerchantFragment3 merchantFragment3 = (MerchantFragment3) getSupportFragmentManager().getFragments().get(2);
-                        merchantFragment3.checkAppFlow();
-                        break;
-                    default:
-                        return;
-                }
-            }
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
     }
+
     private List<Fragment> getFragment() {
         List<Fragment> fragmentList = new ArrayList<>();
-        fragmentList.add(new MerchantFragment1().getInstance());
-        fragmentList.add(new MerchantFragment2().getInstance());
-        fragmentList.add(new MerchantFragment3().getInstance());
+        fragmentList.add(new MerchantFragment1());
+        fragmentList.add(new MerchantFragment2());
+        fragmentList.add(new MerchantFragment3());
         return fragmentList;
     }
+
     private void configureNavigationDrawer() {
 
-        int width  = Resources.getSystem().getDisplayMetrics().widthPixels;
+        int width = Resources.getSystem().getDisplayMetrics().widthPixels;
         int height = Resources.getSystem().getDisplayMetrics().heightPixels;
-        setwidht=width*45;
-        setwidht=setwidht/100;
-        setheight=height/2;
+        setwidht = width * 45;
+        setwidht = setwidht / 100;
+        setheight = height / 2;
         drawerLayout = (DrawerLayout) findViewById(R.id.merchantdrawer_layout);
         NavigationView navView = (NavigationView) findViewById(R.id.merchantnavigation);
         View headerView = navView.getHeaderView(0);
@@ -172,14 +141,17 @@ public class MerchantMainActivity extends BaseActivity {
             public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
 
             }
+
             @Override
             public void onDrawerOpened(@NonNull View drawerView) {
 
                 //showToast("drwaer open");
             }
+
             @Override
             public void onDrawerClosed(@NonNull View drawerView) {
             }
+
             @Override
             public void onDrawerStateChanged(int newState) {
             }
@@ -205,28 +177,17 @@ public class MerchantMainActivity extends BaseActivity {
         customViewPager.setCurrentItem(fragmentPosition);
     }
 
-    public void  clearcache()
-    {
+    public void clearcache() {
         sharedPreferences.clearAllPrefExceptOfSShkeyPassword(getApplicationContext());
     }
+
     @Override
     public void onBackPressed() {
-       int position=  customViewPager.getCurrentItem();
-        switch (position) {
-            case 0:
-                MerchantFragment1 firstFragment = (MerchantFragment1) getSupportFragmentManager().getFragments().get(0);
-                firstFragment.onBackPressed();
-                break;
-            case 1:
-                MerchantFragment2 secondFragment = (MerchantFragment2) getSupportFragmentManager().getFragments().get(1);
-                secondFragment.onBackPressed();
-                break;
-            case 2:
-                MerchantFragment3 thirdFragment = (MerchantFragment3) getSupportFragmentManager().getFragments().get(2);
-                thirdFragment.onBackPressed();
-                break;
-            default:
-                return;
-        }
-        }
+       new  ExitDialogFragment(() -> {
+           this.stopService(new Intent(this, MyLogOutService.class));
+           Intent ii = new Intent(this, HomeActivity.class);
+           startActivity(ii);
+           return null;
+       }).show(getSupportFragmentManager(),null);
+    }
 }

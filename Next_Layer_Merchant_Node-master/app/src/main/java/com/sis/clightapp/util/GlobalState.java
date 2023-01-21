@@ -2,17 +2,12 @@ package com.sis.clightapp.util;
 
 import android.app.Application;
 
-import com.sis.clightapp.model.Channel_BTCResponseData;
-import com.sis.clightapp.model.GsonModel.Invoice;
 import com.sis.clightapp.model.GsonModel.Items;
-import com.sis.clightapp.model.GsonModel.Merchant.MerchantData;
-import com.sis.clightapp.model.GsonModel.Refund;
 import com.sis.clightapp.model.ImageRelocation.GetItemImageReloc;
 import com.sis.clightapp.model.REST.FundingNode;
 import com.sis.clightapp.model.Tax;
 import com.sis.clightapp.model.UserInfo;
 import com.sis.clightapp.model.currency.CurrentAllRate;
-import com.sis.clightapp.model.currency.CurrentSpecificRateData;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -24,11 +19,11 @@ public class GlobalState extends Application {
     private String merchant_id;
     Boolean isLogin;
     private static GlobalState mInstance;
-    private Channel_BTCResponseData channel_btcResponseData;
-    private CurrentSpecificRateData currentSpecificRateData;
+//    private Channel_BTCResponseData channel_btcResponseData;
+//    private CurrentSpecificRateData currentSpecificRateData;
     private CurrentAllRate currentAllRate;
-    private ArrayList<Invoice> mMerchantSalesListDataSource;
-    private ArrayList<Refund> mMerchantRefundsLIstDataSource;
+//    private ArrayList<Invoice> mMerchantSalesListDataSource;
+//    private ArrayList<Refund> mMerchantRefundsLIstDataSource;
     private boolean isCheckoutBtnPress = false;
     private String lattitude;
     private String longitude;
@@ -40,7 +35,7 @@ public class GlobalState extends Application {
     private String tcIdUTC;
     //Sale & Refund Merchant Side
     private FundingNode fundingNode;
-    private MerchantData merchantData;
+//    private MerchantData merchantData;
 
     public HashSet<Items> selectedItems = new HashSet<>();
 
@@ -56,13 +51,13 @@ public class GlobalState extends Application {
         isLogin = login;
     }
 
-    public Channel_BTCResponseData getChannel_btcResponseData() {
-        return channel_btcResponseData;
-    }
-
-    public void setChannel_btcResponseData(Channel_BTCResponseData channel_btcResponseData) {
-        this.channel_btcResponseData = channel_btcResponseData;
-    }
+//    public Channel_BTCResponseData getChannel_btcResponseData() {
+//        return channel_btcResponseData;
+//    }
+//
+//    public void setChannel_btcResponseData(Channel_BTCResponseData channel_btcResponseData) {
+//        this.channel_btcResponseData = channel_btcResponseData;
+//    }
 
     public ArrayList<GetItemImageReloc> getCurrentItemImageRelocArrayList() {
         return currentItemImageRelocArrayList;
@@ -82,13 +77,13 @@ public class GlobalState extends Application {
     }
 
 
-    public MerchantData getMerchantData() {
-        return merchantData;
-    }
-
-    public void setMerchantData(MerchantData merchantData) {
-        this.merchantData = merchantData;
-    }
+//    public MerchantData getMerchantData() {
+//        return merchantData;
+//    }
+//
+//    public void setMerchantData(MerchantData merchantData) {
+//        this.merchantData = merchantData;
+//    }
 
 
     public FundingNode getFundingNode() {
@@ -145,21 +140,21 @@ public class GlobalState extends Application {
 //    }
 
 
-    public ArrayList<Refund> getmMerchantRefundsLIstDataSource() {
-        return mMerchantRefundsLIstDataSource;
-    }
+//    public ArrayList<Refund> getmMerchantRefundsLIstDataSource() {
+//        return mMerchantRefundsLIstDataSource;
+//    }
+//
+//    public void setmMerchantRefundsLIstDataSource(ArrayList<Refund> mMerchantRefundsLIstDataSource) {
+//        this.mMerchantRefundsLIstDataSource = mMerchantRefundsLIstDataSource;
+//    }
 
-    public void setmMerchantRefundsLIstDataSource(ArrayList<Refund> mMerchantRefundsLIstDataSource) {
-        this.mMerchantRefundsLIstDataSource = mMerchantRefundsLIstDataSource;
-    }
-
-    public ArrayList<Invoice> getmMerchantSalesListDataSource() {
-        return mMerchantSalesListDataSource;
-    }
-
-    public void setmMerchantSalesListDataSource(ArrayList<Invoice> mMerchantSalesListDataSource) {
-        this.mMerchantSalesListDataSource = mMerchantSalesListDataSource;
-    }
+//    public ArrayList<Invoice> getmMerchantSalesListDataSource() {
+//        return mMerchantSalesListDataSource;
+//    }
+//
+//    public void setmMerchantSalesListDataSource(ArrayList<Invoice> mMerchantSalesListDataSource) {
+//        this.mMerchantSalesListDataSource = mMerchantSalesListDataSource;
+//    }
 
     public UserInfo getUserInfo() {
         return userInfo;
@@ -209,13 +204,13 @@ public class GlobalState extends Application {
         this.currentAllRate = currentAllRate;
     }
 
-    public CurrentSpecificRateData getCurrentSpecificRateData() {
-        return currentSpecificRateData;
-    }
-
-    public void setCurrentSpecificRateData(CurrentSpecificRateData currentSpecificRateData) {
-        this.currentSpecificRateData = currentSpecificRateData;
-    }
+//    public CurrentSpecificRateData getCurrentSpecificRateData() {
+//        return currentSpecificRateData;
+//    }
+//
+//    public void setCurrentSpecificRateData(CurrentSpecificRateData currentSpecificRateData) {
+//        this.currentSpecificRateData = currentSpecificRateData;
+//    }
 
 
     @Override

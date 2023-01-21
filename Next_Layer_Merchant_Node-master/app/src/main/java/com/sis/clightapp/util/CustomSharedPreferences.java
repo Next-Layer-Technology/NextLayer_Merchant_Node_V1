@@ -7,7 +7,6 @@ import android.preference.PreferenceManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sis.clightapp.model.Data;
-import com.sis.clightapp.model.currency.CurrentSpecificRateData;
 
 import java.lang.reflect.Type;
 import java.util.Date;
@@ -148,25 +147,7 @@ public class CustomSharedPreferences {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         return preferences.contains(key);
     }
-
-
-    public CurrentSpecificRateData getCurrentSpecificRateData(String key, Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Gson gson = new Gson();
-        String json = sharedPreferences.getString(key, null);
-        Type type = new TypeToken<CurrentSpecificRateData>() {
-        }.getType();
-        return gson.fromJson(json, type);
-    }
-
-    public void setCurrentSpecificRateData(CurrentSpecificRateData currentSpecificRateData, String key, Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(currentSpecificRateData);
-        editor.putString(key, json);
-        editor.apply();
-    }
+    
 
     public void setsshkeypas(String key, String Value) {
 
@@ -195,61 +176,6 @@ public class CustomSharedPreferences {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getAll();
     }
-
-//    public List<Success> getCardList(String key, Context context) {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        Gson gson = new Gson();
-//        String json = sharedPreferences.getString(key, null);
-//        Type type = new TypeToken<List<Success>>() {
-//        }.getType();
-//        return gson.fromJson(json, type);
-//    }
-
-//    public void setCartList(List<Success> value, String key, Context context) {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        Gson gson = new Gson();
-//        String json = gson.toJson(value);
-//        editor.putString(key, json);
-//        editor.apply();
-//    }
-//
-//    public List<Transaction> getTransactionList(String key, Context context) {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        Gson gson = new Gson();
-//        String json = sharedPreferences.getString(key, null);
-//        Type type = new TypeToken<List<Transaction>>() {
-//        }.getType();
-//        return gson.fromJson(json, type);
-//    }
-
-//    public void setTransactionList(List<Transaction> value, String key, Context context) {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        Gson gson = new Gson();
-//        String json = gson.toJson(value);
-//        editor.putString(key, json);
-//        editor.apply();
-//    }
-
-//    public List<com.bl.sendways.Models.Referral.Success> getReferralList(String key, Context context) {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        Gson gson = new Gson();
-//        String json = sharedPreferences.getString(key, null);
-//        Type type = new TypeToken<List<com.bl.sendways.Models.Referral.Success>>() {
-//        }.getType();
-//        return gson.fromJson(json, type);
-//    }
-//
-//    public void setReferralList(List<com.bl.sendways.Models.Referral.Success> value, String key, Context context) {
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        Gson gson = new Gson();
-//        String json = gson.toJson(value);
-//        editor.putString(key, json);
-//        editor.apply();
-//    }
-
 
     public void setvalueofRefresh(String value, String key, Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -462,18 +388,18 @@ public class CustomSharedPreferences {
     }
 
 
-    public void setvalueofMerchantData(String value, String key, Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, value);
-        editor.apply();
-    }
+//    public void setvalueofMerchantData(String value, String key, Context context) {
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString(key, value);
+//        editor.apply();
+//    }
 
 
-    public String getvalueofMerchantData(String key, Context context) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString(key, "");
-    }
+//    public String getvalueofMerchantData(String key, Context context) {
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        return sharedPreferences.getString(key, "");
+//    }
 
 
     public void setvalueofMerchantname(String value, String key, Context context) {

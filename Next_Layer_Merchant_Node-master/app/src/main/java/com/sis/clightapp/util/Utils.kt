@@ -1,6 +1,15 @@
 package com.sis.clightapp.util
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.text.format.DateFormat
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
+import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.pow
@@ -11,16 +20,6 @@ fun satoshiToBtc(msatoshhi: Double): Double {
     return msatoshiToSatoshi / AppConstants.btcToSathosi
 }
 
-fun btcToUsd(btc: Double): Double {
-    val ret: Double = if (GlobalState.getInstance().channel_btcResponseData != null) {
-        val btcRate = GlobalState.getInstance().channel_btcResponseData.price
-        val priceInUSD = btcRate * btc
-        priceInUSD
-    } else {
-        0.0
-    }
-    return ret
-}
 
 fun round(value: Double, places: Int): Double {
     var v = value
@@ -49,4 +48,22 @@ fun dateStringUTCTimestamp(timestamp: Long, format: String?): String {
         e.printStackTrace()
     }
     return ""
+}
+
+fun View.hideKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(windowToken, 0)
+}
+
+
+fun getBitMapFromHex(hex: String?, width: Int = 600, height: Int = 600): Bitmap? {
+    val multiFormatWriter = MultiFormatWriter()
+    var bitMatrix: BitMatrix? = null
+    try {
+        bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, width, height)
+    } catch (e: WriterException) {
+        e.printStackTrace()
+    }
+    val barcodeEncoder = BarcodeEncoder()
+    return barcodeEncoder.createBitmap(bitMatrix)
 }

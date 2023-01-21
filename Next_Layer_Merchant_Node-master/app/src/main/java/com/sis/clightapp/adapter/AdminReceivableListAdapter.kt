@@ -1,7 +1,6 @@
 package com.sis.clightapp.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
 import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
@@ -10,19 +9,15 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.WriterException
-import com.google.zxing.common.BitMatrix
-import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.sis.clightapp.R
-import com.sis.clightapp.fragments.printing.PrintDialogFragment
 import com.sis.clightapp.model.GsonModel.Invoice
 import com.sis.clightapp.util.AppConstants
+import com.sis.clightapp.util.getBitMapFromHex
+import kotlinx.coroutines.*
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
+import kotlin.coroutines.CoroutineContext
 import kotlin.math.pow
 import kotlin.math.roundToInt
 
@@ -33,6 +28,8 @@ class AdminReceivableListAdapter(
 ) : ArrayAdapter<Invoice?>(
     activity, 0, salesList
 ) {
+    val scope = CoroutineScope(Job() + Dispatchers.IO)
+
     @SuppressLint("SetTextI18n")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         var view = convertView
@@ -53,18 +50,24 @@ class AdminReceivableListAdapter(
 
             //Invoice id=BOlt11 hex string
             val bolt11invoiceid = findViewById<ImageView>(R.id.boltinvoiceidval)
-            if (currentSale.bolt11 != null) bolt11invoiceid.setImageBitmap(
-                getBitMapFromHex(
-                    currentSale.bolt11
-                )
-            )
+            if (currentSale.bolt11 != null) {
+                scope.launch {
+                    val bitmap = getBitMapFromHex(currentSale.bolt11, 200,200)
+                    withContext(Dispatchers.Main) {
+                        bolt11invoiceid.setImageBitmap(bitmap)
+                    }
+                }
+            }
             //payment pre image = payhash
             val paymentpreimage = findViewById<ImageView>(R.id.paypreimageval)
-            if (currentSale.payment_preimage != null) paymentpreimage.setImageBitmap(
-                getBitMapFromHex(
-                    currentSale.payment_preimage
-                )
-            )
+            if (currentSale.payment_preimage != null) {
+                scope.launch {
+                    val bitmap = getBitMapFromHex(currentSale.payment_preimage, 200, 200)
+                    withContext(Dispatchers.Main) {
+                        paymentpreimage.setImageBitmap(bitmap)
+                    }
+                }
+            }
         }
         return view!!
     }
@@ -82,18 +85,6 @@ class AdminReceivableListAdapter(
             e.printStackTrace()
         }
         return date
-    }
-
-    private fun getBitMapFromHex(hex: String?): Bitmap {
-        val multiFormatWriter = MultiFormatWriter()
-        var bitMatrix: BitMatrix? = null
-        try {
-            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, 600, 600)
-        } catch (e: WriterException) {
-            e.printStackTrace()
-        }
-        val barcodeEncoder = BarcodeEncoder()
-        return barcodeEncoder.createBitmap(bitMatrix)
     }
 
     private fun satoshiToBtc(msatoshhi: Double): Double {

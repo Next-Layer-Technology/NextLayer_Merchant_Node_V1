@@ -53,20 +53,16 @@ public class MerchantSalesListAdapter  extends ArrayAdapter<Invoice> {
         Invoice currentSale = salesList.get(position);
 
 
-        TextView salelabel = (TextView) listItem.findViewById(R.id.labelval);
+        TextView salelabel = listItem.findViewById(R.id.labelval);
         salelabel.setText(String.valueOf(currentSale.getLabel()));
-        TextView amountsat = (TextView) listItem.findViewById(R.id.amountsatval);
+        TextView amountsat = listItem.findViewById(R.id.amountsatval);
         amountsat.setText(String.valueOf(round(currentSale.getMsatoshi(),9)));
         amountsat.setText(excatFigure(mSatoshoToBtc(currentSale.getMsatoshi()))+"BTC");
-        TextView paidat = (TextView) listItem.findViewById(R.id.paidatval);
+        TextView paidat = listItem.findViewById(R.id.paidatval);
         paidat.setText(getDateFromUTCTimestamp(currentSale.getPaid_at(), AppConstants.OUTPUT_DATE_FORMATE));
-        TextView description=(TextView) listItem.findViewById(R.id.descriptionval);
+        TextView description= listItem.findViewById(R.id.descriptionval);
         description.setText(currentSale.getDescription());
-        //Invoice id=BOlt11 hex string
-        ImageView bolt11invoiceid=(ImageView)listItem.findViewById(R.id.boltinvoiceidval);
-//        bolt11invoiceid.setImageBitmap(getBitMapFromHex(currentSale.getBolt11()));
-        //payment pre image = payhash
-        ImageView paymentpreimage=(ImageView) listItem.findViewById(R.id.paypreimageval);
+        ImageView paymentpreimage= listItem.findViewById(R.id.paypreimageval);
         if(currentSale.getPayment_preimage()!=null) {
             paymentpreimage.setImageBitmap(getBitMapFromHex(currentSale.getPayment_preimage()));
         }
@@ -81,11 +77,6 @@ public class MerchantSalesListAdapter  extends ArrayAdapter<Invoice> {
 
             SimpleDateFormat formatter = new SimpleDateFormat(mDateFormate);
             formatter.setTimeZone(TimeZone.getTimeZone("CST"));
-            Date value = formatter.parse(date);
-
-//            SimpleDateFormat dateFormatter = new SimpleDateFormat(mDateFormate);
-//            dateFormatter.setTimeZone(TimeZone.getDefault());
-//            date = dateFormatter.format(value);
             return date;
         } catch (Exception e) {
             e.printStackTrace();

@@ -183,13 +183,13 @@ tools:context=".fragments.merchant.MerchantFragment1">
 
     <ListView
         android:id="@+id/salesListview"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/_8sdp"
-        android:layout_marginLeft="@dimen/_8sdp"
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginBottom="@dimen/_8sdp"
         app:layout_constraintBottom_toTopOf="@+id/poweredbyimage"
+        app:layout_constraintEnd_toStartOf="@+id/refendListview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/salestextview">
 
@@ -198,12 +198,12 @@ tools:context=".fragments.merchant.MerchantFragment1">
 
     <ListView
         android:id="@+id/refendListview"
-        android:layout_width="150dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="@dimen/_8sdp"
-        android:layout_marginRight="@dimen/_8sdp"
         app:layout_constraintBottom_toBottomOf="@+id/salesListview"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/salesListview"
         app:layout_constraintTop_toTopOf="@+id/salesListview">
 
     </ListView>

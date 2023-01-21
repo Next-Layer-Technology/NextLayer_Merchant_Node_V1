@@ -29,7 +29,7 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import com.sis.clightapp.Interface.ApiClient
+import com.sis.clightapp.Interface.ApiPaths2
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.Network.CheckNetwork
 import com.sis.clightapp.R
@@ -45,12 +45,12 @@ import com.sis.clightapp.model.REST.nearby_clients.NearbyClients
 import com.sis.clightapp.model.WebsocketResponse.MWSWebSocketResponse
 import com.sis.clightapp.services.BTCService
 import com.sis.clightapp.services.LightningService
+import com.sis.clightapp.services.SessionService
 import com.sis.clightapp.session.MyLogOutService
 import com.sis.clightapp.util.AppConstants
 import com.sis.clightapp.util.CustomSharedPreferences
 import com.sis.clightapp.util.GlobalState
 import com.sis.clightapp.util.Status
-import com.sis.clightapp.util.btcToUsd
 import com.sis.clightapp.util.dateStringUTCTimestamp
 import com.sis.clightapp.util.round
 import com.sis.clightapp.util.satoshiToBtc
@@ -71,6 +71,9 @@ import java.text.NumberFormat
 import java.util.*
 
 class CheckOutsFragment3 : CheckOutBaseFragment() {
+    val TAG = "CheckOutsFragment3"
+    private val sessionService: SessionService by inject()
+    private val webservice: Webservice by inject()
     private val lightningService: LightningService by inject()
     private val btcService = BTCService()
     lateinit var paywithclightbtn: Button
@@ -93,13 +96,12 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     var grandTotalInCurrency = 0.0
     var getGrandTotalInBTC = 0.0
     lateinit var qRCodeImage: ImageView
-    private lateinit var confirpaymentbtn: Button
     var currentTransactionLabel = ""
     var taxInBtcAmount = 0.0
     var taxtInCurennccyAmount = 0.0
     var taxBtcOnP3ToPopUp = 0.0
     var taxUsdOnP3ToPopUp = 0.0
-    var setTextWithSpan: TextView? = null
+    lateinit var setTextWithSpan: TextView
     var labelGlobal = "sale123"
     var blReceiver: BroadcastReceiver? = null
     lateinit var clearout: TextView
@@ -146,15 +148,15 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             boldStyle
         )
         confirmInvoicePamentProgressDialog = ProgressDialog(requireContext())
-        confirmInvoicePamentProgressDialog.setMessage("Confirming Payment")
+        confirmInvoicePamentProgressDialog?.setMessage("Confirming Payment")
         updatingInventoryProgressDialog = ProgressDialog(requireContext())
-        updatingInventoryProgressDialog.setMessage("Updating..")
+        updatingInventoryProgressDialog?.setMessage("Updating..")
         createInvoiceProgressDialog = ProgressDialog(requireContext())
-        createInvoiceProgressDialog.setMessage("Creating Invoice")
+        createInvoiceProgressDialog?.setMessage("Creating Invoice")
         exitFromServerProgressDialog = ProgressDialog(requireContext())
-        exitFromServerProgressDialog.setMessage("Exiting")
+        exitFromServerProgressDialog?.setMessage("Exiting")
         getItemListprogressDialog = ProgressDialog(requireContext())
-        getItemListprogressDialog.setMessage("Loading...")
+        getItemListprogressDialog?.setMessage("Loading...")
         btcRate = view.findViewById(R.id.btcRateTextview)
         totalpay = view.findViewById(R.id.totalpay)
         taxpay = view.findViewById(R.id.taxpay)
@@ -163,9 +165,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         clearout = view.findViewById(R.id.clearout)
         gdaxUrl = CustomSharedPreferences().getvalueofMWSCommand("mws_command", requireContext())
         sharedPreferences = CustomSharedPreferences()
-        val json = CustomSharedPreferences().getvalueofMerchantData("data", requireContext())
-        val gson = Gson()
-        merchantData = gson.fromJson(json, MerchantData::class.java)
+        merchantData = sessionService.getMerchantData()
         if (GlobalState.getInstance().tax != null) {
             taxpayInBTC = GlobalState.getInstance().tax.taxInBTC
             taxpayInCurrency = GlobalState.getInstance().tax.taxInUSD
@@ -225,10 +225,12 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                             setReceivableAndCapacity("0", "0", false)
                         }
                     }
+
                     Status.ERROR -> {
                         confirmingProgressDialog.dismiss()
                         showToast(it.message.toString())
                     }
+
                     Status.LOADING -> {
                         confirmingProgressDialog.dismiss()
                         showToast(it.message.toString())
@@ -253,6 +255,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         super.onResume()
         selectedItems = GlobalState.getInstance().selectedItems.toList()
         setAdapter()
+        btcService.currentBtc.observe(viewLifecycleOwner) {
+        }
     }
 
     private fun createGrandTotalForInvoice() {
@@ -264,8 +268,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             getGrandTotalInBTC = 0.0
             for (q in selectedItems.indices) {
                 priceInCurrency += selectedItems[q].price.toDouble()
-                if (GlobalState.getInstance().channel_btcResponseData != null) {
-                    priceInBTC = 1 / GlobalState.getInstance().channel_btcResponseData.price
+                if (btcService.btcPrice != 0.0) {
+                    priceInBTC = 1 / btcService.btcPrice
                     priceInBTC *= priceInCurrency
                     priceInBTC = round(priceInBTC, 9)
                     grandTotalInCurrency = priceInCurrency + taxtInCurennccyAmount
@@ -340,8 +344,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 }
                 priceInCurrency += total
                 //format  ::   Total : 1.25 BTC /  $34.95 USD
-                if (GlobalState.getInstance().channel_btcResponseData != null) {
-                    priceInBTC = 1 / GlobalState.getInstance().channel_btcResponseData.price
+                if (btcService.btcPrice != 0.0) {
+                    priceInBTC = 1 / btcService.btcPrice
                     priceInBTC *= priceInCurrency
                     priceInBTC = round(priceInBTC, 9)
                     priceInCurrency = round(priceInCurrency, 2)
@@ -399,7 +403,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         invoiceDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         invoiceDialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
         invoiceDialog.setCancelable(true)
-        confirpaymentbtn = invoiceDialog.findViewById(R.id.confirpaymentbtn)
         val et_msatoshi = invoiceDialog.findViewById<EditText>(R.id.et_msatoshi)
         et_msatoshi.inputType = InputType.TYPE_NULL
         et_msatoshi.setText(rMSatoshi)
@@ -434,11 +437,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             isCreatingInvoice = false
             createInvoice(msatoshi, label1, descrption)
         }
-        confirpaymentbtn.setOnClickListener {
-            listInvoices(
-                currentTransactionLabel
-            )
-        }
         createInvoice(rMSatoshi, label, "Flashpay")
     }
 
@@ -471,9 +469,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     //Get Funding Node Info
     private val fundingNodeInfo: Unit
         get() {
-            val call = ApiClient.getRetrofit().create(
-                Webservice::class.java
-            )._Funding_Node_List
+            val call = webservice.fundingNodeList()
             call.enqueue(object : Callback<FundingNodeListResp?> {
                 override fun onResponse(
                     call: Call<FundingNodeListResp?>,
@@ -501,9 +497,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             val accessToken =
                 CustomSharedPreferences().getvalue("accessTokenLogin", requireContext())
             val token = "Bearer $accessToken"
-            val call = ApiClient.getRetrofit().create(
-                Webservice::class.java
-            ).getNearbyClients(token)
+            val call = webservice.getNearbyClients(token)
             call.enqueue(object : Callback<NearbyClientResponse?> {
                 override fun onResponse(
                     call: Call<NearbyClientResponse?>,
@@ -559,11 +553,11 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         mSatoshiReceivable = receivableMSat.toDouble()
         btcReceivable = mSatoshiReceivable / AppConstants.satoshiToMSathosi
         btcReceivable /= AppConstants.btcToSathosi
-        usdReceivable = btcToUsd(btcReceivable)
+        usdReceivable = btcService.btcToUsd(btcReceivable)
         mSatoshiCapacity = capcaityMSat.toDouble()
         btcCapacity = mSatoshiCapacity / AppConstants.satoshiToMSathosi
         btcCapacity /= AppConstants.btcToSathosi
-        usdCapacity = btcToUsd(btcCapacity)
+        usdCapacity = btcService.btcToUsd(btcCapacity)
         btcRemainingCapacity = btcCapacity
         usdRemainingCapacity = usdCapacity
         goToClearOutDialog(sta)
@@ -611,7 +605,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     sendReceivable()
                 }
             } else {
-                val builder = AlertDialog.Builder(fContext)
+                val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage("Please Try Again")
                     .setCancelable(false)
                     .setPositiveButton("Retry!") { dialog: DialogInterface, id: Int ->
@@ -634,7 +628,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 val mSatoshiSpendableTotal = (mSatoshiCapacity - mSatoshiReceivable).toLong()
                 getRoute(routingNodeId, mSatoshiSpendableTotal.toString() + "")
             } else {
-                val builder = AlertDialog.Builder(fContext)
+                val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage("Funding Node Id is Missing")
                     .setCancelable(false)
                     .setPositiveButton("Retry!") { dialog: DialogInterface, id: Int ->
@@ -643,7 +637,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     }.show()
             }
         } else {
-            val builder = AlertDialog.Builder(fContext)
+            val builder = AlertDialog.Builder(requireContext())
             builder.setMessage("Funding Node Id is Missing")
                 .setCancelable(false)
                 .setPositiveButton("Retry!") { dialog: DialogInterface, id: Int ->
@@ -656,7 +650,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     private fun subscribeChannel() {
         btcService.currentBtc.observe(viewLifecycleOwner) {
             if (it.status == Status.SUCCESS) {
-                setcurrentrate(it.data?.rateinbitcoin.toString())
+                setcurrentrate(it.data?.price.toString())
                 setAdapter()
             }
         }
@@ -701,10 +695,12 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                         }
                     }
                 }
+
                 Status.ERROR -> {
                     confirmingProgressDialog.dismiss()
                     showToast(it.message.toString())
                 }
+
                 Status.LOADING -> {
                     confirmingProgressDialog.show()
                 }
@@ -765,10 +761,12 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     confirmingProgressDialog.dismiss()
                     sendReceivables(noteId, it.data!!)
                 }
+
                 Status.ERROR -> {
                     confirmingProgressDialog.dismiss()
                     showToast(it.message.toString())
                 }
+
                 Status.LOADING -> {
                     confirmingProgressDialog.show()
                 }
@@ -783,10 +781,12 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     confirmingProgressDialog.dismiss()
                     showToast(it.data!!.msatoshi.toString())
                 }
+
                 Status.ERROR -> {
                     confirmingProgressDialog.dismiss()
                     showToast(it.message.toString())
                 }
+
                 Status.LOADING -> {
                     confirmingProgressDialog.show()
                 }
@@ -855,16 +855,13 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         val etDescription = distributeGetPaidDialog.findViewById<EditText>(R.id.et_description)
         val ivBack = distributeGetPaidDialog.findViewById<ImageView>(R.id.iv_back_invoice)
         qRCodeImage = distributeGetPaidDialog.findViewById(R.id.imgQR)
-        confirpaymentbtn = distributeGetPaidDialog.findViewById(R.id.confirpaymentbtn)
         title.text = "Get Paid"
         etLabel.inputType = InputType.TYPE_NULL
         etLabel.setText(globalLabel)
         etMsatoshi.setText(globalRMSatoshi)
         etDescription.setText(globalDescription)
         qRCodeImage.visibility = GONE
-        confirpaymentbtn.visibility = GONE
         btnCreateInvoice.visibility = GONE
-        confirpaymentbtn.visibility = GONE
         if (globalInvoice != null) {
             if (globalInvoice!!.bolt11 != null) {
                 val temHax = globalInvoice!!.bolt11
@@ -881,7 +878,6 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 }
             }
         }
-        confirpaymentbtn.setOnClickListener { fcmReceived() }
         ivBack.setOnClickListener { v: View? -> distributeGetPaidDialog.dismiss() }
         val timer = Timer()
         timer.schedule(object : TimerTask() {
@@ -906,12 +902,12 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                         if (it.data != null) {
                             if (it.data.status == "paid") {
                                 dialogBoxForConfirmPaymentInvoice(it.data)
-                                confirmInvoicePamentProgressDialog.dismiss()
+                                confirmInvoicePamentProgressDialog?.dismiss()
                                 confirmingProgressDialog.dismiss()
                             } else {
                                 confirmingProgressDialog.dismiss()
                                 distributeGetPaidDialog.dismiss()
-                                confirmInvoicePamentProgressDialog.dismiss()
+                                confirmInvoicePamentProgressDialog?.dismiss()
                                 AlertDialog.Builder(requireContext())
                                     .setMessage("Payment Not Received")
                                     .setPositiveButton("Retry", null)
@@ -920,17 +916,19 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                         } else {
                             confirmingProgressDialog.dismiss()
                             distributeGetPaidDialog.dismiss()
-                            confirmInvoicePamentProgressDialog.dismiss()
+                            confirmInvoicePamentProgressDialog?.dismiss()
                             AlertDialog.Builder(requireContext())
                                 .setMessage("Payment Not Received")
                                 .setPositiveButton("Retry", null)
                                 .show()
                         }
                     }
+
                     Status.ERROR -> {
                         confirmingProgressDialog.dismiss()
                         showToast(it.message.toString())
                     }
+
                     Status.LOADING -> {
                         confirmingProgressDialog.show()
                     }
@@ -975,10 +973,10 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 purchasedItems.visibility = VISIBLE
                 //    tax.setVisibility(View.VISIBLE);
                 printInvoice.visibility = VISIBLE
-                val amounttempusd = round(btcToUsd(satoshiToBtc(invoice.msatoshi)), 2)
+                val amounttempusd = round(btcService.btcToUsd(satoshiToBtc(invoice.msatoshi)), 2)
                 val precision = DecimalFormat("0.00")
                 amount.text = """
-                    ${exactFigure(round(btcToUsd(invoice.msatoshi), 9))}BTC
+                    ${exactFigure(round(btcService.btcToUsd(invoice.msatoshi), 9))}BTC
                     ${"$"}${precision.format(round(amounttempusd, 2))}USD
                     """.trimIndent()
                 paymentPreimage.setImageBitmap(getBitMapImg(invoice.payment_preimage, 300, 300))
@@ -995,7 +993,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 val precision = DecimalFormat("0.00")
                 amount.text = """
                     ${exactFigure(round(satoshiToBtc(invoice.msatoshi), 9))}BTC
-                    ${"$"}${precision.format(round(btcToUsd(satoshiToBtc(invoice.msatoshi)), 2))}USD
+                    ${"$"}${precision.format(round(btcService.btcToUsd(satoshiToBtc(invoice.msatoshi)), 2))}USD
                     """.trimIndent()
                 paidAt.text =
                     dateStringUTCTimestamp(invoice.paid_at, AppConstants.OUTPUT_DATE_FORMATE)

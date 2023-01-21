@@ -39,7 +39,8 @@ import com.sis.clightapp.model.GsonModel.Sendreceiveableresponse
 import com.sis.clightapp.model.ImageRelocation.GetItemImageReloc
 import com.sis.clightapp.model.REST.FundingNodeListResp
 import com.sis.clightapp.model.Tax
-import com.sis.clightapp.model.currency.CurrentSpecificRateData
+import com.sis.clightapp.services.BTCService
+import com.sis.clightapp.services.SessionService
 import com.sis.clightapp.session.MyLogOutService
 import com.sis.clightapp.util.*
 import okhttp3.OkHttpClient
@@ -50,6 +51,7 @@ import okio.ByteString
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -60,13 +62,16 @@ import java.net.URISyntaxException
 import java.util.*
 
 class CheckOutFragment1 : CheckOutBaseFragment() {
+    private val apiClient: ApiPaths2 by inject()
+    private val webservice: Webservice by inject()
+    private val btcService: BTCService by inject()
+    private val sessionService: SessionService by inject()
     var setwidht = 0
     private var setheight = 0
     private lateinit var checkOutbtn: Button
     private lateinit var scanUPCbtn: Button
     private lateinit var cbList: CheckBox
     private lateinit var cbScan: CheckBox
-    private lateinit var webSocketClient: WebSocketClient
     var checkOutListView: ListView? = null
     var checkOutMainListAdapter: CheckOutMainListAdapter? = null
     var btcRate: TextView? = null
@@ -74,17 +79,17 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
     var sharedPreferences: CustomSharedPreferences? = null
     var mScanedDataSourceItemList: ArrayList<Items>? = null
     var confirmingProgressDialog: ProgressDialog? = null
-    var setTextWithSpan: TextView? = null
-    var mSatoshiReceivable = 0.0
-    var btcReceivable = 0.0
-    var usdReceivable = 0.0
-    var mSatoshiCapacity = 0.0
-    var btcCapacity = 0.0
-    var usdCapacity = 0.0
-    var usdRemainingCapacity = 0.0
-    var btcRemainingCapacity = 0.0
-    var itemsList = arrayListOf<Items>()
-    var INTENT_AUTHENTICATE = 1234
+    lateinit var setTextWithSpan: TextView
+    private var mSatoshiReceivable = 0.0
+    private var btcReceivable = 0.0
+    private var usdReceivable = 0.0
+    private var mSatoshiCapacity = 0.0
+    private var btcCapacity = 0.0
+    private var usdCapacity = 0.0
+    private var usdRemainingCapacity = 0.0
+    private var btcRemainingCapacity = 0.0
+    private var itemsList = arrayListOf<Items>()
+    private var INTENT_AUTHENTICATE = 1234
     var isFundingInfoGetSuccefully = false
     lateinit var clearOutDialog: Dialog
     var TAG = "CheckOutFragment1"
@@ -133,7 +138,10 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             cbList.isChecked = false
             cbScan.isChecked = true
             checkOutMainListAdapter =
-                CheckOutMainListAdapter(requireContext(), GlobalState.getInstance().selectedItems.toList())
+                CheckOutMainListAdapter(
+                    requireContext(),
+                    GlobalState.getInstance().selectedItems.toList()
+                )
             checkOutListView!!.adapter = checkOutMainListAdapter
         }
         scanUPCbtn = view.findViewById(R.id.scanUPC)
@@ -150,9 +158,9 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
         addItemprogressDialog = ProgressDialog(context)
         addItemprogressDialog.setMessage("Adding Item")
         exitFromServerProgressDialog = ProgressDialog(context)
-        exitFromServerProgressDialog.setMessage("Exiting")
+        exitFromServerProgressDialog?.setMessage("Exiting")
         getItemListprogressDialog = ProgressDialog(context)
-        getItemListprogressDialog.setMessage("Loading...")
+        getItemListprogressDialog?.setMessage("Loading...")
         btcRate = view.findViewById(R.id.btcRateTextview)
         gdaxUrl = CustomSharedPreferences().getvalueofMWSCommand("mws_command", context)
         findMerchant(
@@ -161,7 +169,11 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
         )
         fContext = context
         sharedPreferences = CustomSharedPreferences()
-        subscribeChannel()
+        btcService.currentBtc.observe(viewLifecycleOwner) {
+            it.data?.let {
+                setcurrentrate(it.price.toString())
+            }
+        }
         if (CheckNetwork.isInternetAvailable(fContext)) {
             fundingNodeInfo
         } else {
@@ -192,10 +204,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                 listPeers
             }
         }
-        val merchantData = GlobalState.getInstance().merchantData
-        if (merchantData != null) {
-            allItems
-        }
+        allItems
         return view
     }
 
@@ -209,6 +218,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                     listPeers
                 }
             }
+
             49374 -> {
                 // HANDLE QRSCAN
                 val result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
@@ -336,9 +346,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             val token = "Bearer $refToken"
             val jsonObject1 = JsonObject()
             jsonObject1.addProperty("refresh", refToken)
-            val call = ApiClient2.getRetrofit().create(
-                ApiPaths2::class.java
-            ).getInventoryItems(token)
+            val call = apiClient.getInventoryItems(token)
             call.enqueue(object : Callback<ItemsDataMerchant?> {
                 override fun onResponse(
                     call: Call<ItemsDataMerchant?>,
@@ -386,9 +394,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
     //Get Funding Node Info
     private val fundingNodeInfo: Unit
         get() {
-            val call = ApiClient.getRetrofit().create(
-                Webservice::class.java
-            )._Funding_Node_List
+            val call = webservice.fundingNodeList()
             call.enqueue(object : Callback<FundingNodeListResp?> {
                 override fun onResponse(
                     call: Call<FundingNodeListResp?>,
@@ -497,11 +503,11 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
         mSatoshiReceivable = receivableMSat.toDouble()
         btcReceivable = mSatoshiReceivable / AppConstants.satoshiToMSathosi
         btcReceivable /= AppConstants.btcToSathosi
-        usdReceivable = btcToUsd(btcReceivable)
+        usdReceivable = btcService.btcToUsd(btcReceivable)
         mSatoshiCapacity = capcaityMSat.toDouble()
         btcCapacity = mSatoshiCapacity / AppConstants.satoshiToMSathosi
         btcCapacity /= AppConstants.btcToSathosi
-        usdCapacity = btcToUsd(btcCapacity)
+        usdCapacity = btcService.btcToUsd(btcCapacity)
         btcRemainingCapacity = btcCapacity /*- btcReceivable*/
         usdRemainingCapacity = usdCapacity /*- usdReceivable*/
         goToClearOutDialog(sta)
@@ -541,7 +547,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             if (isFetchData) {
                 sendReceivable()
             } else {
-                val builder = AlertDialog.Builder(fContext)
+                val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage("Please Try Again!!")
                     .setCancelable(false)
                     .setPositiveButton("Retry!") { dialog: DialogInterface, _: Int ->
@@ -564,7 +570,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                 val mSatoshiSpendableTotal = (mSatoshiCapacity - mSatoshiReceivable).toLong()
                 sendReceiveables(routingNodeId, mSatoshiSpendableTotal.toString() + "")
             } else {
-                val builder = AlertDialog.Builder(fContext)
+                val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage("Funding Node Id is Missing")
                     .setCancelable(false)
                     .setPositiveButton("Retry!") { dialog: DialogInterface, _: Int ->
@@ -573,7 +579,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                     }.show()
             }
         } else {
-            val builder = AlertDialog.Builder(fContext)
+            val builder = AlertDialog.Builder(requireContext())
             builder.setMessage("Funding Node Id is Missing")
                 .setCancelable(false)
                 .setPositiveButton("Retry!") { dialog: DialogInterface, _: Int ->
@@ -588,9 +594,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
         val paramObject = JsonObject()
         paramObject.addProperty("user_id", id)
         paramObject.addProperty("password", pass)
-        val call = ApiClientBoost.getRetrofit().create(
-            Webservice::class.java
-        ).merchant_Loging(paramObject)
+        val call = webservice.merchant_Loging(paramObject)
         call.enqueue(object : Callback<MerchantLoginResp?> {
             override fun onResponse(
                 call: Call<MerchantLoginResp?>,
@@ -601,12 +605,8 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                     if (response.body() != null) {
                         if (response.body()!!.message == "successfully login") {
                             val merchantData = response.body()!!.merchantData
-                            val myObject = response.body()!!.merchantData
-                            val gson = Gson()
-                            val json = gson.toJson(myObject)
-                            CustomSharedPreferences().setvalueofMerchantData(json, "data", context)
+                            sessionService.setMerchantData(merchantData)
                             GlobalState.getInstance().merchant_id = id
-                            GlobalState.getInstance().merchantData = merchantData
                             val tax = Tax()
                             tax.taxInUSD = 1.0
                             tax.taxInBTC = 0.00001
@@ -641,96 +641,6 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                 confirmingProgressDialog?.dismiss()
             }
         })
-    }
-
-    private fun subscribeChannel() {
-        val uri: URI = try {
-            // Connect to local host
-            URI("wss://ws.bitstamp.net/")
-        } catch (e: URISyntaxException) {
-            e.printStackTrace()
-            return
-        }
-        webSocketClient = object : WebSocketClient(uri) {
-            override fun onOpen() {
-                val json =
-                    "{\"event\":\"bts:subscribe\",\"data\":{\"channel\":\"live_trades_btcusd\"}}"
-                try {
-                    val obj = JSONObject(json)
-                    Log.d("My App", obj.toString())
-                    webSocketClient.send(obj.toString())
-                } catch (t: Throwable) {
-                    Log.e("My App", "Could not parse malformed JSON: \"$json\"")
-                }
-                Log.i("WebSocket", "Session is starting")
-            }
-
-            override fun onTextReceived(s: String) {
-                Log.i("WebSocket", "Message received")
-                if (s.isNotEmpty()) {
-                    try {
-                        val jsonObject = JSONObject(s)
-                        val subscription = jsonObject.getString("event")
-                        val objects = jsonObject.getJSONObject("data")
-                        if (subscription == "bts:subscription_succeeded") {
-                            requireActivity().runOnUiThread {}
-                        } else {
-                            requireActivity().runOnUiThread {
-                                requireActivity().runOnUiThread {
-                                    try {
-                                        val response = Channel_BTCResponseData()
-                                        response.id = objects.getInt("id")
-                                        response.timestamp =
-                                            objects.getString("timestamp")
-                                        response.amount = objects.getDouble("amount")
-                                        response.amount_str =
-                                            objects.getString("amount_str")
-                                        response.price = objects.getDouble("price")
-                                        response.price_str =
-                                            objects.getString("price_str")
-                                        response.type = objects.getInt("type")
-                                        response.microtimestamp =
-                                            objects.getString("microtimestamp")
-                                        response.buy_order_id =
-                                            objects.getInt("buy_order_id")
-                                        response.sell_order_id =
-                                            objects.getInt("sell_order_id")
-                                        val currentSpecificRateData = CurrentSpecificRateData()
-                                        currentSpecificRateData.rateinbitcoin =
-                                            response.price
-                                        GlobalState.getInstance().currentSpecificRateData =
-                                            currentSpecificRateData
-                                        setcurrentrate(GlobalState.getInstance().currentSpecificRateData.rateinbitcoin.toString())
-                                        GlobalState.getInstance().channel_btcResponseData =
-                                            response
-                                    } catch (e: JSONException) {
-                                        e.printStackTrace()
-                                    }
-                                }
-                            }
-                        }
-                    } catch (ignored: JSONException) {
-                    }
-                }
-            }
-
-            override fun onBinaryReceived(data: ByteArray) {}
-            override fun onPingReceived(data: ByteArray) {}
-            override fun onPongReceived(data: ByteArray) {}
-            override fun onException(e: Exception) {
-                println(e.message)
-                requireActivity().runOnUiThread {}
-            }
-
-            override fun onCloseReceived() {
-                Log.i("WebSocket", "Closed ")
-                println("onCloseReceived")
-            }
-        }
-        webSocketClient.setConnectTimeout(100000)
-        webSocketClient.setReadTimeout(600000)
-        webSocketClient.enableAutomaticReconnection(5000)
-        webSocketClient.connect()
     }
 
     private val listPeers: Unit

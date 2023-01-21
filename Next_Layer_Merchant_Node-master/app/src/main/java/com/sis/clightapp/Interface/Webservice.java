@@ -167,7 +167,7 @@ public interface Webservice {
 
 
     @GET("get-funding-nodes")
-    Call<FundingNodeListResp> get_Funding_Node_List();
+    Call<FundingNodeListResp> fundingNodeList();
 
     @GET("clients")
     Call<ClientListModel> getInStoreClients(
@@ -216,7 +216,6 @@ public interface Webservice {
             @Field("sign_in_username") String sign_in_username,
             @Field("password") String password,
             @Field("user_type") String user_type
-
     );
 
     @FormUrlEncoded

@@ -10,9 +10,7 @@ import android.util.Log;
 
 public class CheckNetwork {
 
-
     private static final String TAG = CheckNetwork.class.getSimpleName();
-
     @TargetApi(Build.VERSION_CODES.M)
     public static boolean isNetworkOnline1(Context context) {
         boolean isOnline = false;

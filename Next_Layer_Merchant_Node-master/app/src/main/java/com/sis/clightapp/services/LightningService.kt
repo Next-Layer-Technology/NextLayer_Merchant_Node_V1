@@ -45,12 +45,12 @@ class LightningService(val context: Context) {
                     webSocket.send(obj.toString())
                 } catch (t: Throwable) {
                     liveData.postValue(Resource.error(message = "Error sending request."))
-                    Log.e("My App", "Could not parse malformed JSON: \"$json\"")
+                    Log.d("My App", "Could not parse malformed JSON: \"$json\"")
                 }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e("TAG", "MESSAGE: $text")
+                Log.d("TAG", "MESSAGE: $text")
                 try {
                     val jsonObject = JSONObject(text)
                     val jsonArray = jsonObject.getJSONArray("invoices")
@@ -78,7 +78,7 @@ class LightningService(val context: Context) {
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 webSocket.close(1000, null)
                 webSocket.cancel()
-                Log.e("TAG", "CLOSE: $code $reason")
+                Log.d("TAG", "CLOSE: $code $reason")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
@@ -115,13 +115,13 @@ class LightningService(val context: Context) {
                     Log.d("My App", obj.toString())
                     webSocket.send(obj.toString())
                 } catch (t: Throwable) {
-                    Log.e("LightningService", t.message + "$json\"")
+                    Log.d("LightningService", t.message + "$json\"")
                     liveData.postValue(Resource.error(message = "Error sending request"))
                 }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e("TAG_onMessage", "MESSAGE: $text")
+                Log.d("TAG_onMessage", "MESSAGE: $text")
                 val jsonObject = JSONObject(text)
                 if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
                     webSocket.close(1000, null)
@@ -151,7 +151,7 @@ class LightningService(val context: Context) {
                 response: Response?
             ) {
                 liveData.postValue(Resource.error(message = t.message.toString()))
-                Log.e("LightningService", t.message.toString())
+                Log.d("LightningService", t.message.toString())
             }
         }
         client.newWebSocket(request, webSocketListenerCoinPrice)
@@ -176,13 +176,13 @@ class LightningService(val context: Context) {
                     Log.d("My App", obj.toString())
                     webSocket.send(obj.toString())
                 } catch (t: Throwable) {
-                    Log.e("My App", "Could not parse malformed JSON: \"$json\"")
+                    Log.d("My App", "Could not parse malformed JSON: \"$json\"")
                     liveData.postValue(Resource.error(message = "Error sending request"))
                 }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e("TAG", "MESSAGE: $text")
+                Log.d("TAG", "MESSAGE: $text")
                 val jsonObject = JSONObject(text)
                 if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
                     webSocket.close(1000, null)
@@ -239,13 +239,13 @@ class LightningService(val context: Context) {
                     Log.d(TAG, obj.toString())
                     webSocket.send(obj.toString())
                 } catch (t: Throwable) {
-                    Log.e(TAG, t.message.toString())
+                    Log.d(TAG, t.message.toString())
                     liveData.postValue(Resource.error(message = "Error sending request."))
                 }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e(TAG, text)
+                Log.d(TAG, text)
                 val jsonObject = JSONObject(text)
                 if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
                     webSocket.close(1000, null)
@@ -294,13 +294,13 @@ class LightningService(val context: Context) {
                     Log.d(TAG, obj.toString())
                     webSocket.send(obj.toString())
                 } catch (t: Throwable) {
-                    Log.e(TAG, "Could not parse malformed JSON: \"$json\"")
+                    Log.d(TAG, "Could not parse malformed JSON: \"$json\"")
                     liveData.postValue(Resource.error(message = "Error sending request."))
                 }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e("TAG", "MESSAGE: $text")
+                Log.d("TAG", "MESSAGE: $text")
                 val jsonObject = JSONObject(text)
                 if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
                     webSocket.close(1000, null)
@@ -321,7 +321,7 @@ class LightningService(val context: Context) {
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 webSocket.close(1000, null)
                 webSocket.cancel()
-                Log.e(TAG, "CLOSE: $code $reason")
+                Log.d(TAG, "CLOSE: $code $reason")
             }
 
             override fun onFailure(
@@ -351,13 +351,13 @@ class LightningService(val context: Context) {
                     Log.d(TAG, obj.toString())
                     webSocket.send(obj.toString())
                 } catch (t: Throwable) {
-                    Log.e(TAG, "Could not parse malformed JSON: \"$json\"")
+                    Log.d(TAG, "Could not parse malformed JSON: \"$json\"")
                     liveData.postValue(Resource.error(message = "Error sending request"))
                 }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e(TAG, "MESSAGE: $text")
+                Log.d(TAG, "MESSAGE: $text")
                 try {
                     val jsonObject = JSONObject(text)
                     if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
@@ -373,7 +373,7 @@ class LightningService(val context: Context) {
                         liveData.postValue(Resource.success(refundResponse))
                     }
                 } catch (e: Exception) {
-                    Log.e(TAG, e.message.toString())
+                    Log.d(TAG, e.message.toString())
                     liveData.postValue(Resource.error(message = "Error parsing json"))
                 }
             }
@@ -381,7 +381,7 @@ class LightningService(val context: Context) {
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 webSocket.close(1000, null)
                 webSocket.cancel()
-                Log.e(TAG, "CLOSE: $code $reason")
+                Log.d(TAG, "CLOSE: $code $reason")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
@@ -408,13 +408,13 @@ class LightningService(val context: Context) {
                     Log.d(TAG, obj.toString())
                     webSocket.send(obj.toString())
                 } catch (t: Throwable) {
-                    Log.e(TAG, "Could not parse malformed JSON: \"$json\"")
+                    Log.d(TAG, "Could not parse malformed JSON: \"$json\"")
                     liveData.postValue(Resource.error(message = "Error sending request"))
                 }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e("TAG", "MESSAGE: $text")
+                Log.d("TAG", "MESSAGE: $text")
                 val jsonObject = JSONObject(text)
                 if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
                     webSocket.close(1000, null)
@@ -438,7 +438,7 @@ class LightningService(val context: Context) {
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 webSocket.close(1000, null)
                 webSocket.cancel()
-                Log.e(TAG, "CLOSE: $code $reason")
+                Log.d(TAG, "CLOSE: $code $reason")
             }
 
             override fun onFailure(
@@ -467,14 +467,14 @@ class LightningService(val context: Context) {
                     Log.d(TAG, obj.toString())
                     webSocket.send(obj.toString())
                 } catch (t: Throwable) {
-                    Log.e(TAG, "Could not parse malformed JSON: \"$json\"")
+                    Log.d(TAG, "Could not parse malformed JSON: \"$json\"")
                     liveData.postValue(Resource.error(message = "Error sending request"))
 
                 }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e(TAG, "MESSAGE: $text")
+                Log.d(TAG, "MESSAGE: $text")
                 try {
                     val jsonObject = JSONObject(text)
                     if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
@@ -511,7 +511,7 @@ class LightningService(val context: Context) {
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 webSocket.close(1000, null)
                 webSocket.cancel()
-                Log.e(TAG, "CLOSE: $code $reason")
+                Log.d(TAG, "CLOSE: $code $reason")
             }
 
             override fun onFailure(
@@ -543,13 +543,13 @@ class LightningService(val context: Context) {
                     Log.d("My App", obj.toString())
                     webSocket.send(obj.toString())
                 } catch (t: Throwable) {
-                    Log.e("My App", "Could not parse malformed JSON: \"$json\"")
+                    Log.d("My App", "Could not parse malformed JSON: \"$json\"")
                     liveData.postValue(Resource.error(message = "Error sending request"))
                 }
             }
 
             override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.e("TAG", "MESSAGE: $text")
+                Log.d("TAG", "MESSAGE: $text")
                 try {
                     val jsonObject = JSONObject(text)
                     if (jsonObject.has("code") && jsonObject.getInt("code") == 724) {
@@ -557,14 +557,14 @@ class LightningService(val context: Context) {
                         webSocket.cancel()
                         liveData.postValue(
                             Resource.error(
-                                message = "2fa"
+                                message = "Invalid session token"
                             )
                         )
                     } else {
-                            if (text.contains("error")) {
+                        if (text.contains("error")) {
                             liveData.postValue(
                                 Resource.error(
-                                    message = "Error paying invoice."
+                                    message = jsonObject["message"].toString()
                                 )
                             )
                         } else {
@@ -587,7 +587,7 @@ class LightningService(val context: Context) {
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
                 webSocket.close(1000, null)
                 webSocket.cancel()
-                Log.e("TAG", "CLOSE: $code $reason")
+                Log.d("TAG", "CLOSE: $code $reason")
             }
 
             override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {

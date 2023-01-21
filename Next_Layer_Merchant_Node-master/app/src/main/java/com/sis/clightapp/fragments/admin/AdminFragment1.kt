@@ -27,14 +27,12 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.journeyapps.barcodescanner.ScanContract
 import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
-import com.sis.clightapp.Interface.ApiClient
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.R
 import com.sis.clightapp.adapter.AdminReceivableListAdapter
 import com.sis.clightapp.adapter.AdminSendablesListAdapter
 import com.sis.clightapp.fragments.merchant.MerchantBaseFragment
 import com.sis.clightapp.fragments.printing.PrintDialogFragment
-import com.sis.clightapp.fragments.shared.Auth2FaFragment
 import com.sis.clightapp.model.GsonModel.*
 import com.sis.clightapp.model.REST.TransactionResp
 import com.sis.clightapp.services.BTCService
@@ -60,36 +58,34 @@ class AdminFragment1 : AdminBaseFragment() {
 
     private val btcService: BTCService by inject()
     private val lightningService: LightningService by inject()
+    private val webservice: Webservice by inject()
 
     private var INTENT_AUTHENTICATE = 1234
     private var setwidht = 0
     var setheight = 0
-    lateinit var distributebutton: Button
+    var rateInBtc = 0.0
+    private lateinit var distributebutton: Button
     private lateinit var commandeerbutton: Button
     private lateinit var qRCodeImage: ImageView
     private lateinit var receiveableslistview: ListView
     private lateinit var sendeableslistview: ListView
-    var adminReceiveablesListAdapter: AdminReceivableListAdapter? = null
-    var adminSendablesListAdapter: AdminSendablesListAdapter? = null
+    private var adminReceiveablesListAdapter: AdminReceivableListAdapter? = null
+    private var adminSendablesListAdapter: AdminSendablesListAdapter? = null
     private var fcmBroadcastReceiver: BroadcastReceiver? = null
 
-    lateinit var progressDialog: ProgressDialog
+    private lateinit var progressDialog: ProgressDialog
 
-
-    var sharedPreferences = CustomSharedPreferences()
-
-
-    var currentTransactionLabel = ""
-    var bolt11fromqr = ""
-    var distributeDescription = ""
+    private var currentTransactionLabel = ""
+    private var bolt11fromqr = ""
+    private var distributeDescription = ""
     private var gdaxUrl = "ws://73.36.65.41:8095/SendCommands"
-    lateinit var fromDaterReceivables: EditText
-    lateinit var toDateReceivables: EditText
-    lateinit var fromDateSendables: EditText
-    lateinit var toDateSendables: EditText
-    lateinit var picker: DatePickerDialog
+    private lateinit var fromDaterReceivables: EditText
+    private lateinit var toDateReceivables: EditText
+    private lateinit var fromDateSendables: EditText
+    private lateinit var toDateSendables: EditText
+    private lateinit var picker: DatePickerDialog
     var isInApp = true
-    var setTextWithSpan: TextView? = null
+    lateinit var setTextWithSpan: TextView
     private var AMOUNT_BTC = 0.0
     private var AMOUNT_USD = 0.0
     private var CONVERSION_RATE = 0.0
@@ -113,16 +109,16 @@ class AdminFragment1 : AdminBaseFragment() {
                     Toast.LENGTH_LONG
                 ).show()
             } else if (originalIntent.hasExtra(Intents.Scan.MISSING_CAMERA_PERMISSION)) {
-                    Log.d(
-                        "MainActivity",
-                        "Cancelled scan due to missing camera permission"
-                    )
-                    Toast.makeText(
-                        requireContext(),
-                        "Cancelled due to missing camera permission",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+                Log.d(
+                    "MainActivity",
+                    "Cancelled scan due to missing camera permission"
+                )
+                Toast.makeText(
+                    requireContext(),
+                    "Cancelled due to missing camera permission",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         } else {
             if (result.contents != null) {
                 if (result.contents == null) {
@@ -285,6 +281,11 @@ class AdminFragment1 : AdminBaseFragment() {
     }
 
     private fun loadObservers() {
+        btcService.currentBtc.observe(viewLifecycleOwner) {
+            it.data?.let {
+                this.rateInBtc = it.price
+            }
+        }
         lightningService.refundList().observe(viewLifecycleOwner) {
             when (it.status) {
                 Status.SUCCESS -> {
@@ -294,14 +295,12 @@ class AdminFragment1 : AdminBaseFragment() {
                         this.sendables = data
                     }
                 }
+
                 Status.ERROR -> {
-                    if (it.message == "2fa") {
-                        Auth2FaFragment().show(childFragmentManager, null)
-                    } else {
-                        showToast(it.message)
-                    }
+                    progressDialog.dismiss()
                     showToast(it.message)
                 }
+
                 Status.LOADING -> {
                     progressDialog.show()
                 }
@@ -316,14 +315,12 @@ class AdminFragment1 : AdminBaseFragment() {
                         this.receivables = data
                     }
                 }
+
                 Status.ERROR -> {
-                    if (it.message == "2fa") {
-                        Auth2FaFragment().show(childFragmentManager, null)
-                    } else {
-                        showToast(it.message)
-                    }
+                    progressDialog.dismiss()
                     showToast(it.message)
                 }
+
                 Status.LOADING -> {
                     progressDialog.show()
                 }
@@ -356,7 +353,7 @@ class AdminFragment1 : AdminBaseFragment() {
                     Color.TRANSPARENT
                 )
             )
-            window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+            window?.setLayout((width *.9).toInt(), (height *.9).toInt())
             setCancelable(false)
             val etMsatoshi = findViewById<EditText>(R.id.et_msatoshi)
             val etLabel = findViewById<EditText>(R.id.et_lable)
@@ -370,7 +367,7 @@ class AdminFragment1 : AdminBaseFragment() {
             qRCodeImage.visibility = View.GONE
             ivBack.setOnClickListener { dismiss() }
             btnCreatInvoice.setOnClickListener {
-                if (GlobalState.getInstance().channel_btcResponseData == null) {
+                if (rateInBtc == 0.0) {
                     showToast("Btc rate not available")
                     return@setOnClickListener
                 }
@@ -391,7 +388,7 @@ class AdminFragment1 : AdminBaseFragment() {
                 }
                 currentTransactionLabel = label
                 AMOUNT_USD = msatoshi.toDouble()
-                var priceInBTC = 1 / GlobalState.getInstance().channel_btcResponseData.price
+                var priceInBTC = 1 / rateInBtc
                 priceInBTC *= msatoshi.toDouble()
                 AMOUNT_BTC = priceInBTC
                 var amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi
@@ -424,19 +421,18 @@ class AdminFragment1 : AdminBaseFragment() {
                                         qRCodeImage.setImageBitmap(bitmap)
                                         qRCodeImage.visibility = View.VISIBLE
                                         listenToFcmBroadcast()
+                                        etDescription.hideKeyboard()
                                     } catch (e: WriterException) {
                                         e.printStackTrace()
                                     }
                                 }
                             }
+
                             Status.ERROR -> {
                                 progressDialog.dismiss()
-                                if (it.message == "2fa") {
-                                    Auth2FaFragment().show(childFragmentManager, null)
-                                } else {
-                                    showToast(it.message)
-                                }
+                                showToast(it.message)
                             }
+
                             Status.LOADING -> {
                                 progressDialog.show()
                             }
@@ -457,7 +453,7 @@ class AdminFragment1 : AdminBaseFragment() {
                 Color.TRANSPARENT
             )
         )
-        dialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+        dialog.window?.setLayout((width *.9).toInt(), (height *.9).toInt())
         dialog.setCancelable(false)
         //init dialog views
         val ivBack = dialog.findViewById<ImageView>(R.id.iv_back_invoice)
@@ -478,13 +474,13 @@ class AdminFragment1 : AdminBaseFragment() {
             paidAt.visibility = View.VISIBLE
             purchasedItems.visibility = View.VISIBLE
             printInvoice.visibility = View.VISIBLE
-            val amounttempusd = round(getUsdFromBtc(mSatoshoToBtc(invoice.msatoshi)), 2)
+            val amounttempusd = round(btcService.btcToUsd(mSatoshoToBtc(invoice.msatoshi)), 2)
             val precision = DecimalFormat("0.00")
             amount.text = StringBuilder()
                 .append(excatFigure(round(mSatoshoToBtc(invoice.msatoshi), 9)))
                 .append("BTC\n$").append(precision.format(round(amounttempusd, 2)))
                 .append("USD").toString()
-            paymentPreImage.setImageBitmap(getBitMapImg(invoice.payment_preimage, 300, 300))
+            paymentPreImage.setImageBitmap(getBitMapFromHex(invoice.payment_preimage, 300, 300))
             paidAt.text =
                 getDateFromUTCTimestamp(invoice.paid_at, AppConstants.OUTPUT_DATE_FORMATE)
             purchasedItems.text = distributeDescription
@@ -500,14 +496,14 @@ class AdminFragment1 : AdminBaseFragment() {
                 .append("BTC\n$").append(
                     precision.format(
                         round(
-                            getUsdFromBtc(mSatoshoToBtc(invoice.msatoshi)),
+                            btcService.btcToUsd(mSatoshoToBtc(invoice.msatoshi)),
                             2
                         )
                     )
                 ).append("USD").toString()
             paidAt.text =
                 getDateFromUTCTimestamp(invoice.paid_at, AppConstants.OUTPUT_DATE_FORMATE)
-            paymentPreImage.setImageBitmap(getBitMapImg(invoice.payment_preimage, 300, 300))
+            paymentPreImage.setImageBitmap(getBitMapFromHex(invoice.payment_preimage, 300, 300))
             purchasedItems.text = "N/A"
         }
         printInvoice.setOnClickListener {
@@ -532,16 +528,11 @@ class AdminFragment1 : AdminBaseFragment() {
         val height = Resources.getSystem().displayMetrics.heightPixels
         val dialog = Dialog(requireContext())
         dialog.setContentView(R.layout.dialoglayoutrefundcommandeerlaststepconfirmedpay)
-        dialog.window?.setBackgroundDrawable(
-            ColorDrawable(
-                Color.TRANSPARENT
-            )
-        )
         val ivBack: ImageView =
             dialog.findViewById(R.id.iv_back_invoice)
         val textView: TextView = dialog.findViewById(R.id.textView2)
         val ok: Button = dialog.findViewById(R.id.btn_ok)
-        dialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+        dialog.window?.setLayout((width  *.9).toInt(), (height  *.9).toInt())
         dialog.setCancelable(false)
         textView.text = "Payment Status:" + pay.status
         if (pay.status == "complete") {
@@ -570,28 +561,28 @@ class AdminFragment1 : AdminBaseFragment() {
     private fun dialogBoxForRefundCommandeer() {
         val width = Resources.getSystem().displayMetrics.widthPixels
         val height = Resources.getSystem().displayMetrics.heightPixels
-        val commandeerRefundDialog = Dialog(requireContext())
-        commandeerRefundDialog.setContentView(R.layout.dialoglayoutrefundcommandeer)
-        commandeerRefundDialog.window?.setBackgroundDrawable(
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.dialoglayoutrefundcommandeer)
+        dialog.window?.setLayout((width  *.9).toInt(), (height *.5).toInt())
+        dialog.window?.setBackgroundDrawable(
             ColorDrawable(
                 Color.TRANSPARENT
             )
         )
-        commandeerRefundDialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
-        commandeerRefundDialog.setCancelable(false)
-        val bolt11 = commandeerRefundDialog.findViewById<EditText>(R.id.bolt11val)
-        val ivBack = commandeerRefundDialog.findViewById<ImageView>(R.id.iv_back_invoice)
-        val title = commandeerRefundDialog.findViewById<TextView>(R.id.tv_title)
-        title.text = "COMMANDEER"
-        val btnNext = commandeerRefundDialog.findViewById<Button>(R.id.btn_next)
-        val btnscanQr = commandeerRefundDialog.findViewById<Button>(R.id.btn_scanQR)
-        ivBack.setOnClickListener { v: View? -> commandeerRefundDialog.dismiss() }
-        btnNext.setOnClickListener { v: View? ->
-            val bolt11value = bolt11.text.toString()
+        dialog.setCancelable(false)
+        val etBolt11 = dialog.findViewById<EditText>(R.id.bolt11val)
+        val ivBack = dialog.findViewById<ImageView>(R.id.iv_back_invoice)
+        val tvTitle = dialog.findViewById<TextView>(R.id.tv_title)
+        tvTitle.text = "COMMANDEER"
+        val btnNext = dialog.findViewById<Button>(R.id.btn_next)
+        val btnscanQr = dialog.findViewById<Button>(R.id.btn_scanQR)
+        ivBack.setOnClickListener { dialog.dismiss() }
+        btnNext.setOnClickListener {
+            val bolt11value = etBolt11.text.toString()
             if (bolt11value.isEmpty()) {
                 showToast("Bolt11 " + getString(R.string.empty))
             } else {
-                commandeerRefundDialog.dismiss()
+                dialog.dismiss()
                 bolt11fromqr = bolt11value
                 decodeInvoice(bolt11value)
             }
@@ -605,7 +596,7 @@ class AdminFragment1 : AdminBaseFragment() {
             options.setBarcodeImageEnabled(true)
             barcodeLauncher.launch(options)
         }
-        commandeerRefundDialog.show()
+        dialog.show()
     }
 
     //Getting the scan results
@@ -648,13 +639,12 @@ class AdminFragment1 : AdminBaseFragment() {
                         e.printStackTrace()
                     }
                 }
+
                 Status.ERROR -> {
-                    if (it.message == "2fa") {
-                        Auth2FaFragment().show(childFragmentManager, null)
-                    } else {
-                        showToast(it.message)
-                    }
+                    progressDialog.dismiss()
+                    showToast(it.message)
                 }
+
                 Status.LOADING -> {
                     progressDialog.show()
                 }
@@ -673,11 +663,11 @@ class AdminFragment1 : AdminBaseFragment() {
                 Color.TRANSPARENT
             )
         )
-        dialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+        dialog.window?.setLayout((width * .9).toInt(), (height * .9).toInt())
         dialog.setCancelable(false)
         MSATOSHI = msatoshi
         val btc = mSatoshoToBtc(java.lang.Double.valueOf(msatoshi))
-        val priceInBTC = GlobalState.getInstance().channel_btcResponseData.price
+        val priceInBTC = rateInBtc
         var usd = priceInBTC * btc
         AMOUNT_USD = usd
         AMOUNT_BTC = btc
@@ -721,7 +711,7 @@ class AdminFragment1 : AdminBaseFragment() {
         label: String,
         usd: String
     ) {
-        var priceInBTC = 1 / GlobalState.getInstance().channel_btcResponseData.price
+        var priceInBTC = 1 / rateInBtc
         priceInBTC *= usd.toDouble()
         var amountInMsatoshi = priceInBTC * AppConstants.btcToSathosi
         amountInMsatoshi *= AppConstants.satoshiToMSathosi
@@ -734,21 +724,19 @@ class AdminFragment1 : AdminBaseFragment() {
                         progressDialog.dismiss()
                         if (it.data?.status == "complete") {
                             saveGetRefundTransactionInLog(it.data, label)
-                            showPayCompleteDialog(it.data,bolt11value)
+                            showPayCompleteDialog(it.data, bolt11value)
                         } else {
                             val pay = Pay()
                             pay.status = "Not complete"
                             showPayCompleteDialog(pay, bolt11value)
                         }
                     }
+
                     Status.ERROR -> {
                         progressDialog.dismiss()
-                        if (it.message == "2fa") {
-                            Auth2FaFragment().show(childFragmentManager, null)
-                        } else {
-                            showToast(it.message)
-                        }
+                        showToast(it.message)
                     }
+
                     Status.LOADING -> {
                         progressDialog.show()
                     }
@@ -784,31 +772,31 @@ class AdminFragment1 : AdminBaseFragment() {
     }
 
     private fun addAlphaTransaction(
-        transaction_label: String?,
+        transactionLabel: String?,
         status: String?,
-        transaction_amountBTC: String?,
-        transaction_amountUSD: String?,
-        conversion_rate: String?,
+        transactionAmountbtc: String?,
+        transactionAmountusd: String?,
+        conversionRate: String?,
         msatoshi: String?,
-        payment_preimage: String?,
-        payment_hash: String?,
+        paymentPreimage: String?,
+        paymentHash: String?,
         destination: String?,
-        merchant_id: String?,
-        transaction_description: String?
+        merchantId: String?,
+        transactionDescription: String?
     ) {
-        val call: Call<TransactionResp> = ApiClient.getRetrofit().create(Webservice::class.java)
+        val call: Call<TransactionResp> = webservice
             .add_alpha_transction(
-                transaction_label,
+                transactionLabel,
                 status,
-                transaction_amountBTC,
-                transaction_amountUSD,
-                payment_preimage,
-                payment_hash,
-                conversion_rate,
+                transactionAmountbtc,
+                transactionAmountusd,
+                paymentPreimage,
+                paymentHash,
+                conversionRate,
                 msatoshi,
                 destination,
-                merchant_id,
-                transaction_description
+                merchantId,
+                transactionDescription
             )
         call.enqueue(object : Callback<TransactionResp?> {
             override fun onResponse(
@@ -860,7 +848,6 @@ class AdminFragment1 : AdminBaseFragment() {
         if (fcmBroadcastReceiver != null) {
             requireContext().unregisterReceiver(fcmBroadcastReceiver)
         }
-
     }
 
     private fun confirmPayment() {
@@ -877,7 +864,7 @@ class AdminFragment1 : AdminBaseFragment() {
                                         invoiceLabel,
                                         it.status,
                                         String.format("%.9f", satoshiToBtc(it.msatoshi)),
-                                        String.format("%.9f", btcToUsd(satoshiToBtc(it.msatoshi))),
+                                        String.format("%.9f", btcService.btcToUsd(satoshiToBtc(it.msatoshi))),
                                         CONVERSION_RATE.toString(),
                                         excatFigure(MSATOSHI),
                                         it.payment_preimage,
@@ -902,14 +889,12 @@ class AdminFragment1 : AdminBaseFragment() {
                                 .show()
                         }
                     }
+
                     Status.ERROR -> {
-                        if (response.message == "2fa") {
-                            Auth2FaFragment().show(childFragmentManager, null)
-                        } else {
-                            showToast(response.message)
-                        }
-                        showToast(response.message.toString())
+                        progressDialog.dismiss()
+                        showToast(response.message)
                     }
+
                     Status.LOADING -> {
                         confirmingProgressDialog.show()
                     }

@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sis.clightapp.model.Channel_BTCResponseData
-import com.sis.clightapp.model.currency.CurrentSpecificRateData
+import com.sis.clightapp.util.AppConstants
 import com.sis.clightapp.util.GlobalState
 import com.sis.clightapp.util.Resource
 import org.json.JSONException
@@ -15,16 +15,18 @@ import java.net.URISyntaxException
 
 class BTCService {
     private lateinit var webSocketClient: WebSocketClient
+    var btcPrice = 0.0
 
-    private val _currentBtc: MutableLiveData<Resource<CurrentSpecificRateData>> =
+    private val _currentBtc: MutableLiveData<Resource<Channel_BTCResponseData>> =
         MutableLiveData()
-    val currentBtc: LiveData<Resource<CurrentSpecificRateData>>
+    val currentBtc: LiveData<Resource<Channel_BTCResponseData>>
         get() = _currentBtc
+
     init {
         subscribeChannel()
     }
 
-     private fun subscribeChannel() {
+    private fun subscribeChannel() {
         val uri: URI = try {
             URI("wss://ws.bitstamp.net/")
         } catch (e: URISyntaxException) {
@@ -71,17 +73,11 @@ class BTCService {
                                     objects.getInt("buy_order_id")
                                 btcResp.sell_order_id =
                                     objects.getInt("sell_order_id")
-                                val btcRate = CurrentSpecificRateData()
-                                btcRate.rateinbitcoin = btcResp.price
-                                GlobalState.getInstance().currentSpecificRateData =
-                                    btcRate
-                                GlobalState.getInstance().channel_btcResponseData =
-                                    btcResp
-                                _currentBtc.postValue(Resource.success(btcRate))
+                                _currentBtc.postValue(Resource.success(btcResp))
+                                btcPrice = btcResp.price
                             } catch (e: JSONException) {
                                 e.printStackTrace()
                             }
-
                         }
                     } catch (ignored: JSONException) {
                     }
@@ -103,4 +99,12 @@ class BTCService {
         webSocketClient.connect()
     }
 
+    fun btcToUsd(btc: Double): Double {
+        return if (btcPrice != 0.0) {
+            val priceInUSD = btcPrice * btc
+            priceInUSD
+        } else {
+            0.0
+        }
+    }
 }

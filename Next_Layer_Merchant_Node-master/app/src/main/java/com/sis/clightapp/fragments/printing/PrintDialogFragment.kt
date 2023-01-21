@@ -26,23 +26,18 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.DialogFragment
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
-import com.google.zxing.WriterException
-import com.google.zxing.common.BitMatrix
-import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.sis.clightapp.R
 import com.sis.clightapp.model.GsonModel.Invoice
 import com.sis.clightapp.model.GsonModel.Items
 import com.sis.clightapp.model.GsonModel.Pay
+import com.sis.clightapp.services.BTCService
 import com.sis.clightapp.util.*
 import com.sis.clightapp.util.print.PrintPic
 import com.sis.clightapp.util.print.PrinterCommands
-import java.io.ByteArrayOutputStream
+import org.koin.android.ext.android.inject
 import java.io.IOException
 import java.text.DecimalFormat
 import java.util.*
-import kotlin.math.round
 
 
 class PrintDialogFragment(
@@ -58,6 +53,7 @@ class PrintDialogFragment(
     private lateinit var printingProgressBar: ProgressDialog
     private lateinit var btDevicesDialog: Dialog
     private val permissions: MutableList<String> = ArrayList()
+    private val btcService: BTCService by inject()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         printingProgressBar = ProgressDialog(requireContext())
@@ -258,7 +254,10 @@ class PrintDialogFragment(
                     val btc =
                         String.format("%.9f", satoshiToBtc(invoice.msatoshi)) + " BTC"
                     val usd =
-                        String.format("%.9f", btcToUsd(satoshiToBtc(invoice.msatoshi))) + " USD"
+                        String.format(
+                            "%.9f",
+                            btcService.btcToUsd(satoshiToBtc(invoice.msatoshi))
+                        ) + " USD"
                     try {
                         // This is printer specific code you can comment ==== > Start
                         bytes += PrinterCommands.ESC_ALIGN_CENTER
@@ -354,7 +353,10 @@ class PrintDialogFragment(
                     val btc =
                         String.format("%.9f", satoshiToBtc(payment.msatoshi)) + " BTC"
                     val usd =
-                        String.format("%.9f", btcToUsd(satoshiToBtc(payment.msatoshi))) + " USD"
+                        String.format(
+                            "%.9f",
+                            btcService.btcToUsd(satoshiToBtc(payment.msatoshi))
+                        ) + " USD"
                     val des = payment.message ?: ""
                     try {
                         // This is printer specific code you can comment ==== > Start
@@ -428,19 +430,5 @@ class PrintDialogFragment(
             bytes += PrinterCommands.FEED_LINE
         }
         return bytes;
-    }
-
-    private fun getBitMapFromHex(hex: String?, width: Int = 200, height: Int = 200): Bitmap? {
-        if (hex == null)
-            return null
-        val multiFormatWriter = MultiFormatWriter()
-        var bitMatrix: BitMatrix? = null
-        try {
-            bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, width, height)
-        } catch (e: WriterException) {
-            e.printStackTrace()
-        }
-        val barcodeEncoder = BarcodeEncoder()
-        return barcodeEncoder.createBitmap(bitMatrix)
     }
 }

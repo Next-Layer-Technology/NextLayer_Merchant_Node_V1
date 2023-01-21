@@ -13,29 +13,41 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.google.gson.JsonObject
-import com.sis.clightapp.Interface.ApiClient2
-import com.sis.clightapp.Interface.ApiClientBoost
 import com.sis.clightapp.Interface.ApiPaths2
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.R
 import com.sis.clightapp.model.REST.get_session_response
 import com.sis.clightapp.model.WebsocketResponse.WebSocketOTPresponse
 import com.sis.clightapp.util.CustomSharedPreferences
+import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 
+
 class Auth2FaFragment : DialogFragment() {
-    private lateinit var context: Context
+    private val apiClient: ApiPaths2 by inject()
+    private val webservice: Webservice by inject()
+    private lateinit var ctx: Context
+
     lateinit var progressDialog: ProgressDialog
     val sharedPreferences = CustomSharedPreferences()
+    override fun onStart() {
+        super.onStart()
+        val width = requireActivity().resources.displayMetrics.widthPixels*.9
+        val height = requireActivity().resources.displayMetrics.heightPixels * .45
+        dialog?.window?.apply {
+            setLayout(width.toInt(), height.toInt())
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         progressDialog = ProgressDialog(requireContext())
-        context = requireContext()
-        val dialog = Dialog(context)
+        val dialog = Dialog(requireContext())
+        this.ctx = requireContext()
         dialog.setContentView(R.layout.dialog_authenticate_session)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setCancelable(false)
         val et2faPass = dialog.findViewById<EditText>(R.id.taskEditText)
         val btnConfirm = dialog.findViewById<Button>(R.id.btn_confirm)
@@ -60,9 +72,7 @@ class Auth2FaFragment : DialogFragment() {
     }
 
     private fun getSessionToken(twoFaCode: String) {
-        val call = ApiClientBoost.getRetrofit().create(
-            Webservice::class.java
-        ).get_session("merchant", "haiww82uuw92iiwu292isk")
+        val call = webservice.get_session("merchant", "haiww82uuw92iiwu292isk")
         call.enqueue(object : Callback<get_session_response?> {
             override fun onResponse(
                 call: Call<get_session_response?>,
@@ -73,12 +83,12 @@ class Auth2FaFragment : DialogFragment() {
                     if (resp != null && resp.session_token.toInt() != -1) {
                         sharedPreferences.setvalueofExpierTime(
                             resp.session_token.toInt(),
-                            context
+                            ctx
                         )
                         val token =
                             sharedPreferences.getvalueofRefresh(
                                 "refreshToken",
-                                context
+                                ctx
                             )
                         getToken(token, twoFaCode)
                     } else {
@@ -88,7 +98,7 @@ class Auth2FaFragment : DialogFragment() {
                     progressDialog.dismiss()
                     try {
                         Toast.makeText(
-                            activity,
+                            ctx,
                             response.errorBody()!!.string(),
                             Toast.LENGTH_LONG
                         ).show()
@@ -108,14 +118,12 @@ class Auth2FaFragment : DialogFragment() {
     }
 
     private fun getToken(refresh: String, key: String) {
-        val time = CustomSharedPreferences().getvalueofExpierTime(context)
+        val time = CustomSharedPreferences().getvalueofExpierTime(ctx)
         val jsonObject1 = JsonObject()
         jsonObject1.addProperty("refresh", refresh)
         jsonObject1.addProperty("twoFactor", key)
         jsonObject1.addProperty("time", time)
-        val call = ApiClient2.getRetrofit().create(
-            ApiPaths2::class.java
-        ).gettoken(jsonObject1) as Call<WebSocketOTPresponse>
+        val call = apiClient.gettoken(jsonObject1) as Call<WebSocketOTPresponse>
         call.enqueue(object : Callback<WebSocketOTPresponse?> {
             override fun onResponse(
                 call: Call<WebSocketOTPresponse?>,
@@ -125,12 +133,12 @@ class Auth2FaFragment : DialogFragment() {
                 if (response.body() != null) {
                     val webSocketOTPresponse = response.body()
                     if (webSocketOTPresponse!!.code == 700) {
-                        sharedPreferences.setislogin(true, "registered", context)
+                        sharedPreferences.setislogin(true, "registered", ctx)
                         if (webSocketOTPresponse.token != "") {
                             sharedPreferences.setvalueofaccestoken(
                                 webSocketOTPresponse.token,
                                 "accessToken",
-                                context
+                                ctx
                             )
                         }
                         showToast("Access token successfully registered")
@@ -170,5 +178,5 @@ class Auth2FaFragment : DialogFragment() {
     }
 
     fun showToast(message: String?) =
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
 }
