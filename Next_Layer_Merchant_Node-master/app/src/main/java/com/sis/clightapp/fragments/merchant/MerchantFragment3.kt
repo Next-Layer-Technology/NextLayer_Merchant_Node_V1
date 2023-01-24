@@ -51,7 +51,7 @@ import java.util.*
 
 class MerchantFragment3 : MerchantBaseFragment() {
     private val sessionService: SessionService by inject()
-    private val webservice = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+    private val webservice = ApiClientStartStop.getRetrofit(requireContext()).create(Webservice::class.java)
     var TAG = "CLighting App"
     var countAddScreen = 1
     private var gdaxUrl = "ws://73.36.65.41:8095/SendCommands"

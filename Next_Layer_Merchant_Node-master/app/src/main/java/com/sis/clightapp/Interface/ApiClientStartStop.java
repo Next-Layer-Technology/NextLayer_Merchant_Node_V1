@@ -1,5 +1,8 @@
 package com.sis.clightapp.Interface;
 
+import android.content.Context;
+
+import com.chuckerteam.chucker.api.ChuckerInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -16,7 +19,7 @@ public class ApiClientStartStop {
     public static final String NEW_BASE_URL = "http://104.128.189.40/boostterminal/ssh-files/";
     public static Retrofit retrofit = null;
 
-    public static Retrofit getRetrofit() {
+    public static Retrofit getRetrofit(Context context) {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -27,13 +30,16 @@ public class ApiClientStartStop {
                 .readTimeout(3, TimeUnit.MINUTES)
                 .addNetworkInterceptor(httpLoggingInterceptor)
                 .writeTimeout(3, TimeUnit.MINUTES)
+                .addInterceptor(
+                        new ChuckerInterceptor.Builder(context).build()
+                )
                 .build();
         if (retrofit == null) {
             retrofit = new Retrofit.Builder().baseUrl(NEW_BASE_URL)
                     .client(okHttpClient)
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(gson))
-                    .client(getClient())
+                    .client(getClient(context))
                     .build();
 
 
@@ -41,11 +47,13 @@ public class ApiClientStartStop {
         return retrofit;
     }
 
-    private static OkHttpClient getClient() {
-        OkHttpClient client = new OkHttpClient.Builder()
+    private static OkHttpClient getClient(Context context) {
+        return new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.MINUTES)
                 .readTimeout(10, TimeUnit.MINUTES)
+                .addInterceptor(
+                        new ChuckerInterceptor.Builder(context).build()
+                )
                 .build();
-        return client;
     }
 }

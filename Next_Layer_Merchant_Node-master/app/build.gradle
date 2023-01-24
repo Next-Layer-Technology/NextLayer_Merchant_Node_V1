@@ -132,6 +132,10 @@ dependencies {
 
     implementation 'com.auth0:java-jwt:4.2.1'
     implementation 'androidx.preference:preference:1.2.0'
+
+    // Chucker (Retrofit logs)
+    debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 }
 
 static def buildTime() {
