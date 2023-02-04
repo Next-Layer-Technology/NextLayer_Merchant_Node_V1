@@ -437,7 +437,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             isCreatingInvoice = false
             createInvoice(msatoshi, label1, descrption)
         }
-        createInvoice(rMSatoshi, label, "Flashpay")
+        invoiceDialog.show()
+     //   createInvoice(rMSatoshi, label, "Flashpay")
     }
 
     private fun getBitMapImg(hex: String?, width: Int, height: Int): Bitmap {
