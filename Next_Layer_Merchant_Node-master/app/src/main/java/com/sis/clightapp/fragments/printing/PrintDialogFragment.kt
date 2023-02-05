@@ -418,7 +418,7 @@ class PrintDialogFragment(
     }
 
     private fun qr(text: String): ByteArray {
-        val bitmap: Bitmap = getBitMapFromHex(text) ?: return byteArrayOf()
+        val bitmap: Bitmap = getBitMapFromHex(text,120,120) ?: return byteArrayOf()
         val printPic = PrintPic.getInstance()
         printPic.init(bitmap)
         return printPic.printDraw()
