@@ -255,7 +255,7 @@ class PrintDialogFragment(
                         String.format("%.9f", satoshiToBtc(invoice.msatoshi)) + " BTC"
                     val usd =
                         String.format(
-                            "%.9f",
+                            "%.2f",
                             btcService.btcToUsd(satoshiToBtc(invoice.msatoshi))
                         ) + " USD"
                     try {
