@@ -44,6 +44,7 @@ class PrintDialogFragment(
     private val invoice: Invoice? = null,
     private val payment: Pay? = null,
     private val items: List<Items> = listOf(),
+    private val onClose : ()-> Unit = {}
 ) : DialogFragment() {
 
     private val requestCode = 2

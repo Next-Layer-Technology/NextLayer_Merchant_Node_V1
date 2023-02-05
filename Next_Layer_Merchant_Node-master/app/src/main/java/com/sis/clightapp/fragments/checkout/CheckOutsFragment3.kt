@@ -435,6 +435,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             }
             currentTransactionLabel = label1
             isCreatingInvoice = false
+            invoiceDialog.dismiss()
             createInvoice(msatoshi, label1, descrption)
         }
         invoiceDialog.show()
@@ -994,7 +995,14 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 val precision = DecimalFormat("0.00")
                 amount.text = """
                     ${exactFigure(round(satoshiToBtc(invoice.msatoshi), 9))}BTC
-                    ${"$"}${precision.format(round(btcService.btcToUsd(satoshiToBtc(invoice.msatoshi)), 2))}USD
+                    ${"$"}${
+                    precision.format(
+                        round(
+                            btcService.btcToUsd(satoshiToBtc(invoice.msatoshi)),
+                            2
+                        )
+                    )
+                }USD
                     """.trimIndent()
                 paidAt.text =
                     dateStringUTCTimestamp(invoice.paid_at, AppConstants.OUTPUT_DATE_FORMATE)
@@ -1004,7 +1012,10 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         }
         printInvoice.setOnClickListener {
             if (invoice != null && invoice.status == "paid") {
-                PrintDialogFragment(invoice, null, selectedItems).show(childFragmentManager, null)
+                distributeGetPaidDialog.dismiss()
+                PrintDialogFragment(invoice, null, selectedItems) {
+                    requireActivity().recreate()
+                }.show(childFragmentManager, null)
             }
         }
         ivBack.setOnClickListener { v: View? -> distributeGetPaidDialog.dismiss() }
