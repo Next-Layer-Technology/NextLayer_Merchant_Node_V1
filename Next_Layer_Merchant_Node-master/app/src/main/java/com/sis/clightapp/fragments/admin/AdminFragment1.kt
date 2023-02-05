@@ -532,7 +532,7 @@ class AdminFragment1 : AdminBaseFragment() {
             dialog.findViewById(R.id.iv_back_invoice)
         val textView: TextView = dialog.findViewById(R.id.textView2)
         val ok: Button = dialog.findViewById(R.id.btn_ok)
-        dialog.window?.setLayout((width  *.9).toInt(), (height  *.9).toInt())
+       // dialog.window?.setLayout((width  *.9).toInt(), (height  *.9).toInt())
         dialog.setCancelable(false)
         textView.text = "Payment Status:" + pay.status
         if (pay.status == "complete") {
