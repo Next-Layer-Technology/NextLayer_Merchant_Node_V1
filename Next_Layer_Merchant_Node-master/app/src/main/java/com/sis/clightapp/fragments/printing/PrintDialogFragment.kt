@@ -377,6 +377,12 @@ class PrintDialogFragment(
                         bytes += feed()
                         bytes += usd.toByteArray()
                         bytes += feed(2)
+                        bytes += "Message: ".toByteArray()
+                        bytes += feed()
+                        //Paid at   should center
+                        bytes += payment.message.toByteArray()
+                        bytes += feed(1)
+                        bytes += PrinterCommands.ESC_ALIGN_LEFT
                         //Paid at title should center
                         bytes += "Sent: ".toByteArray()
                         bytes += feed()
@@ -384,6 +390,7 @@ class PrintDialogFragment(
                         bytes += paidAt.toByteArray()
                         bytes += feed(1)
                         bytes += PrinterCommands.ESC_ALIGN_LEFT
+
                         bytes += "Bolt 11 Invoice:".toByteArray()
                         bytes += feed()
                         bytes += PrinterCommands.ESC_ALIGN_RIGHT

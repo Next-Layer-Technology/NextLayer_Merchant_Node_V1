@@ -435,7 +435,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             }
             currentTransactionLabel = label1
             isCreatingInvoice = false
-            invoiceDialog.dismiss()
+          //  invoiceDialog.dismiss()
             createInvoice(msatoshi, label1, descrption)
         }
         invoiceDialog.show()
@@ -1012,9 +1012,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         }
         printInvoice.setOnClickListener {
             if (invoice != null && invoice.status == "paid") {
-                distributeGetPaidDialog.dismiss()
                 PrintDialogFragment(invoice, null, selectedItems) {
-                    requireActivity().recreate()
+                //    requireActivity().recreate()
                 }.show(childFragmentManager, null)
             }
         }
