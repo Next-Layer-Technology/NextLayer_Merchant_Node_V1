@@ -33,8 +33,8 @@ public interface Webservice {
     Call<CurrentAllRate> getCurrentAllRate();
 
     @FormUrlEncoded
-    @POST("add-alpha-transction")
-    Call<TransactionResp> add_alpha_transction(
+    @POST("add-merchant-transaction")
+    Call<TransactionResp> add_merchant_transction(
             @Field("transaction_label") String transaction_label,
             @Field("status") String status,
             @Field("transaction_amountBTC") String transaction_amountBTC,

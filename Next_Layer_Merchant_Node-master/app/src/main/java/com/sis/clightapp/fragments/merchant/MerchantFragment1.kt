@@ -654,7 +654,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
                             if (response.data.status == "paid") {
                                 dialogBoxForConfirmPaymentInvoice(response.data)
                                 response.data.let {
-                                    addAlphaTransaction(
+                                    addMerchantTransaction(
                                         currentTransactionLabel,
                                         it.status,
                                         String.format("%.9f", satoshiToBtc(it.msatoshi)),
@@ -989,7 +989,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
         val destination = pay.destination
         val merchantId = GlobalState.getInstance().merchant_id
         val transactionDescription1 = ""
-        addAlphaTransaction(
+        addMerchantTransaction(
             label,
             status,
             transactionAmountbtc,
@@ -1004,7 +1004,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
         )
     }
 
-    private fun addAlphaTransaction(
+    private fun addMerchantTransaction(
         transactionLabel: String?,
         status: String?,
         transactionAmountbtc: String?,
@@ -1018,7 +1018,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
         transactionDescription: String?
     ) {
         val call: Call<TransactionResp> = webservice
-            .add_alpha_transction(
+            .add_merchant_transction(
                 transactionLabel,
                 status,
                 transactionAmountbtc,
