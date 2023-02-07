@@ -890,9 +890,11 @@ class MerchantFragment1 : MerchantBaseFragment() {
                         progressDialog.dismiss()
                         if (it.data?.status == "complete") {
                             saveGetRefundTransactionInLog(it.data, label)
+                            it.data.bolt11 = bolt11
                             showConfirmDialog(it.data)
                         } else {
                             val pay = Pay()
+                            pay.bolt11 = bolt11
                             pay.status = "Not complete"
                             showConfirmDialog(pay)
                         }
@@ -925,6 +927,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
         if (pay.status == "complete") {
             ok.text = "Print"
         }
+
         ok.setOnClickListener { view: View? ->
             if (pay.status == "complete") {
                 loadObservers()
