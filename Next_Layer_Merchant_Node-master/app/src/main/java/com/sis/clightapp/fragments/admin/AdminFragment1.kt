@@ -864,7 +864,7 @@ class AdminFragment1 : AdminBaseFragment() {
                                         invoiceLabel,
                                         it.status,
                                         String.format("%.9f", satoshiToBtc(it.msatoshi)),
-                                        String.format("%.9f", btcService.btcToUsd(satoshiToBtc(it.msatoshi))),
+                                        String.format("%.9f", AMOUNT_USD),
                                         CONVERSION_RATE.toString(),
                                         excatFigure(MSATOSHI),
                                         it.payment_preimage,
