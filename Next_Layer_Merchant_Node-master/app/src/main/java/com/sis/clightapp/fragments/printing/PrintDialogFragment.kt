@@ -44,7 +44,7 @@ class PrintDialogFragment(
     private val invoice: Invoice? = null,
     private val payment: Pay? = null,
     private val items: List<Items> = listOf(),
-    private val onClose : ()-> Unit = {}
+    private val onClose: () -> Unit = {}
 ) : DialogFragment() {
 
     private val requestCode = 2
@@ -71,6 +71,7 @@ class PrintDialogFragment(
         val btnClose: ImageView = btDevicesDialog.findViewById(R.id.btn_close)
         btnClose.setOnClickListener {
             dismiss();
+            onClose()
         }
         initializeBluetooth()
         scanDevices.setOnClickListener {
@@ -276,7 +277,7 @@ class PrintDialogFragment(
                             bytes += feed();
                             items.forEach {
                                 bytes += PrinterCommands.ESC_ALIGN_RIGHT
-                                bytes += it.name.toByteArray()
+                                bytes += (it.name + " " + it.price + " / " + it.totalPrice).toByteArray()
                                 bytes += feed()
                             }
                         }
@@ -419,7 +420,7 @@ class PrintDialogFragment(
     }
 
     private fun qr(text: String): ByteArray {
-        val bitmap: Bitmap = getBitMapFromHex(text,120,120) ?: return byteArrayOf()
+        val bitmap: Bitmap = getBitMapFromHex(text, 350, 350) ?: return byteArrayOf()
         val printPic = PrintPic.getInstance()
         printPic.init(bitmap)
         return printPic.printDraw()
