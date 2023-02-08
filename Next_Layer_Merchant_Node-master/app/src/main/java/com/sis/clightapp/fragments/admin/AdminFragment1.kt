@@ -539,6 +539,8 @@ class AdminFragment1 : AdminBaseFragment() {
             ok.text = "Print"
         }
         pay.bolt11 = bolt11value
+        val etDesc: TextView = dialog.findViewById(R.id.etDesc)
+        pay.desc = etDesc.text.toString()
         ok.setOnClickListener {
             loadObservers()
             if (pay.status == "complete") {

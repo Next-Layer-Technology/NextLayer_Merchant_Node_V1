@@ -46,7 +46,16 @@ public class Pay {
     //not coming from json
     @NotNull
     public String bolt11;
+    //not coming from json
+    public String desc;
 
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
 
     public String getDestination() {
         return destination;

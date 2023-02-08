@@ -927,7 +927,8 @@ class MerchantFragment1 : MerchantBaseFragment() {
         if (pay.status == "complete") {
             ok.text = "Print"
         }
-
+        val etDesc: TextView = dialog.findViewById(R.id.etDesc)
+        pay.desc = etDesc.text.toString()
         ok.setOnClickListener { view: View? ->
             if (pay.status == "complete") {
                 loadObservers()

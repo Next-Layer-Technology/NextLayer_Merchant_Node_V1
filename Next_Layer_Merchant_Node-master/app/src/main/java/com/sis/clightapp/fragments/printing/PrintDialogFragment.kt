@@ -377,13 +377,12 @@ class PrintDialogFragment(
                         bytes += feed()
                         bytes += usd.toByteArray()
                         bytes += feed(2)
-                        bytes += "Message: ".toByteArray()
+                        bytes += "Description: ".toByteArray()
                         bytes += feed()
-                        //Paid at   should center
-                        bytes += payment.message.toByteArray()
+                        bytes += payment.desc.toByteArray()
                         bytes += feed(1)
                         bytes += PrinterCommands.ESC_ALIGN_LEFT
-                        //Paid at title should center
+                        //    Paid at title should center
                         bytes += "Sent: ".toByteArray()
                         bytes += feed()
                         //Paid at   should center
