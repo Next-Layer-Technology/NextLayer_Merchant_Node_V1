@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
@@ -532,7 +533,7 @@ class AdminFragment1 : AdminBaseFragment() {
             dialog.findViewById(R.id.iv_back_invoice)
         val textView: TextView = dialog.findViewById(R.id.textView2)
         val ok: Button = dialog.findViewById(R.id.btn_ok)
-       // dialog.window?.setLayout((width  *.9).toInt(), (height  *.9).toInt())
+        dialog.window?.setLayout((width  *.9).toInt(), WRAP_CONTENT)
         dialog.setCancelable(false)
         textView.text = "Payment Status:" + pay.status
         if (pay.status == "complete") {
@@ -540,8 +541,8 @@ class AdminFragment1 : AdminBaseFragment() {
         }
         pay.bolt11 = bolt11value
         val etDesc: TextView = dialog.findViewById(R.id.etDesc)
-        pay.desc = etDesc.text.toString()
         ok.setOnClickListener {
+            pay.desc = etDesc.text.toString()
             loadObservers()
             if (pay.status == "complete") {
                 PrintDialogFragment(

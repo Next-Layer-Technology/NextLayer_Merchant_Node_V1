@@ -921,15 +921,15 @@ class MerchantFragment1 : MerchantBaseFragment() {
         val ivBack = dialog.findViewById<ImageView>(R.id.iv_back_invoice)
         val textView = dialog.findViewById<TextView>(R.id.textView2)
         val ok = dialog.findViewById<Button>(R.id.btn_ok)
-       // dialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+        dialog.window?.setLayout((width  *.9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.setCancelable(false)
         textView.text = "Payment Status:" + pay.status
         if (pay.status == "complete") {
             ok.text = "Print"
         }
         val etDesc: TextView = dialog.findViewById(R.id.etDesc)
-        pay.desc = etDesc.text.toString()
         ok.setOnClickListener { view: View? ->
+            pay.desc = etDesc.text.toString()
             if (pay.status == "complete") {
                 loadObservers()
                 PrintDialogFragment(null, pay, arrayListOf()).show(childFragmentManager, null)
