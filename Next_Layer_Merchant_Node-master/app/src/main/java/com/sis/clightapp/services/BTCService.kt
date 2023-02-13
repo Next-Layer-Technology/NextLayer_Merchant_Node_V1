@@ -87,7 +87,9 @@ class BTCService {
             override fun onBinaryReceived(data: ByteArray) {}
             override fun onPingReceived(data: ByteArray) {}
             override fun onPongReceived(data: ByteArray) {}
-            override fun onException(e: Exception) {}
+            override fun onException(e: Exception) {
+                Log.e("WebSocket", e.localizedMessage)
+            }
             override fun onCloseReceived() {
                 Log.i("WebSocket", "Closed ")
                 println("onCloseReceived")

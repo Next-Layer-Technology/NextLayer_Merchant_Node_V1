@@ -277,7 +277,7 @@ class PrintDialogFragment(
                             bytes += feed();
                             items.forEach {
                                 bytes += PrinterCommands.ESC_ALIGN_RIGHT
-                                bytes += (it.name + " " + it.price + " / " + it.totalPrice).toByteArray()
+                                bytes += (it.name+"(${it.quantity})" + " " + it.price+" USD" + " / " + it.totalPrice+" USD").toByteArray()
                                 bytes += feed()
                             }
                         }
@@ -388,11 +388,11 @@ class PrintDialogFragment(
                         //Paid at   should center
                         bytes += paidAt.toByteArray()
                         bytes += feed(1)
-                        bytes += PrinterCommands.ESC_ALIGN_LEFT
+                        bytes += PrinterCommands.ESC_ALIGN_CENTER
 
                         bytes += "Bolt 11 Invoice:".toByteArray()
                         bytes += feed()
-                        bytes += PrinterCommands.ESC_ALIGN_RIGHT
+                        bytes += PrinterCommands.ESC_ALIGN_CENTER
                         bytes += qr(payment.bolt11)
                         bytes += feed()
                         bytes += "Payment Hash:".toByteArray()

@@ -47,7 +47,7 @@ public class Pay {
     @NotNull
     public String bolt11;
     //not coming from json
-    public String desc;
+    public String desc = "";
 
     public String getDesc() {
         return desc;

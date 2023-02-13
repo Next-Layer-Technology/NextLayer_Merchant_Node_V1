@@ -70,14 +70,14 @@ class CheckOutMainActivity : BaseActivity() {
         val pagerAdapter = FragmentAdapter(
             supportFragmentManager,
             FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
-            fragment
+            fragmentList
         )
         customViewPager!!.adapter = pagerAdapter
         customViewPager!!.offscreenPageLimit = 5
     }
 
-    private val fragment: List<Fragment>
-        private get() {
+    private val fragmentList: List<Fragment>
+        get() {
             val fragmentList: MutableList<Fragment> = ArrayList()
             fragmentList.add(CheckOutFragment1())
             fragmentList.add(CheckOutsFragment2())
@@ -90,12 +90,16 @@ class CheckOutMainActivity : BaseActivity() {
         val navView = findViewById<NavigationView>(R.id.checkoutnavigation)
         navView.setNavigationItemSelectedListener { menuItem: MenuItem ->
             val itemId = menuItem.itemId
-            if (itemId == R.id.menu_1) {
-                setFragment(0)
-            } else if (itemId == R.id.menu_2) {
-                setFragment(1)
-            } else if (itemId == R.id.menu_3) {
-                setFragment(2)
+            when (itemId) {
+                R.id.menu_1 -> {
+                    setFragment(0)
+                }
+                R.id.menu_2 -> {
+                    setFragment(1)
+                }
+                R.id.menu_3 -> {
+                    setFragment(2)
+                }
             }
             false
         }
