@@ -411,6 +411,7 @@ class AdminFragment1 : AdminBaseFragment() {
                                     val temHax = it.data.bolt11
                                     val multiFormatWriter = MultiFormatWriter()
                                     try {
+                                        Log.d(QR_CODE,temHax)
                                         val bitMatrix = multiFormatWriter.encode(
                                             temHax,
                                             BarcodeFormat.QR_CODE,
@@ -513,8 +514,10 @@ class AdminFragment1 : AdminBaseFragment() {
                 PrintDialogFragment(
                     invoice,
                     items = GlobalState.getInstance().selectedItems.toList()
-                ).show(childFragmentManager, null)
+                ){
+                }.show(childFragmentManager, null)
             }
+            dialog.dismiss()
         }
         ivBack.setOnClickListener {
             loadObservers()
@@ -548,7 +551,8 @@ class AdminFragment1 : AdminBaseFragment() {
                 PrintDialogFragment(
                     payment = pay,
                     items = GlobalState.getInstance().selectedItems.toList()
-                ).show(childFragmentManager, null)
+                ){}.show(childFragmentManager, null)
+                dialog.dismiss()
             } else {
                 dialog.dismiss()
             }

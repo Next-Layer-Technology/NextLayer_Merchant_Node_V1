@@ -576,6 +576,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
                                 val temHax = it.data.bolt11
                                 val multiFormatWriter = MultiFormatWriter()
                                 try {
+                                    Log.d(QR_CODE,temHax)
                                     val bitMatrix = multiFormatWriter.encode(
                                         temHax,
                                         BarcodeFormat.QR_CODE,
@@ -932,7 +933,10 @@ class MerchantFragment1 : MerchantBaseFragment() {
             pay.desc = etDesc.text.toString()
             if (pay.status == "complete") {
                 loadObservers()
-                PrintDialogFragment(null, pay, arrayListOf()).show(childFragmentManager, null)
+                PrintDialogFragment(null, pay, arrayListOf()){
+
+                }.show(childFragmentManager, null)
+                dialog.dismiss()
             } else {
                 loadObservers()
                 dialog.dismiss()

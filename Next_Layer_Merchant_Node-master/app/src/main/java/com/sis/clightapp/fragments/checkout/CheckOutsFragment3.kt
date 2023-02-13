@@ -47,13 +47,7 @@ import com.sis.clightapp.services.BTCService
 import com.sis.clightapp.services.LightningService
 import com.sis.clightapp.services.SessionService
 import com.sis.clightapp.session.MyLogOutService
-import com.sis.clightapp.util.AppConstants
-import com.sis.clightapp.util.CustomSharedPreferences
-import com.sis.clightapp.util.GlobalState
-import com.sis.clightapp.util.Status
-import com.sis.clightapp.util.dateStringUTCTimestamp
-import com.sis.clightapp.util.round
-import com.sis.clightapp.util.satoshiToBtc
+import com.sis.clightapp.util.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -435,8 +429,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             }
             currentTransactionLabel = label1
             isCreatingInvoice = false
-          //  invoiceDialog.dismiss()
             createInvoice(msatoshi, label1, descrption)
+            invoiceDialog.dismiss()
         }
         invoiceDialog.show()
      //   createInvoice(rMSatoshi, label, "Flashpay")
@@ -446,6 +440,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         val multiFormatWriter = MultiFormatWriter()
         var bitMatrix: BitMatrix? = null
         try {
+            Log.d(QR_CODE, hex!!)
             bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, width, height)
         } catch (e: WriterException) {
             e.printStackTrace()
@@ -869,6 +864,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 val temHax = globalInvoice!!.bolt11
                 val multiFormatWriter = MultiFormatWriter()
                 try {
+                    Log.d(QR_CODE,temHax)
                     val bitMatrix =
                         multiFormatWriter.encode(temHax, BarcodeFormat.QR_CODE, 600, 600)
                     val barcodeEncoder = BarcodeEncoder()
@@ -1015,6 +1011,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 PrintDialogFragment(invoice, null, selectedItems) {
                 //    requireActivity().recreate()
                 }.show(childFragmentManager, null)
+                distributeGetPaidDialog.dismiss()
             }
         }
         ivBack.setOnClickListener { v: View? -> distributeGetPaidDialog.dismiss() }
