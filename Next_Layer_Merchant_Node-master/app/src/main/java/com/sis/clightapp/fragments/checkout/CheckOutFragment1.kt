@@ -88,7 +88,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
     private var usdCapacity = 0.0
     private var usdRemainingCapacity = 0.0
     private var btcRemainingCapacity = 0.0
-    private var itemsList = arrayListOf<Items>()
+
     private var INTENT_AUTHENTICATE = 1234
     var isFundingInfoGetSuccefully = false
     lateinit var clearOutDialog: Dialog
@@ -129,7 +129,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             isScanMode = false
             cbScan.isChecked = false
             cbList.isChecked = true
-            checkOutMainListAdapter = CheckOutMainListAdapter(requireContext(), itemsList)
+            checkOutMainListAdapter = CheckOutMainListAdapter(requireContext(), GlobalState.getInstance().itemsList)
             if (checkOutListView != null) checkOutListView!!.adapter = checkOutMainListAdapter
         }
         cbScan.setOnClickListener {
@@ -232,19 +232,19 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                         addItemprogressDialog.setCanceledOnTouchOutside(false)
                         val getUpc = result.contents
                         showToast(getUpc)
-                        if (itemsList.size > 0) {
+                        if (GlobalState.getInstance().itemsList.size > 0) {
                             var itr = 0
-                            while (itr < itemsList.size) {
-                                if (itemsList[itr].upc == getUpc) {
-                                    if (GlobalState.getInstance().selectedItems.contains(itemsList[itr])) {
+                            while (itr < GlobalState.getInstance().itemsList.size) {
+                                if (GlobalState.getInstance().itemsList[itr].upc == getUpc) {
+                                    if (GlobalState.getInstance().selectedItems.contains(GlobalState.getInstance().itemsList[itr])) {
                                         android.app.AlertDialog.Builder(context)
                                             .setMessage("Item Already Add")
                                             .setPositiveButton("OK", null)
                                             .show()
                                         showToast("Item Already Add")
                                     } else {
-                                        itemsList[itr].selectQuatity = 1
-                                        GlobalState.getInstance().selectedItems.add(itemsList[itr])
+                                        GlobalState.getInstance().itemsList[itr].selectQuatity = 1
+                                        GlobalState.getInstance().selectedItems.add(GlobalState.getInstance().itemsList[itr])
                                         Log.d(TAG, "onActivityResult: 372")
                                         setAdapter()
                                         break
@@ -273,7 +273,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
         }
         (requireActivity() as CheckOutMainActivity).updateCartIcon(countItem)
         val dataSource = if (isListMode) {
-            itemsList
+            GlobalState.getInstance().itemsList
         } else {
             GlobalState.getInstance().selectedItems.toList()
         }
@@ -313,8 +313,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
 
     private fun parseJSON() {
         val itemImageRelocArrayList = GlobalState.getInstance().currentItemImageRelocArrayList
-        itemsList.clear()
-        itemsList.size
+        GlobalState.getInstance().itemsList.clear()
         for (j in itemImageRelocArrayList.indices) {
             val items = Items()
             items.upc = itemImageRelocArrayList[j].upc_number
@@ -329,9 +328,9 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             items.totalPrice = itemImageRelocArrayList[j].total_price
             items.imageInHex = itemImageRelocArrayList[j].image_in_hex
             items.additionalInfo = itemImageRelocArrayList[j].additional_info
-            itemsList.add(j, items)
+            GlobalState.getInstance().itemsList.add(j, items)
         }
-        for (items in itemsList) {
+        for (items in GlobalState.getInstance().itemsList) {
             Log.e(
                 "ItemsDetails",
                 "Name:" + items.name + "-" + "Quantity:" + items.quantity + "-" + "Price:" + items.price + "-" + "UPC:" + items.upc + "-" + "ImageURl:" + items.imageUrl
@@ -340,6 +339,10 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
         setAdapter()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setAdapter()
+    }
     private val allItems: Unit
         get() {
             val refToken = CustomSharedPreferences().getvalueofRefresh("refreshToken", context)

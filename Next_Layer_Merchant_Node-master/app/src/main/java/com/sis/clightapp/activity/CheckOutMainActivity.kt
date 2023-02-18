@@ -20,6 +20,7 @@ import com.sis.clightapp.fragments.checkout.CheckOutsFragment2
 import com.sis.clightapp.fragments.checkout.CheckOutsFragment3
 import com.sis.clightapp.fragments.shared.ExitDialogFragment
 import com.sis.clightapp.session.MyLogOutService
+import com.sis.clightapp.util.GlobalState
 import java.util.*
 
 class CheckOutMainActivity : BaseActivity() {
@@ -39,7 +40,7 @@ class CheckOutMainActivity : BaseActivity() {
         setContentView(R.layout.activity_check_out_main11)
         Log.e(TAG, "Mode:Login As UserMode/CheckOut")
         initView()
-        setViewPagerAdapter()
+        initViewPagerAdapter()
         configureNavigationDrawer()
         val toolbar = findViewById<Toolbar>(R.id.toolbarcheckout)
         val navImg = toolbar.findViewById<ImageView>(R.id.imageView9)
@@ -65,7 +66,7 @@ class CheckOutMainActivity : BaseActivity() {
         drawerLayout = findViewById(R.id.checkoutdrawer_layout)
     }
 
-    private fun setViewPagerAdapter() {
+    private fun initViewPagerAdapter() {
         customViewPager!!.setPagingEnabled(false)
         val pagerAdapter = FragmentAdapter(
             supportFragmentManager,
@@ -111,11 +112,13 @@ class CheckOutMainActivity : BaseActivity() {
     }
 
     fun swipeToCheckOutFragment3(fragmentPosition: Int) {
-        customViewPager!!.currentItem = fragmentPosition
+        setFragment(fragmentPosition)
     }
 
     override fun onBackPressed() {
         ExitDialogFragment {
+            GlobalState.getInstance().selectedItems.clear()
+            GlobalState.getInstance().itemsList.clear()
             stopService(Intent(this, MyLogOutService::class.java))
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)

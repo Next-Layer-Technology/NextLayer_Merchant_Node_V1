@@ -29,7 +29,6 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import com.sis.clightapp.Interface.ApiPaths2
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.Network.CheckNetwork
 import com.sis.clightapp.R
@@ -245,6 +244,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         return view
     }
 
+
     override fun onResume() {
         super.onResume()
         selectedItems = GlobalState.getInstance().selectedItems.toList()
@@ -290,43 +290,44 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
 
     @SuppressLint("SetTextI18n")
     fun setAdapter() {
-        if (selectedItems.isNotEmpty()) {
-            var countitem = 0
-            for (items in selectedItems) {
-                countitem += items.selectQuatity
-            }
-            (requireActivity() as CheckOutMainActivity).updateCartIcon(countitem)
-            checkOutPayItemAdapter = CheckOutMainListAdapter(requireContext(), selectedItems)
-            checkoutPayItemslistview.adapter = checkOutPayItemAdapter
-            checkoutPayItemslistview.onItemLongClickListener =
-                OnItemLongClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
-                    val builder = android.app.AlertDialog.Builder(requireContext())
-                    builder.setTitle(getString(R.string.delete_title))
-                    builder.setMessage(getString(R.string.delete_subtitle))
-                    builder.setCancelable(true)
+        var countitem = 0
+        for (items in selectedItems) {
+            countitem += items.selectQuatity
+        }
+        (requireActivity() as CheckOutMainActivity).updateCartIcon(countitem)
+        checkOutPayItemAdapter = CheckOutMainListAdapter(requireContext(), selectedItems)
+        checkoutPayItemslistview.adapter = checkOutPayItemAdapter
+        checkoutPayItemslistview.onItemLongClickListener =
+            OnItemLongClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
+                val builder = android.app.AlertDialog.Builder(requireContext())
+                builder.setTitle(getString(R.string.delete_title))
+                builder.setMessage(getString(R.string.delete_subtitle))
+                builder.setCancelable(true)
 
-                    // Action if user selects 'yes'
-                    builder.setPositiveButton("Yes") { _: DialogInterface?, _: Int ->
-                        val tem = selectedItems[i]
-                        if (tem.isManual != null) {
-                            checkOutPayItemAdapter.notifyDataSetChanged()
-                            setAdapter()
-                        } else {
-                            checkOutPayItemAdapter.notifyDataSetChanged()
-                            setAdapter()
-                        }
+                // Action if user selects 'yes'
+                builder.setPositiveButton("Yes") { _: DialogInterface?, _: Int ->
+                    val tem = selectedItems[i]
+                    if (tem.isManual != null) {
+                        checkOutPayItemAdapter.notifyDataSetChanged()
+                        setAdapter()
+                    } else {
+                        checkOutPayItemAdapter.notifyDataSetChanged()
+                        setAdapter()
                     }
-
-                    // Actions if user selects 'no'
-                    builder.setNegativeButton("No") { _: DialogInterface?, _: Int -> }
-
-                    // Create the alert dialog using alert dialog builder
-                    val dialog = builder.create()
-                    dialog.setCanceledOnTouchOutside(false)
-                    // Finally, display the dialog when user press back button
-                    dialog.show()
-                    true
                 }
+
+                // Actions if user selects 'no'
+                builder.setNegativeButton("No") { _: DialogInterface?, _: Int -> }
+
+                // Create the alert dialog using alert dialog builder
+                val dialog = builder.create()
+                dialog.setCanceledOnTouchOutside(false)
+                // Finally, display the dialog when user press back button
+                dialog.show()
+                true
+            }
+
+        if (selectedItems.isNotEmpty()) {
             GlobalState.getInstance().isCheckoutBtnPress = false
             priceInCurrency = 0.0
             priceInBTC = 0.0
@@ -379,6 +380,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             taxpay.text = "Tax:0.0 BTC/0.00 $"
             grandtotal.text = "0.0 BTC/ 0.00 $"
         }
+        checkOutPayItemAdapter.notifyDataSetChanged()
     }
 
     private fun dialogBoxForInvoice() {
@@ -433,7 +435,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             invoiceDialog.dismiss()
         }
         invoiceDialog.show()
-     //   createInvoice(rMSatoshi, label, "Flashpay")
+        //   createInvoice(rMSatoshi, label, "Flashpay")
     }
 
     private fun getBitMapImg(hex: String?, width: Int, height: Int): Bitmap {
@@ -864,7 +866,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 val temHax = globalInvoice!!.bolt11
                 val multiFormatWriter = MultiFormatWriter()
                 try {
-                    Log.d(QR_CODE,temHax)
+                    Log.d(QR_CODE, temHax)
                     val bitMatrix =
                         multiFormatWriter.encode(temHax, BarcodeFormat.QR_CODE, 600, 600)
                     val barcodeEncoder = BarcodeEncoder()
@@ -1009,6 +1011,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         printInvoice.setOnClickListener {
             if (invoice != null && invoice.status == "paid") {
                 PrintDialogFragment(invoice, null, selectedItems) {
+                    GlobalState.getInstance().selectedItems.clear()
+                    GlobalState.getInstance().itemsList.clear()
                     (requireActivity() as CheckOutMainActivity).swipeToCheckOutFragment3(
                         0
                     )

@@ -37,6 +37,7 @@ public class GlobalState extends Application {
     private FundingNode fundingNode;
 //    private MerchantData merchantData;
 
+    public ArrayList<Items> itemsList = new ArrayList<>();
     public HashSet<Items> selectedItems = new HashSet<>();
 
 
