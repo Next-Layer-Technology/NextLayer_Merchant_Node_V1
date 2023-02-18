@@ -753,7 +753,11 @@ class MerchantFragment1 : MerchantBaseFragment() {
         printInvoice.setOnClickListener { view: View? ->
             if (invoice?.status == "paid") {
                 loadObservers()
-                PrintDialogFragment(invoice, null, arrayListOf()).show(childFragmentManager, null)
+                PrintDialogFragment(invoice, null, arrayListOf()){
+//                    (requireActivity() as MerchantMainActivity).setFragment(
+//                        0
+//                    )
+                }.show(childFragmentManager, null)
             } else {
                 loadObservers()
                 confirmPaymentDialog.dismiss()
@@ -934,6 +938,9 @@ class MerchantFragment1 : MerchantBaseFragment() {
             if (pay.status == "complete") {
                 loadObservers()
                 PrintDialogFragment(null, pay, arrayListOf()){
+//                    (requireActivity() as MerchantMainActivity).setFragment(
+//                        0
+//                    )
 
                 }.show(childFragmentManager, null)
                 dialog.dismiss()

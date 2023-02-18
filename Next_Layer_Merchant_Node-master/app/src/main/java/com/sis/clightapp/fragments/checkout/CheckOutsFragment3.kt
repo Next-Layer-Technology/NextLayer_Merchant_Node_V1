@@ -1009,7 +1009,9 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         printInvoice.setOnClickListener {
             if (invoice != null && invoice.status == "paid") {
                 PrintDialogFragment(invoice, null, selectedItems) {
-                //    requireActivity().recreate()
+                    (requireActivity() as CheckOutMainActivity).swipeToCheckOutFragment3(
+                        0
+                    )
                 }.show(childFragmentManager, null)
                 distributeGetPaidDialog.dismiss()
             }

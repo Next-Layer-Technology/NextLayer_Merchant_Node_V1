@@ -515,6 +515,9 @@ class AdminFragment1 : AdminBaseFragment() {
                     invoice,
                     items = GlobalState.getInstance().selectedItems.toList()
                 ){
+//                    (requireActivity() as AdminMainActivity).setFragment(
+//                        0
+//                    )
                 }.show(childFragmentManager, null)
             }
             dialog.dismiss()
@@ -551,7 +554,11 @@ class AdminFragment1 : AdminBaseFragment() {
                 PrintDialogFragment(
                     payment = pay,
                     items = GlobalState.getInstance().selectedItems.toList()
-                ){}.show(childFragmentManager, null)
+                ){
+//                    (requireActivity() as AdminMainActivity).setFragment(
+//                        0
+//                    )
+                }.show(childFragmentManager, null)
                 dialog.dismiss()
             } else {
                 dialog.dismiss()
