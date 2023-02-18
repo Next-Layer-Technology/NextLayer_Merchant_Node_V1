@@ -53,7 +53,11 @@ class PrintDialogFragment(
     private val uuid = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     private lateinit var printingProgressBar: ProgressDialog
     private lateinit var btDevicesDialog: Dialog
-    private val permissions: MutableList<String> = ArrayList()
+    private val permissions: MutableList<String> = mutableListOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.BLUETOOTH,
+        Manifest.permission.BLUETOOTH_ADMIN
+    )
     private val btcService: BTCService by inject()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -73,6 +77,12 @@ class PrintDialogFragment(
             dismiss();
             onClose()
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT)
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN)
+        }
+
         initializeBluetooth()
         scanDevices.setOnClickListener {
             val filter = IntentFilter(BluetoothDevice.ACTION_FOUND)
@@ -81,13 +91,6 @@ class PrintDialogFragment(
         }
         ivBack.setOnClickListener { btDevicesDialog.dismiss() }
 
-        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
-        permissions.add(Manifest.permission.BLUETOOTH)
-        permissions.add(Manifest.permission.BLUETOOTH_ADMIN)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            permissions.add(Manifest.permission.BLUETOOTH_CONNECT)
-            permissions.add(Manifest.permission.BLUETOOTH_SCAN)
-        }
 
         ActivityCompat.requestPermissions(requireActivity(), permissions.toTypedArray(), 1)
         return btDevicesDialog
@@ -112,78 +115,84 @@ class PrintDialogFragment(
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(requireActivity(), permissions.toTypedArray(), 1)
-        }
-        val dialog: ProgressBar = btDevicesDialog.findViewById(R.id.printerProgress)
-        dialog.visibility = View.VISIBLE
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        if (!bluetoothAdapter.isEnabled) {
-            val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
-            startActivityForResult(enableBtIntent, requestCode)
-            return
-        }
-        val mPairedDevicesArrayAdapter =
-            object : ArrayAdapter<BluetoothDevice>(requireContext(), R.layout.device_name) {
-                @SuppressLint("MissingPermission")
-                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-                    var currentItemView: View? = convertView
-                    if (currentItemView == null) {
-                        currentItemView = LayoutInflater.from(context)
-                            .inflate(android.R.layout.simple_list_item_1, parent, false);
-                    }
-                    val item = getItem(position)!!
-                    (currentItemView as TextView?)?.let {
-                        it.text = item.name.toString() + " - " + item.address
-                    }
-                    currentItemView?.setOnClickListener {
-                        val tvStatus: TextView = btDevicesDialog.findViewById(R.id.tv_status)
-                        try {
-                            dialog.visibility = View.VISIBLE
-                            tvStatus.text = "Device Status:Connecting...."
-                            bluetoothAdapter.cancelDiscovery()
-                            val device = bluetoothAdapter.getRemoteDevice(item.address)
+        } else {
+            val dialog: ProgressBar = btDevicesDialog.findViewById(R.id.printerProgress)
+            dialog.visibility = View.VISIBLE
+            bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+            if (!bluetoothAdapter.isEnabled) {
+                val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
+                startActivityForResult(enableBtIntent, requestCode)
+                return
+            }
+            val mPairedDevicesArrayAdapter =
+                object : ArrayAdapter<BluetoothDevice>(requireContext(), R.layout.device_name) {
+                    @SuppressLint("MissingPermission")
+                    override fun getView(
+                        position: Int,
+                        convertView: View?,
+                        parent: ViewGroup
+                    ): View {
+                        var currentItemView: View? = convertView
+                        if (currentItemView == null) {
+                            currentItemView = LayoutInflater.from(context)
+                                .inflate(android.R.layout.simple_list_item_1, parent, false);
+                        }
+                        val item = getItem(position)!!
+                        (currentItemView as TextView?)?.let {
+                            it.text = item.name.toString() + " - " + item.address
+                        }
+                        currentItemView?.setOnClickListener {
+                            val tvStatus: TextView = btDevicesDialog.findViewById(R.id.tv_status)
                             try {
-                                ConnectThread(device).start()
-                                printingProgressBar.show()
-                                tvStatus.text = "Status: Connecting"
-                                dialog.visibility = View.GONE
-                            } catch (eConnectException: IOException) {
-                                tvStatus.text = "Status: Try Again"
-                                dialog.visibility = View.GONE
-                                Log.e("ConnectError", eConnectException.toString())
-                            }
-                        } catch (ex: java.lang.Exception) {
-                            Log.e("ConnectError", ex.toString())
-                        }
-                    }
-                    return currentItemView!!
-                }
-            }
-        val blueDeviceListView: ListView =
-            btDevicesDialog.findViewById(R.id.blueDeviceListView)
-        blueDeviceListView.adapter = mPairedDevicesArrayAdapter
-        val mPairedDevices =
-            HashSet(bluetoothAdapter.bondedDevices)
-        mPairedDevicesArrayAdapter.addAll(mPairedDevices)
-        btReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                val action = intent.action
-                if (BluetoothDevice.ACTION_FOUND == action) {
-                    val device = intent
-                        .getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
-                    if (device != null) {
-                        mPairedDevices.add(device)
-                        if (mPairedDevices.size > 0) {
-                            mPairedDevicesArrayAdapter.clear()
-                            for (mDevice in mPairedDevices) {
-                                mPairedDevicesArrayAdapter.add(mDevice)
+                                dialog.visibility = View.VISIBLE
+                                tvStatus.text = "Device Status:Connecting...."
+                                bluetoothAdapter.cancelDiscovery()
+                                val device = bluetoothAdapter.getRemoteDevice(item.address)
+                                try {
+                                    ConnectThread(device).start()
+                                    printingProgressBar.show()
+                                    tvStatus.text = "Status: Connecting"
+                                    dialog.visibility = View.GONE
+                                } catch (eConnectException: IOException) {
+                                    tvStatus.text = "Status: Try Again"
+                                    dialog.visibility = View.GONE
+                                    Log.e("ConnectError", eConnectException.toString())
+                                }
+                            } catch (ex: java.lang.Exception) {
+                                Log.e("ConnectError", ex.toString())
                             }
                         }
-                        blueDeviceListView.adapter = mPairedDevicesArrayAdapter
+                        return currentItemView!!
+                    }
+                }
+            val blueDeviceListView: ListView =
+                btDevicesDialog.findViewById(R.id.blueDeviceListView)
+            blueDeviceListView.adapter = mPairedDevicesArrayAdapter
+            val mPairedDevices =
+                HashSet(bluetoothAdapter.bondedDevices)
+            mPairedDevicesArrayAdapter.addAll(mPairedDevices)
+            btReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    val action = intent.action
+                    if (BluetoothDevice.ACTION_FOUND == action) {
+                        val device = intent
+                            .getParcelableExtra<BluetoothDevice>(BluetoothDevice.EXTRA_DEVICE)
+                        if (device != null) {
+                            mPairedDevices.add(device)
+                            if (mPairedDevices.size > 0) {
+                                mPairedDevicesArrayAdapter.clear()
+                                for (mDevice in mPairedDevices) {
+                                    mPairedDevicesArrayAdapter.add(mDevice)
+                                }
+                            }
+                            blueDeviceListView.adapter = mPairedDevicesArrayAdapter
+                        }
                     }
                 }
             }
+            dialog.visibility = View.GONE
         }
-        dialog.visibility = View.GONE
+
     }
 
     companion object {
@@ -277,7 +286,7 @@ class PrintDialogFragment(
                             bytes += feed();
                             items.forEach {
                                 bytes += PrinterCommands.ESC_ALIGN_RIGHT
-                                bytes += (it.name+"(${it.quantity})" + " " + it.price+" USD" + " / " + it.totalPrice+" USD").toByteArray()
+                                bytes += (it.name + "(${it.quantity})" + " " + it.price + " USD" + " / " + it.totalPrice + " USD").toByteArray()
                                 bytes += feed()
                             }
                         }
