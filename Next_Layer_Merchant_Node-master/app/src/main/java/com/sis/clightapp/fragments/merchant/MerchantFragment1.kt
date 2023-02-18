@@ -245,15 +245,13 @@ class MerchantFragment1 : MerchantBaseFragment() {
         refundbutton.setOnClickListener { view1: View? ->
             //TODO:what ever on Refunds
             isInAppMerchant1 = false
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val km =
-                    requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                if (km.isKeyguardSecure) {
-                    val authIntent = km.createConfirmDeviceCredentialIntent("Authorize Payment", "")
-                    startActivityForResult(authIntent, INTENT_AUTHENTICATE)
-                } else {
-                    dialogBoxForRefundCommandeer()
-                }
+            val km =
+                requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            if (km.isKeyguardSecure) {
+                val authIntent = km.createConfirmDeviceCredentialIntent("Authorize Payment", "")
+                startActivityForResult(authIntent, INTENT_AUTHENTICATE)
+            } else {
+                dialogBoxForRefundCommandeer()
             }
         }
         saleslistview = view.findViewById(R.id.salesListview)
@@ -751,6 +749,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
             }
         }
         printInvoice.setOnClickListener { view: View? ->
+            confirmPaymentDialog.dismiss()
             if (invoice?.status == "paid") {
                 loadObservers()
                 PrintDialogFragment(invoice, null, arrayListOf()){
@@ -760,7 +759,6 @@ class MerchantFragment1 : MerchantBaseFragment() {
                 }.show(childFragmentManager, null)
             } else {
                 loadObservers()
-                confirmPaymentDialog.dismiss()
             }
         }
         ivBack.setOnClickListener {
@@ -803,6 +801,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
             options.setBeepEnabled(false)
             options.setBarcodeImageEnabled(true)
             barcodeLauncher.launch(options)
+            commandeerRefundDialog.dismiss()
         }
         commandeerRefundDialog.show()
     }

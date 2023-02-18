@@ -609,6 +609,7 @@ class AdminFragment1 : AdminBaseFragment() {
             options.setBeepEnabled(false)
             options.setBarcodeImageEnabled(true)
             barcodeLauncher.launch(options)
+            dialog.dismiss()
         }
         dialog.show()
     }
