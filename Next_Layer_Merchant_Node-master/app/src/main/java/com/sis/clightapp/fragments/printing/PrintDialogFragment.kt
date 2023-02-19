@@ -286,7 +286,7 @@ class PrintDialogFragment(
                             bytes += feed();
                             items.forEach {
                                 bytes += PrinterCommands.ESC_ALIGN_RIGHT
-                                bytes += (it.name + "(${it.quantity})" + " " + it.price + " USD" + " / " + it.totalPrice + " USD").toByteArray()
+                                bytes += ("(${it.selectQuatity}) " + it.name + "  " + it.price + " USD/each").toByteArray()
                                 bytes += feed()
                             }
                         }

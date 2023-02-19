@@ -26,6 +26,7 @@ import com.sis.clightapp.fragments.merchant.MerchantFragment2;
 import com.sis.clightapp.fragments.merchant.MerchantFragment3;
 import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.session.MyLogOutService;
+import com.sis.clightapp.util.GlobalState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -183,11 +184,17 @@ public class MerchantMainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-       new  ExitDialogFragment(() -> {
-           this.stopService(new Intent(this, MyLogOutService.class));
-           Intent ii = new Intent(this, HomeActivity.class);
-           startActivity(ii);
-           return null;
-       }).show(getSupportFragmentManager(),null);
+        new ExitDialogFragment(() -> {
+            clearAndGoBack();
+            return null;
+        }).show(getSupportFragmentManager(), null);
+    }
+
+    public void clearAndGoBack() {
+        GlobalState.getInstance().itemsList.clear();
+        GlobalState.getInstance().selectedItems.clear();
+        this.stopService(new Intent(this, MyLogOutService.class));
+        Intent ii = new Intent(this, HomeActivity.class);
+        startActivity(ii);
     }
 }

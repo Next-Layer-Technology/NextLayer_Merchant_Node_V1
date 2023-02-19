@@ -30,6 +30,7 @@ import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.R
+import com.sis.clightapp.activity.AdminMainActivity
 import com.sis.clightapp.adapter.AdminReceivableListAdapter
 import com.sis.clightapp.adapter.AdminSendablesListAdapter
 import com.sis.clightapp.fragments.merchant.MerchantBaseFragment
@@ -515,9 +516,7 @@ class AdminFragment1 : AdminBaseFragment() {
                     invoice,
                     items = GlobalState.getInstance().selectedItems.toList()
                 ){
-//                    (requireActivity() as AdminMainActivity).setFragment(
-//                        0
-//                    )
+                    (requireActivity() as AdminMainActivity).clearAndGoBack()
                 }.show(childFragmentManager, null)
             }
             dialog.dismiss()
@@ -555,9 +554,7 @@ class AdminFragment1 : AdminBaseFragment() {
                     payment = pay,
                     items = GlobalState.getInstance().selectedItems.toList()
                 ){
-//                    (requireActivity() as AdminMainActivity).setFragment(
-//                        0
-//                    )
+                    (requireActivity() as AdminMainActivity).clearAndGoBack()
                 }.show(childFragmentManager, null)
                 dialog.dismiss()
             } else {

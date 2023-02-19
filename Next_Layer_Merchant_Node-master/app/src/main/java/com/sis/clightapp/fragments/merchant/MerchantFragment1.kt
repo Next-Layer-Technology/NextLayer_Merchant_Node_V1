@@ -34,6 +34,7 @@ import com.opencsv.CSVWriter
 import com.sis.clightapp.EmailSdk.GMailSender
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.R
+import com.sis.clightapp.activity.MerchantMainActivity
 import com.sis.clightapp.adapter.MerchantRefundsListAdapter
 import com.sis.clightapp.adapter.MerchantSalesListAdapter
 import com.sis.clightapp.fragments.admin.AdminBaseFragment
@@ -574,7 +575,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
                                 val temHax = it.data.bolt11
                                 val multiFormatWriter = MultiFormatWriter()
                                 try {
-                                    Log.d(QR_CODE,temHax)
+                                    Log.d(QR_CODE, temHax)
                                     val bitMatrix = multiFormatWriter.encode(
                                         temHax,
                                         BarcodeFormat.QR_CODE,
@@ -752,10 +753,8 @@ class MerchantFragment1 : MerchantBaseFragment() {
             confirmPaymentDialog.dismiss()
             if (invoice?.status == "paid") {
                 loadObservers()
-                PrintDialogFragment(invoice, null, arrayListOf()){
-//                    (requireActivity() as MerchantMainActivity).setFragment(
-//                        0
-//                    )
+                PrintDialogFragment(invoice, null, arrayListOf()) {
+                    (requireActivity() as MerchantMainActivity).clearAndGoBack()
                 }.show(childFragmentManager, null)
             } else {
                 loadObservers()
@@ -925,7 +924,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
         val ivBack = dialog.findViewById<ImageView>(R.id.iv_back_invoice)
         val textView = dialog.findViewById<TextView>(R.id.textView2)
         val ok = dialog.findViewById<Button>(R.id.btn_ok)
-        dialog.window?.setLayout((width  *.9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.window?.setLayout((width * .9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.setCancelable(false)
         textView.text = "Payment Status:" + pay.status
         if (pay.status == "complete") {
@@ -936,11 +935,8 @@ class MerchantFragment1 : MerchantBaseFragment() {
             pay.desc = etDesc.text.toString()
             if (pay.status == "complete") {
                 loadObservers()
-                PrintDialogFragment(null, pay, arrayListOf()){
-//                    (requireActivity() as MerchantMainActivity).setFragment(
-//                        0
-//                    )
-
+                PrintDialogFragment(null, pay, arrayListOf()) {
+                    (requireActivity() as MerchantMainActivity).clearAndGoBack()
                 }.show(childFragmentManager, null)
                 dialog.dismiss()
             } else {
@@ -1887,6 +1883,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
     override fun onStop() {
         super.onStop()
         if (fcmBroadcastReceiver != null) {
+            //crashes here
             requireContext().unregisterReceiver(fcmBroadcastReceiver)
         }
     }

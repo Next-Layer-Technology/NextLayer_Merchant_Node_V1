@@ -16,6 +16,7 @@ import java.net.URISyntaxException
 class BTCService {
     private lateinit var webSocketClient: WebSocketClient
     var btcPrice = 0.0
+    //var btcPrice = 23779.00
 
     private val _currentBtc: MutableLiveData<Resource<Channel_BTCResponseData>> =
         MutableLiveData()
@@ -33,6 +34,9 @@ class BTCService {
             e.printStackTrace()
             return
         }
+//        val btcResp = Channel_BTCResponseData()
+//        btcResp.price = 23779.00
+//        _currentBtc.postValue(Resource.success(btcResp))
         webSocketClient = object : WebSocketClient(uri) {
             override fun onOpen() {
                 val json =
@@ -90,6 +94,7 @@ class BTCService {
             override fun onException(e: Exception) {
                 Log.e("WebSocket", e.localizedMessage)
             }
+
             override fun onCloseReceived() {
                 Log.i("WebSocket", "Closed ")
                 println("onCloseReceived")
