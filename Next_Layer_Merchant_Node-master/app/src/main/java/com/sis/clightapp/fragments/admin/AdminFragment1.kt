@@ -857,9 +857,9 @@ class AdminFragment1 : AdminBaseFragment() {
     private fun fcmReceived() {
         distributeGetPaidDialog?.dismiss()
         confirmPayment()
-        if (fcmBroadcastReceiver != null) {
-            requireContext().unregisterReceiver(fcmBroadcastReceiver)
-        }
+//        if (fcmBroadcastReceiver != null) {
+//            requireContext().unregisterReceiver(fcmBroadcastReceiver)
+//        }
     }
 
     private fun confirmPayment() {

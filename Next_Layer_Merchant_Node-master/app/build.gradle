@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'org.jetbrains.kotlin.android'
-//apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 33
@@ -78,7 +78,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
     // Add the Firebase Crashlytics SDK.
-   // implementation 'com.google.firebase:firebase-crashlytics:18.2.7'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.7'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 //Emailing Purpose
