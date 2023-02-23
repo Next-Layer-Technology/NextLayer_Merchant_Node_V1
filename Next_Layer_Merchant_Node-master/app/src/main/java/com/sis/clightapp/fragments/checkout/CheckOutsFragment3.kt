@@ -47,6 +47,8 @@ import com.sis.clightapp.services.LightningService
 import com.sis.clightapp.services.SessionService
 import com.sis.clightapp.session.MyLogOutService
 import com.sis.clightapp.util.*
+import io.socket.client.IO
+import io.socket.client.Socket
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -59,6 +61,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigDecimal
+import java.net.URISyntaxException
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
@@ -116,7 +119,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     private val intentFilter = IntentFilter(AppConstants.PAYMENT_RECEIVED_NOTIFICATION)
     lateinit var distributeGetPaidDialog: Dialog
     var selectedItems: List<Items> = ArrayList()
-
+    var selectedFlashPayClient: NearbyClients? = null
     override fun onDestroy() {
         super.onDestroy()
         requireContext().stopService(Intent(requireContext(), MyLogOutService::class.java))
@@ -172,7 +175,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         }
         paywithclightbtn = view.findViewById(R.id.imageView5)
         paywithclightbtn.setOnClickListener {
-            createGrandTotalForInvoice()
+            createGrandTotalForInvoice(false)
         }
         checkoutPayItemslistview = view.findViewById(R.id.checkout2listview)
 
@@ -253,7 +256,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         }
     }
 
-    private fun createGrandTotalForInvoice() {
+    private fun createGrandTotalForInvoice(fromFlashPay: Boolean) {
         Log.d("TEST_DOUBLE_CHECKOUT", "createGrandTotalForInvoice: ")
         if (selectedItems.isNotEmpty()) {
             priceInCurrency = 0.0
@@ -269,7 +272,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     grandTotalInCurrency = priceInCurrency + taxtInCurennccyAmount
                     getGrandTotalInBTC = priceInBTC + taxInBtcAmount
                     getGrandTotalInBTC = round(getGrandTotalInBTC, 9)
-                    dialogBoxForInvoice()
+                    dialogBoxForInvoice(fromFlashPay)
                 } else {
                     showToast("No BTC Rate")
                 }
@@ -383,7 +386,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         checkOutPayItemAdapter.notifyDataSetChanged()
     }
 
-    private fun dialogBoxForInvoice() {
+    private fun dialogBoxForInvoice(fromFlashPay: Boolean) {
         Log.d("TEST_DOUBLE_CHECKOUT", "dialogBoxForInvoice: ")
         val tsLong = System.currentTimeMillis() / 1000
         val uNixtimeStamp = tsLong.toString()
@@ -431,7 +434,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             }
             currentTransactionLabel = label1
             isCreatingInvoice = false
-            createInvoice(msatoshi, label1, descrption)
+            createInvoice(msatoshi, label1, descrption, fromFlashPay)
             invoiceDialog.dismiss()
         }
         invoiceDialog.show()
@@ -537,10 +540,37 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         val adapter = MerchantNodeAdapter(list, requireContext()) {
             dialog.dismiss()
             isCreatingInvoice = false
-            createGrandTotalForInvoice()
+            selectedFlashPayClient = it
+            createGrandTotalForInvoice(fromFlashPay = true)
         }
         recyclerView.adapter = adapter
         dialog.show()
+    }
+
+    private fun createSocketIOInstance(): Socket? {
+        val accessToken =
+            CustomSharedPreferences().getvalue("accessTokenLogin", requireContext())
+        val options = IO.Options()
+        val headers: MutableMap<String, List<String>> = HashMap()
+        val bearer = "Bearer $accessToken"
+        headers["Authorization"] = listOf(bearer)
+        options.extraHeaders = headers
+        var mSocket: Socket? = null
+        try {
+            mSocket = IO.socket("https://realtime.nextlayer.live", options)
+            mSocket?.connect()
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+        }
+        mSocket?.on("err") { args: Array<Any> ->
+            requireActivity().runOnUiThread {
+                val data: JSONObject = args[0] as JSONObject
+                Log.d("Socket", data.toString())
+                Toast.makeText(requireContext(), data["message"].toString(), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+        return mSocket
     }
 
     //Manipulate Receivable Amount
@@ -664,6 +694,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         rMSatoshi: String?,
         label: String?,
         description: String?,
+        fromFlashPay: Boolean,
     ) {
         globalRMSatoshi = rMSatoshi
         globalLabel = label
@@ -686,7 +717,34 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                             globalInvoice = null
                             globalInvoice = resp
                             try {
-                                dialogBoxQRCodePayment()
+                                if (fromFlashPay) {
+                                    val socket = createSocketIOInstance()
+                                    val jsonObject = JSONObject()
+                                    try {
+                                        jsonObject.accumulate(
+                                            "to",
+                                            selectedFlashPayClient!!.client_id
+                                        )
+                                        jsonObject.accumulate("type", "FP_Merchant_Payment_Req")
+                                        jsonObject.accumulate("payload", resp.bolt11)
+                                    } catch (e: JSONException) {
+                                        e.printStackTrace()
+                                    }
+                                    socket?.emit("msg", jsonObject, object : Acknowledgement() {
+                                        override fun call(vararg args: Any) {
+                                            super.call(*args)
+                                            Toast.makeText(
+                                                requireContext(),
+                                                "FP_Merchant_Payment_Req Acknowledgement",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+
+                                        }
+                                    })
+                                } else {
+                                    dialogBoxQRCodePayment()
+                                }
+
                                 listenToFcmBroadcast()
                             } catch (e: JSONException) {
                                 e.printStackTrace()
