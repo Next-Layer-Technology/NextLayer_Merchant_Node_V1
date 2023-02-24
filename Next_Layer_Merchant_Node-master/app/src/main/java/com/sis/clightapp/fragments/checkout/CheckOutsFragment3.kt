@@ -726,10 +726,16 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                                             selectedFlashPayClient!!.client_id
                                         )
                                         jsonObject.accumulate("type", "FP_Merchant_Payment_Req")
-                                        jsonObject.accumulate("payload", resp.bolt11)
+                                        val payloadJsonObject = JSONObject()
+                                        payloadJsonObject.accumulate("rMSatoshi", rMSatoshi)
+                                        payloadJsonObject.accumulate("label", label)
+                                        payloadJsonObject.accumulate("description", description)
+                                        payloadJsonObject.accumulate("bolt11", resp.bolt11)
+                                        jsonObject.accumulate("payload", payloadJsonObject)
                                     } catch (e: JSONException) {
                                         e.printStackTrace()
                                     }
+                                    Log.d(this.TAG, "sending msg -> $jsonObject")
                                     socket?.emit("msg", jsonObject, object : Acknowledgement() {
                                         override fun call(vararg args: Any) {
                                             super.call(*args)

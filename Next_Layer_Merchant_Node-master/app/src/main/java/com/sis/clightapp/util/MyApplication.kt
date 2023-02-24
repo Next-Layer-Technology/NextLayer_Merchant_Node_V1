@@ -4,11 +4,15 @@ import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.IntentFilter
 import android.util.Log
+import android.view.MotionEvent
+import androidx.core.view.MotionEventCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.sis.clightapp.activity.HomeActivity
 import com.sis.clightapp.di.appModule
 import com.sis.clightapp.session.MyLogOutService
 import org.koin.android.ext.koin.androidContext
@@ -48,6 +52,7 @@ class MyApplication : Application() {
         }
     }
 
+
     internal inner class AppLifecycleObserver : DefaultLifecycleObserver {
         var timer = Timer()
         override fun onStart(owner: LifecycleOwner) { // app moved to foreground
@@ -61,8 +66,11 @@ class MyApplication : Application() {
             Log.d(this.javaClass.simpleName, "timer started")
             timer.schedule(object : TimerTask() {
                 override fun run() {
+                    Log.d(this.javaClass.simpleName, "timer completed")
+                    val intent = Intent(applicationContext, HomeActivity::class.java)
+                    //intent.flags = FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
                     stopService(Intent(this@MyApplication, MyLogOutService::class.java))
-                    onTerminate()
                 }
             }, 600000)
         }
