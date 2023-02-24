@@ -733,12 +733,14 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                                     socket?.emit("msg", jsonObject, object : Acknowledgement() {
                                         override fun call(vararg args: Any) {
                                             super.call(*args)
-                                            Toast.makeText(
-                                                requireContext(),
-                                                "FP_Merchant_Payment_Req Acknowledgement",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                            requireActivity().runOnUiThread {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    "Acknowledgement",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
 
+                                            }
                                         }
                                     })
                                 } else {
