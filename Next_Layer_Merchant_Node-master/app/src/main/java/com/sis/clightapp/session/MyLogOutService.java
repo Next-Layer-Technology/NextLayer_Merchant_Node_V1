@@ -7,6 +7,7 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 
 import com.sis.clightapp.util.CustomSharedPreferences;
+import com.sis.clightapp.util.GlobalState;
 
 import java.util.Date;
 
@@ -26,6 +27,8 @@ public class MyLogOutService extends Service {
         System.out.println("date"+date.toString());
         CustomSharedPreferences customSharedPreferences=new CustomSharedPreferences();
         customSharedPreferences.setsession(date,"lastdate",getApplicationContext());
+        GlobalState.getInstance().itemsList.clear();
+        GlobalState.getInstance().selectedItems.clear();
         //stop service
         this.stopSelf();
     }

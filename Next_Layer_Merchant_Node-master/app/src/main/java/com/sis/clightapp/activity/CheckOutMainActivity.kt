@@ -117,8 +117,6 @@ class CheckOutMainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         ExitDialogFragment {
-            GlobalState.getInstance().selectedItems.clear()
-            GlobalState.getInstance().itemsList.clear()
             stopService(Intent(this, MyLogOutService::class.java))
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)

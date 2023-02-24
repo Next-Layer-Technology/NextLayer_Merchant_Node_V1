@@ -191,8 +191,6 @@ public class MerchantMainActivity extends BaseActivity {
     }
 
     public void clearAndGoBack() {
-        GlobalState.getInstance().itemsList.clear();
-        GlobalState.getInstance().selectedItems.clear();
         this.stopService(new Intent(this, MyLogOutService.class));
         Intent ii = new Intent(this, HomeActivity.class);
         startActivity(ii);
