@@ -304,7 +304,7 @@ class MerchantFragment3 : MerchantBaseFragment() {
         removeSshKeyBtn.setOnClickListener {
             val merchantData = sessionService.getMerchantData()
             if (merchantData != null) {
-                Auth2FaFragment().show(childFragmentManager, null)
+                Auth2FaFragment.getInstance().show(childFragmentManager, null)
             } else {
                 goAlertDialogwithOneBTn(1, "", "Enter Merchant ID", "OK", "")
             }

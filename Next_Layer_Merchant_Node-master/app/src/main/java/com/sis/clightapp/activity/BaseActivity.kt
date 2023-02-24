@@ -52,15 +52,21 @@ open class BaseActivity : AppCompatActivity(), LifecycleOwner {
     private val locationRequest: LocationRequest? = null
     private val locationCallback: LocationCallback? = null
     lateinit var loginLoadingProgressDialog: ProgressDialog
+
     public override fun onStart() {
         super.onStart()
         startService(Intent(this, MyLogOutService::class.java))
         sessionService.isExpired.observe(this) { expired: Boolean ->
+            val auth2FaFragment = Auth2FaFragment.getInstance()
             if (expired) {
                 val prev = supportFragmentManager.findFragmentByTag("2fa_fragment")
                 if (prev == null) {
-                    Auth2FaFragment().show(supportFragmentManager, "2fa_fragment")
+                    auth2FaFragment.show(supportFragmentManager, "2fa_fragment")
+                } else {
+                    auth2FaFragment.dismiss()
                 }
+            } else {
+                auth2FaFragment.dismiss()
             }
         }
     }
@@ -97,7 +103,11 @@ open class BaseActivity : AppCompatActivity(), LifecycleOwner {
     }
 
     @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             1000 -> {
@@ -170,7 +180,11 @@ open class BaseActivity : AppCompatActivity(), LifecycleOwner {
                 val alert = alertBuilder.create()
                 alert.show()
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 123)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    123
+                )
             }
         }
     }
