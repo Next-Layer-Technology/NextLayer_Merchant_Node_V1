@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -112,7 +113,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            //pickItemImage();
+           // pickItemImage();
             imageOptions()
             isInApp = false
         }
@@ -296,6 +297,13 @@ class MerchantFragment2 : MerchantBaseFragment() {
         })
     }
     private fun imageOptions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(
+                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
+                REQUEST_WRITE_PERMISSION
+            )
+        }
+
         val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
         val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
         builder.setTitle("Add Image From")
@@ -331,7 +339,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
                     }
                     var file: File? = null
                     try {
-                        file = savebitmap(selectImgBitMap)
+                        file = requireContext().savebitmap(selectImgBitMap)
                     } catch (e: IOException) {
                         e.printStackTrace()
                         isImageGet = false
@@ -365,7 +373,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
                     cameraImgBitMap = bundle?.get("data") as Bitmap
                     var file2: File? = null
                     try {
-                        file2 = savebitmap(cameraImgBitMap)
+                        file2 = requireContext().savebitmap(cameraImgBitMap)
                     } catch (e: IOException) {
                         e.printStackTrace()
                         isImageGet = false
@@ -428,12 +436,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
         val ivBack = addItemDialog.findViewById<ImageView>(R.id.iv_back_invoice)
         itemImage = addItemDialog.findViewById(R.id.itemImage)
         itemImage.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
-                    REQUEST_WRITE_PERMISSION
-                )
-            }
+            imageOptions()
         }
         val btnCard = addItemDialog.findViewById<Button>(R.id.btn_add)
         ivBack.setOnClickListener { addItemDialog.dismiss() }
@@ -837,18 +840,16 @@ class MerchantFragment2 : MerchantBaseFragment() {
         }
 
         @Throws(IOException::class)
-        fun savebitmap(bmp: Bitmap?): File {
+        fun Context.savebitmap(bmp: Bitmap?): File {
             val bytes = ByteArrayOutputStream()
             bmp?.compress(Bitmap.CompressFormat.JPEG, 60, bytes)
-            val f = File(
-                Environment.getExternalStorageDirectory()
-                    .toString() + File.separator + "testimage.jpg"
-            )
+            val f = createFileInCache("testimage.jpg")
             f.createNewFile()
             val fo = FileOutputStream(f)
             fo.write(bytes.toByteArray())
             fo.close()
             return f
         }
+        private fun Context.createFileInCache(fileName: String): File = File(cacheDir, fileName)
     }
 }
