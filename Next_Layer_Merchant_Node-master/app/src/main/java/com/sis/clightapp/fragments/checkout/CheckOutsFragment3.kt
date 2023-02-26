@@ -727,9 +727,10 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                                         )
                                         jsonObject.accumulate("type", "FP_Merchant_Payment_Req")
                                         val payloadJsonObject = JSONObject()
-                                        payloadJsonObject.accumulate("rMSatoshi", rMSatoshi)
-                                        payloadJsonObject.accumulate("label", label)
-                                        payloadJsonObject.accumulate("description", description)
+                                        payloadJsonObject.accumulate(
+                                            "merchantName",
+                                            sessionService.getMerchantData()?.merchant_name
+                                        )
                                         payloadJsonObject.accumulate("bolt11", resp.bolt11)
                                         jsonObject.accumulate("payload", payloadJsonObject)
                                     } catch (e: JSONException) {
