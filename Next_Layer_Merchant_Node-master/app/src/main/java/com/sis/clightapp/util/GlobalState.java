@@ -2,6 +2,8 @@ package com.sis.clightapp.util;
 
 import android.app.Application;
 
+import androidx.annotation.Nullable;
+
 import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.model.ImageRelocation.GetItemImageReloc;
 import com.sis.clightapp.model.REST.FundingNode;
@@ -44,6 +46,7 @@ public class GlobalState extends Application {
     //This arraylist is set when /UserStorage/inventory/ is called from CheckOutFragment1
     private ArrayList<GetItemImageReloc> currentItemImageRelocArrayList;
 
+    @Nullable
     public Boolean getLogin() {
         return isLogin;
     }

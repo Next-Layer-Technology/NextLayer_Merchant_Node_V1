@@ -767,7 +767,7 @@ class MainEntryActivityNew : BaseActivity() {
                         )
                     }
                 } else {
-                    if (GlobalState.getInstance().login) {
+                    if (GlobalState.getInstance().login == true) {
                         runOnUiThread { createWebSocketClient1() }
                     } else {
                         runOnUiThread {
