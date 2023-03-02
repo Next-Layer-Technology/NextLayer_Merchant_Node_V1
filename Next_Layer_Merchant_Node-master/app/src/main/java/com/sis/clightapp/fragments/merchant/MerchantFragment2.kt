@@ -65,7 +65,7 @@ import kotlin.collections.ArrayList
 class MerchantFragment2 : MerchantBaseFragment() {
     private val apiClient: ApiPaths2 by inject()
     private val webservice: Webservice by inject()
-    private val sessionService: SessionService by inject()
+     val sessionService: SessionService by inject()
 
     private lateinit var additem: Button
     private lateinit var deleteitem: Button

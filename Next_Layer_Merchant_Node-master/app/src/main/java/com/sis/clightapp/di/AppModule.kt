@@ -62,3 +62,8 @@ val appModule = module {
     }
 
 }
+
+fun getMerchantContainerUrl(sessionService: SessionService): String {
+    val merchantData: MerchantData? = sessionService.getMerchantData()
+    return "http://" + merchantData?.container_address + ":" + merchantData?.mws_port
+}

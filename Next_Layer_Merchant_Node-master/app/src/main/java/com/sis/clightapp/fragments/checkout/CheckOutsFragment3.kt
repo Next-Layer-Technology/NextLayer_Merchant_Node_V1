@@ -298,7 +298,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             countitem += items.selectQuatity
         }
         (requireActivity() as CheckOutMainActivity).updateCartIcon(countitem)
-        checkOutPayItemAdapter = CheckOutMainListAdapter(requireContext(), selectedItems)
+        checkOutPayItemAdapter = CheckOutMainListAdapter(requireContext(), sessionService,selectedItems)
         checkoutPayItemslistview.adapter = checkOutPayItemAdapter
         checkoutPayItemslistview.onItemLongClickListener =
             OnItemLongClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->

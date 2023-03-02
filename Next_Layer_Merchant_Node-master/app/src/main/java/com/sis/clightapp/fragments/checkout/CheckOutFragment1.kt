@@ -30,7 +30,6 @@ import com.sis.clightapp.Network.CheckNetwork
 import com.sis.clightapp.R
 import com.sis.clightapp.activity.CheckOutMainActivity
 import com.sis.clightapp.adapter.CheckOutMainListAdapter
-import com.sis.clightapp.model.Channel_BTCResponseData
 import com.sis.clightapp.model.GsonModel.Items
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemsDataMerchant
 import com.sis.clightapp.model.GsonModel.ListPeers.ListPeers
@@ -55,10 +54,7 @@ import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import tech.gusavila92.websocketclient.WebSocketClient
 import java.math.BigDecimal
-import java.net.URI
-import java.net.URISyntaxException
 import java.util.*
 
 class CheckOutFragment1 : CheckOutBaseFragment() {
@@ -129,7 +125,11 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             isScanMode = false
             cbScan.isChecked = false
             cbList.isChecked = true
-            checkOutMainListAdapter = CheckOutMainListAdapter(requireContext(), GlobalState.getInstance().itemsList)
+            checkOutMainListAdapter = CheckOutMainListAdapter(
+                requireContext(),
+                sessionService,
+                GlobalState.getInstance().itemsList
+            )
             if (checkOutListView != null) checkOutListView!!.adapter = checkOutMainListAdapter
         }
         cbScan.setOnClickListener {
@@ -140,6 +140,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             checkOutMainListAdapter =
                 CheckOutMainListAdapter(
                     requireContext(),
+                    sessionService,
                     GlobalState.getInstance().selectedItems.toList()
                 )
             checkOutListView!!.adapter = checkOutMainListAdapter
@@ -284,7 +285,11 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             )
         )
         if (dataSource.isNotEmpty()) {
-            checkOutMainListAdapter = CheckOutMainListAdapter(requireContext(), dataSource)
+            checkOutMainListAdapter = CheckOutMainListAdapter(
+                requireContext(),
+                sessionService,
+                dataSource
+            )
             checkOutListView!!.adapter = checkOutMainListAdapter
             checkOutListView!!.onItemLongClickListener =
                 OnItemLongClickListener { _: AdapterView<*>?, _: View?, _: Int, _: Long ->
@@ -305,7 +310,11 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                 }
             GlobalState.getInstance().isCheckoutBtnPress = false
         } else {
-            checkOutMainListAdapter = CheckOutMainListAdapter(requireContext(), dataSource)
+            checkOutMainListAdapter = CheckOutMainListAdapter(
+                requireContext(),
+                sessionService,
+                dataSource
+            )
             checkOutListView!!.adapter = checkOutMainListAdapter
             (requireActivity() as CheckOutMainActivity).updateCartIcon(0)
         }

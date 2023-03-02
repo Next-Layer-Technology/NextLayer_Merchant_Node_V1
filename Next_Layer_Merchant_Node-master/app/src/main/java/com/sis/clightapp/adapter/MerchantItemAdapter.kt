@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sis.clightapp.R
+import com.sis.clightapp.di.getMerchantContainerUrl
 import com.sis.clightapp.fragments.merchant.MerchantFragment2
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemLIstModel
 import com.sis.clightapp.util.AppConstants
@@ -48,7 +49,7 @@ class MerchantItemAdapter    // RecyclerView recyclerView;
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = itemsArrayList[position]
         holder.setIsRecyclable(false)
-        val image_url = AppConstants.MERCHANT_ITEM_IMAGE + currentItem.image_path
+        val image_url =  getMerchantContainerUrl(merchantFragment2.sessionService)+ currentItem.image_path
         Log.d(this::class.simpleName, image_url)
         Glide.with(mContext).load(image_url).into(holder.imageView)
         holder.name.text = currentItem.name
