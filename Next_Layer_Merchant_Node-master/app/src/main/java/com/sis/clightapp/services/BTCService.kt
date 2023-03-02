@@ -4,8 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sis.clightapp.model.Channel_BTCResponseData
-import com.sis.clightapp.util.AppConstants
-import com.sis.clightapp.util.GlobalState
 import com.sis.clightapp.util.Resource
 import org.json.JSONException
 import org.json.JSONObject
@@ -16,7 +14,6 @@ import java.net.URISyntaxException
 class BTCService {
     private lateinit var webSocketClient: WebSocketClient
     var btcPrice = 0.0
-    //var btcPrice = 23779.00
 
     private val _currentBtc: MutableLiveData<Resource<Channel_BTCResponseData>> =
         MutableLiveData()
@@ -34,9 +31,6 @@ class BTCService {
             e.printStackTrace()
             return
         }
-//        val btcResp = Channel_BTCResponseData()
-//        btcResp.price = 23779.00
-//        _currentBtc.postValue(Resource.success(btcResp))
         webSocketClient = object : WebSocketClient(uri) {
             override fun onOpen() {
                 val json =
@@ -113,5 +107,11 @@ class BTCService {
         } else {
             0.0
         }
+    }
+    fun setStatic(){
+        btcPrice = 23779.00
+        val btcResp = Channel_BTCResponseData()
+        btcResp.price = 23779.00
+        _currentBtc.postValue(Resource.success(btcResp))
     }
 }
