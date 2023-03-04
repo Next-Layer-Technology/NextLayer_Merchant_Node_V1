@@ -71,7 +71,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     private val sessionService: SessionService by inject()
     private val webservice: Webservice by inject()
     private val lightningService: LightningService by inject()
-    private val btcService = BTCService()
+    private val btcService: BTCService by inject()
     lateinit var paywithclightbtn: Button
     lateinit var btnFlashPay: ImageView
     var totalGrandfinal = 0.0

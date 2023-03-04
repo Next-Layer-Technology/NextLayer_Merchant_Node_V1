@@ -5,14 +5,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.sis.clightapp.activity.HomeActivity
 import com.sis.clightapp.di.appModule
-import com.sis.clightapp.services.BTCService
 import com.sis.clightapp.session.MyLogOutService
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -32,14 +30,6 @@ class MyApplication : Application() {
         val observer = AppLifecycleObserver()
         ProcessLifecycleOwner.get().lifecycle.addObserver(observer)
 
-        if (Settings.Secure.getString(
-                contentResolver,
-                Settings.Secure.ANDROID_ID
-            ) == "4609ce6a958ba817"
-        ) {
-            Log.d(this.javaClass.name, "This is Pitam's Phone")
-            BTCService().setStatic()
-        }
 
     }
 

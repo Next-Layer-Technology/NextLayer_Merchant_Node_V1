@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 
 val appModule = module {
     single { FCMService() }
-    single(createdAtStart = true) { BTCService() }
+    single(createdAtStart = true) { BTCService(androidApplication()) }
     single { LightningService(androidApplication()) }
     single { SessionService(androidApplication()) }
     factory<ApiPaths2> {

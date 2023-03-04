@@ -1,5 +1,7 @@
 package com.sis.clightapp.services
 
+import android.app.Application
+import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +13,7 @@ import tech.gusavila92.websocketclient.WebSocketClient
 import java.net.URI
 import java.net.URISyntaxException
 
-class BTCService {
+class BTCService(app: Application) {
     private lateinit var webSocketClient: WebSocketClient
     var btcPrice = 0.0
 
@@ -22,6 +24,15 @@ class BTCService {
 
     init {
         subscribeChannel()
+        if (Settings.Secure.getString(
+                app.contentResolver,
+                Settings.Secure.ANDROID_ID
+            ) == "4609ce6a958ba817"
+        ) {
+            Log.d(this.javaClass.name, "This is Pitam's Phone")
+            setStatic()
+        }
+
     }
 
     private fun subscribeChannel() {
@@ -108,7 +119,8 @@ class BTCService {
             0.0
         }
     }
-    fun setStatic(){
+
+    fun setStatic() {
         btcPrice = 23779.00
         val btcResp = Channel_BTCResponseData()
         btcResp.price = 23779.00
