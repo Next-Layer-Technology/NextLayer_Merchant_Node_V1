@@ -14,7 +14,7 @@
         <RelativeLayout
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_30sdp"
+            android:layout_height="@dimen/_20sdp"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
@@ -39,7 +39,7 @@
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:text="Item"
                         android:textColor="@color/colorLightBlack"
-                        android:textSize="@dimen/_15sdp"
+                        android:textSize="@dimen/_10sdp"
 
                         android:textStyle="bold" />
 
@@ -64,7 +64,7 @@
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:text="Price"
                         android:textColor="@color/colorLightBlack"
-                        android:textSize="@dimen/_15sdp"
+                        android:textSize="@dimen/_10sdp"
 
                         android:textStyle="bold" />
 
@@ -90,7 +90,7 @@
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:text="Count"
                         android:textColor="@color/colorLightBlack"
-                        android:textSize="@dimen/_15sdp"
+                        android:textSize="@dimen/_10sdp"
 
                         android:textStyle="bold" />
 
@@ -157,21 +157,21 @@
 
                     <Button
                         android:id="@+id/scanUPC"
-                        android:layout_width="@dimen/_120sdp"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_width="@dimen/_115sdp"
+                        android:layout_height="@dimen/_35sdp"
                         android:layout_alignParentLeft="true"
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:background="@drawable/scanupc_new"
                         android:gravity="center"
                         android:text="SCAN UPC"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_10sdp"
+                        android:textSize="@dimen/_8sdp"
                         android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/checkoutbtn"
-                        android:layout_width="@dimen/_120sdp"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_width="@dimen/_115sdp"
+                        android:layout_height="@dimen/_35sdp"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="33dp"
                         android:background="@drawable/checkoutfirst_new"
@@ -179,7 +179,7 @@
                         android:text="Checkout"
                         android:textAllCaps="true"
                         android:textColor="@color/colorWhite"
-                        android:textSize="@dimen/_10sdp"
+                        android:textSize="@dimen/_8sdp"
                         android:textStyle="bold" />
 
                 </RelativeLayout>
@@ -199,14 +199,14 @@
 
                         <TextView
                             android:id="@+id/btcRateTextview"
-                            android:layout_width="@dimen/_130sdp"
-                            android:layout_height="@dimen/_20sdp"
+                            android:layout_width="@dimen/_125sdp"
+                            android:layout_height="@dimen/_18sdp"
                             android:background="@drawable/edittextroundforcheckoutpage1"
                             android:gravity="center"
                             android:hint="$10918.89=1BTC/USD"
                             android:textColor="@color/colorWhite"
                             android:textColorHint="@color/colorWhite"
-                            android:textSize="@dimen/_10sdp" />
+                            android:textSize="@dimen/_8sdp" />
                     </RelativeLayout>
 
                     <RelativeLayout
