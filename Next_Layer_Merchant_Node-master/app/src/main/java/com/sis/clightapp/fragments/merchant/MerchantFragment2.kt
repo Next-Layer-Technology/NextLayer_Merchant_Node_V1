@@ -1,6 +1,5 @@
 package com.sis.clightapp.fragments.merchant
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
@@ -13,9 +12,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.text.style.StyleSpan
@@ -60,7 +57,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MerchantFragment2 : MerchantBaseFragment() {
     private val apiClient: ApiPaths2 by inject()
@@ -430,6 +426,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
         //        dialog.getWindow().setLayout(500, 500);
         addItemDialog.setCancelable(false)
         val etCardTitle = addItemDialog.findViewById<EditText>(R.id.et_card_title)
+        val ibRotatePicture = addItemDialog.findViewById<ImageButton>(R.id.ib_rotate_picture)
         val etCardNumber = addItemDialog.findViewById<EditText>(R.id.et_card_number)
         val etCVV = addItemDialog.findViewById<EditText>(R.id.et_cvv)
         val etExpiryDate = addItemDialog.findViewById<EditText>(R.id.et_expiry_date)
@@ -438,6 +435,12 @@ class MerchantFragment2 : MerchantBaseFragment() {
         itemImage.setOnClickListener {
             imageOptions()
         }
+
+        ibRotatePicture.setOnClickListener { v: View? ->
+            itemImage.rotation = itemImage.getRotation() + 90
+        }
+
+
         val btnCard = addItemDialog.findViewById<Button>(R.id.btn_add)
         ivBack.setOnClickListener { addItemDialog.dismiss() }
         btnCard.setOnClickListener(View.OnClickListener {
