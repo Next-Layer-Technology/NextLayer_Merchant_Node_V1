@@ -9,14 +9,13 @@
         android:id="@+id/constraint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_15sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/tv_title"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_marginStart="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_card_numb"
@@ -32,7 +31,7 @@
             android:singleLine="true"
             android:text="Item"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="@dimen/_10sdp"
             app:layout_constraintBottom_toBottomOf="@+id/tv_title"
             app:layout_constraintEnd_toStartOf="@id/tv_card_expiry"
             app:layout_constraintStart_toEndOf="@+id/tv_title"
@@ -48,7 +47,7 @@
             android:singleLine="true"
             android:text="Price"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_15sdp"
+            android:textSize="@dimen/_10sdp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tv_card_numb"
             app:layout_constraintEnd_toStartOf="@id/addminuslay"
@@ -87,8 +86,8 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="0"
-                android:textSize="@dimen/_15sdp"
-                android:textStyle="bold"></TextView>
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/minus"

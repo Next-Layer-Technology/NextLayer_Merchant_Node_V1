@@ -150,7 +150,7 @@
         <RelativeLayout
             android:id="@+id/cardviewlayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_120sdp"
+            android:layout_height="@dimen/_100sdp"
             android:layout_above="@+id/belowlay"
             android:layout_marginBottom="@dimen/_5sdp">
 
