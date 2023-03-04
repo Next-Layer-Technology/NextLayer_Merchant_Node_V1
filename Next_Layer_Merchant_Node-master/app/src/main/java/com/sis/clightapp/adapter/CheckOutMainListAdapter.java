@@ -52,7 +52,7 @@ public class CheckOutMainListAdapter extends ArrayAdapter<Items> {
         TextView name = listItem.findViewById(R.id.tv_card_numb);
         TextView price = listItem.findViewById(R.id.tv_card_expiry);
         name.setText(currentItem.getName());
-        price.setText(currentItem.getPrice());
+        price.setText("$"+currentItem.getPrice());
         final TextView tvQty = listItem.findViewById(R.id.countvalue);
         tvQty.setText(String.valueOf(currentItem.getSelectQuatity()));
         ImageView plus = listItem.findViewById(R.id.plus);
