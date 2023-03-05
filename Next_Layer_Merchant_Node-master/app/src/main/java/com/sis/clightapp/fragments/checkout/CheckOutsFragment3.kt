@@ -513,6 +513,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                             if (list.size > 0) {
                                 //ArrayList<StoreClients> list1=list;
                                 showDialogNearbyClients(list)
+                            }else{
+                                showToast("No nearby clients")
                             }
                         }
                     } else {
