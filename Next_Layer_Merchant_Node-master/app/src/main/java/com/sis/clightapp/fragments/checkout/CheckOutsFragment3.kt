@@ -729,7 +729,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                                         val payloadJsonObject = JSONObject()
                                         payloadJsonObject.accumulate(
                                             "merchantName",
-                                            sessionService.getMerchantData()?.merchant_name
+                                            sessionService.getMerchantData()?.merchant_name?:"Unknown Merchant"
                                         )
                                         payloadJsonObject.accumulate("bolt11", resp.bolt11)
                                         jsonObject.accumulate("payload", payloadJsonObject)
@@ -883,7 +883,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     }
 
     private fun fcmReceived() {
-        if (distributeGetPaidDialog.isShowing) {
+        if (::distributeGetPaidDialog.isInitialized && distributeGetPaidDialog.isShowing) {
             distributeGetPaidDialog.dismiss()
         }
         unregisterBroadcastReceiver()
