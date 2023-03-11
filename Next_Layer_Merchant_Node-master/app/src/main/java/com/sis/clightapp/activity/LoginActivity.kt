@@ -56,8 +56,6 @@ class LoginActivity : BaseActivity() {
         loginLoadingProgressDialog.setMessage("Logging In")
         etEmail = findViewById(R.id.et_email)
         etPassword = findViewById(R.id.et_password)
-        etEmail.setText("merchant")
-        etPassword.setText("abc123")
         loginbtn = findViewById(R.id.btn_login)
         if (sessionService.getMerchantData() != null)
             merchantId = sessionService.getMerchantData()!!.merchant_id.toString()
