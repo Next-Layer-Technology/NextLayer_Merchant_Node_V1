@@ -1,5 +1,6 @@
 package com.sis.clightapp.di
 
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.GsonBuilder
 import com.sis.clightapp.Interface.ApiPaths2
 import com.sis.clightapp.Interface.Webservice
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit
 
 val appModule = module {
     single { FCMService() }
-    single(createdAtStart = true) { BTCService() }
+    single(createdAtStart = true) { BTCService(androidApplication()) }
     single { LightningService(androidApplication()) }
     single { SessionService(androidApplication()) }
     factory<ApiPaths2> {
@@ -37,6 +38,9 @@ val appModule = module {
             .readTimeout(3, TimeUnit.MINUTES)
             .addNetworkInterceptor(httpLoggingInterceptor)
             .writeTimeout(3, TimeUnit.MINUTES)
+            .addInterceptor(
+                ChuckerInterceptor.Builder(this.androidContext()).build()
+            )
             .build()
         Retrofit.Builder().baseUrl(url).client(okHttpClient)
             .addConverterFactory(ScalarsConverterFactory.create())
@@ -47,10 +51,19 @@ val appModule = module {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val httpClient: OkHttpClient = OkHttpClient.Builder()
+            .addInterceptor(
+                ChuckerInterceptor.Builder(this.androidContext()).build()
+            )
             .addNetworkInterceptor(httpLoggingInterceptor)
             .build()
         Retrofit.Builder().baseUrl("https://mainframe.nextlayer.live/api/").client(httpClient)
-            .addConverterFactory(GsonConverterFactory.create()).build().create(Webservice::class.java)
+            .addConverterFactory(GsonConverterFactory.create()).build()
+            .create(Webservice::class.java)
     }
 
+}
+
+fun getMerchantContainerUrl(sessionService: SessionService): String {
+    val merchantData: MerchantData? = sessionService.getMerchantData()
+    return "http://" + merchantData?.container_address + ":" + merchantData?.mws_port
 }

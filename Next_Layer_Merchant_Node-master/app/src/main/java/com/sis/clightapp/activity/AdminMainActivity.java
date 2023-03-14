@@ -24,6 +24,7 @@ import com.sis.clightapp.ViewPager.FragmentAdapter;
 import com.sis.clightapp.fragments.admin.AdminFragment1;
 import com.sis.clightapp.fragments.shared.ExitDialogFragment;
 import com.sis.clightapp.session.MyLogOutService;
+import com.sis.clightapp.util.GlobalState;
 
 
 import java.util.ArrayList;
@@ -121,11 +122,17 @@ public class AdminMainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         new ExitDialogFragment(() -> {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("isFromLogin", true);
-            startActivity(intent);
-            finish();
+            clearAndGoBack();
             return null;
         }).show(getSupportFragmentManager(), null);
+    }
+
+    public void clearAndGoBack() {
+        GlobalState.getInstance().itemsList.clear();
+        GlobalState.getInstance().selectedItems.clear();
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("isFromLogin", true);
+        startActivity(intent);
+        finish();
     }
 }

@@ -1,26 +1,36 @@
 package com.sis.clightapp.util
 
 import android.app.Application
-import com.sis.clightapp.util.MyApplication.ScreenReceiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.util.Log
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
+import com.sis.clightapp.activity.HomeActivity
 import com.sis.clightapp.di.appModule
+import com.sis.clightapp.session.MyLogOutService
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin
+import java.util.*
 
 class MyApplication : Application() {
     private var isScreenOff: Boolean = false
     override fun onCreate() {
         super.onCreate()
         ScreenReceiver()
-        startKoin{
+        startKoin {
             androidLogger()
             androidContext(this@MyApplication)
             modules(appModule)
         }
+        val observer = AppLifecycleObserver()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(observer)
+
+
     }
 
     private inner class ScreenReceiver : BroadcastReceiver() {
@@ -38,6 +48,30 @@ class MyApplication : Application() {
             filter.addAction(Intent.ACTION_SCREEN_ON)
             filter.addAction(Intent.ACTION_SCREEN_OFF)
             registerReceiver(this, filter)
+        }
+    }
+
+
+    internal inner class AppLifecycleObserver : DefaultLifecycleObserver {
+        var timer = Timer()
+        override fun onStart(owner: LifecycleOwner) { // app moved to foreground
+            timer.cancel()
+            timer = Timer()
+            Log.d(this.javaClass.simpleName, "timer cancelled")
+        }
+
+        override fun onStop(owner: LifecycleOwner) { // app moved to background
+            Log.d(this.javaClass.simpleName, "app moved to background")
+            Log.d(this.javaClass.simpleName, "timer started")
+            timer.schedule(object : TimerTask() {
+                override fun run() {
+                    Log.d(this.javaClass.simpleName, "timer completed")
+                    val intent = Intent(applicationContext, HomeActivity::class.java)
+                    //intent.flags = FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    stopService(Intent(this@MyApplication, MyLogOutService::class.java))
+                }
+            }, 600000)
         }
     }
 }

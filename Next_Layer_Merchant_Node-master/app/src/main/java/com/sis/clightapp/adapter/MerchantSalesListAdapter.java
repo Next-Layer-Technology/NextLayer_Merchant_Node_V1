@@ -1,8 +1,11 @@
 package com.sis.clightapp.adapter;
 
+import static com.sis.clightapp.util.UtilsKt.QR_CODE;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +90,7 @@ public class MerchantSalesListAdapter  extends ArrayAdapter<Invoice> {
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         BitMatrix bitMatrix = null;
         try {
+            Log.d(QR_CODE,hex);
             bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, 600, 600);
         } catch (WriterException e) {
             e.printStackTrace();

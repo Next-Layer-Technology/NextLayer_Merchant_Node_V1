@@ -29,7 +29,6 @@ import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
-import com.sis.clightapp.Interface.ApiPaths2
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.Network.CheckNetwork
 import com.sis.clightapp.R
@@ -47,13 +46,9 @@ import com.sis.clightapp.services.BTCService
 import com.sis.clightapp.services.LightningService
 import com.sis.clightapp.services.SessionService
 import com.sis.clightapp.session.MyLogOutService
-import com.sis.clightapp.util.AppConstants
-import com.sis.clightapp.util.CustomSharedPreferences
-import com.sis.clightapp.util.GlobalState
-import com.sis.clightapp.util.Status
-import com.sis.clightapp.util.dateStringUTCTimestamp
-import com.sis.clightapp.util.round
-import com.sis.clightapp.util.satoshiToBtc
+import com.sis.clightapp.util.*
+import io.socket.client.IO
+import io.socket.client.Socket
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -66,6 +61,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.math.BigDecimal
+import java.net.URISyntaxException
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
@@ -75,7 +71,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     private val sessionService: SessionService by inject()
     private val webservice: Webservice by inject()
     private val lightningService: LightningService by inject()
-    private val btcService = BTCService()
+    private val btcService: BTCService by inject()
     lateinit var paywithclightbtn: Button
     lateinit var btnFlashPay: ImageView
     var totalGrandfinal = 0.0
@@ -123,7 +119,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     private val intentFilter = IntentFilter(AppConstants.PAYMENT_RECEIVED_NOTIFICATION)
     lateinit var distributeGetPaidDialog: Dialog
     var selectedItems: List<Items> = ArrayList()
-
+    var selectedFlashPayClient: NearbyClients? = null
     override fun onDestroy() {
         super.onDestroy()
         requireContext().stopService(Intent(requireContext(), MyLogOutService::class.java))
@@ -179,7 +175,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         }
         paywithclightbtn = view.findViewById(R.id.imageView5)
         paywithclightbtn.setOnClickListener {
-            createGrandTotalForInvoice()
+            createGrandTotalForInvoice(false)
         }
         checkoutPayItemslistview = view.findViewById(R.id.checkout2listview)
 
@@ -251,6 +247,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         return view
     }
 
+
     override fun onResume() {
         super.onResume()
         selectedItems = GlobalState.getInstance().selectedItems.toList()
@@ -259,7 +256,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         }
     }
 
-    private fun createGrandTotalForInvoice() {
+    private fun createGrandTotalForInvoice(fromFlashPay: Boolean) {
         Log.d("TEST_DOUBLE_CHECKOUT", "createGrandTotalForInvoice: ")
         if (selectedItems.isNotEmpty()) {
             priceInCurrency = 0.0
@@ -275,7 +272,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                     grandTotalInCurrency = priceInCurrency + taxtInCurennccyAmount
                     getGrandTotalInBTC = priceInBTC + taxInBtcAmount
                     getGrandTotalInBTC = round(getGrandTotalInBTC, 9)
-                    dialogBoxForInvoice()
+                    dialogBoxForInvoice(fromFlashPay)
                 } else {
                     showToast("No BTC Rate")
                 }
@@ -296,43 +293,44 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
 
     @SuppressLint("SetTextI18n")
     fun setAdapter() {
-        if (selectedItems.isNotEmpty()) {
-            var countitem = 0
-            for (items in selectedItems) {
-                countitem += items.selectQuatity
-            }
-            (requireActivity() as CheckOutMainActivity).updateCartIcon(countitem)
-            checkOutPayItemAdapter = CheckOutMainListAdapter(requireContext(), selectedItems)
-            checkoutPayItemslistview.adapter = checkOutPayItemAdapter
-            checkoutPayItemslistview.onItemLongClickListener =
-                OnItemLongClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
-                    val builder = android.app.AlertDialog.Builder(requireContext())
-                    builder.setTitle(getString(R.string.delete_title))
-                    builder.setMessage(getString(R.string.delete_subtitle))
-                    builder.setCancelable(true)
+        var countitem = 0
+        for (items in selectedItems) {
+            countitem += items.selectQuatity
+        }
+        (requireActivity() as CheckOutMainActivity).updateCartIcon(countitem)
+        checkOutPayItemAdapter = CheckOutMainListAdapter(requireContext(), sessionService,selectedItems)
+        checkoutPayItemslistview.adapter = checkOutPayItemAdapter
+        checkoutPayItemslistview.onItemLongClickListener =
+            OnItemLongClickListener { _: AdapterView<*>?, _: View?, i: Int, _: Long ->
+                val builder = android.app.AlertDialog.Builder(requireContext())
+                builder.setTitle(getString(R.string.delete_title))
+                builder.setMessage(getString(R.string.delete_subtitle))
+                builder.setCancelable(true)
 
-                    // Action if user selects 'yes'
-                    builder.setPositiveButton("Yes") { _: DialogInterface?, _: Int ->
-                        val tem = selectedItems[i]
-                        if (tem.isManual != null) {
-                            checkOutPayItemAdapter.notifyDataSetChanged()
-                            setAdapter()
-                        } else {
-                            checkOutPayItemAdapter.notifyDataSetChanged()
-                            setAdapter()
-                        }
+                // Action if user selects 'yes'
+                builder.setPositiveButton("Yes") { _: DialogInterface?, _: Int ->
+                    val tem = selectedItems[i]
+                    if (tem.isManual != null) {
+                        checkOutPayItemAdapter.notifyDataSetChanged()
+                        setAdapter()
+                    } else {
+                        checkOutPayItemAdapter.notifyDataSetChanged()
+                        setAdapter()
                     }
-
-                    // Actions if user selects 'no'
-                    builder.setNegativeButton("No") { _: DialogInterface?, _: Int -> }
-
-                    // Create the alert dialog using alert dialog builder
-                    val dialog = builder.create()
-                    dialog.setCanceledOnTouchOutside(false)
-                    // Finally, display the dialog when user press back button
-                    dialog.show()
-                    true
                 }
+
+                // Actions if user selects 'no'
+                builder.setNegativeButton("No") { _: DialogInterface?, _: Int -> }
+
+                // Create the alert dialog using alert dialog builder
+                val dialog = builder.create()
+                dialog.setCanceledOnTouchOutside(false)
+                // Finally, display the dialog when user press back button
+                dialog.show()
+                true
+            }
+
+        if (selectedItems.isNotEmpty()) {
             GlobalState.getInstance().isCheckoutBtnPress = false
             priceInCurrency = 0.0
             priceInBTC = 0.0
@@ -385,9 +383,10 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             taxpay.text = "Tax:0.0 BTC/0.00 $"
             grandtotal.text = "0.0 BTC/ 0.00 $"
         }
+        checkOutPayItemAdapter.notifyDataSetChanged()
     }
 
-    private fun dialogBoxForInvoice() {
+    private fun dialogBoxForInvoice(fromFlashPay: Boolean) {
         Log.d("TEST_DOUBLE_CHECKOUT", "dialogBoxForInvoice: ")
         val tsLong = System.currentTimeMillis() / 1000
         val uNixtimeStamp = tsLong.toString()
@@ -435,15 +434,18 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
             }
             currentTransactionLabel = label1
             isCreatingInvoice = false
-            createInvoice(msatoshi, label1, descrption)
+            createInvoice(msatoshi, label1, descrption, fromFlashPay)
+            invoiceDialog.dismiss()
         }
-        createInvoice(rMSatoshi, label, "Flashpay")
+        invoiceDialog.show()
+        //   createInvoice(rMSatoshi, label, "Flashpay")
     }
 
     private fun getBitMapImg(hex: String?, width: Int, height: Int): Bitmap {
         val multiFormatWriter = MultiFormatWriter()
         var bitMatrix: BitMatrix? = null
         try {
+            Log.d(QR_CODE, hex!!)
             bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, width, height)
         } catch (e: WriterException) {
             e.printStackTrace()
@@ -511,6 +513,8 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                             if (list.size > 0) {
                                 //ArrayList<StoreClients> list1=list;
                                 showDialogNearbyClients(list)
+                            }else{
+                                showToast("No nearby clients")
                             }
                         }
                     } else {
@@ -538,10 +542,37 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         val adapter = MerchantNodeAdapter(list, requireContext()) {
             dialog.dismiss()
             isCreatingInvoice = false
-            createGrandTotalForInvoice()
+            selectedFlashPayClient = it
+            createGrandTotalForInvoice(fromFlashPay = true)
         }
         recyclerView.adapter = adapter
         dialog.show()
+    }
+
+    private fun createSocketIOInstance(): Socket? {
+        val accessToken =
+            CustomSharedPreferences().getvalue("accessTokenLogin", requireContext())
+        val options = IO.Options()
+        val headers: MutableMap<String, List<String>> = HashMap()
+        val bearer = "Bearer $accessToken"
+        headers["Authorization"] = listOf(bearer)
+        options.extraHeaders = headers
+        var mSocket: Socket? = null
+        try {
+            mSocket = IO.socket("https://realtime.nextlayer.live", options)
+            mSocket?.connect()
+        } catch (e: URISyntaxException) {
+            e.printStackTrace()
+        }
+        mSocket?.on("err") { args: Array<Any> ->
+            requireActivity().runOnUiThread {
+                val data: JSONObject = args[0] as JSONObject
+                Log.d("Socket", data.toString())
+                Toast.makeText(requireContext(), data["message"].toString(), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+        return mSocket
     }
 
     //Manipulate Receivable Amount
@@ -665,6 +696,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         rMSatoshi: String?,
         label: String?,
         description: String?,
+        fromFlashPay: Boolean,
     ) {
         globalRMSatoshi = rMSatoshi
         globalLabel = label
@@ -687,7 +719,43 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                             globalInvoice = null
                             globalInvoice = resp
                             try {
-                                dialogBoxQRCodePayment()
+                                if (fromFlashPay) {
+                                    val socket = createSocketIOInstance()
+                                    val jsonObject = JSONObject()
+                                    try {
+                                        jsonObject.accumulate(
+                                            "to",
+                                            selectedFlashPayClient!!.client_id
+                                        )
+                                        jsonObject.accumulate("type", "FP_Merchant_Payment_Req")
+                                        val payloadJsonObject = JSONObject()
+                                        payloadJsonObject.accumulate(
+                                            "merchantName",
+                                            sessionService.getMerchantData()?.merchant_name?:"Unknown Merchant"
+                                        )
+                                        payloadJsonObject.accumulate("bolt11", resp.bolt11)
+                                        jsonObject.accumulate("payload", payloadJsonObject)
+                                    } catch (e: JSONException) {
+                                        e.printStackTrace()
+                                    }
+                                    Log.d(this.TAG, "sending msg -> $jsonObject")
+                                    socket?.emit("msg", jsonObject, object : Acknowledgement() {
+                                        override fun call(vararg args: Any) {
+                                            super.call(*args)
+                                            requireActivity().runOnUiThread {
+                                                Toast.makeText(
+                                                    requireContext(),
+                                                    "Acknowledgement",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+
+                                            }
+                                        }
+                                    })
+                                } else {
+                                    dialogBoxQRCodePayment()
+                                }
+
                                 listenToFcmBroadcast()
                             } catch (e: JSONException) {
                                 e.printStackTrace()
@@ -817,7 +885,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
     }
 
     private fun fcmReceived() {
-        if (distributeGetPaidDialog.isShowing) {
+        if (::distributeGetPaidDialog.isInitialized && distributeGetPaidDialog.isShowing) {
             distributeGetPaidDialog.dismiss()
         }
         unregisterBroadcastReceiver()
@@ -867,6 +935,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 val temHax = globalInvoice!!.bolt11
                 val multiFormatWriter = MultiFormatWriter()
                 try {
+                    Log.d(QR_CODE, temHax)
                     val bitMatrix =
                         multiFormatWriter.encode(temHax, BarcodeFormat.QR_CODE, 600, 600)
                     val barcodeEncoder = BarcodeEncoder()
@@ -993,7 +1062,14 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                 val precision = DecimalFormat("0.00")
                 amount.text = """
                     ${exactFigure(round(satoshiToBtc(invoice.msatoshi), 9))}BTC
-                    ${"$"}${precision.format(round(btcService.btcToUsd(satoshiToBtc(invoice.msatoshi)), 2))}USD
+                    ${"$"}${
+                    precision.format(
+                        round(
+                            btcService.btcToUsd(satoshiToBtc(invoice.msatoshi)),
+                            2
+                        )
+                    )
+                }USD
                     """.trimIndent()
                 paidAt.text =
                     dateStringUTCTimestamp(invoice.paid_at, AppConstants.OUTPUT_DATE_FORMATE)
@@ -1003,7 +1079,14 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
         }
         printInvoice.setOnClickListener {
             if (invoice != null && invoice.status == "paid") {
-                PrintDialogFragment(invoice, null, selectedItems).show(childFragmentManager, null)
+                PrintDialogFragment(invoice, null, selectedItems) {
+                    GlobalState.getInstance().selectedItems.clear()
+                    GlobalState.getInstance().itemsList.clear()
+                    (requireActivity() as CheckOutMainActivity).swipeToCheckOutFragment3(
+                        0
+                    )
+                }.show(childFragmentManager, null)
+                distributeGetPaidDialog.dismiss()
             }
         }
         ivBack.setOnClickListener { v: View? -> distributeGetPaidDialog.dismiss() }

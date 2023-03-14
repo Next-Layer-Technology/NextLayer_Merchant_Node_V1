@@ -53,6 +53,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_add_card" />
 
+
+        <ImageButton
+            android:background="@color/zxing_transparent"
+            app:layout_constraintTop_toBottomOf="@+id/itemImage"
+            app:layout_constraintEnd_toEndOf="@id/itemImage"
+            app:layout_constraintStart_toEndOf="@id/itemImage"
+            app:layout_constraintBottom_toBottomOf="@id/itemImage"
+            android:id="@+id/ib_rotate_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:src="@drawable/baseline_rotate_right_24" />
+
+
         <EditText
             android:id="@+id/et_card_title"
             android:layout_width="match_parent"

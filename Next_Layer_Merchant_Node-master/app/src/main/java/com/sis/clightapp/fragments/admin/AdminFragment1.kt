@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.*
 import com.google.gson.Gson
 import com.google.zxing.BarcodeFormat
@@ -29,6 +30,7 @@ import com.journeyapps.barcodescanner.ScanIntentResult
 import com.journeyapps.barcodescanner.ScanOptions
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.R
+import com.sis.clightapp.activity.AdminMainActivity
 import com.sis.clightapp.adapter.AdminReceivableListAdapter
 import com.sis.clightapp.adapter.AdminSendablesListAdapter
 import com.sis.clightapp.fragments.merchant.MerchantBaseFragment
@@ -410,6 +412,7 @@ class AdminFragment1 : AdminBaseFragment() {
                                     val temHax = it.data.bolt11
                                     val multiFormatWriter = MultiFormatWriter()
                                     try {
+                                        Log.d(QR_CODE,temHax)
                                         val bitMatrix = multiFormatWriter.encode(
                                             temHax,
                                             BarcodeFormat.QR_CODE,
@@ -512,8 +515,11 @@ class AdminFragment1 : AdminBaseFragment() {
                 PrintDialogFragment(
                     invoice,
                     items = GlobalState.getInstance().selectedItems.toList()
-                ).show(childFragmentManager, null)
+                ){
+                    (requireActivity() as AdminMainActivity).clearAndGoBack()
+                }.show(childFragmentManager, null)
             }
+            dialog.dismiss()
         }
         ivBack.setOnClickListener {
             loadObservers()
@@ -532,20 +538,25 @@ class AdminFragment1 : AdminBaseFragment() {
             dialog.findViewById(R.id.iv_back_invoice)
         val textView: TextView = dialog.findViewById(R.id.textView2)
         val ok: Button = dialog.findViewById(R.id.btn_ok)
-        dialog.window?.setLayout((width  *.9).toInt(), (height  *.9).toInt())
+        dialog.window?.setLayout((width  *.9).toInt(), WRAP_CONTENT)
         dialog.setCancelable(false)
         textView.text = "Payment Status:" + pay.status
         if (pay.status == "complete") {
             ok.text = "Print"
         }
         pay.bolt11 = bolt11value
+        val etDesc: TextView = dialog.findViewById(R.id.etDesc)
         ok.setOnClickListener {
+            pay.desc = etDesc.text.toString()
             loadObservers()
             if (pay.status == "complete") {
                 PrintDialogFragment(
                     payment = pay,
                     items = GlobalState.getInstance().selectedItems.toList()
-                ).show(childFragmentManager, null)
+                ){
+                    (requireActivity() as AdminMainActivity).clearAndGoBack()
+                }.show(childFragmentManager, null)
+                dialog.dismiss()
             } else {
                 dialog.dismiss()
             }
@@ -595,6 +606,7 @@ class AdminFragment1 : AdminBaseFragment() {
             options.setBeepEnabled(false)
             options.setBarcodeImageEnabled(true)
             barcodeLauncher.launch(options)
+            dialog.dismiss()
         }
         dialog.show()
     }
@@ -756,7 +768,7 @@ class AdminFragment1 : AdminBaseFragment() {
         val destination = pay.destination
         val merchantId = GlobalState.getInstance().merchant_id
         val transactionDescription1 = ""
-        addAlphaTransaction(
+        addMerchantTransaction(
             label,
             status,
             transactionAmountbtc,
@@ -771,7 +783,7 @@ class AdminFragment1 : AdminBaseFragment() {
         )
     }
 
-    private fun addAlphaTransaction(
+    private fun addMerchantTransaction(
         transactionLabel: String?,
         status: String?,
         transactionAmountbtc: String?,
@@ -785,7 +797,7 @@ class AdminFragment1 : AdminBaseFragment() {
         transactionDescription: String?
     ) {
         val call: Call<TransactionResp> = webservice
-            .add_alpha_transction(
+            .add_merchant_transction(
                 transactionLabel,
                 status,
                 transactionAmountbtc,
@@ -845,9 +857,9 @@ class AdminFragment1 : AdminBaseFragment() {
     private fun fcmReceived() {
         distributeGetPaidDialog?.dismiss()
         confirmPayment()
-        if (fcmBroadcastReceiver != null) {
-            requireContext().unregisterReceiver(fcmBroadcastReceiver)
-        }
+//        if (fcmBroadcastReceiver != null) {
+//            requireContext().unregisterReceiver(fcmBroadcastReceiver)
+//        }
     }
 
     private fun confirmPayment() {
@@ -860,11 +872,11 @@ class AdminFragment1 : AdminBaseFragment() {
                             if (response.data.status == "paid") {
                                 dialogBoxForConfirmPaymentInvoice(response.data)
                                 response.data.let {
-                                    addAlphaTransaction(
+                                    addMerchantTransaction(
                                         invoiceLabel,
                                         it.status,
                                         String.format("%.9f", satoshiToBtc(it.msatoshi)),
-                                        String.format("%.9f", btcService.btcToUsd(satoshiToBtc(it.msatoshi))),
+                                        String.format("%.9f", AMOUNT_USD),
                                         CONVERSION_RATE.toString(),
                                         excatFigure(MSATOSHI),
                                         it.payment_preimage,

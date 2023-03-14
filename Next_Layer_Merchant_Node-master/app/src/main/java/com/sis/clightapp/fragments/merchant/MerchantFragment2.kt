@@ -1,10 +1,10 @@
 package com.sis.clightapp.fragments.merchant
 
-import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
@@ -12,9 +12,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
 import android.provider.MediaStore
 import android.text.style.StyleSpan
@@ -59,12 +57,11 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MerchantFragment2 : MerchantBaseFragment() {
     private val apiClient: ApiPaths2 by inject()
     private val webservice: Webservice by inject()
-    private val sessionService: SessionService by inject()
+     val sessionService: SessionService by inject()
 
     private lateinit var additem: Button
     private lateinit var deleteitem: Button
@@ -112,8 +109,8 @@ class MerchantFragment2 : MerchantBaseFragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == REQUEST_WRITE_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            //pickItemImage();
-            imageOptions()
+           // pickItemImage();
+            //imageOptions()
             isInApp = false
         }
     }
@@ -147,22 +144,26 @@ class MerchantFragment2 : MerchantBaseFragment() {
         deleteitem = view.findViewById(R.id.imageView7)
         recyclerView = view.findViewById(R.id.merchant2listview)
         inventorybtn = view.findViewById(R.id.inventrytxt)
-        inventorybtn.setOnClickListener(View.OnClickListener {
+        inventorybtn.setOnClickListener {
             refreshProgressDialog.show()
             refreshProgressDialog.setCancelable(false)
             refreshProgressDialog.setCanceledOnTouchOutside(false)
             val handler = Handler()
-            handler.postDelayed({ refreshProgressDialog.dismiss() }, 2000) // 3000 milliseconds delay
-        })
+            handler.postDelayed(
+                { refreshProgressDialog.dismiss() },
+                2000
+            ) // 3000 milliseconds delay
+            refreshList()
+        }
         additem.setOnClickListener { dialogBoxForAddItem() }
         deleteitem.setOnClickListener { dialogBoxForDeleteItem() }
         if (CheckNetwork.isInternetAvailable(context)) {
+            refreshList()
         }
         return view
     }
 
-    private val allItems: Unit
-        private get() {
+    private fun refreshList() {
             val RefToken = CustomSharedPreferences().getvalueofRefresh("refreshToken", context)
             val token = "Bearer $RefToken"
             val jsonObject1 = JsonObject()
@@ -170,6 +171,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
             val call = apiClient.getInventoryItems(token) as Call<ItemsDataMerchant>
             call.enqueue(object : Callback<ItemsDataMerchant?> {
                 override fun onResponse(call: Call<ItemsDataMerchant?>, response: Response<ItemsDataMerchant?>) {
+                    Log.i("get-funding-nodes:", response.toString())
                     if (response.body() != null) {
                         val itemsDataMerchant = response.body()!!
                         if (itemsDataMerchant.success) {
@@ -259,7 +261,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
                     val itemsDataMerchant = response.body()!!
                     if (itemsDataMerchant.isSuccess) {
                         showToast(itemsDataMerchant.message)
-                        allItems
+                        refreshList()
                     } else {
                         showToast(itemsDataMerchant.message)
                     }
@@ -268,6 +270,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
 
             override fun onFailure(call: Call<AddItemsModel?>, t: Throwable) {
                 Log.e("get-funding-nodes:", t.message.toString())
+                refreshList()
             }
         })
     }
@@ -282,37 +285,38 @@ class MerchantFragment2 : MerchantBaseFragment() {
                     val itemsDataMerchant = response.body()!!
                     if (itemsDataMerchant.isSuccess) {
                         showToast(itemsDataMerchant.message)
-                        allItems
+                        refreshList()
                     } else {
                         showToast(itemsDataMerchant.message)
-                        allItems
+                        refreshList()
                     }
                 }
             }
 
             override fun onFailure(call: Call<AddItemsModel?>, t: Throwable) {
                 Log.e("get-funding-nodes:", t.message.toString())
+                refreshList()
             }
         })
     }
     private fun imageOptions() {
-        val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
-        val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
-        builder.setTitle("Add Image From")
-        builder.setItems(items) { dialogInterface, i ->
-            if (items[i] == "Camera") {
-                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                startActivityForResult(intent, CAMERA_REQ)
+            val items = arrayOf<CharSequence>("Camera", "Gallery", "Cancel")
+            val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            builder.setTitle("Add Image From")
+            builder.setItems(items) { dialogInterface, i ->
+                if (items[i] == "Camera") {
+                    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                    startActivityForResult(intent, CAMERA_REQ)
+                }
+                if (items[i] == "Gallery") {
+                    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    intent.type = "image/*"
+                    startActivityForResult(Intent.createChooser(intent, "Select Image"), GALLERY_REQUEST)
+                }
+                dialogInterface.dismiss()
             }
-            if (items[i] == "Gallery") {
-                val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                intent.type = "image/*"
-                startActivityForResult(Intent.createChooser(intent, "Select Image"), GALLERY_REQUEST)
-            }
-            dialogInterface.dismiss()
-        }
-        builder.setCancelable(false)
-        builder.show()
+            builder.setCancelable(false)
+            builder.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -331,7 +335,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
                     }
                     var file: File? = null
                     try {
-                        file = savebitmap(selectImgBitMap)
+                        file = requireContext().savebitmap(selectImgBitMap)
                     } catch (e: IOException) {
                         e.printStackTrace()
                         isImageGet = false
@@ -365,7 +369,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
                     cameraImgBitMap = bundle?.get("data") as Bitmap
                     var file2: File? = null
                     try {
-                        file2 = savebitmap(cameraImgBitMap)
+                        file2 = requireContext().savebitmap(cameraImgBitMap)
                     } catch (e: IOException) {
                         e.printStackTrace()
                         isImageGet = false
@@ -422,19 +426,21 @@ class MerchantFragment2 : MerchantBaseFragment() {
         //        dialog.getWindow().setLayout(500, 500);
         addItemDialog.setCancelable(false)
         val etCardTitle = addItemDialog.findViewById<EditText>(R.id.et_card_title)
+        val ibRotatePicture = addItemDialog.findViewById<ImageButton>(R.id.ib_rotate_picture)
         val etCardNumber = addItemDialog.findViewById<EditText>(R.id.et_card_number)
         val etCVV = addItemDialog.findViewById<EditText>(R.id.et_cvv)
         val etExpiryDate = addItemDialog.findViewById<EditText>(R.id.et_expiry_date)
         val ivBack = addItemDialog.findViewById<ImageView>(R.id.iv_back_invoice)
         itemImage = addItemDialog.findViewById(R.id.itemImage)
         itemImage.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(
-                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA),
-                    REQUEST_WRITE_PERMISSION
-                )
-            }
+            imageOptions()
         }
+
+        ibRotatePicture.setOnClickListener { v: View? ->
+            itemImage.rotation = itemImage.getRotation() + 90
+        }
+
+
         val btnCard = addItemDialog.findViewById<Button>(R.id.btn_add)
         ivBack.setOnClickListener { addItemDialog.dismiss() }
         btnCard.setOnClickListener(View.OnClickListener {
@@ -501,13 +507,14 @@ class MerchantFragment2 : MerchantBaseFragment() {
         val call = apiClient.addInventoryItems(token, jsonObject1) as Call<AddItemsModel>
         call.enqueue(object : Callback<AddItemsModel?> {
             override fun onResponse(call: Call<AddItemsModel?>, response: Response<AddItemsModel?>) {
+
                 if (response.body() != null) {
                     val itemsDataMerchant = response.body()!!
                     if (itemsDataMerchant.isSuccess) {
                         addItemDialog.dismiss()
                         // List<ItemLIstModel> lIstModelList=itemsDataMerchant.getList();
                         //refreshItemsAdapter(lIstModelList);
-                        allItems
+                        refreshList()
                     } else {
                         showToast(itemsDataMerchant.message)
                         addItemDialog.dismiss()
@@ -518,6 +525,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
             override fun onFailure(call: Call<AddItemsModel?>, t: Throwable) {
                 Log.e("get-funding-nodes:", t.message.toString())
                 addItemDialog.dismiss()
+                refreshList()
             }
         })
     }
@@ -819,7 +827,7 @@ class MerchantFragment2 : MerchantBaseFragment() {
     /*For Reload The Items List after getting Response from Server*/
     fun reLoadItemsInList() {
         sessionService.getMerchantData()?.let {
-            allItems
+            refreshList()
         }
     }
 
@@ -837,18 +845,16 @@ class MerchantFragment2 : MerchantBaseFragment() {
         }
 
         @Throws(IOException::class)
-        fun savebitmap(bmp: Bitmap?): File {
+        fun Context.savebitmap(bmp: Bitmap?): File {
             val bytes = ByteArrayOutputStream()
             bmp?.compress(Bitmap.CompressFormat.JPEG, 60, bytes)
-            val f = File(
-                Environment.getExternalStorageDirectory()
-                    .toString() + File.separator + "testimage.jpg"
-            )
+            val f = createFileInCache("testimage.jpg")
             f.createNewFile()
             val fo = FileOutputStream(f)
             fo.write(bytes.toByteArray())
             fo.close()
             return f
         }
+        private fun Context.createFileInCache(fileName: String): File = File(cacheDir, fileName)
     }
 }

@@ -16,11 +16,14 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.MotionEventCompat
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -32,8 +35,10 @@ import com.sis.clightapp.session.MyLogOutService
 import com.sis.clightapp.util.CustomSharedPreferences
 import com.sis.clightapp.util.GlobalState
 import org.koin.android.ext.android.inject
+import java.util.*
 
 open class BaseActivity : AppCompatActivity(), LifecycleOwner {
+
     val sessionService: SessionService by inject()
     val IS_USER_LOGIN = "isuserlogin"
     val LASTDATE = "lastdate"
@@ -52,16 +57,22 @@ open class BaseActivity : AppCompatActivity(), LifecycleOwner {
     private val locationRequest: LocationRequest? = null
     private val locationCallback: LocationCallback? = null
     lateinit var loginLoadingProgressDialog: ProgressDialog
+
     public override fun onStart() {
         super.onStart()
         startService(Intent(this, MyLogOutService::class.java))
         sessionService.isExpired.observe(this) { expired: Boolean ->
-            if (expired) {
-                val prev = supportFragmentManager.findFragmentByTag("2fa_fragment")
-                if (prev == null) {
+            val prev = supportFragmentManager.findFragmentByTag("2fa_fragment")
+            if (prev == null) {
+                if (expired) {
                     Auth2FaFragment().show(supportFragmentManager, "2fa_fragment")
                 }
+            } else {
+                if (!expired) {
+                    (prev as? DialogFragment?)?.dismiss()
+                }
             }
+
         }
     }
 
@@ -97,7 +108,11 @@ open class BaseActivity : AppCompatActivity(), LifecycleOwner {
     }
 
     @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             1000 -> {
@@ -142,12 +157,32 @@ open class BaseActivity : AppCompatActivity(), LifecycleOwner {
         }
     }
 
+//    var timer = Timer()
+//    override fun onTouchEvent(event: MotionEvent): Boolean {
+//        return when (MotionEventCompat.getActionMasked(event)) {
+//            // Display a Toast whenever a movement is captured on the screen
+//            MotionEvent.ACTION_MOVE -> {
+//                timer.cancel()
+//                timer = Timer()
+//                timer.schedule(object : TimerTask() {
+//                    override fun run() {
+//                        Log.d(this.javaClass.simpleName, "timer completed")
+//                        val intent = Intent(applicationContext, HomeActivity::class.java)
+//                        startActivity(intent)
+//                        stopService(Intent(this@BaseActivity, MyLogOutService::class.java))
+//                    }
+//                }, 10000)
+//                true
+//            }
+//            else -> super.onTouchEvent(event)
+//        }
+//    }
     override fun onResume() {
         super.onResume()
-        checkForPermission()
+      //  checkForPermission()
     }
 
-    fun checkForPermission() {
+    private fun checkForPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED
         ) {
@@ -170,7 +205,11 @@ open class BaseActivity : AppCompatActivity(), LifecycleOwner {
                 val alert = alertBuilder.create()
                 alert.show()
             } else {
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 123)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                    123
+                )
             }
         }
     }

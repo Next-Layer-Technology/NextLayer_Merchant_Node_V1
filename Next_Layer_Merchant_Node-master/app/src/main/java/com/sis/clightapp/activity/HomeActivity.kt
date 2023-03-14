@@ -279,7 +279,7 @@ class HomeActivity : BaseActivity() {
             var itemImageFileMPBody: MultipartBody.Part? = null
             val photo_id: RequestBody = yourFile.asRequestBody(("".toMediaTypeOrNull()))
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.path, photo_id)
-            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit(this).create(Webservice::class.java)
                 .startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody)
             call.enqueue(object : Callback<NodeResp?> {
                 override fun onResponse(call: Call<NodeResp?>, response: Response<NodeResp?>) {
@@ -361,7 +361,7 @@ class HomeActivity : BaseActivity() {
             var itemImageFileMPBody: MultipartBody.Part? = null
             val photo_id: RequestBody = yourFile.asRequestBody(("".toMediaTypeOrNull()))
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.path, photo_id)
-            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit(this).create(Webservice::class.java)
                 .checkLightningNodeServerStatus2(
                     sshkeypass,
                     host2,
@@ -449,7 +449,7 @@ class HomeActivity : BaseActivity() {
             var itemImageFileMPBody: MultipartBody.Part? = null
             val photo_id: RequestBody = RequestBody.create(("".toMediaTypeOrNull()), yourFile)
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.path, photo_id)
-            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit(this).create(Webservice::class.java)
                 .checkBitcoinNodeServerStatus2(
                     sshkeypass,
                     host2,
@@ -561,7 +561,7 @@ class HomeActivity : BaseActivity() {
             var itemImageFileMPBody: MultipartBody.Part? = null
             val photo_id: RequestBody = RequestBody.create(("".toMediaTypeOrNull()), yourFile)
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.path, photo_id)
-            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit(this).create(Webservice::class.java)
                 .startBitcoinServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody)
             call.enqueue(object : Callback<NodeResp?> {
                 override fun onResponse(call: Call<NodeResp?>, response: Response<NodeResp?>) {
@@ -674,7 +674,7 @@ class HomeActivity : BaseActivity() {
             var itemImageFileMPBody: MultipartBody.Part? = null
             val photo_id: RequestBody = RequestBody.create(("".toMediaTypeOrNull()), yourFile)
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.path, photo_id)
-            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit(this).create(Webservice::class.java)
                 .startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody)
             call.enqueue(object : Callback<NodeResp?> {
                 override fun onResponse(call: Call<NodeResp?>, response: Response<NodeResp?>) {
@@ -783,7 +783,7 @@ class HomeActivity : BaseActivity() {
             var itemImageFileMPBody: MultipartBody.Part? = null
             val photo_id: RequestBody = yourFile.asRequestBody(("".toMediaTypeOrNull()))
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.path, photo_id)
-            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit(this).create(Webservice::class.java)
                 .startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody)
             call.enqueue(object : Callback<NodeResp?> {
                 override fun onResponse(call: Call<NodeResp?>, response: Response<NodeResp?>) {
@@ -909,7 +909,7 @@ class HomeActivity : BaseActivity() {
             var itemImageFileMPBody: MultipartBody.Part? = null
             val photo_id: RequestBody = RequestBody.create(("".toMediaTypeOrNull()), yourFile)
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.path, photo_id)
-            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit(this).create(Webservice::class.java)
                 .checkLightningNodeServerStatus2(
                     sshkeypass,
                     host2,
@@ -1036,7 +1036,7 @@ class HomeActivity : BaseActivity() {
             var itemImageFileMPBody: MultipartBody.Part? = null
             val photo_id: RequestBody = yourFile.asRequestBody(("".toMediaTypeOrNull()))
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.path, photo_id)
-            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit(this).create(Webservice::class.java)
                 .startLightningServer2(sshkeypass, type2, host2, port2, sshUsername2, itemImageFileMPBody)
             call.enqueue(object : Callback<NodeResp?> {
                 override fun onResponse(call: Call<NodeResp?>, response: Response<NodeResp?>) {
@@ -1166,7 +1166,7 @@ class HomeActivity : BaseActivity() {
             var itemImageFileMPBody: MultipartBody.Part? = null
             val photo_id: RequestBody = RequestBody.create(("".toMediaTypeOrNull()), yourFile)
             itemImageFileMPBody = MultipartBody.Part.createFormData("key", yourFile.path, photo_id)
-            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+            val call: Call<NodeResp> = ApiClientStartStop.getRetrofit(this).create(Webservice::class.java)
                 .checkLightningNodeServerStatus2(
                     sshkeypass,
                     host2,

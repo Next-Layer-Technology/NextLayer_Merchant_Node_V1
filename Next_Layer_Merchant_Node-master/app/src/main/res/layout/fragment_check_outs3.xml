@@ -15,7 +15,8 @@
         <RelativeLayout
             android:id="@+id/btn"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_48sdp"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/_5sdp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginRight="@dimen/_10sdp">
@@ -36,6 +37,7 @@
             <ImageView
                 android:id="@+id/btnFlashPay"
                 android:layout_width="@dimen/_143sdp"
+                android:layout_centerVertical="true"
                 android:layout_height="48dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/btn_flashpay" />
@@ -45,10 +47,9 @@
         <RelativeLayout
             android:id="@+id/tablayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_35sdp"
+            android:layout_height="@dimen/_20sdp"
             android:layout_below="@+id/btn"
             android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginRight="@dimen/_10sdp"
             android:background="@drawable/edittextblack">
 
@@ -70,7 +71,7 @@
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:text="Item"
                         android:textColor="@color/colorLightBlack"
-                        android:textSize="@dimen/_15sdp"
+                        android:textSize="@dimen/_10sdp"
 
                         android:textStyle="bold" />
 
@@ -95,7 +96,7 @@
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:text="Price"
                         android:textColor="@color/colorLightBlack"
-                        android:textSize="@dimen/_15sdp"
+                        android:textSize="@dimen/_10sdp"
 
                         android:textStyle="bold" />
 
@@ -121,7 +122,7 @@
                         android:layout_marginLeft="@dimen/_20sdp"
                         android:text="Count"
                         android:textColor="@color/colorLightBlack"
-                        android:textSize="@dimen/_15sdp"
+                        android:textSize="@dimen/_10sdp"
 
                         android:textStyle="bold" />
 
@@ -149,7 +150,7 @@
         <RelativeLayout
             android:id="@+id/cardviewlayout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_135sdp"
+            android:layout_height="@dimen/_100sdp"
             android:layout_above="@+id/belowlay"
             android:layout_marginBottom="@dimen/_5sdp">
 
@@ -159,7 +160,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_120sdp"
+                    android:layout_height="@dimen/_110sdp"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:layout_marginRight="@dimen/_10sdp"
                     app:cardBackgroundColor="#90000000"
@@ -179,7 +180,7 @@
                             android:gravity="center"
                             android:text="Total:"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_10sdp"
+                            android:textSize="@dimen/_8sdp"
                             android:textStyle="normal" />
 
                         <TextView
@@ -193,7 +194,7 @@
                             android:maxLines="1"
                             android:text="BTC 0.00/$ 0.00"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_10sdp"
+                            android:textSize="@dimen/_8sdp"
                             android:textStyle="normal" />
 
                         <TextView
@@ -207,7 +208,7 @@
                             android:gravity="center"
                             android:text="Tax:"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_10sdp"
+                            android:textSize="@dimen/_8sdp"
                             android:textStyle="normal" />
 
                         <TextView
@@ -222,7 +223,7 @@
                             android:maxLines="1"
                             android:text="BTC 0.00/$ 0.00"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_10sdp"
+                            android:textSize="@dimen/_8sdp"
                             android:textStyle="normal" />
 
                         <View
@@ -245,7 +246,7 @@
                             android:maxLines="1"
                             android:text="Grand Total"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_12sdp"
+                            android:textSize="@dimen/_10sdp"
                             android:textStyle="bold" />
 
                         <TextView
@@ -260,7 +261,7 @@
                             android:maxLines="1"
                             android:text="BTC 0.00/$ 0.00"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/_10sdp"
+                            android:textSize="@dimen/_8sdp"
                             android:textStyle="bold" />
 
                     </RelativeLayout>
@@ -269,8 +270,8 @@
 
             <Button
                 android:id="@+id/imageView5"
-                android:layout_width="@dimen/_180sdp"
-                android:layout_height="@dimen/_40sdp"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_30sdp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/paywithlighning_new"

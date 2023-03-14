@@ -20,6 +20,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.sis.clightapp.util.AppConstants
 import com.sis.clightapp.util.CustomSharedPreferences
 import com.sis.clightapp.util.GlobalState
+import com.sis.clightapp.util.QR_CODE
 import java.math.BigDecimal
 import java.text.SimpleDateFormat
 import java.util.*
@@ -91,6 +92,7 @@ open class MerchantBaseFragment : Fragment() {
         val multiFormatWriter = MultiFormatWriter()
         var bitMatrix: BitMatrix? = null
         try {
+            Log.d(QR_CODE, hex!!)
             bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, widht, height)
         } catch (e: WriterException) {
             e.printStackTrace()

@@ -25,7 +25,7 @@ class SessionService(private val context: Context) {
     }
 
     init {
-        fixedRateTimer("jwt_token_check", false, 0L, 10 * 1000) {
+        fixedRateTimer("jwt_token_check", false, 0L, 3 * 1000) {
             val token = prefs.getString("accessToken", null)
             if (token != null) {
                 _isExpired.postValue(isTokenExpired(token))

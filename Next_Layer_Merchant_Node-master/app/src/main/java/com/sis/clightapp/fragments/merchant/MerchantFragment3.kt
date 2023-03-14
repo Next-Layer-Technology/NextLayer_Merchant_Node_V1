@@ -51,7 +51,9 @@ import java.util.*
 
 class MerchantFragment3 : MerchantBaseFragment() {
     private val sessionService: SessionService by inject()
-    private val webservice = ApiClientStartStop.getRetrofit().create(Webservice::class.java)
+    private val webservice by lazy {
+        ApiClientStartStop.getRetrofit(requireContext()).create(Webservice::class.java)
+    }
     var TAG = "CLighting App"
     var countAddScreen = 1
     private var gdaxUrl = "ws://73.36.65.41:8095/SendCommands"
@@ -302,7 +304,7 @@ class MerchantFragment3 : MerchantBaseFragment() {
         removeSshKeyBtn.setOnClickListener {
             val merchantData = sessionService.getMerchantData()
             if (merchantData != null) {
-                Auth2FaFragment().show(childFragmentManager, null)
+                Auth2FaFragment.getInstance().show(childFragmentManager, null)
             } else {
                 goAlertDialogwithOneBTn(1, "", "Enter Merchant ID", "OK", "")
             }

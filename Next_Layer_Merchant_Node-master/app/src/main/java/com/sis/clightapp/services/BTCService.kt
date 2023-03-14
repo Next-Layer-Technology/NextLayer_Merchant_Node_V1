@@ -1,11 +1,11 @@
 package com.sis.clightapp.services
 
+import android.app.Application
+import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sis.clightapp.model.Channel_BTCResponseData
-import com.sis.clightapp.util.AppConstants
-import com.sis.clightapp.util.GlobalState
 import com.sis.clightapp.util.Resource
 import org.json.JSONException
 import org.json.JSONObject
@@ -13,7 +13,7 @@ import tech.gusavila92.websocketclient.WebSocketClient
 import java.net.URI
 import java.net.URISyntaxException
 
-class BTCService {
+class BTCService(app: Application) {
     private lateinit var webSocketClient: WebSocketClient
     var btcPrice = 0.0
 
@@ -24,6 +24,15 @@ class BTCService {
 
     init {
         subscribeChannel()
+        if (Settings.Secure.getString(
+                app.contentResolver,
+                Settings.Secure.ANDROID_ID
+            ) == "4609ce6a958ba817"
+        ) {
+            Log.d(this.javaClass.name, "This is Pitam's Phone")
+            setStatic()
+        }
+
     }
 
     private fun subscribeChannel() {
@@ -87,7 +96,10 @@ class BTCService {
             override fun onBinaryReceived(data: ByteArray) {}
             override fun onPingReceived(data: ByteArray) {}
             override fun onPongReceived(data: ByteArray) {}
-            override fun onException(e: Exception) {}
+            override fun onException(e: Exception) {
+                Log.e("WebSocket", e.localizedMessage)
+            }
+
             override fun onCloseReceived() {
                 Log.i("WebSocket", "Closed ")
                 println("onCloseReceived")
@@ -106,5 +118,12 @@ class BTCService {
         } else {
             0.0
         }
+    }
+
+    fun setStatic() {
+        btcPrice = 23779.00
+        val btcResp = Channel_BTCResponseData()
+        btcResp.price = 23779.00
+        _currentBtc.postValue(Resource.success(btcResp))
     }
 }

@@ -1,5 +1,7 @@
 package com.sis.clightapp.adapter;
 
+import static com.sis.clightapp.di.AppModuleKt.getMerchantContainerUrl;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,12 +16,11 @@ import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.sis.clightapp.R;
-import com.sis.clightapp.util.AppConstants;
+import com.sis.clightapp.services.SessionService;
 import com.sis.clightapp.activity.CheckOutMainActivity;
 import com.sis.clightapp.model.GsonModel.Items;
 import com.sis.clightapp.util.GlobalState;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -27,11 +28,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CheckOutMainListAdapter extends ArrayAdapter<Items> {
     private final Context mContext;
     private final List<Items> inventoryItemList;
+    private final SessionService sessionService;
 
-    public CheckOutMainListAdapter(@NonNull Context context, List<Items> list) {
+    public CheckOutMainListAdapter(@NonNull Context context, SessionService sessionService, List<Items> list) {
         super(context, 0, list);
         mContext = context;
         inventoryItemList = list;
+        this.sessionService = sessionService;
     }
 
 
@@ -44,12 +47,12 @@ public class CheckOutMainListAdapter extends ArrayAdapter<Items> {
         final Items currentItem = inventoryItemList.get(position);
         CircleImageView imageView = listItem.findViewById(R.id.tv_title);
 
-        Glide.with(mContext).load(AppConstants.MERCHANT_ITEM_IMAGE + currentItem.getImageUrl()).into(imageView);
+        Glide.with(mContext).load(getMerchantContainerUrl(sessionService) + currentItem.getImageUrl()).into(imageView);
 
         TextView name = listItem.findViewById(R.id.tv_card_numb);
         TextView price = listItem.findViewById(R.id.tv_card_expiry);
         name.setText(currentItem.getName());
-        price.setText(currentItem.getPrice());
+        price.setText("$"+currentItem.getPrice());
         final TextView tvQty = listItem.findViewById(R.id.countvalue);
         tvQty.setText(String.valueOf(currentItem.getSelectQuatity()));
         ImageView plus = listItem.findViewById(R.id.plus);

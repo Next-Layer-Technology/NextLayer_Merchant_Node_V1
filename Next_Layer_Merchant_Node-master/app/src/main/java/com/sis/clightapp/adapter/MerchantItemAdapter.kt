@@ -2,6 +2,7 @@ package com.sis.clightapp.adapter
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sis.clightapp.R
+import com.sis.clightapp.di.getMerchantContainerUrl
 import com.sis.clightapp.fragments.merchant.MerchantFragment2
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemLIstModel
 import com.sis.clightapp.util.AppConstants
@@ -47,15 +49,18 @@ class MerchantItemAdapter    // RecyclerView recyclerView;
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = itemsArrayList[position]
         holder.setIsRecyclable(false)
-        Glide.with(mContext).load(AppConstants.MERCHANT_ITEM_IMAGE + currentItem.image_path).into(holder.imageView)
+        val image_url =  getMerchantContainerUrl(merchantFragment2.sessionService)+ currentItem.image_path
+        Log.d(this::class.simpleName, image_url)
+        Glide.with(mContext).load(image_url).into(holder.imageView)
         holder.name.text = currentItem.name
         holder.price.text = "$" + excatFigure(round(currentItem.unit_price.toDouble(), 2))
         holder.quantity.text = currentItem.quantity_left
+
         holder.customRowLayout.setOnClickListener {
             val image = ImageView(mContext)
 
             scope.launch {
-                val bitmap = getBitMapFromHex(currentItem.upc_code, 200,200)
+                val bitmap = getBitMapFromHex(currentItem.upc_code, 200, 200)
                 withContext(Dispatchers.Main) {
                     if (bitmap != null) {
                         image.setImageBitmap(bitmap)
@@ -65,7 +70,8 @@ class MerchantItemAdapter    // RecyclerView recyclerView;
                 }
             }
             val builder =
-                AlertDialog.Builder(mContext).setCancelable(false).setMessage("Item UPC:" + currentItem.upc_code)
+                AlertDialog.Builder(mContext).setCancelable(false)
+                    .setMessage("Item UPC:" + currentItem.upc_code)
                     .setPositiveButton("OK") { dialog, which -> dialog.dismiss() }
                     .setView(image)
             builder.create().show()

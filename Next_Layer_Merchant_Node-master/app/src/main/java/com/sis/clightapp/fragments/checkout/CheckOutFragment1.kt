@@ -30,7 +30,6 @@ import com.sis.clightapp.Network.CheckNetwork
 import com.sis.clightapp.R
 import com.sis.clightapp.activity.CheckOutMainActivity
 import com.sis.clightapp.adapter.CheckOutMainListAdapter
-import com.sis.clightapp.model.Channel_BTCResponseData
 import com.sis.clightapp.model.GsonModel.Items
 import com.sis.clightapp.model.GsonModel.ItemsMerchant.ItemsDataMerchant
 import com.sis.clightapp.model.GsonModel.ListPeers.ListPeers
@@ -55,10 +54,7 @@ import org.koin.android.ext.android.inject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import tech.gusavila92.websocketclient.WebSocketClient
 import java.math.BigDecimal
-import java.net.URI
-import java.net.URISyntaxException
 import java.util.*
 
 class CheckOutFragment1 : CheckOutBaseFragment() {
@@ -88,7 +84,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
     private var usdCapacity = 0.0
     private var usdRemainingCapacity = 0.0
     private var btcRemainingCapacity = 0.0
-    private var itemsList = arrayListOf<Items>()
+
     private var INTENT_AUTHENTICATE = 1234
     var isFundingInfoGetSuccefully = false
     lateinit var clearOutDialog: Dialog
@@ -129,7 +125,11 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             isScanMode = false
             cbScan.isChecked = false
             cbList.isChecked = true
-            checkOutMainListAdapter = CheckOutMainListAdapter(requireContext(), itemsList)
+            checkOutMainListAdapter = CheckOutMainListAdapter(
+                requireContext(),
+                sessionService,
+                GlobalState.getInstance().itemsList
+            )
             if (checkOutListView != null) checkOutListView!!.adapter = checkOutMainListAdapter
         }
         cbScan.setOnClickListener {
@@ -140,6 +140,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             checkOutMainListAdapter =
                 CheckOutMainListAdapter(
                     requireContext(),
+                    sessionService,
                     GlobalState.getInstance().selectedItems.toList()
                 )
             checkOutListView!!.adapter = checkOutMainListAdapter
@@ -232,19 +233,19 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                         addItemprogressDialog.setCanceledOnTouchOutside(false)
                         val getUpc = result.contents
                         showToast(getUpc)
-                        if (itemsList.size > 0) {
+                        if (GlobalState.getInstance().itemsList.size > 0) {
                             var itr = 0
-                            while (itr < itemsList.size) {
-                                if (itemsList[itr].upc == getUpc) {
-                                    if (GlobalState.getInstance().selectedItems.contains(itemsList[itr])) {
+                            while (itr < GlobalState.getInstance().itemsList.size) {
+                                if (GlobalState.getInstance().itemsList[itr].upc == getUpc) {
+                                    if (GlobalState.getInstance().selectedItems.contains(GlobalState.getInstance().itemsList[itr])) {
                                         android.app.AlertDialog.Builder(context)
                                             .setMessage("Item Already Add")
                                             .setPositiveButton("OK", null)
                                             .show()
                                         showToast("Item Already Add")
                                     } else {
-                                        itemsList[itr].selectQuatity = 1
-                                        GlobalState.getInstance().selectedItems.add(itemsList[itr])
+                                        GlobalState.getInstance().itemsList[itr].selectQuatity = 1
+                                        GlobalState.getInstance().selectedItems.add(GlobalState.getInstance().itemsList[itr])
                                         Log.d(TAG, "onActivityResult: 372")
                                         setAdapter()
                                         break
@@ -273,7 +274,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
         }
         (requireActivity() as CheckOutMainActivity).updateCartIcon(countItem)
         val dataSource = if (isListMode) {
-            itemsList
+            GlobalState.getInstance().itemsList
         } else {
             GlobalState.getInstance().selectedItems.toList()
         }
@@ -284,7 +285,11 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             )
         )
         if (dataSource.isNotEmpty()) {
-            checkOutMainListAdapter = CheckOutMainListAdapter(requireContext(), dataSource)
+            checkOutMainListAdapter = CheckOutMainListAdapter(
+                requireContext(),
+                sessionService,
+                dataSource
+            )
             checkOutListView!!.adapter = checkOutMainListAdapter
             checkOutListView!!.onItemLongClickListener =
                 OnItemLongClickListener { _: AdapterView<*>?, _: View?, _: Int, _: Long ->
@@ -305,7 +310,11 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
                 }
             GlobalState.getInstance().isCheckoutBtnPress = false
         } else {
-            checkOutMainListAdapter = CheckOutMainListAdapter(requireContext(), dataSource)
+            checkOutMainListAdapter = CheckOutMainListAdapter(
+                requireContext(),
+                sessionService,
+                dataSource
+            )
             checkOutListView!!.adapter = checkOutMainListAdapter
             (requireActivity() as CheckOutMainActivity).updateCartIcon(0)
         }
@@ -313,8 +322,7 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
 
     private fun parseJSON() {
         val itemImageRelocArrayList = GlobalState.getInstance().currentItemImageRelocArrayList
-        itemsList.clear()
-        itemsList.size
+        GlobalState.getInstance().itemsList.clear()
         for (j in itemImageRelocArrayList.indices) {
             val items = Items()
             items.upc = itemImageRelocArrayList[j].upc_number
@@ -329,9 +337,9 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
             items.totalPrice = itemImageRelocArrayList[j].total_price
             items.imageInHex = itemImageRelocArrayList[j].image_in_hex
             items.additionalInfo = itemImageRelocArrayList[j].additional_info
-            itemsList.add(j, items)
+            GlobalState.getInstance().itemsList.add(j, items)
         }
-        for (items in itemsList) {
+        for (items in GlobalState.getInstance().itemsList) {
             Log.e(
                 "ItemsDetails",
                 "Name:" + items.name + "-" + "Quantity:" + items.quantity + "-" + "Price:" + items.price + "-" + "UPC:" + items.upc + "-" + "ImageURl:" + items.imageUrl
@@ -340,6 +348,10 @@ class CheckOutFragment1 : CheckOutBaseFragment() {
         setAdapter()
     }
 
+    override fun onResume() {
+        super.onResume()
+        setAdapter()
+    }
     private val allItems: Unit
         get() {
             val refToken = CustomSharedPreferences().getvalueofRefresh("refreshToken", context)

@@ -37,7 +37,7 @@ class FCMService : FirebaseMessagingService() {
                     remoteMessage.data["pwsUpdate"],
                     FirebaseNotificationModel::class.java
                 )
-                if (!notificationModel.invoice_label.isEmpty()) {
+                if (notificationModel.invoice_label.isNotEmpty()) {
                     sendIncomingPaymentNotification(
                         notificationModel.title,
                         notificationModel.invoice_label,

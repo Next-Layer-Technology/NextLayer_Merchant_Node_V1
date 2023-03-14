@@ -20,6 +20,7 @@ import com.sis.clightapp.fragments.checkout.CheckOutsFragment2
 import com.sis.clightapp.fragments.checkout.CheckOutsFragment3
 import com.sis.clightapp.fragments.shared.ExitDialogFragment
 import com.sis.clightapp.session.MyLogOutService
+import com.sis.clightapp.util.GlobalState
 import java.util.*
 
 class CheckOutMainActivity : BaseActivity() {
@@ -39,7 +40,7 @@ class CheckOutMainActivity : BaseActivity() {
         setContentView(R.layout.activity_check_out_main11)
         Log.e(TAG, "Mode:Login As UserMode/CheckOut")
         initView()
-        setViewPagerAdapter()
+        initViewPagerAdapter()
         configureNavigationDrawer()
         val toolbar = findViewById<Toolbar>(R.id.toolbarcheckout)
         val navImg = toolbar.findViewById<ImageView>(R.id.imageView9)
@@ -65,19 +66,19 @@ class CheckOutMainActivity : BaseActivity() {
         drawerLayout = findViewById(R.id.checkoutdrawer_layout)
     }
 
-    private fun setViewPagerAdapter() {
+    private fun initViewPagerAdapter() {
         customViewPager!!.setPagingEnabled(false)
         val pagerAdapter = FragmentAdapter(
             supportFragmentManager,
             FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT,
-            fragment
+            fragmentList
         )
         customViewPager!!.adapter = pagerAdapter
         customViewPager!!.offscreenPageLimit = 5
     }
 
-    private val fragment: List<Fragment>
-        private get() {
+    private val fragmentList: List<Fragment>
+        get() {
             val fragmentList: MutableList<Fragment> = ArrayList()
             fragmentList.add(CheckOutFragment1())
             fragmentList.add(CheckOutsFragment2())
@@ -90,12 +91,16 @@ class CheckOutMainActivity : BaseActivity() {
         val navView = findViewById<NavigationView>(R.id.checkoutnavigation)
         navView.setNavigationItemSelectedListener { menuItem: MenuItem ->
             val itemId = menuItem.itemId
-            if (itemId == R.id.menu_1) {
-                setFragment(0)
-            } else if (itemId == R.id.menu_2) {
-                setFragment(1)
-            } else if (itemId == R.id.menu_3) {
-                setFragment(2)
+            when (itemId) {
+                R.id.menu_1 -> {
+                    setFragment(0)
+                }
+                R.id.menu_2 -> {
+                    setFragment(1)
+                }
+                R.id.menu_3 -> {
+                    setFragment(2)
+                }
             }
             false
         }
@@ -107,7 +112,7 @@ class CheckOutMainActivity : BaseActivity() {
     }
 
     fun swipeToCheckOutFragment3(fragmentPosition: Int) {
-        customViewPager!!.currentItem = fragmentPosition
+        setFragment(fragmentPosition)
     }
 
     override fun onBackPressed() {

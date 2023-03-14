@@ -34,6 +34,7 @@ import com.opencsv.CSVWriter
 import com.sis.clightapp.EmailSdk.GMailSender
 import com.sis.clightapp.Interface.Webservice
 import com.sis.clightapp.R
+import com.sis.clightapp.activity.MerchantMainActivity
 import com.sis.clightapp.adapter.MerchantRefundsListAdapter
 import com.sis.clightapp.adapter.MerchantSalesListAdapter
 import com.sis.clightapp.fragments.admin.AdminBaseFragment
@@ -245,15 +246,13 @@ class MerchantFragment1 : MerchantBaseFragment() {
         refundbutton.setOnClickListener { view1: View? ->
             //TODO:what ever on Refunds
             isInAppMerchant1 = false
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val km =
-                    requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
-                if (km.isKeyguardSecure) {
-                    val authIntent = km.createConfirmDeviceCredentialIntent("Authorize Payment", "")
-                    startActivityForResult(authIntent, INTENT_AUTHENTICATE)
-                } else {
-                    dialogBoxForRefundCommandeer()
-                }
+            val km =
+                requireActivity().getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+            if (km.isKeyguardSecure) {
+                val authIntent = km.createConfirmDeviceCredentialIntent("Authorize Payment", "")
+                startActivityForResult(authIntent, INTENT_AUTHENTICATE)
+            } else {
+                dialogBoxForRefundCommandeer()
             }
         }
         saleslistview = view.findViewById(R.id.salesListview)
@@ -576,6 +575,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
                                 val temHax = it.data.bolt11
                                 val multiFormatWriter = MultiFormatWriter()
                                 try {
+                                    Log.d(QR_CODE, temHax)
                                     val bitMatrix = multiFormatWriter.encode(
                                         temHax,
                                         BarcodeFormat.QR_CODE,
@@ -639,9 +639,9 @@ class MerchantFragment1 : MerchantBaseFragment() {
     private fun fcmReceived() {
         distributeGetPaidDialog.dismiss()
         confirmPayment()
-        if (fcmBroadcastReceiver != null) {
-            requireContext().unregisterReceiver(fcmBroadcastReceiver)
-        }
+//        if (fcmBroadcastReceiver != null) {
+//            requireContext().unregisterReceiver(fcmBroadcastReceiver)
+//        }
     }
 
     private fun confirmPayment() {
@@ -654,11 +654,11 @@ class MerchantFragment1 : MerchantBaseFragment() {
                             if (response.data.status == "paid") {
                                 dialogBoxForConfirmPaymentInvoice(response.data)
                                 response.data.let {
-                                    addAlphaTransaction(
+                                    addMerchantTransaction(
                                         currentTransactionLabel,
                                         it.status,
                                         String.format("%.9f", satoshiToBtc(it.msatoshi)),
-                                        String.format("%.9f", btcService.btcToUsd(satoshiToBtc(it.msatoshi))),
+                                        String.format("%.9f", amountUsd),
                                         conversionRate.toString(),
                                         excatFigure(msatoshi),
                                         it.payment_preimage,
@@ -750,12 +750,14 @@ class MerchantFragment1 : MerchantBaseFragment() {
             }
         }
         printInvoice.setOnClickListener { view: View? ->
+            confirmPaymentDialog.dismiss()
             if (invoice?.status == "paid") {
                 loadObservers()
-                PrintDialogFragment(invoice, null, arrayListOf()).show(childFragmentManager, null)
+                PrintDialogFragment(invoice, null, arrayListOf()) {
+                    (requireActivity() as MerchantMainActivity).clearAndGoBack()
+                }.show(childFragmentManager, null)
             } else {
                 loadObservers()
-                confirmPaymentDialog.dismiss()
             }
         }
         ivBack.setOnClickListener {
@@ -798,6 +800,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
             options.setBeepEnabled(false)
             options.setBarcodeImageEnabled(true)
             barcodeLauncher.launch(options)
+            commandeerRefundDialog.dismiss()
         }
         commandeerRefundDialog.show()
     }
@@ -890,9 +893,11 @@ class MerchantFragment1 : MerchantBaseFragment() {
                         progressDialog.dismiss()
                         if (it.data?.status == "complete") {
                             saveGetRefundTransactionInLog(it.data, label)
+                            it.data.bolt11 = bolt11
                             showConfirmDialog(it.data)
                         } else {
                             val pay = Pay()
+                            pay.bolt11 = bolt11
                             pay.status = "Not complete"
                             showConfirmDialog(pay)
                         }
@@ -919,16 +924,21 @@ class MerchantFragment1 : MerchantBaseFragment() {
         val ivBack = dialog.findViewById<ImageView>(R.id.iv_back_invoice)
         val textView = dialog.findViewById<TextView>(R.id.textView2)
         val ok = dialog.findViewById<Button>(R.id.btn_ok)
-        dialog.window?.setLayout((width / 1.1f).toInt(), (height / 1.3).toInt())
+        dialog.window?.setLayout((width * .9).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT)
         dialog.setCancelable(false)
         textView.text = "Payment Status:" + pay.status
         if (pay.status == "complete") {
             ok.text = "Print"
         }
+        val etDesc: TextView = dialog.findViewById(R.id.etDesc)
         ok.setOnClickListener { view: View? ->
+            pay.desc = etDesc.text.toString()
             if (pay.status == "complete") {
                 loadObservers()
-                PrintDialogFragment(null, pay, arrayListOf()).show(childFragmentManager, null)
+                PrintDialogFragment(null, pay, arrayListOf()) {
+                    (requireActivity() as MerchantMainActivity).clearAndGoBack()
+                }.show(childFragmentManager, null)
+                dialog.dismiss()
             } else {
                 loadObservers()
                 dialog.dismiss()
@@ -989,7 +999,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
         val destination = pay.destination
         val merchantId = GlobalState.getInstance().merchant_id
         val transactionDescription1 = ""
-        addAlphaTransaction(
+        addMerchantTransaction(
             label,
             status,
             transactionAmountbtc,
@@ -1004,7 +1014,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
         )
     }
 
-    private fun addAlphaTransaction(
+    private fun addMerchantTransaction(
         transactionLabel: String?,
         status: String?,
         transactionAmountbtc: String?,
@@ -1018,7 +1028,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
         transactionDescription: String?
     ) {
         val call: Call<TransactionResp> = webservice
-            .add_alpha_transction(
+            .add_merchant_transction(
                 transactionLabel,
                 status,
                 transactionAmountbtc,
@@ -1873,6 +1883,7 @@ class MerchantFragment1 : MerchantBaseFragment() {
     override fun onStop() {
         super.onStop()
         if (fcmBroadcastReceiver != null) {
+            //crashes here
             requireContext().unregisterReceiver(fcmBroadcastReceiver)
         }
     }

@@ -35,7 +35,7 @@ class Auth2FaFragment : DialogFragment() {
     val sharedPreferences = CustomSharedPreferences()
     override fun onStart() {
         super.onStart()
-        val width = requireActivity().resources.displayMetrics.widthPixels*.9
+        val width = requireActivity().resources.displayMetrics.widthPixels * .9
         val height = requireActivity().resources.displayMetrics.heightPixels * .45
         dialog?.window?.apply {
             setLayout(width.toInt(), height.toInt())
@@ -179,4 +179,12 @@ class Auth2FaFragment : DialogFragment() {
 
     fun showToast(message: String?) =
         Toast.makeText(ctx, message, Toast.LENGTH_SHORT).show()
+
+    companion object {
+        private var INSTANCE: Auth2FaFragment? = null
+        fun getInstance(): Auth2FaFragment = INSTANCE ?: run {
+            INSTANCE = Auth2FaFragment()
+            return INSTANCE!!
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.sis.clightapp.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.text.format.DateFormat
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.google.zxing.BarcodeFormat
@@ -20,7 +21,7 @@ fun satoshiToBtc(msatoshhi: Double): Double {
     return msatoshiToSatoshi / AppConstants.btcToSathosi
 }
 
-
+const val QR_CODE = "QR_CODE"
 fun round(value: Double, places: Int): Double {
     var v = value
     require(places >= 0)
@@ -60,6 +61,7 @@ fun getBitMapFromHex(hex: String?, width: Int = 600, height: Int = 600): Bitmap?
     val multiFormatWriter = MultiFormatWriter()
     var bitMatrix: BitMatrix? = null
     try {
+        Log.d(QR_CODE,hex!!)
         bitMatrix = multiFormatWriter.encode(hex, BarcodeFormat.QR_CODE, width, height)
     } catch (e: WriterException) {
         e.printStackTrace()
