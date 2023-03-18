@@ -731,7 +731,7 @@ class CheckOutsFragment3 : CheckOutBaseFragment() {
                                         val payloadJsonObject = JSONObject()
                                         payloadJsonObject.accumulate(
                                             "merchantName",
-                                            sessionService.getMerchantData()?.merchant_name?:"Unknown Merchant"
+                                            sessionService.getMerchantData()?.store_name?:"Unknown Merchant"
                                         )
                                         payloadJsonObject.accumulate("bolt11", resp.bolt11)
                                         jsonObject.accumulate("payload", payloadJsonObject)
