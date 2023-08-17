@@ -46,6 +46,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         android:vmSafeMode="true">
+        <uses-library
+        android:name="org.apache.http.legacy"
+        android:required="false" />
         <activity
             android:name=".activity.MainEntryActivityNew"
             android:screenOrientation="portrait"

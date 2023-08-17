@@ -47,7 +47,14 @@ import tech.gusavila92.websocketclient.WebSocketClient
 import java.io.File
 import java.net.URI
 import java.net.URISyntaxException
+import java.security.SecureRandom
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
 import java.util.*
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
 
 class MerchantFragment3 : MerchantBaseFragment() {
     private val sessionService: SessionService by inject()
@@ -56,7 +63,7 @@ class MerchantFragment3 : MerchantBaseFragment() {
     }
     var TAG = "CLighting App"
     var countAddScreen = 1
-    private var gdaxUrl = "ws://73.36.65.41:8095/SendCommands"
+    private var gdaxUrl = "wss://73.36.65.41:8095/SendCommands"
     var code1 = ""
     var code = 0
     var countDetach = 0
@@ -1177,6 +1184,25 @@ class MerchantFragment3 : MerchantBaseFragment() {
                 println("onCloseReceived")
             }
         }
+
+        // Install the all-trusting trust manager
+        val sslContext: SSLContext = SSLContext.getInstance("SSL")
+        val trustAllCerts: Array<TrustManager> = arrayOf(
+            object : X509TrustManager {
+                @Throws(CertificateException::class)
+                override fun checkClientTrusted(chain: Array<X509Certificate?>?,
+                                                authType: String?) = Unit
+
+                @Throws(CertificateException::class)
+                override fun checkServerTrusted(chain: Array<X509Certificate?>?,
+                                                authType: String?) = Unit
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+            }
+        )
+        sslContext.init(null, trustAllCerts, SecureRandom())
+        val sslSocketFactory: SSLSocketFactory = sslContext.socketFactory
+        webSocketClient.setSSLSocketFactory(sslSocketFactory)
         webSocketClient.setConnectTimeout(100000)
         webSocketClient.setReadTimeout(600000)
         webSocketClient.enableAutomaticReconnection(5000)

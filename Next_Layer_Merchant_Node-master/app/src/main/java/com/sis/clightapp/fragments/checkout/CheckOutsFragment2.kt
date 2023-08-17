@@ -64,7 +64,7 @@ class CheckOutsFragment2 : CheckOutBaseFragment(), View.OnClickListener {
     lateinit var btcRate: TextView
     var newManualItem: Items? = null
     lateinit var setTextWithSpan: TextView
-    private var gdaxUrl = "ws://73.36.65.41:8095/SendCommands"
+    private var gdaxUrl = "wss://73.36.65.41:8095/SendCommands"
     lateinit var clearout: TextView
     var mSatoshiReceivable = 0.0
     var btcReceivable = 0.0
