@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -89,9 +90,6 @@ class MainEntryActivityNew : BaseActivity() {
                 CustomSharedPreferences().getvalueofMerchantpassword("merchant_pass", this)
             )
         }
-        if (!keyguardManager!!.isKeyguardSecure) {
-            dialog_LockCheck()
-        }
         registerBtn.setOnClickListener(View.OnClickListener { v: View? ->
             if (sharedPreferences.getislogin("registered", this)) {
                 showToast("You are registered already")
@@ -119,6 +117,13 @@ class MainEntryActivityNew : BaseActivity() {
         qrScan!!.setOrientationLocked(false)
         val prompt = resources.getString(R.string.scanqrfornewmembertoken)
         qrScan!!.setPrompt(prompt)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!keyguardManager!!.isKeyguardSecure) {
+            dialog_LockCheck()
+        }
     }
 
     fun setToken() {
@@ -508,7 +513,11 @@ class MainEntryActivityNew : BaseActivity() {
         val dialogView = inflater.inflate(R.layout.registerpopup_lockcheck, null)
         dialogBuilder.setView(dialogView)
         val action_ok = dialogView.findViewById<TextView>(R.id.action_ok)
-        action_ok.setOnClickListener { v: View? -> finish() }
+        action_ok.setOnClickListener { v: View? ->
+
+            dialogBuilder.dismiss()
+            startActivity(Intent(Settings.ACTION_SECURITY_SETTINGS))
+        }
         dialogBuilder.setView(dialogView)
         dialogBuilder.setCancelable(false)
         dialogBuilder.show()
