@@ -1003,13 +1003,9 @@ class MainEntryActivityNew : BaseActivity() {
                 text = "No"
                 setOnClickListener {
                     dismiss()
-                    checkSecureLockEnabledElseShowPopup()
                 }
             }
             setCancelable(true)
-            setOnCancelListener {
-                checkSecureLockEnabledElseShowPopup()
-            }
         }.show()
     }
 
