@@ -91,6 +91,8 @@ class MainEntryActivityNew : BaseActivity() {
             )
         }
         registerBtn.setOnClickListener(View.OnClickListener { v: View? ->
+
+            if(!checkSecureLockEnabledElseShowPopup()) return@OnClickListener
             if (sharedPreferences.getislogin("registered", this)) {
                 showToast("You are registered already")
             } else {
@@ -124,10 +126,12 @@ class MainEntryActivityNew : BaseActivity() {
         checkSecureLockEnabledElseShowPopup()
     }
 
-    private fun checkSecureLockEnabledElseShowPopup() {
+    private fun checkSecureLockEnabledElseShowPopup(): Boolean {
         if (!keyguardManager!!.isKeyguardSecure) {
             dialog_LockCheck()
+            return false
         }
+        return true
     }
 
     fun setToken() {
