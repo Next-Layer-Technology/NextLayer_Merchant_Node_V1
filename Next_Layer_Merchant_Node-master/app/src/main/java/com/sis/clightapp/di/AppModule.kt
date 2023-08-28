@@ -4,11 +4,13 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.GsonBuilder
 import com.sis.clightapp.Interface.ApiPaths2
 import com.sis.clightapp.Interface.Webservice
+import com.sis.clightapp.R
 import com.sis.clightapp.model.GsonModel.Merchant.MerchantData
 import com.sis.clightapp.services.BTCService
 import com.sis.clightapp.services.FCMService
 import com.sis.clightapp.services.LightningService
 import com.sis.clightapp.services.SessionService
+import com.sis.clightapp.util.CustomTrustManager
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
@@ -17,7 +19,10 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import java.io.InputStream
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+
 
 val appModule = module {
     single { FCMService() }
@@ -32,8 +37,15 @@ val appModule = module {
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         val merchantData: MerchantData? = sessionService.getMerchantData()
-        val url = "http://" + merchantData?.container_address + ":" + merchantData?.mws_port
+        val url = "https://" + merchantData?.container_address + ":" + merchantData?.mws_port
+
+
+        val sslContext = SSLContext.getInstance("SSL")
+        val caCertificateInputStream: InputStream = this.androidContext().resources.openRawResource(R.raw.certificate)
+        sslContext.init(null, arrayOf(CustomTrustManager(caCertificateInputStream)), java.security.SecureRandom())
+
         val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+            .sslSocketFactory(sslContext.socketFactory, CustomTrustManager(caCertificateInputStream))
             .connectTimeout(3, TimeUnit.MINUTES)
             .readTimeout(3, TimeUnit.MINUTES)
             .addNetworkInterceptor(httpLoggingInterceptor)
@@ -65,5 +77,5 @@ val appModule = module {
 
 fun getMerchantContainerUrl(sessionService: SessionService): String {
     val merchantData: MerchantData? = sessionService.getMerchantData()
-    return "http://" + merchantData?.container_address + ":" + merchantData?.mws_port
+    return "https://" + merchantData?.container_address + ":" + merchantData?.mws_port
 }
