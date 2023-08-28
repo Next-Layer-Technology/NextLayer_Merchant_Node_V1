@@ -10,7 +10,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_160sdp"
+        android:layout_height="@dimen/_260sdp"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="@dimen/_20sdp">
 
@@ -25,8 +25,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:text="Device-based two-factor authentication is required to use this app. Enable device security in your settings to continue using this app."
+                android:layout_marginTop="@dimen/_5sdp"
+                android:text="@string/msg_device_not_secured"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="normal" />
 
@@ -45,7 +45,7 @@
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/yes_btn"
                 android:gravity="center"
-                android:text="Ok"
+                android:text="@string/cta_set_up_secure_lock_screen"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />

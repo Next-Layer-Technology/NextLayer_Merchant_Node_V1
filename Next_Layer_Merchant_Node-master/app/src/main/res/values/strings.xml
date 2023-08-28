@@ -70,5 +70,7 @@
     <string name="payment_notification_channel_id">2</string>
     <string name="fcm_message">\"Next Layer Merchant\"</string>
     <string name="msg_token_fmt">22</string>
+    <string name="msg_device_not_secured">Your device\'s security is important to us. To ensure the safety of your personal data and privacy, we require that you set up a secure lock screen before you can use this app (such as a PIN, password, or biometric authentication). This will prevent unauthorized access to your device. Please proceed to the security settings to set up a secure lock screen.</string>
+    <string name="cta_set_up_secure_lock_screen">Set Up</string>
 
 </resources>

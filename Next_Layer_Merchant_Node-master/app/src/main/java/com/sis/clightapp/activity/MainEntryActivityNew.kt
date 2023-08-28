@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -89,10 +90,9 @@ class MainEntryActivityNew : BaseActivity() {
                 CustomSharedPreferences().getvalueofMerchantpassword("merchant_pass", this)
             )
         }
-        if (!keyguardManager!!.isKeyguardSecure) {
-            dialog_LockCheck()
-        }
         registerBtn.setOnClickListener(View.OnClickListener { v: View? ->
+
+            if(!checkSecureLockEnabledElseShowPopup()) return@OnClickListener
             if (sharedPreferences.getislogin("registered", this)) {
                 showToast("You are registered already")
             } else {
@@ -119,6 +119,19 @@ class MainEntryActivityNew : BaseActivity() {
         qrScan!!.setOrientationLocked(false)
         val prompt = resources.getString(R.string.scanqrfornewmembertoken)
         qrScan!!.setPrompt(prompt)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkSecureLockEnabledElseShowPopup()
+    }
+
+    private fun checkSecureLockEnabledElseShowPopup(): Boolean {
+        if (!keyguardManager!!.isKeyguardSecure) {
+            dialog_LockCheck()
+            return false
+        }
+        return true
     }
 
     fun setToken() {
@@ -508,9 +521,14 @@ class MainEntryActivityNew : BaseActivity() {
         val dialogView = inflater.inflate(R.layout.registerpopup_lockcheck, null)
         dialogBuilder.setView(dialogView)
         val action_ok = dialogView.findViewById<TextView>(R.id.action_ok)
-        action_ok.setOnClickListener { v: View? -> finish() }
+        action_ok.setOnClickListener { v: View? ->
+
+            dialogBuilder.dismiss()
+            startActivity(Intent(Settings.ACTION_SECURITY_SETTINGS))
+        }
         dialogBuilder.setView(dialogView)
-        dialogBuilder.setCancelable(false)
+        dialogBuilder.setCancelable(true)
+        dialogBuilder.setOnCancelListener { showOnBackAlert() }
         dialogBuilder.show()
     }
 
@@ -962,6 +980,37 @@ class MainEntryActivityNew : BaseActivity() {
                 showToast(t.message)
             }
         })
+    }
+
+    override fun onBackPressed() {
+        showOnBackAlert()
+    }
+
+    private fun showOnBackAlert() {
+        Dialog(this).apply {
+            setContentView(R.layout.alert_dialog_layout)
+            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            findViewById<TextView>(R.id.alertTitle).apply {
+                text = ""
+                visibility = View.GONE
+            }
+            findViewById<TextView>(R.id.alertMessage).text = "Are you sure you want to exit?"
+            findViewById<Button>(R.id.yesbtn).apply {
+                text = "Yes"
+                setOnClickListener {
+                    dismiss()
+                    finishAffinity()
+                    finish()
+                }
+            }
+            findViewById<Button>(R.id.nobtn).apply {
+                text = "No"
+                setOnClickListener {
+                    dismiss()
+                }
+            }
+            setCancelable(true)
+        }.show()
     }
 
     companion object {
